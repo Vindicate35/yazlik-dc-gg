@@ -249,7 +249,8 @@
         <div style="text-align: center; margin-bottom: 25px; max-width: 900px; margin-left: auto; margin-right: auto;">
             <div style="color: #8b949e; font-weight: bold; margin-bottom: 12px; font-size: 0.9em; text-transform: uppercase;">👥 Ekipleri Süz (Çoklu Seçim):</div>
             <div id="sinerji-filtre-kutusu" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 8px;">
-                </div>
+                <!-- Çipler JavaScript ile basılacak -->
+            </div>
         </div>
 
         <div style="max-width:1200px; margin:0 auto; padding:0 15px;">
@@ -290,6 +291,35 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        // Şampiyon İsim Çevirmeni
+        const sampiyonIsimCeviri = {
+            "MonkeyKing": "Wukong",
+            "MissFortune": "Miss Fortune",
+            "JarvanIV": "Jarvan IV",
+            "XinZhao": "Xin Zhao",
+            "TahmKench": "Tahm Kench",
+            "KogMaw": "Kog'Maw",
+            "RekSai": "Rek'Sai",
+            "DrMundo": "Dr. Mundo",
+            "TwistedFate": "Twisted Fate",
+            "AurelionSol": "Aurelion Sol",
+            "Belveth": "Bel'Veth",
+            "Renata": "Renata Glasc",
+            "Nunu": "Nunu & Willump",
+            "MasterYi": "Master Yi",
+            "LeeSin": "Lee Sin",
+            "KSAnte": "K'Sante",
+            "Chogath": "Cho'Gath",
+            "Khazix": "Kha'Zix",
+            "Velkoz": "Vel'Koz",
+            "Kaisa": "Kai'Sa",
+            "Leblanc": "LeBlanc"
+        };
+
+        function formatSampiyon(isim) {
+            return sampiyonIsimCeviri[isim] || isim;
+        }
 
         let tumVeriler = [];
         let guncelYama = "14.9.1";
@@ -336,35 +366,39 @@
             return idB - idA; 
         };
 
+       // ROL ODAKLI DAVRANIŞ ALGORİTMASI (Gelişmiş Metrikler V2)
         function davranisHesapla(k, d, a, rol, vizyon, kontrol) {
             let kdaSaf = d === 0 ? (k + a) : ((k + a) / d);
             let skorKatkisi = k + a;
 
             if (rol === "UTILITY") {
-                if (a >= 12 && vizyon >= 35) return "👁️ Her Şeyi Gören Göz";
+                if (k >= 5 && a <= 8) return "⚔️ Sahte Destek (KS Makinesi)";
+                if (vizyon >= 45 && kontrol >= 10 && kdaSaf >= 3.0) return "👁️ Kusursuz Vizyoner";
                 if (d >= 8 && a >= 12) return "🛡️ Takım İçin Feda (Fedakar)";
-                if (d >= 8 && a < 6) return "⚠️ Vizyonsuz / Ağır Besleme"; 
+                if (d >= 7.5 && kdaSaf < 2.0) return "⚠️ Vizyonsuz / Ağır Besleme"; 
                 if (kdaSaf >= 3.5) return "👼 Kusursuz Kanat Önderi";
                 return "🤝 Görev Adamı (Destek)";
             }
             if (rol === "MIDDLE" || rol === "BOTTOM") {
-                if (d >= 7 && k < 5) return "⚠️ Pervasız / Yasuo Sendromu"; 
-                if (k >= 9 && d >= 7) return "🔥 Agresif Gladyatör";
-                if (k >= 10 && d <= 4) return "🥷 Gölge Suikastçisi";
-                if (d >= 9 && kdaSaf < 1.5) return "☠️ Takım Yükü (Ağır Risk)";
-                if (kdaSaf >= 3.5) return "🌟 Hiper Taşıyıcı";
+                if (d >= 9 && kdaSaf < 1.8) return "☠️ Takım Yükü (Kara Delik)";
+                if (k >= 9 && d >= 7.5) return "🔥 Agresif Gladyatör (Risk Alan)";
+                if (d >= 7.5 && k < d + 2) return "⚠️ Pervasız / Yasuo Sendromu"; 
+                if (k >= 8 && d <= 4.5) return "🥷 Gölge Suikastçisi";
+                if (kdaSaf >= 3.5 && k >= 6) return "🌟 Hiper Taşıyıcı";
                 return "⚖️ Dengeli Taşıyıcı";
             }
             if (rol === "JUNGLE") {
-                if (k >= 7 && d <= 4) return "🐺 Yırtıcı Avcı";
-                if (a >= 11 && vizyon >= 18) return "🗺️ Taktiksel Beyin";
-                if (d >= 8 && k < 4) return "⚠️ Ormanda Kayıp (Ağır Ölüm)";
+                if (k >= 7 && d <= 4.5) return "🐺 Yırtıcı Avcı";
+                if (a >= 15 && vizyon >= 30) return "🗺️ Taktiksel Beyin";
+                if (d >= 7.5 && kdaSaf < 2.0) return "⚠️ Ormanda Kayıp / Besleme";
+                if (skorKatkisi >= 12 && d >= 7.5) return "🔥 Agresif Baskıncı";
                 return "🌲 Objektif Odaklı";
             }
             if (rol === "TOP") {
-                if (d >= 8 && skorKatkisi >= 10) return "⚔️ Gözü Kara Öncü";
-                if (k >= 7 && d <= 4) return "🏰 Yıkılmaz Kale";
-                if (d >= 9 && skorKatkisi < 6) return "🏚️ Koridoru Dağılan";
+                if (d >= 8.5 && skorKatkisi < 7) return "🏚️ Koridoru Dağılan";
+                if (d >= 8 && k < d) return "⚠️ Ayrık İttirme Kurbanı / Pervasız";
+                if (d >= 7.5 && skorKatkisi >= 10) return "⚔️ Gözü Kara Öncü";
+                if (k >= 6 && d <= 4) return "🏰 Yıkılmaz Kale";
                 return "🗿 Kaya Gibi";
             }
             return "⚖️ Standart Oynanış";
@@ -524,9 +558,10 @@
 
             const sampiyonDD = document.getElementById("sampiyon-dropdown");
             sampiyonDD.innerHTML = '<option value="">-- Şampiyon Seç --</option>'; 
-            const sampiyonlar = [...new Set(tumVeriler.map(v => v.sampiyon))].sort();
+            // YENİ: Makyajlanmış İsme Göre Alfabetik Sıralama
+            const sampiyonlar = [...new Set(tumVeriler.map(v => v.sampiyon))].sort((a,b) => formatSampiyon(a).localeCompare(formatSampiyon(b), 'tr'));
             sampiyonlar.forEach(samp => {
-                let opt = document.createElement("option"); opt.value = samp; opt.innerHTML = samp;
+                let opt = document.createElement("option"); opt.value = samp; opt.innerHTML = formatSampiyon(samp);
                 if(samp === aktifSampiyonFiltresi) opt.selected = true; 
                 sampiyonDD.appendChild(opt);
             });
@@ -572,7 +607,7 @@
                             <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${oyuncu.sampiyon}.png" class="s-ikon" style="width:35px; height:35px;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
                             <div class="s-kimlik">
                                 <span class="s-gercek">${oyuncu.riot_id}</span>
-                                <span class="s-samp">${oyuncu.sampiyon} ${rolCeviri[oyuncu.pozisyon] !== 'Belirsiz' ? `- <span style="color:#ffd700;">${rolCeviri[oyuncu.pozisyon]}</span>` : ''}</span>
+                                <span class="s-samp">${formatSampiyon(oyuncu.sampiyon)} ${rolCeviri[oyuncu.pozisyon] !== 'Belirsiz' ? `- <span style="color:#ffd700;">${rolCeviri[oyuncu.pozisyon]}</span>` : ''}</span>
                             </div>
                         </div>
                         <div class="s-orta-blok">
@@ -610,9 +645,10 @@
                 
                 let oyuncuTumMaclari = gosterilecekler.filter(v => v.oyuncu === aktifOyuncuFiltresi);
                 
-                let oynadigiSampiyonlar = [...new Set(oyuncuTumMaclari.map(v => v.sampiyon))].sort();
+                // YENİ: Makyajlanmış İsme Göre Alfabetik Sıralama
+                let oynadigiSampiyonlar = [...new Set(oyuncuTumMaclari.map(v => v.sampiyon))].sort((a,b) => formatSampiyon(a).localeCompare(formatSampiyon(b), 'tr'));
                 altSampiyonDropdown.innerHTML = `<option value="Hepsi">-- Şampiyon Seç --</option>` + 
-                    oynadigiSampiyonlar.map(s => `<option value="${s}" ${window.aktifBireyselSampiyon===s?'selected':''}>${s}</option>`).join("");
+                    oynadigiSampiyonlar.map(s => `<option value="${s}" ${window.aktifBireyselSampiyon===s?'selected':''}>${formatSampiyon(s)}</option>`).join("");
 
                 let toplamMac = oyuncuTumMaclari.length;
                 let toplamK = 0, toplamD = 0, toplamA = 0, toplamGorus = 0, zaferSayisi = 0;
@@ -665,7 +701,7 @@
                         let renk = cWR >= 50 ? "#3fb950" : "#f85149";
                         return `<div style="display:flex; align-items:center; gap:8px; margin-bottom:5px;">
                                     <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${s[0]}.png" style="width:24px; height:24px; border-radius:50%; border: 1px solid #30363d;">
-                                    <span>${s[0]} <span style="font-size:0.85em; color:#8b949e;">(${s[1].mac} Maç, <span style="color:${renk}; font-weight:bold;">%${cWR}</span>)</span></span>
+                                    <span>${formatSampiyon(s[0])} <span style="font-size:0.85em; color:#8b949e;">(${s[1].mac} Maç, <span style="color:${renk}; font-weight:bold;">%${cWR}</span>)</span></span>
                                 </div>`;
                     }).join("");
 
@@ -680,16 +716,17 @@
 
                     let tarzlar = [];
                     if (anaRol_EN === "UTILITY") {
-                        if (ortA >= 11 && avgV >= 30) tarzlar.push({ isim: "👁️ Vizyoner Taktisyen", renk: "#d2a8ff" });
-                        if (ortD >= 7 && ortA >= 10) tarzlar.push({ isim: "🛡️ Fedakar Koruyucu", renk: "#3fb950" });
-                        if (kdaSaf >= 3.2) tarzlar.push({ isim: "👼 Kusursuz Destek", renk: "#ffd700" });
+                        if (k >= 5 && a <= 8) tarzlar.push({ isim: "⚔️ Sahte Destek (KS Makinesi)", renk: "#ff6b6b" });
+                        else if (avgV >= 30 && ortD <= 5) tarzlar.push({ isim: "👁️ Vizyoner Taktisyen", renk: "#d2a8ff" });
+                        else if (ortD >= 7 && ortA >= 10) tarzlar.push({ isim: "🛡️ Fedakar Koruyucu", renk: "#3fb950" });
+                        else if (kdaSaf >= 3.2) tarzlar.push({ isim: "👼 Kusursuz Destek", renk: "#ffd700" });
                     } else {
                         if (ortK >= 8 && kdaSaf >= 3.0) tarzlar.push({ isim: "🌟 Hiper Taşıyıcı", renk: "#ffd700" });
-                        if (ortD >= 7.5 && ortK < 5.5) tarzlar.push({ isim: "⚠️ Risk Bağımlısı", renk: "#ff6b6b" });
+                        else if (ortD >= 7.5 && ortK < 5.5) tarzlar.push({ isim: "⚠️ Risk Bağımlısı", renk: "#ff6b6b" });
                         else if (ortK >= 7 && ortD >= 7) tarzlar.push({ isim: "🔥 Agresif / Risk Alan", renk: "#ff6b6b" });
-                        if (ortA >= 11) tarzlar.push({ isim: "🤝 Takım Oyuncusu", renk: "#3fb950" });
-                        if (ortD <= 4.5 && kdaSaf >= 2.8) tarzlar.push({ isim: "🛡️ Stabil & Güvenilir", renk: "#58a6ff" });
-                        if (ortK >= 9 && ortD <= 5) tarzlar.push({ isim: "🥷 Soğukkanlı Katil", renk: "#ff9800" });
+                        else if (ortA >= 11) tarzlar.push({ isim: "🤝 Takım Oyuncusu", renk: "#3fb950" });
+                        else if (ortD <= 4.5 && kdaSaf >= 2.8) tarzlar.push({ isim: "🛡️ Stabil & Güvenilir", renk: "#58a6ff" });
+                        else if (ortK >= 9 && ortD <= 5) tarzlar.push({ isim: "🥷 Soğukkanlı Katil", renk: "#ff9800" });
                     }
                     if (tarzlar.length === 0) tarzlar.push({ isim: "⚖️ Esnek Görev Adamı", renk: "#8b949e" });
 
@@ -786,7 +823,7 @@
                             <div class="liderlik-panosu">
                                 <div style="text-align:center; margin-bottom:20px; border-bottom:1px solid #30363d; padding-bottom:15px;">
                                     <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${window.aktifBireyselSampiyon}.png" style="width:70px; height:70px; border-radius:50%; border:2px solid #58a6ff;">
-                                    <h3 style="margin:10px 0 0 0; border:none; padding:0;">${window.aktifBireyselSampiyon} Raporu</h3>
+                                    <h3 style="margin:10px 0 0 0; border:none; padding:0;">${formatSampiyon(window.aktifBireyselSampiyon)} Raporu</h3>
                                 </div>
                                 <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
                                     <span style="color:#8b949e">Kazanma Oranı</span>
@@ -832,7 +869,6 @@
                     ${l_oyuncular.map(o => `<option value="${o}" ${window.aktifLiderlikOyuncu===o?'selected':''}>👤 ${o}</option>`).join("")}
                 </select>`;
 
-                // YENİ: Liderlik Tablosu Tamiri (mac_id ve sezon eklendi)
                 if (aktifSiralaKriteri === "oldurme") { 
                     baslik = "⚔️ En Yüksek Skorlar"; 
                     arrayVeri = gosterilecekler.filter(m => m.oldurme > 0).map(m => ({ oyuncu: m.oyuncu, riot_id: m.riot_id, skor: m.oldurme, mac_id: m.mac_id, sezon: m.sezon }));
@@ -871,7 +907,6 @@
                     if (aktifSiralaKriteri === "tarih") {
                         clickAttr = `onclick="window.profileGit('${v.oyuncu}')" class="liderlik-satir tiklanabilir-satir" title="Oyuncu profiline git"`;
                     } else {
-                        // mac_id yaması uygulandı
                         clickAttr = `onclick="window.uygulaOzelFiltre('${aktifSiralaKriteri}', '${v.oyuncu}', '${v.mac_id || ''}')" class="liderlik-satir tiklanabilir-satir" title="${v.oyuncu} oyuncusunun bu sabıka kaydını aç"`;
                     }
 
@@ -952,7 +987,7 @@
                             <img src="${resimUrl}" class="sampiyon-ikon" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
                             <div class="kimlik">
                                 <div><span class="oyun-id-ana">${veri.riot_id} - ${veri.oyuncu}</span><span class="sezon-etiket">${veri.sezon || 'Sezon Belirsiz'}</span>${rolMetni !== 'Belirsiz' ? `<span class="rol-etiket">${rolMetni}</span>` : ''}</div>
-                                <div style="margin-top:4px;"><span class="sonuc-yazi ${sonucYazisiClass}">${zaferMi ? "Zafer" : "Bozgun"}</span> <span class="gercek-isim-alt"> • ${veri.sampiyon}</span></div>
+                                <div style="margin-top:4px;"><span class="sonuc-yazi ${sonucYazisiClass}">${zaferMi ? "Zafer" : "Bozgun"}</span> <span class="gercek-isim-alt"> • ${formatSampiyon(veri.sampiyon)}</span></div>
                             </div>
                             ${durumDamgasi}
                             <div class="kda-deger">${veri.kda}</div>
@@ -1093,7 +1128,7 @@
                                 <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${oyuncu.sampiyon}.png" class="s-ikon" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
                                 <div class="s-kimlik">
                                     <span class="s-gercek">${oyuncu.riot_id}</span>
-                                    <span class="s-samp">${oyuncu.sampiyon} ${rolCeviri[oyuncu.pozisyon] !== 'Belirsiz' ? `- <span style="color:#ffd700;">${rolCeviri[oyuncu.pozisyon]}</span>` : ''}</span>
+                                    <span class="s-samp">${formatSampiyon(oyuncu.sampiyon)} ${rolCeviri[oyuncu.pozisyon] !== 'Belirsiz' ? `- <span style="color:#ffd700;">${rolCeviri[oyuncu.pozisyon]}</span>` : ''}</span>
                                 </div>
                             </div>
                             <div class="s-orta-blok">
@@ -1136,7 +1171,7 @@
             }
 
             let sampVerileri = temelVeriler.filter(v => v.sampiyon === aktifSampiyonFiltresi);
-            if (sampVerileri.length === 0) { vitrin.innerHTML = `<p style="text-align: center;">Bu sezonda ${aktifSampiyonFiltresi} oynanmamış.</p>`; return; }
+            if (sampVerileri.length === 0) { vitrin.innerHTML = `<p style="text-align: center;">Bu sezonda ${formatSampiyon(aktifSampiyonFiltresi)} oynanmamış.</p>`; return; }
 
             let oyuncuIstatistikleri = {};
             sampVerileri.forEach(m => {
@@ -1154,7 +1189,6 @@
                 }
             });
 
-            // YENİ: KDA Eşitlik Bozucu Zekası
             let siraliUzmanlar = Object.entries(oyuncuIstatistikleri).map(k => {
                 let sp = ((k[1].zafer + 1) / (k[1].mac + 2)) * 100;
                 let kdaSaf = k[1].td === 0 ? (k[1].tk + k[1].ta) : ((k[1].tk + k[1].ta) / k[1].td);
