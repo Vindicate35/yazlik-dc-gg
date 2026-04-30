@@ -168,7 +168,7 @@
 
     <div class="lejant-kutusu" id="genel-lejant">
         <div class="lejant-item"><div class="perfect-badge" style="margin:0; padding:2px 6px; font-size:0.7em;">🌟 PERFECT KDA</div> <span>Kusursuz Maç</span></div>
-        <div class="lejant-item"><div class="besleme-badge" style="margin:0; padding:2px 6px; font-size:0.7em;">☠️ 11+ ÖLÜM</div> <span>Besleme Sınırı</span></div>
+        <div class="lejant-item"><div class="besleme-badge" style="margin:0; padding:2px 6px; font-size:0.7em;">☠️ SABOTAJ</div> <span>Besleme Sınırı</span></div>
         <div class="lejant-item"><span class="sinerji-skor-etiket" style="margin:0;">SP</span><span>Sinerji Puanı</span></div>
         <div class="lejant-item"><span class="uzmanlik-skor-etiket" style="margin:0;">UP</span><span>Uzmanlık Puanı</span></div>
         <div class="lejant-item" style="color: #ffd700; font-weight: bold; margin-left:10px; border-left: 1px solid #30363d; padding-left: 15px;">👑 #1 Uzman</div>
@@ -183,7 +183,7 @@
         <div id="bireysel-alt-filtreler" class="alt-filtre-kutusu gizle">
             <button id="btn-alt-hepsi" class="filtre-btn aktif" onclick="window.altFiltreUygula('hepsi')">Tüm Maçlar</button>
             <button id="btn-alt-perfect" class="filtre-btn" onclick="window.altFiltreUygula('perfect')">🌟 Perfect KDA</button>
-            <button id="btn-alt-besleme" class="filtre-btn" onclick="window.altFiltreUygula('besleme')">☠️ 11+ Ölüm</button>
+            <button id="btn-alt-besleme" class="filtre-btn" onclick="window.altFiltreUygula('besleme')">☠️ SABOTAJ</button>
             <select id="bireysel-sampiyon-dropdown" class="alt-sampiyon-dropdown" onchange="window.altFiltreUygula('sampiyon', this.value)"><option value="Hepsi">-- Şampiyon Seç --</option></select>
         </div>
         <div class="filtre-kutusu" id="ana-filtreler">
@@ -847,7 +847,7 @@
                                 <h3>🏆 Kariyer Başarıları</h3>
                                 <div class="ozet-liste" style="font-size: 0.95em; gap:10px;">
                                     <div style="display:flex; justify-content:space-between;"><span><span style="font-size:1.2em;">🌟</span> Perfect KDA:</span> <span style="color:#ffffff;">${perfSayisi} Maç</span></div>
-                                    <div style="display:flex; justify-content:space-between;"><span><span style="font-size:1.2em;">☠️</span> 11+ Ölüm:</span> <span style="color:#ffffff;">${utancSayisi} Maç</span></div>
+                                    <div style="display:flex; justify-content:space-between;"><span><span style="font-size:1.2em;">☠️</span> SABOTAJ:</span> <span style="color:#ffffff;">${utancSayisi} Maç</span></div>
                                     <div style="display:flex; justify-content:space-between;"><span><span style="font-size:1.2em;">🤝</span> Asist Kralı:</span> <span style="color:#ffffff;">${asistKraliSayisi} Maç</span></div>
                                     <div style="margin-top:5px; padding-top:10px; border-top: 1px solid #30363d; text-align:center;">
                                         <span title="Toplam Görüş">👁️ <b style="color:#fff;">${toplamGorus}</b></span> &nbsp;
@@ -1046,7 +1046,7 @@
                 
                 let durumDamgasi = '';
                 if (veri.olum === 0) durumDamgasi = `<div class="perfect-badge"><span class="badge-ikon">🌟</span> PERFECT KDA</div>`;
-                else if (veri.olum > 11) durumDamgasi = `<div class="besleme-badge"><span class="badge-ikon">☠️</span> 11+ ÖLÜM</div>`;
+                else if (veri.olum > 11) durumDamgasi = `<div class="besleme-badge"><span class="badge-ikon">☠️</span> SABOTAJ</div>`;
 
                 const resimUrl = `https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${veri.sampiyon}.png`;
                 const rolMetni = rolCeviri[veri.pozisyon || "BELIRSIZ"];
