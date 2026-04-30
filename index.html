@@ -7,8 +7,9 @@
     <style>
         body { font-family: 'Urbanist', 'Segoe UI', sans-serif; background-color: #0d1117; color: #c9d1d9; padding: 20px; margin: 0; }
         .ust-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 0 20px; }
+        
         h1 { margin: 0; color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8); } 
-		h1 span { color: #58a6ff; -webkit-text-stroke: 1px #1f6feb; text-shadow: 0 0 15px rgba(88, 166, 255, 0.6); }
+        h1 span { color: #58a6ff; -webkit-text-stroke: 1px #1f6feb; text-shadow: 0 0 15px rgba(88, 166, 255, 0.6); }
         
         .yenile-btn { background: #238636; color: white; border: 1px solid #2ea043; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1em; display: flex; align-items: center; gap: 8px; box-shadow: 0 0 10px rgba(35, 134, 54, 0.2); }
         .yenile-btn:hover { background: #2ea043; box-shadow: 0 0 15px rgba(35, 134, 54, 0.4); }
@@ -60,9 +61,11 @@
         .liderlik-satir { display: flex; align-items: center; padding: 12px 10px; border-bottom: 1px solid #21262d; border-radius: 6px; cursor: pointer; }
         .liderlik-satir:hover { background: #21262d; border-left: 3px solid #58a6ff; }
         .l-sira { font-size: 1.5em; font-weight: bold; color: #8b949e; min-width: 60px; }
-	.liderlik-satir:nth-child(1) .l-sira { color: #ffd700; text-shadow: 0 0 8px rgba(255, 215, 0, 0.4); } 
-	.liderlik-satir:nth-child(2) .l-sira { color: #c0c0c0; text-shadow: 0 0 8px rgba(192, 192, 192, 0.4); } 
-	.liderlik-satir:nth-child(3) .l-sira { color: #cd7f32; text-shadow: 0 0 8px rgba(205, 127, 50, 0.4); }
+        
+        .liderlik-satir:nth-child(1) .l-sira { color: #ffd700; text-shadow: 0 0 8px rgba(255, 215, 0, 0.4); } 
+        .liderlik-satir:nth-child(2) .l-sira { color: #c0c0c0; text-shadow: 0 0 8px rgba(192, 192, 192, 0.4); } 
+        .liderlik-satir:nth-child(3) .l-sira { color: #cd7f32; text-shadow: 0 0 8px rgba(205, 127, 50, 0.4); }
+        
         .l-kimlik { flex-grow: 1; display: flex; flex-direction: column; }
         .l-gercek { font-weight: bold; color: #ffffff; font-size: 1.05em; }
         .l-oyunici { font-size: 0.8em; color: #8b949e; }
@@ -444,23 +447,38 @@
             if(el) { el.classList.toggle('gizle'); }
         }
 
+        // YENİ: DİNAMİK KAYDIRMA FONKSİYONLARI EKLENDİ
         window.liderlikFiltrele = function(oyuncu) {
             window.aktifLiderlikOyuncu = oyuncu;
             window.ozelFiltre = null; 
             ekraniGuncelle(false);
-            window.scrollTo({ top: 300, behavior: 'smooth' });
+            setTimeout(() => {
+                let vitrin = document.getElementById('bireysel-veriler');
+                if(vitrin) window.scrollTo({ top: vitrin.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+            }, 50);
         }
 
         window.uygulaOzelFiltre = function(kriter, oyuncu, macId) {
             window.ozelFiltre = { kriter, oyuncu, macId };
             ekraniGuncelle(false); 
-            window.scrollTo({ top: 300, behavior: 'smooth' });
+            setTimeout(() => {
+                let vitrin = document.getElementById('bireysel-veriler');
+                if(vitrin) window.scrollTo({ top: vitrin.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+            }, 50);
         }
 
         window.sinerjiFiltrele = function(ekip) {
             window.aktifSinerjiEkibi = ekip;
             ekraniGuncelle(false);
-            window.scrollTo({ top: 400, behavior: 'smooth' });
+            setTimeout(() => {
+                if(ekip) {
+                    let vitrin = document.getElementById('sinerji-veriler');
+                    if(vitrin) window.scrollTo({ top: vitrin.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+                } else {
+                    let ozet = document.getElementById('sinerji-ozet-alani');
+                    if(ozet) window.scrollTo({ top: ozet.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+                }
+            }, 50);
         }
         
         window.sinerjiCokluFiltreTetikle = function(oyuncu, btnEl) {
@@ -748,7 +766,6 @@
                                 if (e > 0 && window.itemVeritabani[e]) {
                                     let itm = window.itemVeritabani[e];
                                     let isFinal = false;
-                                    // YENİ KALKAN: Eşya bilgilerini çekerken fatal error vermesini engelleyen zırh
                                     if (itm.gold && itm.gold.total >= 1600) isFinal = true;
                                     if (itm.tags && itm.tags.includes("Boots") && itm.gold && itm.gold.total >= 800) isFinal = true;
                                     if (isFinal && (!itm.tags || !itm.tags.includes("Consumable"))) {
@@ -778,10 +795,9 @@
                     let ikinciRolTurkce = siraliRoller.length > 1 ? rolCeviri[siraliRoller[1][0]] : "-";
 
                     let siraliEsyalar = Object.entries(esyaSayaclari).sort((a,b) => b[1] - a[1]).slice(0, 6);
-                    let favoriEsyaHtml = siraliEsyalar.map(e => `<img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${e[0]}.png" style="width: 26px; height: 26px; border-radius: 4px; border: 1px solid #30363d;" title="${e[1]} Kere Alındı">`).join(" ");
+                    let favoriEsyaHtml = siraliEsyalar.map(e => `<img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${e[0]}.png" style="width: 32px; height: 32px; border-radius: 4px; border: 1px solid #30363d;" title="${e[1]} Kere Alındı">`).join(" ");
                     if(favoriEsyaHtml === "") favoriEsyaHtml = "<span style='font-size:0.8em; color:#8b949e;'>Yeterli eşya verisi yok.</span>";
 
-                    // HATA DÜZELTİLDİ: "k" yerine "ortK" ve "ortA" kullanıldı. Destek rolü çökmeyecek!
                     let tarzlar = [];
                     if (anaRol_EN === "UTILITY") {
                         if (ortK >= 5 && ortA <= 8) tarzlar.push({ isim: "⚔️ Sahte Destek", renk: "#ff6b6b" });
@@ -1011,7 +1027,7 @@
                 }
                 
                 gosterimHTML_Ek = `
-                <div style="background: rgba(88,166,255,0.1); border: 1px solid #58a6ff; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
+                <div style="background: rgba(88,166,255,0.1); border: 1px solid #58a6ff; padding: 15px 20px; border-radius: 8px; margin: 0 auto 20px auto; width: 100%; max-width: 900px; display:flex; justify-content:space-between; align-items:center; box-sizing: border-box;">
                     <span style="color:#c9d1d9; font-size:1.1em;"><b style="color:#ffffff;">${window.ozelFiltre.oyuncu}</b> oyuncusunun seçilen rekor maçı listeleniyor.</span>
                     <button onclick="window.ozelFiltre=null; window.ekraniGuncelle(false);" class="yenile-btn" style="padding: 6px 15px; font-size:0.9em; background:#f85149; border-color:#f85149; box-shadow:none;">❌ Kapat</button>
                 </div>`;
@@ -1216,7 +1232,7 @@
                     return grup.map(o => o.oyuncu).sort().join(" + ") === window.aktifSinerjiEkibi;
                 });
                 gosterimHTML_Ek = `
-                <div style="background: rgba(88,166,255,0.1); border: 1px solid #58a6ff; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; width: 100%; max-width: 900px; display:flex; justify-content:space-between; align-items:center;">
+                <div style="background: rgba(88,166,255,0.1); border: 1px solid #58a6ff; padding: 15px 20px; border-radius: 8px; margin: 0 auto 20px auto; width: 100%; max-width: 900px; display:flex; justify-content:space-between; align-items:center; box-sizing: border-box;">
                     <span style="color:#c9d1d9; font-size:1.1em;"><b style="color:#ffffff;">${window.aktifSinerjiEkibi}</b> ekibinin maçları listeleniyor.</span>
                     <button onclick="window.sinerjiFiltrele(null)" class="yenile-btn" style="padding: 6px 15px; font-size:0.9em; background:#f85149; border-color:#f85149; box-shadow:none;">❌ Temizle</button>
                 </div>`;
