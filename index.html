@@ -161,7 +161,7 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.2.0</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.4.0</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
@@ -241,8 +241,8 @@
         
         <div style="max-width:1200px; margin:0 auto; padding:0 15px;">
             <div style="background: rgba(255, 0, 255, 0.08); border: 1px solid rgba(255, 0, 255, 0.3); border-radius: 8px; padding: 12px 20px; margin-bottom: 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6;">
-                <b style="color: #ff00ff;">ℹ️ Uzmanlık Puanı (UP) Nedir?</b><br>
-                Sistem, bir şampiyonla sadece birkaç şanslı maç atanlar (%100 WR - 1 Maç) yerine, o karaktere emek verip istikrarlı başarı sağlayan oyuncuları (%80 WR - 10 Maç) öne çıkarmak için veri bilimindeki <b>Laplace Düzeltmesini</b> kullanır. Puanların eşit olması durumunda ise sistem <b>Saf KDA</b> (Skor Katkısı / Ölüm) oranını devreye sokarak şampiyonun gerçek ustasını zirveye taşır.
+                <b style="color: #ff00ff;">ℹ️ Rol Bazlı Uzmanlık (UP) Nedir?</b><br>
+                Aynı şampiyonu farklı koridorlarda oynamak, iki farklı oyun oynamaktır. Sistem, oyuncuların şampiyon uzmanlığını <b>her bir rol için ayrı ayrı</b> hesaplar ve listeler. Böylece Destek oynanan bir şampiyonun CS/min değeriyle, Üst koridor oynanan versiyonu birbirine karışıp adaletsiz bir ortalama yaratmaz.
             </div>
         </div>
 
@@ -279,6 +279,18 @@
 
         function formatSampiyon(isim) { return sampiyonIsimCeviri[isim] || isim; }
         
+        let guncelYama = "14.9.1";
+
+        // V5.4.0: GÖRSEL RESTORASYONU (SPAGETTI KOD ENGELLEYİCİ)
+        function resimUrlGetir(isim) {
+            const urlDüzeltme = { 
+                "FiddleSticks": "Fiddlesticks",
+                "MonkeyKing": "MonkeyKing" // Data Dragon MonkeyKing bekler, arayüz Wukong yazar
+            };
+            let safeName = urlDüzeltme[isim] || isim;
+            return `https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${safeName}.png`;
+        }
+        
         function sureFormatla(saniye) {
             if(!saniye) return "--:--";
             let dk = Math.floor(saniye / 60);
@@ -293,7 +305,6 @@
         }
 
         let tumVeriler = [];
-        let guncelYama = "14.9.1";
         
         let aktifMod = "bireysel";
         let aktifOyuncuFiltresi = "Hepsi";
@@ -632,7 +643,7 @@
                 oyuncularHtml += `
                     <div class="sinerji-satir" style="${satirBg} padding: 8px 15px; margin-bottom:2px;">
                         <div class="s-sol-blok">
-                            <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${oyuncu.sampiyon}.png" class="s-ikon" style="width:35px; height:35px;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
+                            <img src="${resimUrlGetir(oyuncu.sampiyon)}" class="s-ikon" style="width:35px; height:35px;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
                             <div class="s-kimlik">
                                 <span class="s-gercek">${oyuncu.riot_id}</span>
                                 <span class="s-samp">
@@ -741,7 +752,7 @@
                     let elit = ruyaKadrosuObj[r.rol];
                     let wr = ((elit.zafer / elit.mac) * 100).toFixed(0);
                     let kdaText = elit.d === 0 ? "Kusursuz" : ((elit.k+elit.a)/elit.d).toFixed(2) + " KDA";
-                    htmlKutu += `<div class="ruya-kutu" style="border-top-color: ${r.renk};"><div class="r-rol" style="color: ${r.renk};">${r.ad}</div><img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${elit.enIyiSampiyon}.png" class="r-ikon" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'"><div class="r-isim">${elit.isim}</div><div class="r-istatistik"><span style="color:#ffffff; font-weight:bold;">%${wr} WR</span> (${elit.mac} Maç)<br><span style="color:#58a6ff;">${kdaText}</span></div></div>`;
+                    htmlKutu += `<div class="ruya-kutu" style="border-top-color: ${r.renk};"><div class="r-rol" style="color: ${r.renk};">${r.ad}</div><img src="${resimUrlGetir(elit.enIyiSampiyon)}" class="r-ikon" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'"><div class="r-isim">${elit.isim}</div><div class="r-istatistik"><span style="color:#ffffff; font-weight:bold;">%${wr} WR</span> (${elit.mac} Maç)<br><span style="color:#58a6ff;">${kdaText}</span></div></div>`;
                 } else {
                     yetersizVeriVarMi = true;
                     htmlKutu += `<div class="ruya-kutu" style="border-top-color: #30363d; opacity:0.5;"><div class="r-rol" style="color: #8b949e;">${r.ad}</div><div style="width:80px; height:80px; border-radius:50%; background:#161b22; border: 3px dashed #30363d; margin:0 auto 10px auto; display:flex; align-items:center; justify-content:center; font-size:2em;">?</div><div class="r-isim" style="color:#8b949e;">Veri Yok</div><div class="r-istatistik">Yetersiz veri.</div></div>`;
@@ -828,7 +839,7 @@
                     let sampiyonHtml = siraliSampiyonlar.map(s => {
                         let cWR = ((s[1].win / s[1].mac) * 100).toFixed(0);
                         let renk = cWR >= 50 ? "#3fb950" : "#f85149";
-                        return `<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;"><img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${s[0]}.png" style="width:26px; height:26px; border-radius:50%; border: 1px solid #30363d;"><span>${formatSampiyon(s[0])} <span style="font-size:0.9em; color:#8b949e;">(${s[1].mac} Maç, <span style="color:${renk}; font-weight:bold;">%${cWR}</span>)</span></span></div>`;
+                        return `<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;"><img src="${resimUrlGetir(s[0])}" style="width:26px; height:26px; border-radius:50%; border: 1px solid #30363d;"><span>${formatSampiyon(s[0])} <span style="font-size:0.9em; color:#8b949e;">(${s[1].mac} Maç, <span style="color:${renk}; font-weight:bold;">%${cWR}</span>)</span></span></div>`;
                     }).join("");
 
                     let siraliRoller = Object.entries(rolSayaclari).sort((a, b) => b[1] - a[1]);
@@ -901,7 +912,6 @@
 
                     let c_mac = gosterilecekler.length;
                     if(c_mac > 0) {
-                        // V5.2.0: ROL BÖLÜNMESİ OPERASYONU
                         let roleGroups = {};
                         gosterilecekler.forEach(m => {
                             let r = m.pozisyon || "BELIRSIZ";
@@ -950,7 +960,7 @@
                             sagKolonHtml += `
                                 <div class="liderlik-panosu" style="margin-bottom: 20px;">
                                     <div style="text-align:center; margin-bottom:15px; border-bottom:1px solid #30363d; padding-bottom:15px;">
-                                        <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${window.aktifBireyselSampiyon}.png" style="width:50px; height:50px; border-radius:50%; border:2px solid #58a6ff;">
+                                        <img src="${resimUrlGetir(window.aktifBireyselSampiyon)}" style="width:50px; height:50px; border-radius:50%; border:2px solid #58a6ff;">
                                         <h3 style="margin:10px 0 0 0; border:none; padding:0; font-size:1.1em;">${formatSampiyon(window.aktifBireyselSampiyon)} <span style="color:#ffd700;">(${c_anaRolTxt})</span></h3>
                                     </div>
                                     <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.9em;">
@@ -1095,7 +1105,6 @@
                 if (veri.olum === 0) durumDamgasi = `<div class="perfect-badge"><span class="badge-ikon">🌟</span> PERFECT KDA</div>`;
                 else if (veri.olum > 11) durumDamgasi = `<div class="besleme-badge"><span class="badge-ikon">☠️</span> SABOTAJ</div>`;
 
-                const resimUrl = `https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${veri.sampiyon}.png`;
                 const rolMetni = rolCeviri[veri.pozisyon || "BELIRSIZ"];
 
                 let esyalarHtml = '<div class="esya-kutusu">';
@@ -1119,7 +1128,7 @@
                             <span style="color:#ffffff; font-weight:bold;">⏱️ ${sureFormatla(veri.sure_saniye)}</span>
                         </div>
                         <div class="kart-ust">
-                            <img src="${resimUrl}" class="sampiyon-ikon" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
+                            <img src="${resimUrlGetir(veri.sampiyon)}" class="sampiyon-ikon" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
                             <div class="kimlik">
                                 <div><span class="oyun-id-ana">${veri.riot_id} - ${veri.oyuncu}</span><span class="sezon-etiket">${veri.sezon || 'Sezon Belirsiz'}</span>${rolMetni !== 'Belirsiz' ? `<span class="rol-etiket">${rolMetni}</span>` : ''}</div>
                                 <div style="margin-top:4px;"><span class="sonuc-yazi ${sonucYazisiClass}">${zaferMi ? "Zafer" : "Bozgun"}</span> <span class="gercek-isim-alt"> • ${formatSampiyon(veri.sampiyon)}</span></div>
@@ -1167,7 +1176,7 @@
                 let baslikTxt = "🌟 Tüm Zamanların İstatistiksel Rüya Takımı";
                 
                 if (aktifSinerjiBoyutu === "ruya_takim") {
-                    bilgiKutusu.innerHTML = `<div style="background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 8px; padding: 12px 20px; margin-bottom: 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6;"><b style="color: #ffd700;">🌟 İstatistiksel Rüya Takım Nedir?</b><br>Sistem, her rol için o pozisyonda en az 1 maç oynamış oyuncuları analiz eder. Kazanma oranları, KDA vb. birçok istatistiği baz alarak ekibinizin matematiksel olarak çıkarabileceği <b>"Gelmiş Geçmiş En Korkunç Beşliyi"</b> favori şampiyonlarıyla ekrana çizer.</div>`;
+                    bilgiKutusu.innerHTML = `<div style="background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 8px; padding: 12px 20px; margin-bottom: 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6;"><b style="color: #ffd700;">🌟 İstatistiksel Rüya Takım Nedir?</b><br>Sistem, her rol için o pozisyonda en az 1 maç oynamış oyuncuları analiz eder. Kazanma oranları, KDA vb. point birçok istatistiği baz alarak ekibinizin matematiksel olarak çıkarabileceği <b>"Gelmiş Geçmiş En Korkunç Beşliyi"</b> favori şampiyonlarıyla ekrana çizer.</div>`;
                 } else {
                     baslikTxt = "🔥 Haftanın En Formda Beşlisi";
                     bilgiKutusu.innerHTML = `<div style="background: rgba(88, 166, 255, 0.1); border: 1px solid rgba(88, 166, 255, 0.3); border-radius: 8px; padding: 12px 20px; margin-bottom: 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6;"><b style="color: #58a6ff;">🔥 Haftanın Beşlisi Nedir?</b><br>Tüm zamanların istatistikleri yerine, sadece <b>son 7 gün içinde</b> oynanan maçlar analiz edilir. O hafta formda olan oyuncuların güncel performanslarına göre <b>"Haftanın En İyi Beşlisi"</b> oluşturulur. Sistem yine önce en uyumlu Alt Koridor ikilisini merkeze alır.</div>`;
@@ -1379,7 +1388,7 @@
                     oyuncularHtml += `
                         <div class="sinerji-satir">
                             <div class="s-sol-blok">
-                                <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${oyuncu.sampiyon}.png" class="s-ikon" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
+                                <img src="${resimUrlGetir(oyuncu.sampiyon)}" class="s-ikon" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
                                 <div class="s-kimlik">
                                     <span class="s-gercek">${oyuncu.riot_id}</span>
                                     <span class="s-samp">${formatSampiyon(oyuncu.sampiyon)} ${rolText !== 'Belirsiz' ? `- <span class="rol-etiket" style="font-size:0.75em; padding:1px 5px;">${rolText}</span>` : ''}</span>
@@ -1433,26 +1442,33 @@
             let sampVerileri = temelVeriler.filter(v => v.sampiyon === aktifSampiyonFiltresi);
             if (sampVerileri.length === 0) { vitrin.innerHTML = `<p style="text-align: center;">Bu sezonda ${formatSampiyon(aktifSampiyonFiltresi)} oynanmamış.</p>`; return; }
 
-            let oyuncuIstatistikleri = {};
+            let oyuncuRolIstatistikleri = {};
             sampVerileri.forEach(m => {
                 let isim = m.oyuncu;
-                if(!oyuncuIstatistikleri[isim]) oyuncuIstatistikleri[isim] = { mac: 0, zafer: 0, tk: 0, td: 0, ta: 0, tgorus: 0, riot_id: m.riot_id, roller: {} };
-                
-                oyuncuIstatistikleri[isim].mac++;
-                oyuncuIstatistikleri[isim].tk += m.oldurme; oyuncuIstatistikleri[isim].td += m.olum; oyuncuIstatistikleri[isim].ta += m.asist;
-                oyuncuIstatistikleri[isim].tgorus += (m.gorus_skoru || 0);
-                if (m.sonuc === "Zafer" || m.sonuc === "Galibiyet") oyuncuIstatistikleri[isim].zafer++;
-                
                 let safRol = m.pozisyon || "BELIRSIZ";
-                if(safRol !== "INVALID" && safRol !== "BELIRSIZ") {
-                    oyuncuIstatistikleri[isim].roller[safRol] = (oyuncuIstatistikleri[isim].roller[safRol] || 0) + 1;
-                }
+                if(safRol === "INVALID") safRol = "BELIRSIZ";
+                
+                let id = isim + "_" + safRol;
+                
+                if(!oyuncuRolIstatistikleri[id]) oyuncuRolIstatistikleri[id] = { 
+                    mac: 0, zafer: 0, tk: 0, td: 0, ta: 0, tgorus: 0, cs: 0, sure: 0, riot_id: m.riot_id, isim: isim, rol: safRol 
+                };
+                
+                oyuncuRolIstatistikleri[id].mac++;
+                oyuncuRolIstatistikleri[id].tk += m.oldurme; 
+                oyuncuRolIstatistikleri[id].td += m.olum; 
+                oyuncuRolIstatistikleri[id].ta += m.asist;
+                oyuncuRolIstatistikleri[id].tgorus += (m.gorus_skoru || 0);
+                oyuncuRolIstatistikleri[id].cs += (m.cs || 0);
+                oyuncuRolIstatistikleri[id].sure += (m.sure_saniye || 0);
+                
+                if (m.sonuc === "Zafer" || m.sonuc === "Galibiyet") oyuncuRolIstatistikleri[id].zafer++;
             });
 
-            let siraliUzmanlar = Object.entries(oyuncuIstatistikleri).map(k => {
-                let sp = ((k[1].zafer + 1) / (k[1].mac + 2)) * 100;
-                let kdaSaf = k[1].td === 0 ? (k[1].tk + k[1].ta) : ((k[1].tk + k[1].ta) / k[1].td);
-                return { isim: k[0], veri: k[1], sp: sp, kda: kdaSaf };
+            let siraliUzmanlar = Object.values(oyuncuRolIstatistikleri).map(veri => {
+                let sp = ((veri.zafer + 1) / (veri.mac + 2)) * 100;
+                let kdaSaf = veri.td === 0 ? (veri.tk + veri.ta) : ((veri.tk + veri.ta) / veri.td);
+                return { isim: veri.isim, rol: veri.rol, veri: veri, sp: sp, kda: kdaSaf };
             });
             
             siraliUzmanlar.sort((a, b) => {
@@ -1460,40 +1476,80 @@
                 return b.sp - a.sp;
             });
 
-            const resimUrl = `https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${aktifSampiyonFiltresi}.png`;
+           // V5.4.2: KOMPAKT KANBAN VE KUSURSUZ HİZALAMA
+            let roleGroups = {};
+            siraliUzmanlar.forEach(u => {
+                if(!roleGroups[u.rol]) roleGroups[u.rol] = [];
+                roleGroups[u.rol].push(u);
+            });
 
-            siraliUzmanlar.forEach((uzman, index) => {
-                let isim = uzman.isim; let veri = uzman.veri;
-                let wr = ((veri.zafer / veri.mac) * 100).toFixed(0);
-                let spSkor = uzman.sp.toFixed(0);
-                let kdaText = `${(veri.tk/veri.mac).toFixed(1)} / ${(veri.td/veri.mac).toFixed(1)} / ${(veri.ta/veri.mac).toFixed(1)}`;
-                
-                let c_roller = Object.entries(veri.roller).sort((a,b) => b[1] - a[1]);
-                let anaRol = c_roller.length > 0 ? rolCeviri[c_roller[0][0]] : "Belirsiz";
-                let rolHtml = anaRol !== "Belirsiz" ? `<span class="rol-etiket" style="font-size:0.85em; padding:2px 6px;">${anaRol}</span>` : '';
-                
-                let siraEtiketi = index === 0 ? "👑 #1" : `#${index+1}`;
+            // Riot API pozisyonlarını kusursuz formata çeviriyoruz
+            const tamRolIsimleri = { "TOP": "Üst Koridor", "JUNGLE": "Orman", "MIDDLE": "Orta Koridor", "BOTTOM": "Nişancı", "UTILITY": "Destek", "BELIRSIZ": "Belirsiz" };
+            let sortedRoles = Object.keys(roleGroups).sort((a,b) => (rolSiralamaGucu[a] || 99) - (rolSiralamaGucu[b] || 99));
+            
+            // Yan yana dizilim için Flex-Wrap kapsayıcısı
+            let htmlIcerik = `<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start; width: 100%; margin-top: 20px;">`;
 
-                vitrin.innerHTML += `
-                    <div class="oyuncu-karti kart-sirali uzman-karti">
-                        <div class="kart-ust" style="border:none; margin:0; padding:0; justify-content: flex-start;">
-                            <div class="sira-badge" style="width: 60px;">${siraEtiketi}</div>
-                            <img src="${resimUrl}" class="sampiyon-ikon" style="width:60px; height:60px; margin-right:15px;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
-                            <div class="kimlik" style="flex-grow:0; margin-right: auto; padding-right: 20px;">
-                                <span class="oyun-id-ana" style="font-size:1.2em;">${veri.riot_id}</span>
-                                <span class="gercek-isim-alt" style="margin-top:4px; display:flex; align-items:center; gap:6px;">${isim} ${rolHtml}</span>
-                            </div>
-                            <div style="display: flex; align-items: center; justify-content: flex-end; gap: 20px; border-left: 1px solid #30363d; padding-left: 30px; margin-left: 20px; flex-shrink: 0;">
-                                <div style="text-align: right;">
-                                    <div style="font-size: 1.5em; font-weight: bold; color: ${wr >= 50 ? '#3fb950' : '#f85149'}; white-space: nowrap;">%${wr} WR</div>
-                                    <div style="color:#8b949e; font-size: 0.9em; margin-top:6px; white-space: nowrap;">${veri.mac} Maç | KDA: ${kdaText}</div>
+            sortedRoles.forEach(rol => {
+                let rolText = tamRolIsimleri[rol] || "Belirsiz";
+                
+                // Her rol için özel kolon tasarımı (min-width düşürüldü ki sığsınlar)
+                htmlIcerik += `
+                    <div style="flex: 1; min-width: 350px; max-width: 500px; background: #090c10; border-radius: 12px; padding: 15px; border: 1px solid #30363d; box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
+                        <div style="border-bottom: 2px solid #58a6ff; margin-bottom: 12px; padding-bottom: 8px;">
+                            <h3 style="color: #ffffff; margin: 0; font-size: 1.05em; text-transform: uppercase; display:flex; align-items:center; justify-content: space-between;">
+                                <span>${rolText}</span>
+                                <span style="font-size:0.75em; color:#0d1117; background:#58a6ff; padding:3px 10px; border-radius:12px; font-weight:bold;">${roleGroups[rol].length} Oyuncu</span>
+                            </h3>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                `;
+
+                roleGroups[rol].forEach((uzman, index) => {
+                    let isim = uzman.isim; 
+                    let veri = uzman.veri;
+                    let wr = ((veri.zafer / veri.mac) * 100).toFixed(0);
+                    let spSkor = uzman.sp.toFixed(0);
+                    let kdaText = `${(veri.tk/veri.mac).toFixed(1)} / ${(veri.td/veri.mac).toFixed(1)} / ${(veri.ta/veri.mac).toFixed(1)}`;
+                    let csMin = (veri.cs / (veri.sure ? (veri.sure/60) : 1)).toFixed(1);
+                    
+                    let siraEtiketi = index === 0 ? "👑 #1" : `#${index+1}`;
+
+                    // Sıkışmayı önleyen, iki uçlu (space-between) net tasarım
+                    htmlIcerik += `
+                        <div class="oyuncu-karti kart-sirali uzman-karti" style="margin: 0; padding: 12px; max-width: 100%;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 5px;">
+                                <!-- Sol Taraf: Kimlik -->
+                                <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 1; overflow: hidden;">
+                                    <div class="sira-badge" style="width: 35px; font-size: 1.1em; margin: 0; text-align: center; flex-shrink: 0;">${siraEtiketi}</div>
+                                    <img src="${resimUrlGetir(aktifSampiyonFiltresi)}" style="width:40px; height:40px; border-radius:50%; border:2px solid #30363d; flex-shrink: 0;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
+                                    <div style="display: flex; flex-direction: column; line-height: 1.2; overflow: hidden;">
+                                        <span style="font-size:1em; font-weight:bold; color:#ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${veri.riot_id}</span>
+                                        <span style="font-size:0.8em; color:#8b949e; font-style:italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${isim}</span>
+                                    </div>
                                 </div>
-                                <span class="uzmanlik-skor-etiket" style="font-size:0.8em; padding: 6px 12px; margin: 0; flex-shrink: 0; display:inline-block;">UP:&nbsp;${spSkor}</span>
+                                
+                                <!-- Sağ Taraf: İstatistikler -->
+                                <div style="display: flex; flex-direction: column; align-items: flex-end; text-align: right; flex-shrink: 0;">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <div style="font-size: 1.1em; font-weight: bold; color: ${wr >= 50 ? '#3fb950' : '#f85149'};">%${wr} WR</div>
+                                        <span class="uzmanlik-skor-etiket" style="font-size:0.7em; padding: 2px 6px; margin: 0;">UP: ${spSkor}</span>
+                                    </div>
+                                    <div style="color:#8b949e; font-size: 0.75em; margin-top:4px;">
+                                        <div>${veri.mac} Maç | KDA: <span style="color:#58a6ff; font-weight:bold;">${kdaText}</span></div>
+                                        <div style="margin-top:2px;">CS/min: <span style="color:#ffffff; font-weight:bold;">${csMin}</span></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                });
+                
+                htmlIcerik += `</div></div>`; 
             });
+            
+            htmlIcerik += `</div>`; 
+            vitrin.innerHTML = htmlIcerik;
         }
 
         document.getElementById("btn-mod-bireysel").addEventListener("click", () => {
