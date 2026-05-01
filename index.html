@@ -148,7 +148,6 @@
         
         .zaman-etiketi { color: #8b949e; font-size: 0.85em; white-space: nowrap; display: flex; gap: 10px; justify-content: flex-end; width: 100%; margin-top: -5px; margin-bottom: 10px;}
 
-        /* Yeni Formasyon Stilleri */
         .formasyon-kutusu { background: #090c10; border: 1px dashed #30363d; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
         .formasyon-satir { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #21262d; padding: 8px 0; }
         .formasyon-satir:last-child { border-bottom: none; padding-bottom: 0; }
@@ -162,7 +161,7 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.1.0</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.2.0</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
@@ -902,73 +901,83 @@
 
                     let c_mac = gosterilecekler.length;
                     if(c_mac > 0) {
-                        let c_k = 0, c_d = 0, c_a = 0, c_win = 0, c_gorus = 0, c_kontrol = 0, c_cs = 0, c_sure = 0;
-                        let c_rol = {}; let c_esya = {};
+                        // V5.2.0: ROL BÖLÜNMESİ OPERASYONU
+                        let roleGroups = {};
                         gosterilecekler.forEach(m => {
-                            c_k += m.oldurme; c_d += m.olum; c_a += m.asist;
-                            c_gorus += (m.gorus_skoru || 0); c_kontrol += (m.kontrol_totemi || 0);
-                            c_cs += (m.cs || 0); c_sure += (m.sure_saniye || 0);
-                            
-                            if(m.sonuc === "Zafer" || m.sonuc === "Galibiyet") c_win++;
-                            let s_rol = m.pozisyon || "BELIRSIZ";
-                            if(s_rol !== "INVALID" && s_rol !== "BELIRSIZ") c_rol[s_rol] = (c_rol[s_rol] || 0) + 1;
-
-                            if(m.esyalar && window.itemVeritabani) {
-                                m.esyalar.slice(0,6).forEach(e => {
-                                    if(e > 0 && window.itemVeritabani[e]) {
-                                        let itm = window.itemVeritabani[e];
-                                        let isFinal = false;
-                                        if (itm.gold && itm.gold.total >= 1600) isFinal = true;
-                                        if (itm.tags && itm.tags.includes("Boots") && itm.gold && itm.gold.total >= 800) isFinal = true;
-                                        if (isFinal && (!itm.tags || !itm.tags.includes("Consumable"))) c_esya[e] = (c_esya[e] || 0) + 1;
-                                    }
-                                })
-                            }
+                            let r = m.pozisyon || "BELIRSIZ";
+                            if(r === "INVALID") r = "BELIRSIZ";
+                            if(!roleGroups[r]) roleGroups[r] = [];
+                            roleGroups[r].push(m);
                         });
 
-                        let c_ortK = (c_k / c_mac).toFixed(1); let c_ortD = (c_d / c_mac).toFixed(1); let c_ortA = (c_a / c_mac).toFixed(1);
-                        let c_ortCS_dk = (c_cs / (c_sure ? (c_sure/60) : 1)).toFixed(1);
-                        let c_wr = ((c_win / c_mac) * 100).toFixed(0);
-                        let c_wrRenk = c_wr >= 50 ? "#3fb950" : "#f85149";
-                        let c_anaRol = Object.entries(c_rol).sort((a, b) => b[1] - a[1]);
-                        let c_anaRolTxt_Eng = c_anaRol.length > 0 ? c_anaRol[0][0] : "BELIRSIZ";
-                        let c_anaRolTxt = c_anaRol.length > 0 ? rolCeviri[c_anaRolTxt_Eng] : "Belirsiz";
-                        let c_favEsyalar = Object.entries(c_esya).sort((a,b) => b[1] - a[1]).slice(0, 6).map(e => `<img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${e[0]}.png" style="width:28px; border-radius:4px; border:1px solid #30363d;" title="${e[1]} Kere Alındı">`).join("");
-                        
-                        let behavior = davranisHesapla(c_k/c_mac, c_d/c_mac, c_a/c_mac, c_anaRolTxt_Eng, c_gorus/c_mac, c_kontrol/c_mac, parseFloat(c_ortCS_dk));
+                        let sagKolonHtml = "";
+                        let c_roller = Object.entries(roleGroups).sort((a,b) => b[1].length - a[1].length);
 
-                        sagKolon.innerHTML = `
-                            <div class="liderlik-panosu">
-                                <div style="text-align:center; margin-bottom:20px; border-bottom:1px solid #30363d; padding-bottom:15px;">
-                                    <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${window.aktifBireyselSampiyon}.png" style="width:70px; height:70px; border-radius:50%; border:2px solid #58a6ff;">
-                                    <h3 style="margin:10px 0 0 0; border:none; padding:0;">${formatSampiyon(window.aktifBireyselSampiyon)} Raporu</h3>
+                        c_roller.forEach(([safRol, maclar]) => {
+                            let r_mac = maclar.length;
+                            let c_k = 0, c_d = 0, c_a = 0, c_win = 0, c_gorus = 0, c_kontrol = 0, c_cs = 0, c_sure = 0;
+                            let c_esya = {};
+
+                            maclar.forEach(m => {
+                                c_k += m.oldurme; c_d += m.olum; c_a += m.asist;
+                                c_gorus += (m.gorus_skoru || 0); c_kontrol += (m.kontrol_totemi || 0);
+                                c_cs += (m.cs || 0); c_sure += (m.sure_saniye || 0);
+
+                                if(m.sonuc === "Zafer" || m.sonuc === "Galibiyet") c_win++;
+
+                                if(m.esyalar && window.itemVeritabani) {
+                                    m.esyalar.slice(0,6).forEach(e => {
+                                        if(e > 0 && window.itemVeritabani[e]) {
+                                            let itm = window.itemVeritabani[e];
+                                            let isFinal = false;
+                                            if (itm.gold && itm.gold.total >= 1600) isFinal = true;
+                                            if (itm.tags && itm.tags.includes("Boots") && itm.gold && itm.gold.total >= 800) isFinal = true;
+                                            if (isFinal && (!itm.tags || !itm.tags.includes("Consumable"))) c_esya[e] = (c_esya[e] || 0) + 1;
+                                        }
+                                    })
+                                }
+                            });
+
+                            let c_ortK = (c_k / r_mac).toFixed(1); let c_ortD = (c_d / r_mac).toFixed(1); let c_ortA = (c_a / r_mac).toFixed(1);
+                            let c_ortCS_dk = (c_cs / (c_sure ? (c_sure/60) : 1)).toFixed(1);
+                            let c_wr = ((c_win / r_mac) * 100).toFixed(0);
+                            let c_wrRenk = c_wr >= 50 ? "#3fb950" : "#f85149";
+                            let c_anaRolTxt = rolCeviri[safRol] || "Belirsiz";
+                            let c_favEsyalar = Object.entries(c_esya).sort((a,b) => b[1] - a[1]).slice(0, 6).map(e => `<img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${e[0]}.png" style="width:28px; border-radius:4px; border:1px solid #30363d;" title="${e[1]} Kere Alındı">`).join("");
+
+                            let behavior = davranisHesapla(c_k/r_mac, c_d/r_mac, c_a/r_mac, safRol, c_gorus/r_mac, c_kontrol/r_mac, parseFloat(c_ortCS_dk));
+
+                            sagKolonHtml += `
+                                <div class="liderlik-panosu" style="margin-bottom: 20px;">
+                                    <div style="text-align:center; margin-bottom:15px; border-bottom:1px solid #30363d; padding-bottom:15px;">
+                                        <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${window.aktifBireyselSampiyon}.png" style="width:50px; height:50px; border-radius:50%; border:2px solid #58a6ff;">
+                                        <h3 style="margin:10px 0 0 0; border:none; padding:0; font-size:1.1em;">${formatSampiyon(window.aktifBireyselSampiyon)} <span style="color:#ffd700;">(${c_anaRolTxt})</span></h3>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.9em;">
+                                        <span style="color:#8b949e">Kazanma Oranı</span>
+                                        <span style="color:${c_wrRenk}; font-weight:bold">%${c_wr} <span style="font-size:0.8em; font-weight:normal; color:#8b949e;">(${r_mac} Maç)</span></span>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.9em;">
+                                        <span style="color:#8b949e">Ortalama KDA</span>
+                                        <span style="font-weight:bold; color:#58a6ff;">${c_ortK} / ${c_ortD} / ${c_ortA}</span>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.9em;">
+                                        <span style="color:#8b949e">Ortalama CS/min</span>
+                                        <span style="font-weight:bold; color:#ffffff;">${c_ortCS_dk}</span>
+                                    </div>
+                                    <div style="margin-top:15px; border-top:1px solid #30363d; padding-top:10px;">
+                                        <div style="color:#8b949e; font-size:0.8em; margin-bottom:5px; text-transform:uppercase; font-weight:bold;">Oyun Tarzı</div>
+                                        <div style="color:#ffffff; font-weight:bold; font-size:1em;">${behavior}</div>
+                                    </div>
+                                    <div style="margin-top:15px; border-top:1px solid #30363d; padding-top:10px;">
+                                        <div style="color:#8b949e; font-size:0.8em; margin-bottom:5px; text-transform:uppercase; font-weight:bold;">Favori Eşyalar</div>
+                                        <div style="display:flex; gap:4px; flex-wrap:nowrap; overflow:visible;">${c_favEsyalar || '-'}</div>
+                                    </div>
                                 </div>
-                                <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                                    <span style="color:#8b949e">Kazanma Oranı</span>
-                                    <span style="color:${c_wrRenk}; font-weight:bold">%${c_wr} <span style="font-size:0.8em; font-weight:normal; color:#8b949e;">(${c_mac} Maç)</span></span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                                    <span style="color:#8b949e">Ortalama KDA</span>
-                                    <span style="font-weight:bold; color:#58a6ff;">${c_ortK} / ${c_ortD} / ${c_ortA}</span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                                    <span style="color:#8b949e">Ortalama CS/min</span>
-                                    <span style="font-weight:bold; color:#ffffff;">${c_ortCS_dk}</span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                                    <span style="color:#8b949e">Ana Rol</span>
-                                    <span style="color:#ffd700; font-weight:bold;">${c_anaRolTxt}</span>
-                                </div>
-                                <div style="margin-top:20px; border-top:1px solid #30363d; padding-top:15px;">
-                                    <div style="color:#8b949e; font-size:0.85em; margin-bottom:8px; text-transform:uppercase; font-weight:bold;">Oyun Tarzı</div>
-                                    <div style="color:#ffffff; font-weight:bold; font-size:1.1em;">${behavior}</div>
-                                </div>
-                                <div style="margin-top:20px; border-top:1px solid #30363d; padding-top:15px;">
-                                    <div style="color:#8b949e; font-size:0.85em; margin-bottom:8px; text-transform:uppercase; font-weight:bold;">Favori Eşyalar</div>
-                                    <div style="display:flex; gap:4px; flex-wrap:nowrap; overflow:visible;">${c_favEsyalar || '-'}</div>
-                                </div>
-                            </div>
-                        `;
+                            `;
+                        });
+                        
+                        sagKolon.innerHTML = sagKolonHtml;
                     }
                 } else {
                     sagKolon.classList.add("gizle");
