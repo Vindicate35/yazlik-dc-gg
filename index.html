@@ -35,9 +35,9 @@
         .lejant-item { display: flex; align-items: center; gap: 8px; font-size: 0.9em; color: #8b949e; white-space: nowrap; }
         
         .filtre-kutusu, .alt-filtre-kutusu { background: #161b22; padding: 15px; border-radius: 12px; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; gap: 15px; border: 1px solid #30363d; flex-wrap: wrap; }
-        .filtre-btn { background: transparent; color: #c9d1d9; border: none; padding: 0 15px; height: 34px; border-radius: 6px; cursor: pointer; font-weight: bold; display: flex; align-items: center; }
+        .filtre-btn { background: transparent; color: #c9d1d9; border: none; padding: 0 15px; height: 34px; border-radius: 6px; cursor: pointer; font-weight: bold; display: flex; align-items: center; transition: all 0.2s; }
         .filtre-btn.aktif { background: #58a6ff; color: #0d1117; }
-        .alt-filtre-kutusu { background: rgba(22, 27, 34, 0.5); border: 1px dashed #30363d; max-width: 800px; margin: -15px auto 30px auto; }
+        .alt-filtre-kutusu { background: rgba(22, 27, 34, 0.5); border: 1px dashed #30363d; max-width: 900px; margin: -15px auto 30px auto; }
         
         .alt-sampiyon-dropdown, .sampiyon-dropdown { background: #0d1117; color: #c9d1d9; border: 1px solid #30363d; padding: 0 12px; height: 34px; border-radius: 6px; outline: none; cursor: pointer; font-family: 'Urbanist', sans-serif; font-weight: bold; box-sizing: border-box; }
         
@@ -97,6 +97,12 @@
         .besleme-badge { background: rgba(218, 54, 51, 0.15); color: #ff6b6b; border: 1px solid rgba(218, 54, 51, 0.5); padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 0.8em; display: flex; align-items: center; gap: 6px; margin-right: 15px; white-space: nowrap; flex-shrink: 0; }
         .perfect-badge { background: rgba(63, 185, 80, 0.15); color: #3fb950; border: 1px solid rgba(63, 185, 80, 0.5); padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 0.8em; display: flex; align-items: center; gap: 6px; margin-right: 15px; white-space: nowrap; flex-shrink: 0; }
         
+        .penta-badge { background: linear-gradient(45deg, #ff0000, #ff9800); color: #ffffff; border: 1px solid #ff9800; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 0.8em; display: flex; align-items: center; gap: 6px; margin-right: 15px; white-space: nowrap; flex-shrink: 0; box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); text-transform: uppercase; animation: glow 1.5s infinite alternate; }
+        @keyframes glow { 0% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.2); } 100% { box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); } }
+        .quadra-badge { background: rgba(255, 152, 0, 0.15); color: #ff9800; border: 1px solid rgba(255, 152, 0, 0.5); padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 0.8em; display: flex; align-items: center; gap: 6px; margin-right: 15px; white-space: nowrap; flex-shrink: 0; }
+        .calinti-badge { background: rgba(156, 39, 176, 0.15); color: #e040fb; border: 1px solid rgba(156, 39, 176, 0.5); padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 0.8em; display: flex; align-items: center; gap: 6px; margin-right: 15px; white-space: nowrap; flex-shrink: 0; }
+        .ilk-kan-badge { background: rgba(218, 54, 51, 0.15); color: #ff5252; border: 1px solid rgba(218, 54, 51, 0.5); padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 0.8em; display: flex; align-items: center; gap: 6px; margin-right: 15px; white-space: nowrap; flex-shrink: 0; }
+
         .kart-ust { display: flex; align-items: center; border-bottom: 1px solid #30363d; padding-bottom: 15px; margin-bottom: 15px; }
         .sampiyon-ikon { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #30363d; margin-right: 20px; }
         .kimlik { display: flex; flex-direction: column; flex-grow: 1; }
@@ -161,7 +167,7 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.4.4</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.7.0</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
@@ -177,26 +183,29 @@
     </div>
 
     <div class="lejant-kutusu" id="genel-lejant">
+        <div class="lejant-item"><div class="penta-badge" style="margin:0; padding:2px 6px; font-size:0.7em;">🔥 PENTA</div> <span>Beşte Beş</span></div>
         <div class="lejant-item"><div class="perfect-badge" style="margin:0; padding:2px 6px; font-size:0.7em;">🌟 PERFECT KDA</div> <span>Kusursuz Maç</span></div>
         <div class="lejant-item"><div class="besleme-badge" style="margin:0; padding:2px 6px; font-size:0.7em;">☠️ SABOTAJ</div> <span>Besleme Sınırı</span></div>
+        <div class="lejant-item"><div class="calinti-badge" style="margin:0; padding:2px 6px; font-size:0.7em;">🥷 OBJEKTİF ÇALINDI</div></div>
         <div class="lejant-item"><span class="sinerji-skor-etiket" style="margin:0;">SP</span><span>Sinerji Puanı</span></div>
         <div class="lejant-item"><span class="uzmanlik-skor-etiket" style="margin:0;">UP</span><span>Uzmanlık Puanı</span></div>
-        <div class="lejant-item" style="color: #ffd700; font-weight: bold; margin-left:10px; border-left: 1px solid #30363d; padding-left: 15px;">👑 #1 Uzman</div>
-        <div class="lejant-item">🗡️ Minyon (CS/min)</div>
-        <div class="lejant-item" style="margin-left: 10px; border-left: 1px solid #30363d; padding-left: 15px;">👁️ Görüş Skoru</div>
-        <div class="lejant-item">📍 Normal Totem</div>
-        <div class="lejant-item" style="color: #f85149;">🛑 Kontrol Totemi</div>
     </div>
 
     <div id="arayuz-bireysel">
         <div class="tab-konteynir" id="player-tabs"><button class="tab-btn aktif" data-player="Hepsi">🌍 Tüm Ekip</button></div>
         <div id="bireysel-ozet-alani"></div>
+        
+        <!-- V5.7.0 YENİ FİLTRE BUTONLARI -->
         <div id="bireysel-alt-filtreler" class="alt-filtre-kutusu gizle">
             <button id="btn-alt-hepsi" class="filtre-btn aktif" onclick="window.altFiltreUygula('hepsi')">Tüm Maçlar</button>
             <button id="btn-alt-perfect" class="filtre-btn" onclick="window.altFiltreUygula('perfect')">🌟 Perfect KDA</button>
             <button id="btn-alt-besleme" class="filtre-btn" onclick="window.altFiltreUygula('besleme')">☠️ SABOTAJ</button>
+            <button id="btn-alt-penta" class="filtre-btn" onclick="window.altFiltreUygula('penta')">🔥 PENTA</button>
+            <button id="btn-alt-calinti" class="filtre-btn" onclick="window.altFiltreUygula('calinti')">🥷 Çalıntı</button>
+            <button id="btn-alt-ilkkan" class="filtre-btn" onclick="window.altFiltreUygula('ilkkan')">🩸 İlk Kan</button>
             <select id="bireysel-sampiyon-dropdown" class="alt-sampiyon-dropdown" onchange="window.altFiltreUygula('sampiyon', this.value)"><option value="Hepsi">-- Şampiyon Seç --</option></select>
         </div>
+        
         <div class="filtre-kutusu" id="ana-filtreler">
             <button id="btn-tarih" class="filtre-btn aktif">🕒 En Yeni Maçlar</button>
             <button id="btn-oldurme" class="filtre-btn">⚔️ Kill Liderleri</button>
@@ -238,14 +247,6 @@
                 <option value="">-- Şampiyon Seç --</option>
             </select>
         </div>
-        
-        <div style="max-width:1200px; margin:0 auto; padding:0 15px;">
-            <div style="background: rgba(255, 0, 255, 0.08); border: 1px solid rgba(255, 0, 255, 0.3); border-radius: 8px; padding: 12px 20px; margin-bottom: 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6;">
-                <b style="color: #ff00ff;">ℹ️ Rol Bazlı Uzmanlık (UP) Nedir?</b><br>
-                Aynı şampiyonu farklı koridorlarda oynamak, iki farklı oyun oynamaktır. Sistem, oyuncuların şampiyon uzmanlığını <b>her bir rol için ayrı ayrı</b> hesaplar ve listeler. Böylece Destek oynanan bir şampiyonun CS/min değeriyle, Üst koridor oynanan versiyonu birbirine karışıp adaletsiz bir ortalama yaratmaz.
-            </div>
-        </div>
-
         <div id="sampiyon-veriler"></div>
     </div>
 
@@ -268,6 +269,14 @@
         const db = getFirestore(app);
 
         const TUM_EKIP_ISIMLERI = ["Anıl Abi", "Can", "Ercan", "Evren Abi", "Furkan", "Hüseyin", "Kaan", "Nurettin", "Samet Abi", "Samet Yaldız Abi", "Selim Abi", "Sezer", "Talha Abi", "Taner", "Umut Abi", "İlhan Abi", "Şafak"];
+        
+        const guncelRiotID = {
+            "Kaan": "DarkLegend97", "Umut Abi": "TuMu", "Taner": "Schwarzsx", "Selim Abi": "ShenerShen",
+            "İlhan Abi": "Croupier", "Anıl Abi": "ALEMDAROGLU", "Şafak": "s2s", "Ercan": "MrOsleon",
+            "Sezer": "the Kosm", "Can": "YEAHRUMONBASHI", "Samet Abi": "MidFather", "Talha Abi": "Tai sins",
+            "Hüseyin": "Niyesuh v2", "Evren Abi": "FREAKAZOlD", "Samet Yaldız Abi": "oOoSMToOo",
+            "Furkan": "LuJji", "Nurettin": "Urichanikaik"
+        };
 
         const sampiyonIsimCeviri = {
             "MonkeyKing": "Wukong", "MissFortune": "Miss Fortune", "JarvanIV": "Jarvan IV", "XinZhao": "Xin Zhao",
@@ -282,18 +291,14 @@
         let guncelYama = "14.9.1";
 
         function resimUrlGetir(isim) {
-            const urlDüzeltme = { 
-                "FiddleSticks": "Fiddlesticks",
-                "MonkeyKing": "MonkeyKing" 
-            };
+            const urlDüzeltme = { "FiddleSticks": "Fiddlesticks", "MonkeyKing": "MonkeyKing" };
             let safeName = urlDüzeltme[isim] || isim;
             return `https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${safeName}.png`;
         }
         
         function sureFormatla(saniye) {
             if(!saniye) return "--:--";
-            let dk = Math.floor(saniye / 60);
-            let sn = saniye % 60;
+            let dk = Math.floor(saniye / 60); let sn = saniye % 60;
             return `${dk}:${sn.toString().padStart(2, '0')}`;
         }
 
@@ -321,6 +326,7 @@
         window.aktifSinerjiOyuncular = [];
         window.aktifBireyselAltFiltre = 'hepsi';
         window.aktifBireyselSampiyon = 'Hepsi';
+        window.aktifBireyselRol = 'Hepsi'; // V5.7.0 DİNAMİK ROL DURUMU
 
         window.itemVeritabani = {}; 
         window.tumMacMaxAsist = {};
@@ -328,31 +334,20 @@
         const rolCeviri = { "TOP": "Üst", "JUNGLE": "Orman", "MIDDLE": "Orta", "BOTTOM": "Nişancı", "UTILITY": "Destek", "BELIRSIZ": "Belirsiz" };
         const rolSiralamaGucu = { "TOP": 1, "JUNGLE": 2, "MIDDLE": 3, "BOTTOM": 4, "UTILITY": 5, "BELIRSIZ": 99 };
 
-        const CACHE_KEY = "yazlik_dc_arşiv";
-        const CACHE_TIME = "yazlik_dc_zaman";
-        const CACHE_LIMIT = 24 * 60 * 60 * 1000; 
+        const CACHE_KEY = "yazlik_dc_arşiv"; const CACHE_TIME = "yazlik_dc_zaman"; const CACHE_LIMIT = 24 * 60 * 60 * 1000; 
 
         window.gercekZamanSirala = function(a, b) {
-            let macA = a.mac_id ? a : a[0]; 
-            let macB = b.mac_id ? b : b[0];
-            
-            if(macA.tarih_ms && macB.tarih_ms) {
-                return macB.tarih_ms - macA.tarih_ms;
-            }
-            
+            let macA = a.mac_id ? a : a[0]; let macB = b.mac_id ? b : b[0];
+            if(macA.tarih_ms && macB.tarih_ms) { return macB.tarih_ms - macA.tarih_ms; }
             let sezonA = parseInt(macA.sezon ? macA.sezon.replace("Sezon ", "") : "0") || 0;
             let sezonB = parseInt(macB.sezon ? macB.sezon.replace("Sezon ", "") : "0") || 0;
             if (sezonB !== sezonA) return sezonB - sezonA; 
-            
-            let idA = parseInt(macA.mac_id.split('_')[1]) || 0;
-            let idB = parseInt(macB.mac_id.split('_')[1]) || 0;
+            let idA = parseInt(macA.mac_id.split('_')[1]) || 0; let idB = parseInt(macB.mac_id.split('_')[1]) || 0;
             return idB - idA; 
         };
 
         function davranisHesapla(k, d, a, rol, vizyon, kontrol, cs_dk) {
-            let kdaSaf = d === 0 ? (k + a) : ((k + a) / d);
-            let skorKatkisi = k + a;
-
+            let kdaSaf = d === 0 ? (k + a) : ((k + a) / d); let skorKatkisi = k + a;
             if (rol === "UTILITY") {
                 if (cs_dk > 2.0) return "💸 Vergi Memuru (Minyon Çalan)";
                 if (k >= 5 && a <= 8) return "⚔️ Sahte Destek (KS Makinesi)";
@@ -404,39 +399,26 @@
 
                 try {
                     const itemRes = await fetch(`https://ddragon.leagueoflegends.com/cdn/${guncelYama}/data/tr_TR/item.json`);
-                    const itemData = await itemRes.json();
-                    window.itemVeritabani = itemData.data;
+                    const itemData = await itemRes.json(); window.itemVeritabani = itemData.data;
                 } catch(e) { console.warn("Eşya veritabanı yüklenemedi."); }
 
-                const simdi = new Date().getTime();
-                const kayitliVeri = localStorage.getItem(CACHE_KEY);
-                const kayitliZaman = localStorage.getItem(CACHE_TIME);
+                const simdi = new Date().getTime(); const kayitliVeri = localStorage.getItem(CACHE_KEY); const kayitliZaman = localStorage.getItem(CACHE_TIME);
 
                 if (kayitliVeri && kayitliZaman && (simdi - kayitliZaman < CACHE_LIMIT) && !zorlaYenile) {
                     tumVeriler = JSON.parse(kayitliVeri);
                 } else {
                     const querySnapshot = await getDocs(collection(db, "gercek_maclar"));
-                    tumVeriler = [];
-                    querySnapshot.forEach((doc) => { tumVeriler.push(doc.data()); });
-                    localStorage.setItem(CACHE_KEY, JSON.stringify(tumVeriler));
-                    localStorage.setItem(CACHE_TIME, simdi.toString());
+                    tumVeriler = []; querySnapshot.forEach((doc) => { tumVeriler.push(doc.data()); });
+                    localStorage.setItem(CACHE_KEY, JSON.stringify(tumVeriler)); localStorage.setItem(CACHE_TIME, simdi.toString());
                 }
 
                 let benzersizVeriler = {};
-                tumVeriler.forEach(v => {
-                    let klonAnahtari = v.mac_id + "_" + v.oyuncu;
-                    benzersizVeriler[klonAnahtari] = v; 
-                });
+                tumVeriler.forEach(v => { let klonAnahtari = v.mac_id + "_" + v.oyuncu; benzersizVeriler[klonAnahtari] = v; });
                 tumVeriler = Object.values(benzersizVeriler); 
 
-                // KESİN VE KÜRESEL YALNIZ KURT FİLTRESİ
-                let macGrupKapasitesi = {};
-                tumVeriler.forEach(v => {
-                    macGrupKapasitesi[v.mac_id] = (macGrupKapasitesi[v.mac_id] || 0) + 1;
-                });
+                let macGrupKapasitesi = {}; tumVeriler.forEach(v => { macGrupKapasitesi[v.mac_id] = (macGrupKapasitesi[v.mac_id] || 0) + 1; });
                 tumVeriler = tumVeriler.filter(v => macGrupKapasitesi[v.mac_id] >= 2);
 
-                // ZAMAN SENKRONİZASYONU
                 let macZamanlari = {};
                 tumVeriler.forEach(v => {
                     if(v.tarih_ms && (!macZamanlari[v.mac_id] || v.tarih_ms > macZamanlari[v.mac_id].tarih_ms)) {
@@ -444,27 +426,17 @@
                     }
                 });
                 tumVeriler.forEach(v => {
-                    if(macZamanlari[v.mac_id]) {
-                        v.tarih_ms = macZamanlari[v.mac_id].tarih_ms;
-                        v.sure_saniye = macZamanlari[v.mac_id].sure_saniye;
-                    }
+                    if(macZamanlari[v.mac_id]) { v.tarih_ms = macZamanlari[v.mac_id].tarih_ms; v.sure_saniye = macZamanlari[v.mac_id].sure_saniye; }
                 });
 
-                tumVeriler.forEach(m => {
-                    if(!window.tumMacMaxAsist[m.mac_id] || m.asist > window.tumMacMaxAsist[m.mac_id]) window.tumMacMaxAsist[m.mac_id] = m.asist;
-                });
+                tumVeriler.forEach(m => { if(!window.tumMacMaxAsist[m.mac_id] || m.asist > window.tumMacMaxAsist[m.mac_id]) window.tumMacMaxAsist[m.mac_id] = m.asist; });
 
-                sekmeOlustur();
-                ekraniGuncelle(true); 
+                sekmeOlustur(); ekraniGuncelle(true); 
                 
             } catch (hata) { 
-                console.error("Hata:", hata); 
-                alert("Veriler çekilirken bir hata oluştu.");
+                console.error("Hata:", hata); alert("Veriler çekilirken bir hata oluştu.");
             } finally {
-                setTimeout(() => {
-                    document.getElementById("loader-ekrani").style.opacity = "0";
-                    setTimeout(() => document.getElementById("loader-ekrani").style.display = "none", 500);
-                }, 300);
+                setTimeout(() => { document.getElementById("loader-ekrani").style.opacity = "0"; setTimeout(() => document.getElementById("loader-ekrani").style.display = "none", 500); }, 300);
             }
         }
 
@@ -472,87 +444,59 @@
 
         window.kutuAc = function(id, event) {
             if(event.target.tagName === 'BUTTON' || event.target.tagName === 'A' || event.target.tagName === 'SELECT') return;
-            let el = document.getElementById(id);
-            if(el) { el.classList.toggle('gizle'); }
+            let el = document.getElementById(id); if(el) { el.classList.toggle('gizle'); }
         }
 
         window.liderlikFiltrele = function(oyuncu) {
-            window.aktifLiderlikOyuncu = oyuncu;
-            window.ozelFiltre = null; 
-            ekraniGuncelle(false);
-            setTimeout(() => {
-                let vitrin = document.getElementById('bireysel-veriler');
-                if(vitrin) window.scrollTo({ top: vitrin.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
-            }, 50);
+            window.aktifLiderlikOyuncu = oyuncu; window.ozelFiltre = null; ekraniGuncelle(false);
+            setTimeout(() => { let vitrin = document.getElementById('bireysel-veriler'); if(vitrin) window.scrollTo({ top: vitrin.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' }); }, 50);
         }
 
         window.uygulaOzelFiltre = function(kriter, oyuncu, macId) {
-            window.ozelFiltre = { kriter, oyuncu, macId };
-            ekraniGuncelle(false); 
-            setTimeout(() => {
-                let vitrin = document.getElementById('bireysel-veriler');
-                if(vitrin) window.scrollTo({ top: vitrin.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
-            }, 50);
+            window.ozelFiltre = { kriter, oyuncu, macId }; ekraniGuncelle(false); 
+            setTimeout(() => { let vitrin = document.getElementById('bireysel-veriler'); if(vitrin) window.scrollTo({ top: vitrin.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' }); }, 50);
         }
 
         window.sinerjiFiltrele = function(ekip, formasyon_id = null) {
-            window.aktifSinerjiEkibi = ekip;
-            window.aktifFormasyonFiltresi = formasyon_id;
-            ekraniGuncelle(false);
+            window.aktifSinerjiEkibi = ekip; window.aktifFormasyonFiltresi = formasyon_id; ekraniGuncelle(false);
             setTimeout(() => {
-                if(ekip) {
-                    let vitrin = document.getElementById('sinerji-veriler');
-                    if(vitrin) window.scrollTo({ top: vitrin.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
-                } else {
-                    let ozet = document.getElementById('sinerji-ozet-alani');
-                    if(ozet) window.scrollTo({ top: ozet.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
-                }
+                if(ekip) { let vitrin = document.getElementById('sinerji-veriler'); if(vitrin) window.scrollTo({ top: vitrin.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' }); } 
+                else { let ozet = document.getElementById('sinerji-ozet-alani'); if(ozet) window.scrollTo({ top: ozet.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' }); }
             }, 50);
         }
         
         window.sinerjiCokluFiltreTetikle = function(oyuncu, btnEl) {
-            if(window.aktifSinerjiOyuncular.includes(oyuncu)) {
-                window.aktifSinerjiOyuncular = window.aktifSinerjiOyuncular.filter(o => o !== oyuncu);
-                btnEl.classList.remove("aktif");
-            } else {
-                window.aktifSinerjiOyuncular.push(oyuncu);
-                btnEl.classList.add("aktif");
-            }
-            window.aktifSinerjiEkibi = null; 
-            window.aktifFormasyonFiltresi = null;
-            ekraniGuncelle(false);
+            if(window.aktifSinerjiOyuncular.includes(oyuncu)) { window.aktifSinerjiOyuncular = window.aktifSinerjiOyuncular.filter(o => o !== oyuncu); btnEl.classList.remove("aktif"); } 
+            else { window.aktifSinerjiOyuncular.push(oyuncu); btnEl.classList.add("aktif"); }
+            window.aktifSinerjiEkibi = null; window.aktifFormasyonFiltresi = null; ekraniGuncelle(false);
         }
 
         window.profileGit = function(oyuncu) {
             let btn = document.querySelector(`[data-player="${oyuncu}"]`);
-            if(btn) btn.click();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if(btn) btn.click(); window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // V5.7.0 DİNAMİK FİLTRE MOTORU
         window.altFiltreUygula = function(tip, deger) {
-            if (tip === 'sampiyon') {
-                window.aktifBireyselSampiyon = deger;
+            if (tip === 'sampiyon') { 
+                window.aktifBireyselSampiyon = deger; 
+                window.aktifBireyselRol = 'Hepsi'; // Şampiyon değişirse rol sıfırlanır
+            } else if (tip === 'rol') {
+                window.aktifBireyselRol = (window.aktifBireyselRol === deger) ? 'Hepsi' : deger; // Rol toggle
             } else {
                 window.aktifBireyselAltFiltre = tip;
+                window.aktifBireyselRol = 'Hepsi';
                 document.querySelectorAll('#bireysel-alt-filtreler .filtre-btn').forEach(b => b.classList.remove('aktif'));
-                document.getElementById('btn-alt-' + tip).classList.add('aktif');
+                if(document.getElementById('btn-alt-' + tip)) document.getElementById('btn-alt-' + tip).classList.add('aktif');
             }
             ekraniGuncelle(false);
         }
 
         window.ekraniGuncelle = function(sifirla = true) {
             if(sifirla) { 
-                gosterimLimiti = 15; 
-                window.ozelFiltre = null; 
-                window.aktifLiderlikOyuncu = "Hepsi";
-                window.aktifSinerjiEkibi = null;
-                window.aktifFormasyonFiltresi = null;
-                
-                window.aktifSinerjiOyuncular = [];
-                document.querySelectorAll('#sinerji-filtre-kutusu .chip-btn').forEach(b => b.classList.remove('aktif'));
-                
-                window.aktifBireyselAltFiltre = 'hepsi';
-                window.aktifBireyselSampiyon = 'Hepsi';
+                gosterimLimiti = 15; window.ozelFiltre = null; window.aktifLiderlikOyuncu = "Hepsi"; window.aktifSinerjiEkibi = null; window.aktifFormasyonFiltresi = null;
+                window.aktifSinerjiOyuncular = []; document.querySelectorAll('#sinerji-filtre-kutusu .chip-btn').forEach(b => b.classList.remove('aktif'));
+                window.aktifBireyselAltFiltre = 'hepsi'; window.aktifBireyselSampiyon = 'Hepsi'; window.aktifBireyselRol = 'Hepsi';
                 if(document.getElementById('btn-alt-hepsi')) {
                     document.querySelectorAll('#bireysel-alt-filtreler .filtre-btn').forEach(b => b.classList.remove('aktif'));
                     document.getElementById('btn-alt-hepsi').classList.add('aktif');
@@ -569,12 +513,9 @@
         function sekmeOlustur() {
             document.getElementById("player-tabs").innerHTML = '<button class="tab-btn aktif" data-player="Hepsi">🌍 Tüm Ekip</button>';
             document.getElementById("sezon-tabs").innerHTML = '<button class="tab-btn aktif" data-sezon="Tümü">Tüm Zamanlar</button>';
-            
             const tabDiv = document.getElementById("player-tabs");
-            
             TUM_EKIP_ISIMLERI.forEach(isim => {
-                const btn = document.createElement("button");
-                btn.className = "tab-btn"; btn.innerText = isim; btn.setAttribute("data-player", isim);
+                const btn = document.createElement("button"); btn.className = "tab-btn"; btn.innerText = isim; btn.setAttribute("data-player", isim);
                 btn.onclick = () => { document.querySelectorAll('#player-tabs .tab-btn').forEach(b => b.classList.remove('aktif')); btn.classList.add('aktif'); aktifOyuncuFiltresi = isim; ekraniGuncelle(true); };
                 tabDiv.appendChild(btn);
             });
@@ -583,20 +524,17 @@
             const sezonDiv = document.getElementById("sezon-tabs");
             const sezonlar = [...new Set(tumVeriler.map(v => v.sezon))].filter(Boolean).sort().reverse();
             sezonlar.forEach(sezon => {
-                const btn = document.createElement("button");
-                btn.className = "tab-btn"; btn.innerText = sezon; btn.setAttribute("data-sezon", sezon);
+                const btn = document.createElement("button"); btn.className = "tab-btn"; btn.innerText = sezon; btn.setAttribute("data-sezon", sezon);
                 btn.onclick = () => { document.querySelectorAll('#sezon-tabs .tab-btn').forEach(b => b.classList.remove('aktif')); btn.classList.add('aktif'); aktifSezonFiltresi = sezon; ekraniGuncelle(true); };
                 sezonDiv.appendChild(btn);
             });
             document.querySelector('[data-sezon="Tümü"]').onclick = () => { document.querySelectorAll('#sezon-tabs .tab-btn').forEach(b => b.classList.remove('aktif')); document.querySelector('[data-sezon="Tümü"]').classList.add('aktif'); aktifSezonFiltresi = "Tümü"; ekraniGuncelle(true); };
 
-            const sampiyonDD = document.getElementById("sampiyon-dropdown");
-            sampiyonDD.innerHTML = '<option value="">-- Şampiyon Seç --</option>'; 
+            const sampiyonDD = document.getElementById("sampiyon-dropdown"); sampiyonDD.innerHTML = '<option value="">-- Şampiyon Seç --</option>'; 
             const sampiyonlar = [...new Set(tumVeriler.map(v => v.sampiyon))].sort((a,b) => formatSampiyon(a).localeCompare(formatSampiyon(b), 'tr'));
             sampiyonlar.forEach(samp => {
                 let opt = document.createElement("option"); opt.value = samp; opt.innerHTML = formatSampiyon(samp);
-                if(samp === aktifSampiyonFiltresi) opt.selected = true; 
-                sampiyonDD.appendChild(opt);
+                if(samp === aktifSampiyonFiltresi) opt.selected = true; sampiyonDD.appendChild(opt);
             });
             sampiyonDD.addEventListener("change", (e) => { aktifSampiyonFiltresi = e.target.value; ekraniGuncelle(true); });
             
@@ -604,11 +542,8 @@
             if(sinerjiFiltreKutusu) {
                 sinerjiFiltreKutusu.innerHTML = '';
                 TUM_EKIP_ISIMLERI.forEach(isim => {
-                    let btn = document.createElement("button");
-                    btn.className = "chip-btn";
-                    btn.innerHTML = `👤 ${isim}`;
-                    btn.onclick = (e) => { window.sinerjiCokluFiltreTetikle(isim, e.target); };
-                    sinerjiFiltreKutusu.appendChild(btn);
+                    let btn = document.createElement("button"); btn.className = "chip-btn"; btn.innerHTML = `👤 ${isim}`;
+                    btn.onclick = (e) => { window.sinerjiCokluFiltreTetikle(isim, e.target); }; sinerjiFiltreKutusu.appendChild(btn);
                 });
             }
         }
@@ -620,8 +555,10 @@
 
             grup.forEach(oyuncu => {
                 let durumDamgasi = '';
-                if (oyuncu.olum === 0) durumDamgasi = `<div class="perfect-badge"><span class="badge-ikon">🌟</span></div>`;
-                else if (oyuncu.olum > 11) durumDamgasi = `<div class="besleme-badge"><span class="badge-ikon">☠️</span></div>`;
+                if (oyuncu.penta && oyuncu.penta > 0) durumDamgasi += `<div class="penta-badge">🔥 PENTA</div>`;
+                if (oyuncu.olum === 0) durumDamgasi += `<div class="perfect-badge">🌟</div>`;
+                else if (oyuncu.olum > 11) durumDamgasi += `<div class="besleme-badge">☠️</div>`;
+                if (oyuncu.calinan_objektif && oyuncu.calinan_objektif > 0) durumDamgasi += `<div class="calinti-badge">🥷 Hırsız</div>`;
 
                 let isTarget = (oyuncu.oyuncu === vurguOyuncu);
                 let satirBg = isTarget ? "background: rgba(88, 166, 255, 0.15); border-left: 4px solid #58a6ff; border-radius:6px;" : "";
@@ -636,8 +573,7 @@
                 }
                 esyalarHtml += '</div>';
 
-                let csMin = ((oyuncu.cs || 0) / oyunSuresi_dk).toFixed(1);
-                let rolText = rolCeviri[oyuncu.pozisyon] || 'Belirsiz';
+                let csMin = ((oyuncu.cs || 0) / oyunSuresi_dk).toFixed(1); let rolText = rolCeviri[oyuncu.pozisyon] || 'Belirsiz';
 
                 oyuncularHtml += `
                     <div class="sinerji-satir" style="${satirBg} padding: 8px 15px; margin-bottom:2px;">
@@ -664,50 +600,33 @@
                     </div>
                 `;
             });
-
-            return `<div style="background:#090c10; border-radius:8px; padding:10px; border: 1px solid #30363d; margin-top: 10px;">
-                        <div style="font-size: 0.85em; color: #8b949e; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;">Takım Performansı</div>
-                        ${oyuncularHtml}
-                    </div>`;
+            return `<div style="background:#090c10; border-radius:8px; padding:10px; border: 1px solid #30363d; margin-top: 10px;"><div style="font-size: 0.85em; color: #8b949e; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;">Takım Performansı</div>${oyuncularHtml}</div>`;
         }
 
         function hesaplaRuyaTakim(veriler, baslik_txt) {
             const rollerVeRenkleri = [ { rol: "TOP", ad: "Üst Koridor", renk: "#ff9800" }, { rol: "JUNGLE", ad: "Ormancı", renk: "#4caf50" }, { rol: "MIDDLE", ad: "Orta Koridor", renk: "#2196f3" }, { rol: "BOTTOM", ad: "Nişancı", renk: "#e91e63" }, { rol: "UTILITY", ad: "Destek", renk: "#9c27b0" } ];
-            
             let oyuncuRolSkorlari = {};
             veriler.forEach(v => {
                 let safRol = v.pozisyon || "BELIRSIZ"; if(safRol === "BELIRSIZ" || safRol === "INVALID") return;
                 let id = v.oyuncu + "_" + safRol;
                 if(!oyuncuRolSkorlari[id]) oyuncuRolSkorlari[id] = { isim: v.oyuncu, rol: safRol, mac: 0, zafer: 0, k:0, d:0, a:0, gorus:0, cs:0, sure:0, sampiyonlar: {} };
-                
                 oyuncuRolSkorlari[id].mac++;
                 if(v.sonuc === "Zafer" || v.sonuc === "Galibiyet") oyuncuRolSkorlari[id].zafer++;
-                
                 oyuncuRolSkorlari[id].k += v.oldurme; oyuncuRolSkorlari[id].d += v.olum; oyuncuRolSkorlari[id].a += v.asist; 
-                oyuncuRolSkorlari[id].gorus += (v.gorus_skoru || 0);
-                oyuncuRolSkorlari[id].cs += (v.cs || 0);
-                oyuncuRolSkorlari[id].sure += (v.sure_saniye || 0);
+                oyuncuRolSkorlari[id].gorus += (v.gorus_skoru || 0); oyuncuRolSkorlari[id].cs += (v.cs || 0); oyuncuRolSkorlari[id].sure += (v.sure_saniye || 0);
                 oyuncuRolSkorlari[id].sampiyonlar[v.sampiyon] = (oyuncuRolSkorlari[id].sampiyonlar[v.sampiyon] || 0) + 1;
             });
 
             let skorListesi = Object.values(oyuncuRolSkorlari).map(o => {
-                let wrLaplace = (o.zafer + 1) / (o.mac + 2); 
-                let hacimCari = Math.min(1.5, 1 + (o.mac * 0.05)); 
-                let kda = o.d === 0 ? (o.k + o.a) : ((o.k + o.a)/o.d);
-                let gorusAvg = o.gorus / o.mac;
-                let havuzBoyutu = Object.keys(o.sampiyonlar).length;
-                let cs_dk = o.cs / (o.sure ? (o.sure/60) : 1);
-                
-                let csEtkisi = o.rol === "UTILITY" ? 0 : (cs_dk * 3);
-                
+                let wrLaplace = (o.zafer + 1) / (o.mac + 2); let hacimCari = Math.min(1.5, 1 + (o.mac * 0.05)); 
+                let kda = o.d === 0 ? (o.k + o.a) : ((o.k + o.a)/o.d); let gorusAvg = o.gorus / o.mac; let havuzBoyutu = Object.keys(o.sampiyonlar).length;
+                let cs_dk = o.cs / (o.sure ? (o.sure/60) : 1); let csEtkisi = o.rol === "UTILITY" ? 0 : (cs_dk * 3);
                 o.taktikselSkor = (wrLaplace * hacimCari * 50) + (kda * 3) + (gorusAvg * 0.2) + (havuzBoyutu * 1.5) + csEtkisi;
-                o.enIyiSampiyon = Object.keys(o.sampiyonlar).reduce((a, b) => o.sampiyonlar[a] > o.sampiyonlar[b] ? a : b);
-                return o;
+                o.enIyiSampiyon = Object.keys(o.sampiyonlar).reduce((a, b) => o.sampiyonlar[a] > o.sampiyonlar[b] ? a : b); return o;
             });
 
             const macGruplari = {};
             veriler.forEach(v => { if(!macGruplari[v.mac_id]) macGruplari[v.mac_id] = []; macGruplari[v.mac_id].push(v); });
-            
             let duoIst = {};
             Object.values(macGruplari).forEach(grup => {
                 let adc = grup.find(p => p.pozisyon === "BOTTOM"); let sup = grup.find(p => p.pozisyon === "UTILITY");
@@ -723,9 +642,7 @@
                 let dWR = (d.zafer + 1) / (d.mac + 2);
                 let adcIndv = skorListesi.find(s => s.isim === d.adc_isim && s.rol === "BOTTOM");
                 let supIndv = skorListesi.find(s => s.isim === d.sup_isim && s.rol === "UTILITY");
-                let aSkor = adcIndv ? adcIndv.taktikselSkor : 0; let sSkor = supIndv ? supIndv.taktikselSkor : 0;
-                d.toplamSkor = aSkor + sSkor + (dWR * 60) + (d.mac * 3); 
-                return d;
+                d.toplamSkor = (adcIndv ? adcIndv.taktikselSkor : 0) + (supIndv ? supIndv.taktikselSkor : 0) + (dWR * 60) + (d.mac * 3); return d;
             }).sort((a,b) => b.toplamSkor - a.toplamSkor);
 
             if(duoSkorlari.length > 0) {
@@ -735,11 +652,8 @@
                 if(secilenAdc) secilenOyuncular.add(secilenAdc.isim); if(secilenSup) secilenOyuncular.add(secilenSup.isim);
             }
 
-            let kalanRoller = ["TOP", "JUNGLE", "MIDDLE"];
-            let ruyaKadrosuObj = {};
-            if(secilenAdc) ruyaKadrosuObj["BOTTOM"] = secilenAdc;
-            if(secilenSup) ruyaKadrosuObj["UTILITY"] = secilenSup;
-
+            let kalanRoller = ["TOP", "JUNGLE", "MIDDLE"]; let ruyaKadrosuObj = {};
+            if(secilenAdc) ruyaKadrosuObj["BOTTOM"] = secilenAdc; if(secilenSup) ruyaKadrosuObj["UTILITY"] = secilenSup;
             kalanRoller.forEach(rol => {
                 let adaylar = skorListesi.filter(s => s.rol === rol && !secilenOyuncular.has(s.isim)).sort((a,b) => b.taktikselSkor - a.taktikselSkor);
                 if(adaylar.length > 0) { ruyaKadrosuObj[rol] = adaylar[0]; secilenOyuncular.add(adaylar[0].isim); }
@@ -751,10 +665,8 @@
                     let elit = ruyaKadrosuObj[r.rol];
                     let wr = ((elit.zafer / elit.mac) * 100).toFixed(0);
                     let kdaText = elit.d === 0 ? "Kusursuz" : ((elit.k+elit.a)/elit.d).toFixed(2) + " KDA";
-                    
                     let cs_dk = elit.cs / (elit.sure ? (elit.sure/60) : 1);
                     let csText = r.rol === "UTILITY" ? "" : `<br><span style="color:#ffffff; font-size:0.9em;">CS/min: ${cs_dk.toFixed(1)}</span>`;
-                    
                     htmlKutu += `<div class="ruya-kutu" style="border-top-color: ${r.renk};"><div class="r-rol" style="color: ${r.renk};">${r.ad}</div><img src="${resimUrlGetir(elit.enIyiSampiyon)}" class="r-ikon" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'"><div class="r-isim">${elit.isim}</div><div class="r-istatistik"><span style="color:#ffffff; font-weight:bold;">%${wr} WR</span> (${elit.mac} Maç)<br><span style="color:#58a6ff;">${kdaText}</span>${csText}</div></div>`;
                 } else {
                     yetersizVeriVarMi = true;
@@ -764,7 +676,6 @@
 
             let duoBaglantiHtml = (ruyaKadrosuObj["BOTTOM"] && ruyaKadrosuObj["UTILITY"]) ? `<div class="duo-baglanti"></div>` : "";
             let uyari = yetersizVeriVarMi ? `<div style="text-align:center; color:#f85149; font-weight:bold; margin-bottom:20px;">⚠️ Belirtilen periyotta 5 farklı oyuncu verisi bulunamadı.</div>` : "";
-
             return `<h3 style="color:#ffffff; text-align:center; width:100%; margin-top:0; font-size:1.5em; letter-spacing:1px;">${baslik_txt}</h3>${uyari}<div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-top:20px; padding-bottom: 30px;">${htmlKutu}</div>${duoBaglantiHtml}`;
         }
 
@@ -781,31 +692,31 @@
             if (aktifSezonFiltresi !== "Tümü") gosterilecekler = gosterilecekler.filter(v => v.sezon === aktifSezonFiltresi);
 
             if (aktifOyuncuFiltresi !== "Hepsi") {
-                filtreAlani.classList.add("gizle");
-                altFiltreKutusu.classList.remove("gizle");
-                aktifSiralaKriteri = "tarih"; 
+                filtreAlani.classList.add("gizle"); altFiltreKutusu.classList.remove("gizle"); aktifSiralaKriteri = "tarih"; 
                 
                 let oyuncuTumMaclari = gosterilecekler.filter(v => v.oyuncu === aktifOyuncuFiltresi);
                 let oynadigiSampiyonlar = [...new Set(oyuncuTumMaclari.map(v => v.sampiyon))].sort((a,b) => formatSampiyon(a).localeCompare(formatSampiyon(b), 'tr'));
-                
                 altSampiyonDropdown.innerHTML = `<option value="Hepsi">-- Şampiyon Seç --</option>` + oynadigiSampiyonlar.map(s => `<option value="${s}" ${window.aktifBireyselSampiyon===s?'selected':''}>${formatSampiyon(s)}</option>`).join("");
 
                 let toplamMac = oyuncuTumMaclari.length;
-                let toplamK = 0, toplamD = 0, toplamA = 0, toplamGorus = 0, zaferSayisi = 0;
-                let toplamCS = 0, toplamSure = 0;
+                let toplamK = 0, toplamD = 0, toplamA = 0, toplamGorus = 0, zaferSayisi = 0, toplamCS = 0, toplamSure = 0;
                 let sampiyonSayaclari = {}; let rolSayaclari = {}; let esyaSayaclari = {};
-                let perfSayisi = 0; let utancSayisi = 0; let asistKraliSayisi = 0; let totNormal = 0; let totKontrol = 0;
+                let perfSayisi = 0, utancSayisi = 0, asistKraliSayisi = 0, totNormal = 0, totKontrol = 0;
+                let t_penta = 0, t_calinan = 0, t_ilkKan = 0;
 
                 if (toplamMac > 0) {
                     oyuncuTumMaclari.forEach(m => {
                         toplamK += m.oldurme; toplamD += m.olum; toplamA += m.asist; 
                         toplamGorus += (m.gorus_skoru || 0); totNormal += (m.normal_totem || 0); totKontrol += (m.kontrol_totemi || 0);
-                        toplamCS += (m.cs || 0);
-                        toplamSure += (m.sure_saniye || 0);
+                        toplamCS += (m.cs || 0); toplamSure += (m.sure_saniye || 0);
                         
                         if(m.olum === 0) perfSayisi++;
                         if(m.olum > 11) utancSayisi++;
                         if(m.asist === window.tumMacMaxAsist[m.mac_id] && m.asist > 0) asistKraliSayisi++;
+                        
+                        if(m.penta && m.penta > 0) t_penta += m.penta;
+                        if(m.calinan_objektif && m.calinan_objektif > 0) t_calinan += m.calinan_objektif;
+                        if(m.ilk_kan) t_ilkKan++;
 
                         let zaferMi = (m.sonuc === "Zafer" || m.sonuc === "Galibiyet");
                         if (zaferMi) zaferSayisi++;
@@ -820,13 +731,10 @@
                         if(m.esyalar && window.itemVeritabani) {
                             m.esyalar.slice(0,6).forEach(e => { 
                                 if (e > 0 && window.itemVeritabani[e]) {
-                                    let itm = window.itemVeritabani[e];
-                                    let isFinal = false;
+                                    let itm = window.itemVeritabani[e]; let isFinal = false;
                                     if (itm.gold && itm.gold.total >= 1600) isFinal = true;
                                     if (itm.tags && itm.tags.includes("Boots") && itm.gold && itm.gold.total >= 800) isFinal = true;
-                                    if (isFinal && (!itm.tags || !itm.tags.includes("Consumable"))) {
-                                        esyaSayaclari[e] = (esyaSayaclari[e] || 0) + 1; 
-                                    }
+                                    if (isFinal && (!itm.tags || !itm.tags.includes("Consumable"))) { esyaSayaclari[e] = (esyaSayaclari[e] || 0) + 1; }
                                 }
                             });
                         }
@@ -834,14 +742,11 @@
 
                     let ortK = (toplamK / toplamMac).toFixed(1); let ortD = (toplamD / toplamMac).toFixed(1); let ortA = (toplamA / toplamMac).toFixed(1);
                     let ortCS_dk = (toplamCS / (toplamSure ? (toplamSure/60) : 1)).toFixed(1);
-                    let kdaSaf = toplamD === 0 ? (toplamK + toplamA) : ((toplamK + toplamA) / toplamD);
-                    let winRate = ((zaferSayisi / toplamMac) * 100).toFixed(0);
-                    let genelWrRenk = winRate >= 50 ? "#3fb950" : "#f85149";
+                    let winRate = ((zaferSayisi / toplamMac) * 100).toFixed(0); let genelWrRenk = winRate >= 50 ? "#3fb950" : "#f85149";
 
                     let siraliSampiyonlar = Object.entries(sampiyonSayaclari).sort((a, b) => b[1].mac - a[1].mac).slice(0, 3);
                     let sampiyonHtml = siraliSampiyonlar.map(s => {
-                        let cWR = ((s[1].win / s[1].mac) * 100).toFixed(0);
-                        let renk = cWR >= 50 ? "#3fb950" : "#f85149";
+                        let cWR = ((s[1].win / s[1].mac) * 100).toFixed(0); let renk = cWR >= 50 ? "#3fb950" : "#f85149";
                         return `<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;"><img src="${resimUrlGetir(s[0])}" style="width:26px; height:26px; border-radius:50%; border: 1px solid #30363d;"><span>${formatSampiyon(s[0])} <span style="font-size:0.9em; color:#8b949e;">(${s[1].mac} Maç, <span style="color:${renk}; font-weight:bold;">%${cWR}</span>)</span></span></div>`;
                     }).join("");
 
@@ -854,9 +759,7 @@
                     let favoriEsyaHtml = siraliEsyalar.map(e => `<img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${e[0]}.png" style="width: 32px; height: 32px; border-radius: 4px; border: 1px solid #30363d;" title="${e[1]} Kere Alındı">`).join(" ");
                     if(favoriEsyaHtml === "") favoriEsyaHtml = "<span style='font-size:0.8em; color:#8b949e;'>Yeterli eşya verisi yok.</span>";
 
-                    let avgV = toplamGorus / toplamMac;
-                    let avgKntrl = totKontrol / toplamMac;
-                    
+                    let avgV = toplamGorus / toplamMac; let avgKntrl = totKontrol / toplamMac;
                     let behavior = davranisHesapla(toplamK/toplamMac, toplamD/toplamMac, toplamA/toplamMac, anaRol_EN, avgV, avgKntrl, parseFloat(ortCS_dk));
                     let oyunTarziHtml = `<div style="margin:2px; font-size:0.9em; font-weight:bold; color:#58a6ff; border: 1px solid rgba(88,166,255,0.4); background: rgba(88,166,255,0.1); padding: 4px 8px; border-radius: 6px; display:inline-block;">${behavior}</div>`;
 
@@ -867,16 +770,19 @@
                                 <div class="deger" style="color: ${genelWrRenk};">%${winRate}</div>
                                 <div style="color:#8b949e; font-size:0.9em; margin-top:8px;">${toplamMac} Maç, ${zaferSayisi} Zafer</div>
                             </div>
+                            
                             <div class="ozet-kutu" style="text-align: center; border-left: 1px solid #30363d;">
                                 <h3>Ortalama KDA</h3>
                                 <div class="deger vurgu">${ortK} / ${ortD} / ${ortA}</div>
                                 <div style="color:#8b949e; font-size:0.9em; margin-top:4px;">Ortalama CS/min: <span style="color:#ffffff;">${ortCS_dk}</span></div>
                                 <div style="margin-top:12px;">${oyunTarziHtml}</div>
                             </div>
+                            
                             <div class="ozet-kutu" style="padding-left: 20px; border-left: 1px solid #30363d;">
                                 <h3>En İyi 3 Şampiyon</h3>
                                 <div class="ozet-liste">${sampiyonHtml || 'Veri Yok'}</div>
                             </div>
+                            
                             <div class="ozet-kutu" style="padding-left: 20px; border-left: 1px solid #30363d;">
                                 <h3>Rol & Donanım</h3>
                                 <div class="ozet-liste">
@@ -888,13 +794,31 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="ozet-kutu" style="padding-left: 20px; border-left: 1px solid #30363d; min-width:210px;">
-                                <h3>🏆 Kariyer Başarıları</h3>
-                                <div class="ozet-liste" style="font-size: 0.95em; gap:10px;">
-                                    <div style="display:flex; justify-content:space-between;"><span><span style="font-size:1.2em;">🌟</span> Perfect KDA:</span> <span style="color:#ffffff;">${perfSayisi} Maç</span></div>
-                                    <div style="display:flex; justify-content:space-between;"><span><span style="font-size:1.2em;">☠️</span> SABOTAJ:</span> <span style="color:#ffffff;">${utancSayisi} Maç</span></div>
-                                    <div style="display:flex; justify-content:space-between;"><span><span style="font-size:1.2em;">🤝</span> Asist Kralı:</span> <span style="color:#ffffff;">${asistKraliSayisi} Maç</span></div>
-                                    <div style="margin-top:5px; padding-top:10px; border-top: 1px solid #30363d; text-align:center;">
+                            
+                            <div class="ozet-kutu" style="padding-left: 20px; border-left: 1px solid #30363d; min-width:240px;">
+                                <h3 style="color:#ff9800;">🔥 Kariyer & Vurgunlar</h3>
+                                <div class="ozet-liste" style="font-size: 0.9em; gap:8px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <span style="display:flex; align-items:center; gap:5px;">🔥 Pentalar:</span> 
+                                        <span style="color:#ffffff; font-weight:bold;">${t_penta}</span>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <span style="display:flex; align-items:center; gap:5px;">🥷 Çalınan Objektif:</span> 
+                                        <span style="color:#ffffff; font-weight:bold;">${t_calinan}</span>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <span style="display:flex; align-items:center; gap:5px;">🩸 İlk Kan:</span> 
+                                        <span style="color:#ffffff; font-weight:bold;">${t_ilkKan} Kere</span>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <span style="display:flex; align-items:center; gap:5px;">🌟 Kusursuz / ☠️ Sabotaj:</span> 
+                                        <span style="color:#ffffff; font-weight:bold;">${perfSayisi} / ${utancSayisi}</span>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <span style="display:flex; align-items:center; gap:5px;">🤝 Asist Kralı:</span> 
+                                        <span style="color:#ffffff; font-weight:bold;">${asistKraliSayisi} Maç</span>
+                                    </div>
+                                    <div style="margin-top:2px; padding-top:8px; border-top: 1px dashed #30363d; text-align:center;">
                                         <span title="Toplam Görüş">👁️ <b style="color:#fff;">${toplamGorus}</b></span> &nbsp;
                                         <span title="Normal Totem">📍 <b style="color:#fff;">${totNormal}</b></span> &nbsp;
                                         <span title="Kontrol Totemi">🛑 <b style="color:#fff;">${totKontrol}</b></span>
@@ -906,8 +830,13 @@
                 } else { ozetAlani.innerHTML = `<p style="text-align:center; padding: 50px; font-size:1.2em; color:#f85149;">Bu oyuncuya ait (Ekip İçi) Dereceli Esnek verisi bulunamadı.</p>`; }
 
                 gosterilecekler = oyuncuTumMaclari; 
+
+                // V5.7.0 BİREYSEL ALT FİLTRELER
                 if (window.aktifBireyselAltFiltre === 'perfect') gosterilecekler = gosterilecekler.filter(m => m.olum === 0);
                 else if (window.aktifBireyselAltFiltre === 'besleme') gosterilecekler = gosterilecekler.filter(m => m.olum > 11);
+                else if (window.aktifBireyselAltFiltre === 'penta') gosterilecekler = gosterilecekler.filter(m => m.penta > 0);
+                else if (window.aktifBireyselAltFiltre === 'calinti') gosterilecekler = gosterilecekler.filter(m => m.calinan_objektif > 0);
+                else if (window.aktifBireyselAltFiltre === 'ilkkan') gosterilecekler = gosterilecekler.filter(m => m.ilk_kan);
                 
                 if (window.aktifBireyselSampiyon !== 'Hepsi') {
                     gosterilecekler = gosterilecekler.filter(m => m.sampiyon === window.aktifBireyselSampiyon);
@@ -917,10 +846,8 @@
                     if(c_mac > 0) {
                         let roleGroups = {};
                         gosterilecekler.forEach(m => {
-                            let r = m.pozisyon || "BELIRSIZ";
-                            if(r === "INVALID") r = "BELIRSIZ";
-                            if(!roleGroups[r]) roleGroups[r] = [];
-                            roleGroups[r].push(m);
+                            let r = m.pozisyon || "BELIRSIZ"; if(r === "INVALID") r = "BELIRSIZ";
+                            if(!roleGroups[r]) roleGroups[r] = []; roleGroups[r].push(m);
                         });
 
                         let sagKolonHtml = "";
@@ -929,20 +856,23 @@
                         c_roller.forEach(([safRol, maclar]) => {
                             let r_mac = maclar.length;
                             let c_k = 0, c_d = 0, c_a = 0, c_win = 0, c_gorus = 0, c_kontrol = 0, c_cs = 0, c_sure = 0;
+                            let c_penta = 0; let c_calinan = 0; 
                             let c_esya = {};
 
                             maclar.forEach(m => {
                                 c_k += m.oldurme; c_d += m.olum; c_a += m.asist;
                                 c_gorus += (m.gorus_skoru || 0); c_kontrol += (m.kontrol_totemi || 0);
                                 c_cs += (m.cs || 0); c_sure += (m.sure_saniye || 0);
+                                
+                                if(m.penta && m.penta > 0) c_penta += m.penta;
+                                if(m.calinan_objektif && m.calinan_objektif > 0) c_calinan += m.calinan_objektif;
 
                                 if(m.sonuc === "Zafer" || m.sonuc === "Galibiyet") c_win++;
 
                                 if(m.esyalar && window.itemVeritabani) {
                                     m.esyalar.slice(0,6).forEach(e => {
                                         if(e > 0 && window.itemVeritabani[e]) {
-                                            let itm = window.itemVeritabani[e];
-                                            let isFinal = false;
+                                            let itm = window.itemVeritabani[e]; let isFinal = false;
                                             if (itm.gold && itm.gold.total >= 1600) isFinal = true;
                                             if (itm.tags && itm.tags.includes("Boots") && itm.gold && itm.gold.total >= 800) isFinal = true;
                                             if (isFinal && (!itm.tags || !itm.tags.includes("Consumable"))) c_esya[e] = (c_esya[e] || 0) + 1;
@@ -953,15 +883,28 @@
 
                             let c_ortK = (c_k / r_mac).toFixed(1); let c_ortD = (c_d / r_mac).toFixed(1); let c_ortA = (c_a / r_mac).toFixed(1);
                             let c_ortCS_dk = (c_cs / (c_sure ? (c_sure/60) : 1)).toFixed(1);
-                            let c_wr = ((c_win / r_mac) * 100).toFixed(0);
-                            let c_wrRenk = c_wr >= 50 ? "#3fb950" : "#f85149";
+                            let c_wr = ((c_win / r_mac) * 100).toFixed(0); let c_wrRenk = c_wr >= 50 ? "#3fb950" : "#f85149";
                             let c_anaRolTxt = rolCeviri[safRol] || "Belirsiz";
                             let c_favEsyalar = Object.entries(c_esya).sort((a,b) => b[1] - a[1]).slice(0, 6).map(e => `<img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${e[0]}.png" style="width:28px; border-radius:4px; border:1px solid #30363d;" title="${e[1]} Kere Alındı">`).join("");
 
                             let behavior = davranisHesapla(c_k/r_mac, c_d/r_mac, c_a/r_mac, safRol, c_gorus/r_mac, c_kontrol/r_mac, parseFloat(c_ortCS_dk));
 
+                            let vurgunHtml = "";
+                            if(c_penta > 0 || c_calinan > 0) {
+                                vurgunHtml = `<div style="margin-top:15px; border-top:1px solid #30363d; padding-top:10px; display:flex; gap:10px;">`;
+                                if(c_penta > 0) vurgunHtml += `<div class="penta-badge" style="margin:0; padding:2px 8px;">🔥 PENTA (${c_penta})</div>`;
+                                if(c_calinan > 0) vurgunHtml += `<div class="calinti-badge" style="margin:0; padding:2px 8px;">🥷 Çalma (${c_calinan})</div>`;
+                                vurgunHtml += `</div>`;
+                            }
+
+                            // V5.7.0 DİNAMİK KART SEÇİMİ
+                            let isSelected = (window.aktifBireyselRol === safRol);
+                            let cardBorder = isSelected ? '#58a6ff' : '#30363d';
+                            let cardShadow = isSelected ? 'box-shadow: 0 0 15px rgba(88,166,255,0.25);' : '';
+                            let clickAttr = `onclick="window.altFiltreUygula('rol', '${safRol}')" style="margin-bottom: 20px; cursor: pointer; border-color: ${cardBorder}; ${cardShadow} transition: all 0.2s;" onmouseover="this.style.borderColor='#58a6ff'" onmouseout="this.style.borderColor='${cardBorder}'" title="Sadece bu roldeki maçları görmek için tıklayın"`;
+
                             sagKolonHtml += `
-                                <div class="liderlik-panosu" style="margin-bottom: 20px;">
+                                <div class="liderlik-panosu" ${clickAttr}>
                                     <div style="text-align:center; margin-bottom:15px; border-bottom:1px solid #30363d; padding-bottom:15px;">
                                         <img src="${resimUrlGetir(window.aktifBireyselSampiyon)}" style="width:50px; height:50px; border-radius:50%; border:2px solid #58a6ff;">
                                         <h3 style="margin:10px 0 0 0; border:none; padding:0; font-size:1.1em;">${formatSampiyon(window.aktifBireyselSampiyon)} <span style="color:#ffd700;">(${c_anaRolTxt})</span></h3>
@@ -978,6 +921,7 @@
                                         <span style="color:#8b949e">Ortalama CS/min</span>
                                         <span style="font-weight:bold; color:#ffffff;">${c_ortCS_dk}</span>
                                     </div>
+                                    ${vurgunHtml}
                                     <div style="margin-top:15px; border-top:1px solid #30363d; padding-top:10px;">
                                         <div style="color:#8b949e; font-size:0.8em; margin-bottom:5px; text-transform:uppercase; font-weight:bold;">Oyun Tarzı</div>
                                         <div style="color:#ffffff; font-weight:bold; font-size:1em;">${behavior}</div>
@@ -989,23 +933,15 @@
                                 </div>
                             `;
                         });
-                        
                         sagKolon.innerHTML = sagKolonHtml;
                     }
-                } else {
-                    sagKolon.classList.add("gizle");
-                }
+                } else { sagKolon.classList.add("gizle"); }
             } 
             else { 
-                filtreAlani.classList.remove("gizle"); 
-                sagKolon.classList.remove("gizle");
-                altFiltreKutusu.classList.add("gizle");
-                ozetAlani.innerHTML = ""; 
-
+                filtreAlani.classList.remove("gizle"); sagKolon.classList.remove("gizle"); altFiltreKutusu.classList.add("gizle"); ozetAlani.innerHTML = ""; 
                 gosterilecekler.sort((a, b) => window.gercekZamanSirala(a, b));
 
-                let arrayVeri = [];
-                let baslik = "🌟 KDA Şampiyonları"; 
+                let arrayVeri = []; let baslik = "🌟 KDA Şampiyonları"; 
 
                 let dropDownHtml = `<select onchange="window.liderlikFiltrele(this.value)" style="width:100%; margin-bottom:15px; padding:10px; background:#0d1117; color:#c9d1d9; border:1px solid #30363d; border-radius:6px; font-weight:bold; outline:none; cursor:pointer; font-family: 'Urbanist', sans-serif;">
                     <option value="Hepsi">👥 Liderlik Filtresi: Tüm Ekip</option>
@@ -1038,27 +974,21 @@
                     arrayVeri.sort((a, b) => b.skor - a.skor);
                 }
 
-                if(window.aktifLiderlikOyuncu !== "Hepsi") {
-                    arrayVeri = arrayVeri.filter(v => v.oyuncu === window.aktifLiderlikOyuncu);
-                }
+                if(window.aktifLiderlikOyuncu !== "Hepsi") arrayVeri = arrayVeri.filter(v => v.oyuncu === window.aktifLiderlikOyuncu);
 
                 let listeHtml = arrayVeri.slice(0,15).map((v, index) => {
                     let deger = aktifSiralaKriteri === "tarih" ? v.skor.toFixed(2) + " KDA" : (aktifSiralaKriteri === "oldurme" ? v.skor + " Kill" : v.skor + (aktifSiralaKriteri === "olum" ? " Ölüm" : " Asist"));
                     let altMetin = aktifSiralaKriteri === "tarih" ? `${v.mac} Maç` : `Detaylar için tıkla`;
-                    
-                    let clickAttr = ``;
-                    if (aktifSiralaKriteri === "tarih") {
-                        clickAttr = `onclick="window.profileGit('${v.oyuncu}')" class="liderlik-satir tiklanabilir-satir" title="Oyuncu profiline git"`;
-                    } else {
-                        clickAttr = `onclick="window.uygulaOzelFiltre('${aktifSiralaKriteri}', '${v.oyuncu}', '${v.mac_id || ''}')" class="liderlik-satir tiklanabilir-satir" title="${v.oyuncu} oyuncusunun bu sabıka kaydını aç"`;
-                    }
+                    let clickAttr = aktifSiralaKriteri === "tarih" ? `onclick="window.profileGit('${v.oyuncu}')" class="liderlik-satir tiklanabilir-satir" title="Oyuncu profiline git"` : `onclick="window.uygulaOzelFiltre('${aktifSiralaKriteri}', '${v.oyuncu}', '${v.mac_id || ''}')" class="liderlik-satir tiklanabilir-satir" title="${v.oyuncu} oyuncusunun bu sabıka kaydını aç"`;
+
+                    let guncelId = guncelRiotID[v.oyuncu] || v.riot_id;
 
                     return `
                         <div ${clickAttr}>
                             <div class="l-sira">#${index+1}</div>
                             <div class="l-kimlik">
                                 <div class="l-gercek">${v.oyuncu}</div>
-                                <div class="l-oyunici">${v.riot_id}</div>
+                                <div class="l-oyunici">${guncelId}</div>
                             </div>
                             <div class="l-deger">
                                 <div class="l-ana">${deger}</div>
@@ -1068,22 +998,25 @@
                     `;
                 }).join("");
 
-                sagKolon.innerHTML = `
-                    <div class="liderlik-panosu">
-                        ${dropDownHtml}
-                        <h3>${baslik}</h3>
-                        <div>${listeHtml || '<div style="text-align:center; padding: 20px; color:#8b949e;">Kayıt bulunamadı.</div>'}</div>
-                    </div>
-                `;
+                sagKolon.innerHTML = `<div class="liderlik-panosu">${dropDownHtml}<h3>${baslik}</h3><div>${listeHtml || '<div style="text-align:center; padding: 20px; color:#8b949e;">Kayıt bulunamadı.</div>'}</div></div>`;
+            }
+
+            // V5.7.0 SOL KOLON DİNAMİK FİLTRELEME
+            let solKolonListesi = [...gosterilecekler];
+            
+            if (window.aktifBireyselSampiyon !== 'Hepsi' && window.aktifBireyselRol !== 'Hepsi') {
+                solKolonListesi = solKolonListesi.filter(m => {
+                    let r = m.pozisyon || "BELIRSIZ"; if(r === "INVALID") r = "BELIRSIZ";
+                    return r === window.aktifBireyselRol;
+                });
             }
 
             let gosterimHTML_Ek = "";
             if (window.ozelFiltre) {
                 if (window.ozelFiltre.kriter === 'oldurme' || window.ozelFiltre.kriter === 'asist' || window.ozelFiltre.kriter === 'olum') {
-                    gosterilecekler = gosterilecekler.filter(m => m.mac_id === window.ozelFiltre.macId && m.oyuncu === window.ozelFiltre.oyuncu);
+                    solKolonListesi = solKolonListesi.filter(m => m.mac_id === window.ozelFiltre.macId && m.oyuncu === window.ozelFiltre.oyuncu);
                 } else {
-                    gosterilecekler = gosterilecekler.filter(m => m.oyuncu === window.ozelFiltre.oyuncu);
-                    gosterilecekler.sort((a,b) => window.gercekZamanSirala(a,b));
+                    solKolonListesi = solKolonListesi.filter(m => m.oyuncu === window.ozelFiltre.oyuncu); solKolonListesi.sort((a,b) => window.gercekZamanSirala(a,b));
                 }
                 
                 gosterimHTML_Ek = `
@@ -1092,21 +1025,35 @@
                     <button onclick="window.ozelFiltre=null; window.ekraniGuncelle(false);" class="yenile-btn" style="padding: 6px 15px; font-size:0.9em; background:#f85149; border-color:#f85149; box-shadow:none;">❌ Kapat</button>
                 </div>`;
             } else {
-                if (aktifSiralaKriteri === "tarih") gosterilecekler.sort((a, b) => window.gercekZamanSirala(a, b));
-                else gosterilecekler.sort((a, b) => b[aktifSiralaKriteri] !== a[aktifSiralaKriteri] ? b[aktifSiralaKriteri] - a[aktifSiralaKriteri] : window.gercekZamanSirala(a, b));
+                if (aktifSiralaKriteri === "tarih") solKolonListesi.sort((a, b) => window.gercekZamanSirala(a, b));
+                else solKolonListesi.sort((a, b) => b[aktifSiralaKriteri] !== a[aktifSiralaKriteri] ? b[aktifSiralaKriteri] - a[aktifSiralaKriteri] : window.gercekZamanSirala(a, b));
             }
             
-            const kesilmisListe = gosterilecekler.slice(0, gosterimLimiti);
+            // V5.7.0 ROL BİLGİLENDİRME BARI
+            if (window.aktifBireyselSampiyon !== 'Hepsi' && window.aktifBireyselRol !== 'Hepsi') {
+                let rolTxt = rolCeviri[window.aktifBireyselRol] || "Belirsiz";
+                gosterimHTML_Ek += `
+                <div style="background: rgba(255,215,0,0.1); border: 1px solid #ffd700; padding: 12px 20px; border-radius: 8px; margin: 0 auto 20px auto; width: 100%; max-width: 900px; display:flex; justify-content:space-between; align-items:center; box-sizing: border-box;">
+                    <span style="color:#c9d1d9; font-size:1.05em;">Sadece <b style="color:#ffd700;">${rolTxt}</b> rolünde oynanan maçlar listeleniyor.</span>
+                    <button onclick="window.altFiltreUygula('rol', '${window.aktifBireyselRol}')" class="yenile-btn" style="padding: 5px 12px; font-size:0.85em; background:#f85149; border-color:#f85149; box-shadow:none;">❌ Temizle</button>
+                </div>`;
+            }
+
+            const kesilmisListe = solKolonListesi.slice(0, gosterimLimiti);
             vitrin.innerHTML = gosterimHTML_Ek; 
 
             kesilmisListe.forEach((veri, index) => {
                 const zaferMi = (veri.sonuc === "Zafer" || veri.sonuc === "Galibiyet");
-                const sinirSinifi = zaferMi ? "kart-zafer" : "kart-bozgun";
-                const sonucYazisiClass = zaferMi ? "yazi-zafer" : "yazi-bozgun";
+                const sinirSinifi = zaferMi ? "kart-zafer" : "kart-bozgun"; const sonucYazisiClass = zaferMi ? "yazi-zafer" : "yazi-bozgun";
                 
                 let durumDamgasi = '';
-                if (veri.olum === 0) durumDamgasi = `<div class="perfect-badge"><span class="badge-ikon">🌟</span> PERFECT KDA</div>`;
-                else if (veri.olum > 11) durumDamgasi = `<div class="besleme-badge"><span class="badge-ikon">☠️</span> SABOTAJ</div>`;
+                if (veri.penta && veri.penta > 0) durumDamgasi += `<div class="penta-badge">🔥 PENTA</div>`;
+                if (veri.quadra && veri.quadra > 0 && (!veri.penta || veri.penta === 0)) durumDamgasi += `<div class="quadra-badge">💥 QUADRA</div>`;
+                if (veri.calinan_objektif && veri.calinan_objektif > 0) durumDamgasi += `<div class="calinti-badge">🥷 HIRSIZ</div>`;
+                if (veri.ilk_kan) durumDamgasi += `<div class="ilk-kan-badge">🩸 İLK KAN</div>`;
+
+                if (veri.olum === 0) durumDamgasi += `<div class="perfect-badge">🌟</div>`;
+                else if (veri.olum > 11) durumDamgasi += `<div class="besleme-badge">☠️</div>`;
 
                 const rolMetni = rolCeviri[veri.pozisyon || "BELIRSIZ"];
 
@@ -1155,7 +1102,7 @@
                 `;
             });
 
-            if (gosterilecekler.length > gosterimLimiti && !window.ozelFiltre) btnDahaFazla.classList.remove("gizle");
+            if (solKolonListesi.length > gosterimLimiti && !window.ozelFiltre) btnDahaFazla.classList.remove("gizle");
             else btnDahaFazla.classList.add("gizle");
         }
 
@@ -1169,24 +1116,17 @@
             const filtrePaneli = document.getElementById("sinerji-filtre-paneli");
             const bilgiKutusu = document.getElementById("sinerji-bilgi-kutusu");
             
-            vitrin.innerHTML = ""; ozetAlani.innerHTML = ""; 
-            filtrePaneli.classList.remove("gizle"); bilgiKutusu.classList.remove("gizle");
+            vitrin.innerHTML = ""; ozetAlani.innerHTML = ""; filtrePaneli.classList.remove("gizle"); bilgiKutusu.classList.remove("gizle");
 
             if (aktifSinerjiBoyutu === "ruya_takim" || aktifSinerjiBoyutu === "haftanin_ruya_takimi") {
-                filtrePaneli.classList.add("gizle");
-                
-                let veriHavuzu = temelVeriler;
-                let baslikTxt = "🌟 Tüm Zamanların İstatistiksel Rüya Takımı";
+                filtrePaneli.classList.add("gizle"); let veriHavuzu = temelVeriler; let baslikTxt = "🌟 Tüm Zamanların İstatistiksel Rüya Takımı";
                 
                 if (aktifSinerjiBoyutu === "ruya_takim") {
                     bilgiKutusu.innerHTML = `<div style="background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 8px; padding: 12px 20px; margin-bottom: 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6;"><b style="color: #ffd700;">🌟 İstatistiksel Rüya Takım Nedir?</b><br>Sistem, her rol için o pozisyonda en az 1 maç oynamış oyuncuları analiz eder. Kazanma oranları, KDA vb. birçok istatistiği baz alarak ekibinizin matematiksel olarak çıkarabileceği <b>"Gelmiş Geçmiş En Korkunç Beşliyi"</b> favori şampiyonlarıyla ekrana çizer.</div>`;
                 } else {
                     baslikTxt = "🔥 Haftanın En Formda Beşlisi";
                     bilgiKutusu.innerHTML = `<div style="background: rgba(88, 166, 255, 0.1); border: 1px solid rgba(88, 166, 255, 0.3); border-radius: 8px; padding: 12px 20px; margin-bottom: 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6;"><b style="color: #58a6ff;">🔥 Haftanın Beşlisi Nedir?</b><br>Tüm zamanların istatistikleri yerine, sadece <b>son 7 gün içinde</b> oynanan maçlar analiz edilir. O hafta formda olan oyuncuların güncel performanslarına göre <b>"Haftanın En İyi Beşlisi"</b> oluşturulur. Sistem yine önce en uyumlu Alt Koridor ikilisini merkeze alır.</div>`;
-                    
-                    let simdiMs = new Date().getTime(); 
-                    let birHaftaMilisaniye = 7 * 24 * 60 * 60 * 1000;
-                    let sinirTarih = simdiMs - birHaftaMilisaniye;
+                    let simdiMs = new Date().getTime(); let birHaftaMilisaniye = 7 * 24 * 60 * 60 * 1000; let sinirTarih = simdiMs - birHaftaMilisaniye;
                     veriHavuzu = temelVeriler.filter(v => v.tarih_ms && v.tarih_ms >= sinirTarih);
                 }
 
@@ -1195,27 +1135,19 @@
                     btnDahaFazla.classList.add("gizle"); return;
                 }
 
-                ozetAlani.innerHTML = hesaplaRuyaTakim(veriHavuzu, baslikTxt);
-                btnDahaFazla.classList.add("gizle");
-                return;
+                ozetAlani.innerHTML = hesaplaRuyaTakim(veriHavuzu, baslikTxt); btnDahaFazla.classList.add("gizle"); return;
             }
 
             bilgiKutusu.innerHTML = `<div style="background: rgba(88, 166, 255, 0.1); border: 1px solid rgba(88, 166, 255, 0.3); border-radius: 8px; padding: 12px 20px; margin-bottom: 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6;"><b style="color: #58a6ff;">ℹ️ Sinerji Puanı (SP) Nedir?</b><br>Sistem, takımların kazanma oranlarına <b>Laplace Düzeltmesi</b> uygulayarak şans faktörünü (1 maçta %100 WR) eler. Buna ek olarak, bir ekip farklı rollerle (Formasyonlar) oynayıp yine de kazanabiliyorsa, sistem bu <b>Rol Esnekliğini</b> ödüllendirerek ekibin Sinerji Puanını yukarı çeker. Takım ne kadar esnekse, SP o kadar artar.</div>`;
 
-            const macGruplari = {};
-            temelVeriler.forEach(v => { if(!macGruplari[v.mac_id]) macGruplari[v.mac_id] = []; macGruplari[v.mac_id].push(v); });
-            
-            let filtrelenmisMaclar = [];
-            let tabloBasligi = "";
+            const macGruplari = {}; temelVeriler.forEach(v => { if(!macGruplari[v.mac_id]) macGruplari[v.mac_id] = []; macGruplari[v.mac_id].push(v); });
+            let filtrelenmisMaclar = []; let tabloBasligi = "";
 
             if (aktifSinerjiBoyutu === "alt_koridor") {
                 tabloBasligi = "🏹 En İyi Alt Koridor İkilileri (Nişancı + Destek)";
                 Object.values(macGruplari).forEach(grup => {
-                    let bottomList = grup.filter(p => p.pozisyon === "BOTTOM");
-                    let utilityList = grup.filter(p => p.pozisyon === "UTILITY");
-                    if (bottomList.length > 0 && utilityList.length > 0) {
-                        filtrelenmisMaclar.push([bottomList[0], utilityList[0]]);
-                    }
+                    let bottomList = grup.filter(p => p.pozisyon === "BOTTOM"); let utilityList = grup.filter(p => p.pozisyon === "UTILITY");
+                    if (bottomList.length > 0 && utilityList.length > 0) filtrelenmisMaclar.push([bottomList[0], utilityList[0]]);
                 });
             } else {
                 let eklenti = {5: "'li", 4: "'lü", 3: "'lü", 2: "'li"}[aktifSinerjiBoyutu] || "'li";
@@ -1223,162 +1155,91 @@
                 filtrelenmisMaclar = Object.values(macGruplari).filter(grup => grup.length === parseInt(aktifSinerjiBoyutu));
             }
 
-            if (filtrelenmisMaclar.length === 0) { 
-                vitrin.innerHTML = `<p style="text-align: center; font-size: 1.2em; margin-top: 50px;">Bu kategoride henüz uygun bir analiz verisi bulunamadı.</p>`; 
-                btnDahaFazla.classList.add("gizle"); return; 
-            }
+            if (filtrelenmisMaclar.length === 0) { vitrin.innerHTML = `<p style="text-align: center; font-size: 1.2em; margin-top: 50px;">Bu kategoride henüz uygun bir analiz verisi bulunamadı.</p>`; btnDahaFazla.classList.add("gizle"); return; }
             
             if (window.aktifSinerjiOyuncular && window.aktifSinerjiOyuncular.length > 0) {
-                filtrelenmisMaclar = filtrelenmisMaclar.filter(grup => {
-                    return window.aktifSinerjiOyuncular.every(secili => grup.some(p => p.oyuncu === secili));
-                });
-                if (filtrelenmisMaclar.length === 0) {
-                    vitrin.innerHTML = `<p style="text-align: center; font-size: 1.2em; margin-top: 50px;">Seçili kombinasyona ait kayıt bulunamadı.</p>`;
-                    return;
-                }
+                filtrelenmisMaclar = filtrelenmisMaclar.filter(grup => { return window.aktifSinerjiOyuncular.every(secili => grup.some(p => p.oyuncu === secili)); });
+                if (filtrelenmisMaclar.length === 0) { vitrin.innerHTML = `<p style="text-align: center; font-size: 1.2em; margin-top: 50px;">Seçili kombinasyona ait kayıt bulunamadı.</p>`; return; }
             }
 
             let kompIstatistik = {};
             filtrelenmisMaclar.forEach(grup => {
-                let sortedIsimler = grup.map(o => o.oyuncu).sort();
-                let ekipIsmi = sortedIsimler.join(" + ");
-                
-                if(aktifSinerjiBoyutu === "alt_koridor") {
-                    ekipIsmi = grup.map(o => `${o.oyuncu} (${rolCeviri[o.pozisyon]})`).sort().join(" + ");
-                }
-                
+                let sortedIsimler = grup.map(o => o.oyuncu).sort(); let ekipIsmi = sortedIsimler.join(" + ");
+                if(aktifSinerjiBoyutu === "alt_koridor") ekipIsmi = grup.map(o => `${o.oyuncu} (${rolCeviri[o.pozisyon]})`).sort().join(" + ");
                 if(!kompIstatistik[ekipIsmi]) kompIstatistik[ekipIsmi] = { mac: 0, zafer: 0, orjinal_isimler: sortedIsimler.join(" + "), formasyonlar: {} };
                 
                 let s_formasyon = grup.map(o => `${o.oyuncu}_${o.pozisyon}`).sort().join("|");
-                if(!kompIstatistik[ekipIsmi].formasyonlar[s_formasyon]) {
-                    kompIstatistik[ekipIsmi].formasyonlar[s_formasyon] = { mac: 0, zafer: 0, detay: grup.map(o => ({isim: o.oyuncu, rol: o.pozisyon})) };
-                }
+                if(!kompIstatistik[ekipIsmi].formasyonlar[s_formasyon]) kompIstatistik[ekipIsmi].formasyonlar[s_formasyon] = { mac: 0, zafer: 0, detay: grup.map(o => ({isim: o.oyuncu, rol: o.pozisyon})) };
                 
-                kompIstatistik[ekipIsmi].mac++;
-                kompIstatistik[ekipIsmi].formasyonlar[s_formasyon].mac++;
-                
-                if(grup[0].sonuc === "Zafer" || grup[0].sonuc === "Galibiyet") {
-                    kompIstatistik[ekipIsmi].zafer++;
-                    kompIstatistik[ekipIsmi].formasyonlar[s_formasyon].zafer++;
-                }
+                kompIstatistik[ekipIsmi].mac++; kompIstatistik[ekipIsmi].formasyonlar[s_formasyon].mac++;
+                if(grup[0].sonuc === "Zafer" || grup[0].sonuc === "Galibiyet") { kompIstatistik[ekipIsmi].zafer++; kompIstatistik[ekipIsmi].formasyonlar[s_formasyon].zafer++; }
             });
 
             let siraliKomplar = Object.entries(kompIstatistik).map(k => {
-                let wrLaplace = (k[1].zafer + 1) / (k[1].mac + 2);
-                let formasyonSayisi = Object.keys(k[1].formasyonlar).length;
-                let flexKatsayisi = aktifSinerjiBoyutu === "alt_koridor" ? 0 : (formasyonSayisi * 0.05);
-                let sp = (wrLaplace + flexKatsayisi) * 100;
-                
+                let wrLaplace = (k[1].zafer + 1) / (k[1].mac + 2); let formasyonSayisi = Object.keys(k[1].formasyonlar).length;
+                let flexKatsayisi = aktifSinerjiBoyutu === "alt_koridor" ? 0 : (formasyonSayisi * 0.05); let sp = (wrLaplace + flexKatsayisi) * 100;
                 return { isim: k[0], mac: k[1].mac, zafer: k[1].zafer, sp: sp, orjinal_isimler: k[1].orjinal_isimler, formasyonlar: k[1].formasyonlar };
             });
             siraliKomplar.sort((a, b) => b.sp - a.sp); 
 
             let tabloSatirlari = siraliKomplar.map((komp, index) => {
-                let wr = ((komp.zafer / komp.mac) * 100).toFixed(0);
-                let spSkor = komp.sp.toFixed(0);
-                let barRengi = wr >= 50 ? "#3fb950" : "#f85149";
-                
-                // V5.4.4: Alt koridor için rollü ismi, diğerleri için saf ismi filtreye yolla
+                let wr = ((komp.zafer / komp.mac) * 100).toFixed(0); let spSkor = komp.sp.toFixed(0); let barRengi = wr >= 50 ? "#3fb950" : "#f85149";
                 let clickIsim = aktifSinerjiBoyutu === "alt_koridor" ? komp.isim : komp.orjinal_isimler;
-                
-                let formasyonPaneliId = `formasyon_${index}`;
-                let formasyonHtml = "";
+                let formasyonPaneliId = `formasyon_${index}`; let formasyonHtml = "";
                 
                 if (aktifSinerjiBoyutu !== "alt_koridor") {
                     let siraliFormasyonlar = Object.entries(komp.formasyonlar).sort((a,b) => b[1].mac - a[1].mac);
-                    
                     siraliFormasyonlar.forEach(f => {
-                        let f_wr = ((f[1].zafer / f[1].mac) * 100).toFixed(0);
-                        let f_renk = f_wr >= 50 ? "#3fb950" : "#f85149";
-                        
-                        let rolEtiketleri = f[1].detay.sort((a, b) => (rolSiralamaGucu[a.rol] || 99) - (rolSiralamaGucu[b.rol] || 99)).map(p => {
-                            return `<span class="formasyon-rol-etiket"><span class="formasyon-isim">${p.isim}:</span> ${rolCeviri[p.rol] || 'Belirsiz'}</span>`;
-                        }).join("");
-                        
+                        let f_wr = ((f[1].zafer / f[1].mac) * 100).toFixed(0); let f_renk = f_wr >= 50 ? "#3fb950" : "#f85149";
+                        let rolEtiketleri = f[1].detay.sort((a, b) => (rolSiralamaGucu[a.rol] || 99) - (rolSiralamaGucu[b.rol] || 99)).map(p => { return `<span class="formasyon-rol-etiket"><span class="formasyon-isim">${p.isim}:</span> ${rolCeviri[p.rol] || 'Belirsiz'}</span>`; }).join("");
                         let clickFormasyonAttr = `onclick="window.sinerjiFiltrele('${clickIsim}', '${f[0]}')" style="cursor:pointer;" title="Sadece bu kadro yapısıyla atılan maçları göster"`;
-
-                        formasyonHtml += `
-                            <div class="formasyon-satir tiklanabilir-tr" ${clickFormasyonAttr}>
-                                <div class="formasyon-detay">${rolEtiketleri}</div>
-                                <div style="min-width: 120px; text-align: right;">
-                                    <span style="color:#8b949e; font-size:0.9em; margin-right:10px;">${f[1].mac} Maç</span>
-                                    <span style="color:${f_renk}; font-weight:bold;">%${f_wr} WR</span>
-                                </div>
-                            </div>
-                        `;
+                        formasyonHtml += `<div class="formasyon-satir tiklanabilir-tr" ${clickFormasyonAttr}><div class="formasyon-detay">${rolEtiketleri}</div><div style="min-width: 120px; text-align: right;"><span style="color:#8b949e; font-size:0.9em; margin-right:10px;">${f[1].mac} Maç</span><span style="color:${f_renk}; font-weight:bold;">%${f_wr} WR</span></div></div>`;
                     });
                 }
 
                 let formasyonKutuHtml = formasyonHtml ? `<tr id="${formasyonPaneliId}" class="gizle" style="background:#0d1117;"><td colspan="4" style="padding: 15px;"><div class="formasyon-kutusu"><div style="color:#8b949e; font-size:0.85em; text-transform:uppercase; font-weight:bold; margin-bottom:10px;">Kadro Formasyonları (Dizilişler)</div>${formasyonHtml}</div></td></tr>` : "";
-                
-                // Alt koridorsa direkt filtrele, 3'lü/5'li ise akordeonu (formasyonları) aç
                 let baslikTiklaAttr = `onclick="window.sinerjiFiltrele('${clickIsim}')" title="Bu ikilinin maçlarını listele"`;
-                if (aktifSinerjiBoyutu !== "alt_koridor") {
-                    baslikTiklaAttr = `onclick="window.kutuAc('${formasyonPaneliId}', event)" title="Kadro formasyonlarını görmek için tıkla"`;
-                }
+                if (aktifSinerjiBoyutu !== "alt_koridor") baslikTiklaAttr = `onclick="window.kutuAc('${formasyonPaneliId}', event)" title="Kadro formasyonlarını görmek için tıkla"`;
 
                 return `
                     <tr class="tiklanabilir-tr" ${baslikTiklaAttr}>
                         <td style="color:#8b949e;">#${index+1}</td>
                         <td style="color:#c9d1d9;">${komp.isim}</td>
                         <td>${komp.mac} Maç</td>
-                        <td style="color: ${barRengi}; font-weight: bold;">
-                            %${wr} 
-                            <span class="sinerji-skor-etiket" title="Ağırlıklı Sinerji Puanı (Rol Esnekliği Dahil)">SP:&nbsp;${spSkor}</span>
-                            <div class="oran-bar-arkasi"><div class="oran-bar-ici" style="width: ${wr}%; background-color: ${barRengi};"></div></div>
-                        </td>
+                        <td style="color: ${barRengi}; font-weight: bold;">%${wr} <span class="sinerji-skor-etiket" title="Ağırlıklı Sinerji Puanı (Rol Esnekliği Dahil)">SP:&nbsp;${spSkor}</span><div class="oran-bar-arkasi"><div class="oran-bar-ici" style="width: ${wr}%; background-color: ${barRengi};"></div></div></td>
                     </tr>
                     ${formasyonKutuHtml}
                 `;
             }).join("");
 
-            ozetAlani.innerHTML = `
-                <div class="ozet-panosu" style="display:block;">
-                    <h3 style="color:#ffffff; margin-top:0;">${tabloBasligi}</h3>
-                    <table class="komp-tablosu">
-                        <thead><tr><th>Sıra</th><th>Ekip Kadrosu</th><th>Oyun Sayısı</th><th>Kazanma Oranı <span style="font-weight:normal; color:#8b949e;">(Sinerji Puanı)</span></th></tr></thead>
-                        <tbody>${tabloSatirlari}</tbody>
-                    </table>
-                </div>
-            `;
+            ozetAlani.innerHTML = `<div class="ozet-panosu" style="display:block;"><h3 style="color:#ffffff; margin-top:0;">${tabloBasligi}</h3><table class="komp-tablosu"><thead><tr><th>Sıra</th><th>Ekip Kadrosu</th><th>Oyun Sayısı</th><th>Kazanma Oranı <span style="font-weight:normal; color:#8b949e;">(Sinerji Puanı)</span></th></tr></thead><tbody>${tabloSatirlari}</tbody></table></div>`;
 
             let gosterimHTML_Ek = "";
             if (window.aktifSinerjiEkibi) {
                 filtrelenmisMaclar = filtrelenmisMaclar.filter(grup => {
                     let isimUyumu = grup.map(o => o.oyuncu).sort().join(" + ") === window.aktifSinerjiEkibi;
                     if(aktifSinerjiBoyutu === "alt_koridor") isimUyumu = grup.map(o => `${o.oyuncu} (${rolCeviri[o.pozisyon]})`).sort().join(" + ") === window.aktifSinerjiEkibi;
-                    
-                    if (isimUyumu && window.aktifFormasyonFiltresi) {
-                        return grup.map(o => `${o.oyuncu}_${o.pozisyon}`).sort().join("|") === window.aktifFormasyonFiltresi;
-                    }
+                    if (isimUyumu && window.aktifFormasyonFiltresi) return grup.map(o => `${o.oyuncu}_${o.pozisyon}`).sort().join("|") === window.aktifFormasyonFiltresi;
                     return isimUyumu;
                 });
-                
                 let baslikEk = window.aktifFormasyonFiltresi ? "seçilen kadro formasyonuyla oynadığı" : "";
-
-                gosterimHTML_Ek = `
-                <div style="background: rgba(88,166,255,0.1); border: 1px solid #58a6ff; padding: 15px 20px; border-radius: 8px; margin: 0 auto 20px auto; width: 100%; max-width: 900px; display:flex; justify-content:space-between; align-items:center; box-sizing: border-box;">
-                    <span style="color:#c9d1d9; font-size:1.1em;"><b style="color:#ffffff;">${window.aktifSinerjiEkibi}</b> ekibinin ${baslikEk} maçlar listeleniyor.</span>
-                    <button onclick="window.sinerjiFiltrele(null, null)" class="yenile-btn" style="padding: 6px 15px; font-size:0.9em; background:#f85149; border-color:#f85149; box-shadow:none;">❌ Temizle</button>
-                </div>`;
+                gosterimHTML_Ek = `<div style="background: rgba(88,166,255,0.1); border: 1px solid #58a6ff; padding: 15px 20px; border-radius: 8px; margin: 0 auto 20px auto; width: 100%; max-width: 900px; display:flex; justify-content:space-between; align-items:center; box-sizing: border-box;"><span style="color:#c9d1d9; font-size:1.1em;"><b style="color:#ffffff;">${window.aktifSinerjiEkibi}</b> ekibinin ${baslikEk} maçlar listeleniyor.</span><button onclick="window.sinerjiFiltrele(null, null)" class="yenile-btn" style="padding: 6px 15px; font-size:0.9em; background:#f85149; border-color:#f85149; box-shadow:none;">❌ Temizle</button></div>`;
             }
 
             filtrelenmisMaclar.sort((a, b) => window.gercekZamanSirala(a,b));
-            
             const kesilmisListe = filtrelenmisMaclar.slice(0, gosterimLimiti);
             vitrin.innerHTML = gosterimHTML_Ek;
 
             kesilmisListe.forEach(grup => {
                 const zaferMi = (grup[0].sonuc === "Zafer" || grup[0].sonuc === "Galibiyet");
                 const sonuc = zaferMi ? "Zafer" : "Bozgun"; const sinif = zaferMi ? "mac-galibiyet" : "mac-bozgun";
-                
-                let oyuncularHtml = "";
-                let oyunSuresi_dk = (grup[0].sure_saniye || 60) / 60;
+                let oyuncularHtml = ""; let oyunSuresi_dk = (grup[0].sure_saniye || 60) / 60;
 
                 grup.sort((a, b) => (rolSiralamaGucu[a.pozisyon] || 99) - (rolSiralamaGucu[b.pozisyon] || 99)).forEach(oyuncu => {
                     let durumDamgasi = '';
-                    if (oyuncu.olum === 0) durumDamgasi = `<div class="perfect-badge"><span class="badge-ikon">🌟</span></div>`;
-                    else if (oyuncu.olum > 11) durumDamgasi = `<div class="besleme-badge"><span class="badge-ikon">☠️</span></div>`;
+                    if (oyuncu.penta && oyuncu.penta > 0) durumDamgasi += `<div class="penta-badge" style="padding: 2px 6px; font-size:0.7em;">🔥</div>`;
+                    if (oyuncu.olum === 0) durumDamgasi += `<div class="perfect-badge" style="padding: 2px 6px; font-size:0.7em;">🌟</div>`;
+                    else if (oyuncu.olum > 11) durumDamgasi += `<div class="besleme-badge" style="padding: 2px 6px; font-size:0.7em;">☠️</div>`;
 
                     let esyalarHtml = '<div class="s-esya-kutusu">';
                     if(oyuncu.esyalar) {
@@ -1390,17 +1251,13 @@
                     }
                     esyalarHtml += '</div>';
 
-                    let csMin = ((oyuncu.cs || 0) / oyunSuresi_dk).toFixed(1);
-                    let rolText = rolCeviri[oyuncu.pozisyon] || 'Belirsiz';
+                    let csMin = ((oyuncu.cs || 0) / oyunSuresi_dk).toFixed(1); let rolText = rolCeviri[oyuncu.pozisyon] || 'Belirsiz';
 
                     oyuncularHtml += `
                         <div class="sinerji-satir">
                             <div class="s-sol-blok">
                                 <img src="${resimUrlGetir(oyuncu.sampiyon)}" class="s-ikon" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
-                                <div class="s-kimlik">
-                                    <span class="s-gercek">${oyuncu.riot_id}</span>
-                                    <span class="s-samp">${formatSampiyon(oyuncu.sampiyon)} ${rolText !== 'Belirsiz' ? `- <span class="rol-etiket" style="font-size:0.75em; padding:1px 5px;">${rolText}</span>` : ''}</span>
-                                </div>
+                                <div class="s-kimlik"><span class="s-gercek">${oyuncu.riot_id}</span><span class="s-samp">${formatSampiyon(oyuncu.sampiyon)} ${rolText !== 'Belirsiz' ? `- <span class="rol-etiket" style="font-size:0.75em; padding:1px 5px;">${rolText}</span>` : ''}</span></div>
                             </div>
                             <div class="s-orta-blok">
                                 ${esyalarHtml}
@@ -1416,19 +1273,7 @@
                     `;
                 });
                 
-                vitrin.innerHTML += `
-                    <div class="mac-karti">
-                        <div class="mac-ust-bilgi ${sinif}">
-                            <span>${zaferMi ? "🏆" : "💥"} Takım Sonucu: ${sonuc}</span>
-                            <div style="text-align: right;">
-                                <span style="color:#ffffff; font-size:0.9em; margin-right: 15px;">⏱️ ${sureFormatla(grup[0].sure_saniye)}</span>
-                                <span style="color:#8b949e; font-size:0.8em; margin-right: 15px;">📅 ${tarihFormatla(grup[0].tarih_ms)}</span>
-                                <span class="sezon-etiket" style="margin-left:0; margin-right: 10px;">${grup[0].sezon || ''}</span>
-                            </div>
-                        </div>
-                        <div>${oyuncularHtml}</div>
-                    </div>
-                `;
+                vitrin.innerHTML += `<div class="mac-karti"><div class="mac-ust-bilgi ${sinif}"><span>${zaferMi ? "🏆" : "💥"} Takım Sonucu: ${sonuc}</span><div style="text-align: right;"><span style="color:#ffffff; font-size:0.9em; margin-right: 15px;">⏱️ ${sureFormatla(grup[0].sure_saniye)}</span><span style="color:#8b949e; font-size:0.8em; margin-right: 15px;">📅 ${tarihFormatla(grup[0].tarih_ms)}</span><span class="sezon-etiket" style="margin-left:0; margin-right: 10px;">${grup[0].sezon || ''}</span></div></div><div>${oyuncularHtml}</div></div>`;
             });
 
             if (filtrelenmisMaclar.length > gosterimLimiti) btnDahaFazla.classList.remove("gizle");
@@ -1439,85 +1284,56 @@
             let temelVeriler = [...tumVeriler];
             if (aktifSezonFiltresi !== "Tümü") temelVeriler = temelVeriler.filter(v => v.sezon === aktifSezonFiltresi);
 
-            const vitrin = document.getElementById("sampiyon-veriler");
-            vitrin.innerHTML = "";
+            const vitrin = document.getElementById("sampiyon-veriler"); vitrin.innerHTML = "";
 
-            if (!aktifSampiyonFiltresi) {
-                vitrin.innerHTML = `<p style="text-align: center; font-size: 1.2em; margin-top: 50px;">Yukarıdan analiz etmek istediğiniz şampiyonu seçin.</p>`;
-                return;
-            }
+            if (!aktifSampiyonFiltresi) { vitrin.innerHTML = `<p style="text-align: center; font-size: 1.2em; margin-top: 50px;">Yukarıdan analiz etmek istediğiniz şampiyonu seçin.</p>`; return; }
 
             let sampVerileri = temelVeriler.filter(v => v.sampiyon === aktifSampiyonFiltresi);
             if (sampVerileri.length === 0) { vitrin.innerHTML = `<p style="text-align: center;">Bu sezonda ${formatSampiyon(aktifSampiyonFiltresi)} oynanmamış.</p>`; return; }
 
             let oyuncuRolIstatistikleri = {};
             sampVerileri.forEach(m => {
-                let isim = m.oyuncu;
-                let safRol = m.pozisyon || "BELIRSIZ";
-                if(safRol === "INVALID") safRol = "BELIRSIZ";
+                let isim = m.oyuncu; let safRol = m.pozisyon || "BELIRSIZ"; if(safRol === "INVALID") safRol = "BELIRSIZ"; let id = isim + "_" + safRol;
+                if(!oyuncuRolIstatistikleri[id]) oyuncuRolIstatistikleri[id] = { mac: 0, zafer: 0, tk: 0, td: 0, ta: 0, tgorus: 0, cs: 0, sure: 0, riot_id: m.riot_id, isim: isim, rol: safRol };
                 
-                let id = isim + "_" + safRol;
-                
-                if(!oyuncuRolIstatistikleri[id]) oyuncuRolIstatistikleri[id] = { 
-                    mac: 0, zafer: 0, tk: 0, td: 0, ta: 0, tgorus: 0, cs: 0, sure: 0, riot_id: m.riot_id, isim: isim, rol: safRol 
-                };
-                
-                oyuncuRolIstatistikleri[id].mac++;
-                oyuncuRolIstatistikleri[id].tk += m.oldurme; 
-                oyuncuRolIstatistikleri[id].td += m.olum; 
-                oyuncuRolIstatistikleri[id].ta += m.asist;
-                oyuncuRolIstatistikleri[id].tgorus += (m.gorus_skoru || 0);
-                oyuncuRolIstatistikleri[id].cs += (m.cs || 0);
-                oyuncuRolIstatistikleri[id].sure += (m.sure_saniye || 0);
-                
+                oyuncuRolIstatistikleri[id].mac++; oyuncuRolIstatistikleri[id].tk += m.oldurme; oyuncuRolIstatistikleri[id].td += m.olum; oyuncuRolIstatistikleri[id].ta += m.asist;
+                oyuncuRolIstatistikleri[id].tgorus += (m.gorus_skoru || 0); oyuncuRolIstatistikleri[id].cs += (m.cs || 0); oyuncuRolIstatistikleri[id].sure += (m.sure_saniye || 0);
                 if (m.sonuc === "Zafer" || m.sonuc === "Galibiyet") oyuncuRolIstatistikleri[id].zafer++;
             });
 
             let siraliUzmanlar = Object.values(oyuncuRolIstatistikleri).map(veri => {
-                let sp = ((veri.zafer + 1) / (veri.mac + 2)) * 100;
-                let kdaSaf = veri.td === 0 ? (veri.tk + veri.ta) : ((veri.tk + veri.ta) / veri.td);
+                let sp = ((veri.zafer + 1) / (veri.mac + 2)) * 100; let kdaSaf = veri.td === 0 ? (veri.tk + veri.ta) : ((veri.tk + veri.ta) / veri.td);
                 return { isim: veri.isim, rol: veri.rol, veri: veri, sp: sp, kda: kdaSaf };
             });
             
-            siraliUzmanlar.sort((a, b) => {
-                if (Math.abs(b.sp - a.sp) < 0.01) return b.kda - a.kda;
-                return b.sp - a.sp;
-            });
+            siraliUzmanlar.sort((a, b) => { if (Math.abs(b.sp - a.sp) < 0.01) return b.kda - a.kda; return b.sp - a.sp; });
 
             let roleGroups = {};
-            siraliUzmanlar.forEach(u => {
-                if(!roleGroups[u.rol]) roleGroups[u.rol] = [];
-                roleGroups[u.rol].push(u);
-            });
+            siraliUzmanlar.forEach(u => { if(!roleGroups[u.rol]) roleGroups[u.rol] = []; roleGroups[u.rol].push(u); });
 
             const tamRolIsimleri = { "TOP": "Üst Koridor", "JUNGLE": "Orman", "MIDDLE": "Orta Koridor", "BOTTOM": "Nişancı", "UTILITY": "Destek", "BELIRSIZ": "Belirsiz" };
             let sortedRoles = Object.keys(roleGroups).sort((a,b) => (rolSiralamaGucu[a] || 99) - (rolSiralamaGucu[b] || 99));
-            
             let htmlIcerik = `<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start; width: 100%; margin-top: 20px;">`;
 
             sortedRoles.forEach(rol => {
                 let rolText = tamRolIsimleri[rol] || "Belirsiz";
-                
                 htmlIcerik += `
                     <div style="flex: 1; min-width: 350px; max-width: 500px; background: #090c10; border-radius: 12px; padding: 15px; border: 1px solid #30363d; box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
                         <div style="border-bottom: 2px solid #58a6ff; margin-bottom: 12px; padding-bottom: 8px;">
                             <h3 style="color: #ffffff; margin: 0; font-size: 1.05em; text-transform: uppercase; display:flex; align-items:center; justify-content: space-between;">
-                                <span>${rolText}</span>
-                                <span style="font-size:0.75em; color:#0d1117; background:#58a6ff; padding:3px 10px; border-radius:12px; font-weight:bold;">${roleGroups[rol].length} Oyuncu</span>
+                                <span>${rolText}</span><span style="font-size:0.75em; color:#0d1117; background:#58a6ff; padding:3px 10px; border-radius:12px; font-weight:bold;">${roleGroups[rol].length} Oyuncu</span>
                             </h3>
                         </div>
                         <div style="display: flex; flex-direction: column; gap: 10px;">
                 `;
 
                 roleGroups[rol].forEach((uzman, index) => {
-                    let isim = uzman.isim; 
-                    let veri = uzman.veri;
-                    let wr = ((veri.zafer / veri.mac) * 100).toFixed(0);
-                    let spSkor = uzman.sp.toFixed(0);
+                    let isim = uzman.isim; let veri = uzman.veri;
+                    let wr = ((veri.zafer / veri.mac) * 100).toFixed(0); let spSkor = uzman.sp.toFixed(0);
                     let kdaText = `${(veri.tk/veri.mac).toFixed(1)} / ${(veri.td/veri.mac).toFixed(1)} / ${(veri.ta/veri.mac).toFixed(1)}`;
-                    let csMin = (veri.cs / (veri.sure ? (veri.sure/60) : 1)).toFixed(1);
-                    
-                    let siraEtiketi = index === 0 ? "👑 #1" : `#${index+1}`;
+                    let csMin = (veri.cs / (veri.sure ? (veri.sure/60) : 1)).toFixed(1); let siraEtiketi = index === 0 ? "👑 #1" : `#${index+1}`;
+
+                    let guncelId = guncelRiotID[isim] || veri.riot_id;
 
                     htmlIcerik += `
                         <div class="oyuncu-karti kart-sirali uzman-karti" style="margin: 0; padding: 12px; max-width: 100%;">
@@ -1526,11 +1342,10 @@
                                     <div class="sira-badge" style="width: 35px; font-size: 1.1em; margin: 0; text-align: center; flex-shrink: 0;">${siraEtiketi}</div>
                                     <img src="${resimUrlGetir(aktifSampiyonFiltresi)}" style="width:40px; height:40px; border-radius:50%; border:2px solid #30363d; flex-shrink: 0;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
                                     <div style="display: flex; flex-direction: column; line-height: 1.2; overflow: hidden;">
-                                        <span style="font-size:1em; font-weight:bold; color:#ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${veri.riot_id}</span>
+                                        <span style="font-size:1em; font-weight:bold; color:#ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${guncelId}</span>
                                         <span style="font-size:0.8em; color:#8b949e; font-style:italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${isim}</span>
                                     </div>
                                 </div>
-                                
                                 <div style="display: flex; flex-direction: column; align-items: flex-end; text-align: right; flex-shrink: 0;">
                                     <div style="display: flex; align-items: center; gap: 8px;">
                                         <div style="font-size: 1.1em; font-weight: bold; color: ${wr >= 50 ? '#3fb950' : '#f85149'};">%${wr} WR</div>
@@ -1545,12 +1360,9 @@
                         </div>
                     `;
                 });
-                
                 htmlIcerik += `</div></div>`; 
             });
-            
-            htmlIcerik += `</div>`; 
-            vitrin.innerHTML = htmlIcerik;
+            htmlIcerik += `</div>`; vitrin.innerHTML = htmlIcerik;
         }
 
         document.getElementById("btn-mod-bireysel").addEventListener("click", () => {
@@ -1573,11 +1385,8 @@
 
         document.querySelectorAll('#sinerji-tabs .tab-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                document.querySelectorAll('#sinerji-tabs .tab-btn').forEach(b => b.classList.remove('aktif'));
-                e.target.classList.add('aktif'); 
-                let val = e.target.getAttribute('data-sinerji');
-                aktifSinerjiBoyutu = isNaN(val) ? val : parseInt(val); 
-                window.ekraniGuncelle(true);
+                document.querySelectorAll('#sinerji-tabs .tab-btn').forEach(b => b.classList.remove('aktif')); e.target.classList.add('aktif'); 
+                let val = e.target.getAttribute('data-sinerji'); aktifSinerjiBoyutu = isNaN(val) ? val : parseInt(val); window.ekraniGuncelle(true);
             });
         });
 
