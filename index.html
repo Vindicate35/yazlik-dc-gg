@@ -147,6 +147,14 @@
         .duo-baglanti::after { content: 'Sinerji Bağlantısı'; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); background: #0d1117; padding: 0 10px; color: #e91e63; font-size: 0.8em; font-weight: bold; }
         
         .zaman-etiketi { color: #8b949e; font-size: 0.85em; white-space: nowrap; display: flex; gap: 10px; justify-content: flex-end; width: 100%; margin-top: -5px; margin-bottom: 10px;}
+
+        /* Yeni Formasyon Stilleri */
+        .formasyon-kutusu { background: #090c10; border: 1px dashed #30363d; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+        .formasyon-satir { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #21262d; padding: 8px 0; }
+        .formasyon-satir:last-child { border-bottom: none; padding-bottom: 0; }
+        .formasyon-detay { flex-grow: 1; display: flex; gap: 10px; flex-wrap: wrap; }
+        .formasyon-rol-etiket { font-size: 0.8em; background: #161b22; border: 1px solid #30363d; color: #c9d1d9; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 5px; }
+        .formasyon-isim { color: #58a6ff; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -154,7 +162,7 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.0.0</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.1.0</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
@@ -299,6 +307,7 @@
         window.aktifLiderlikOyuncu = "Hepsi";
         window.ozelFiltre = null; 
         window.aktifSinerjiEkibi = null; 
+        window.aktifFormasyonFiltresi = null; 
         
         window.aktifSinerjiOyuncular = [];
         window.aktifBireyselAltFiltre = 'hepsi';
@@ -307,7 +316,7 @@
         window.itemVeritabani = {}; 
         window.tumMacMaxAsist = {};
 
-        const rolCeviri = { "TOP": "Üst Koridor", "JUNGLE": "Ormancı", "MIDDLE": "Orta Koridor", "BOTTOM": "Nişancı", "UTILITY": "Destek", "BELIRSIZ": "Belirsiz" };
+        const rolCeviri = { "TOP": "Üst", "JUNGLE": "Orman", "MIDDLE": "Orta", "BOTTOM": "Nişancı", "UTILITY": "Destek", "BELIRSIZ": "Belirsiz" };
         const rolSiralamaGucu = { "TOP": 1, "JUNGLE": 2, "MIDDLE": 3, "BOTTOM": 4, "UTILITY": 5, "BELIRSIZ": 99 };
 
         const CACHE_KEY = "yazlik_dc_arşiv";
@@ -331,7 +340,6 @@
             return idB - idA; 
         };
 
-        // YENİ: CS/min (cs_dk) parametresi ile oyun stili hesaplama
         function davranisHesapla(k, d, a, rol, vizyon, kontrol, cs_dk) {
             let kdaSaf = d === 0 ? (k + a) : ((k + a) / d);
             let skorKatkisi = k + a;
@@ -419,7 +427,7 @@
                 });
                 tumVeriler = tumVeriler.filter(v => macGrupKapasitesi[v.mac_id] >= 2);
 
-                // ZAMAN SENKRONİZASYONU (İMECE)
+                // ZAMAN SENKRONİZASYONU
                 let macZamanlari = {};
                 tumVeriler.forEach(v => {
                     if(v.tarih_ms && (!macZamanlari[v.mac_id] || v.tarih_ms > macZamanlari[v.mac_id].tarih_ms)) {
@@ -478,8 +486,9 @@
             }, 50);
         }
 
-        window.sinerjiFiltrele = function(ekip) {
+        window.sinerjiFiltrele = function(ekip, formasyon_id = null) {
             window.aktifSinerjiEkibi = ekip;
+            window.aktifFormasyonFiltresi = formasyon_id;
             ekraniGuncelle(false);
             setTimeout(() => {
                 if(ekip) {
@@ -501,6 +510,7 @@
                 btnEl.classList.add("aktif");
             }
             window.aktifSinerjiEkibi = null; 
+            window.aktifFormasyonFiltresi = null;
             ekraniGuncelle(false);
         }
 
@@ -527,6 +537,7 @@
                 window.ozelFiltre = null; 
                 window.aktifLiderlikOyuncu = "Hepsi";
                 window.aktifSinerjiEkibi = null;
+                window.aktifFormasyonFiltresi = null;
                 
                 window.aktifSinerjiOyuncular = [];
                 document.querySelectorAll('#sinerji-filtre-kutusu .chip-btn').forEach(b => b.classList.remove('aktif'));
@@ -617,6 +628,7 @@
                 esyalarHtml += '</div>';
 
                 let csMin = ((oyuncu.cs || 0) / oyunSuresi_dk).toFixed(1);
+                let rolText = rolCeviri[oyuncu.pozisyon] || 'Belirsiz';
 
                 oyuncularHtml += `
                     <div class="sinerji-satir" style="${satirBg} padding: 8px 15px; margin-bottom:2px;">
@@ -626,7 +638,7 @@
                                 <span class="s-gercek">${oyuncu.riot_id}</span>
                                 <span class="s-samp">
                                     ${formatSampiyon(oyuncu.sampiyon)} 
-                                    ${rolCeviri[oyuncu.pozisyon] !== 'Belirsiz' ? `- <span class="rol-etiket" style="font-size:0.75em; padding:1px 5px;">${rolCeviri[oyuncu.pozisyon]}</span>` : ''}
+                                    ${rolText !== 'Belirsiz' ? `- <span class="rol-etiket" style="font-size:0.75em; padding:1px 5px;">${rolText}</span>` : ''}
                                 </span>
                             </div>
                         </div>
@@ -1167,7 +1179,7 @@
                 return;
             }
 
-            bilgiKutusu.innerHTML = `<div style="background: rgba(88, 166, 255, 0.1); border: 1px solid rgba(88, 166, 255, 0.3); border-radius: 8px; padding: 12px 20px; margin-bottom: 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6;"><b style="color: #58a6ff;">ℹ️ Sinerji Puanı (SP) Nedir?</b><br>Sistem, maç sayısı az olan şanslı gruplar (%100 WR - 1 Maç) yerine, çok maç atıp istikrar sağlayan grupları (%80 WR - 10 Maç) öne çıkarmak için veri bilimindeki <b>Laplace Düzeltmesini (Laplace Smoothing)</b> kullanır. Bu sayede sadece tesadüfen kazananlar değil, gerçekten sinerjisi oturmuş kemik kadrolar sıralamada zirveye yerleşir.</div>`;
+            bilgiKutusu.innerHTML = `<div style="background: rgba(88, 166, 255, 0.1); border: 1px solid rgba(88, 166, 255, 0.3); border-radius: 8px; padding: 12px 20px; margin-bottom: 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6;"><b style="color: #58a6ff;">ℹ️ Sinerji Puanı (SP) Nedir?</b><br>Sistem, takımların kazanma oranlarına <b>Laplace Düzeltmesi</b> uygulayarak şans faktörünü (1 maçta %100 WR) eler. Buna ek olarak, bir ekip farklı rollerle (Formasyonlar) oynayıp yine de kazanabiliyorsa, sistem bu <b>Rol Esnekliğini</b> ödüllendirerek ekibin Sinerji Puanını yukarı çeker. Takım ne kadar esnekse, SP o kadar artar.</div>`;
 
             const macGruplari = {};
             temelVeriler.forEach(v => { if(!macGruplari[v.mac_id]) macGruplari[v.mac_id] = []; macGruplari[v.mac_id].push(v); });
@@ -1209,17 +1221,34 @@
             filtrelenmisMaclar.forEach(grup => {
                 let sortedIsimler = grup.map(o => o.oyuncu).sort();
                 let ekipIsmi = sortedIsimler.join(" + ");
+                
                 if(aktifSinerjiBoyutu === "alt_koridor") {
                     ekipIsmi = grup.map(o => `${o.oyuncu} (${rolCeviri[o.pozisyon]})`).sort().join(" + ");
                 }
-                if(!kompIstatistik[ekipIsmi]) kompIstatistik[ekipIsmi] = { mac: 0, zafer: 0, orjinal_isimler: sortedIsimler.join(" + ") };
+                
+                if(!kompIstatistik[ekipIsmi]) kompIstatistik[ekipIsmi] = { mac: 0, zafer: 0, orjinal_isimler: sortedIsimler.join(" + "), formasyonlar: {} };
+                
+                let s_formasyon = grup.map(o => `${o.oyuncu}_${o.pozisyon}`).sort().join("|");
+                if(!kompIstatistik[ekipIsmi].formasyonlar[s_formasyon]) {
+                    kompIstatistik[ekipIsmi].formasyonlar[s_formasyon] = { mac: 0, zafer: 0, detay: grup.map(o => ({isim: o.oyuncu, rol: o.pozisyon})) };
+                }
+                
                 kompIstatistik[ekipIsmi].mac++;
-                if(grup[0].sonuc === "Zafer" || grup[0].sonuc === "Galibiyet") kompIstatistik[ekipIsmi].zafer++;
+                kompIstatistik[ekipIsmi].formasyonlar[s_formasyon].mac++;
+                
+                if(grup[0].sonuc === "Zafer" || grup[0].sonuc === "Galibiyet") {
+                    kompIstatistik[ekipIsmi].zafer++;
+                    kompIstatistik[ekipIsmi].formasyonlar[s_formasyon].zafer++;
+                }
             });
 
             let siraliKomplar = Object.entries(kompIstatistik).map(k => {
-                let sp = ((k[1].zafer + 1) / (k[1].mac + 2)) * 100;
-                return { isim: k[0], mac: k[1].mac, zafer: k[1].zafer, sp: sp, orjinal_isimler: k[1].orjinal_isimler };
+                let wrLaplace = (k[1].zafer + 1) / (k[1].mac + 2);
+                let formasyonSayisi = Object.keys(k[1].formasyonlar).length;
+                let flexKatsayisi = aktifSinerjiBoyutu === "alt_koridor" ? 0 : (formasyonSayisi * 0.05);
+                let sp = (wrLaplace + flexKatsayisi) * 100;
+                
+                return { isim: k[0], mac: k[1].mac, zafer: k[1].zafer, sp: sp, orjinal_isimler: k[1].orjinal_isimler, formasyonlar: k[1].formasyonlar };
             });
             siraliKomplar.sort((a, b) => b.sp - a.sp); 
 
@@ -1228,19 +1257,52 @@
                 let spSkor = komp.sp.toFixed(0);
                 let barRengi = wr >= 50 ? "#3fb950" : "#f85149";
                 let clickIsim = komp.orjinal_isimler;
-                let clickAttr = `onclick="window.sinerjiFiltrele('${clickIsim}')" title="Bu ekibin oynadığı maçları görmek için tıkla"`;
+                
+                let formasyonPaneliId = `formasyon_${index}`;
+                let formasyonHtml = "";
+                
+                if (aktifSinerjiBoyutu !== "alt_koridor") {
+                    let siraliFormasyonlar = Object.entries(komp.formasyonlar).sort((a,b) => b[1].mac - a[1].mac);
+                    
+                    siraliFormasyonlar.forEach(f => {
+                        let f_wr = ((f[1].zafer / f[1].mac) * 100).toFixed(0);
+                        let f_renk = f_wr >= 50 ? "#3fb950" : "#f85149";
+                        
+                        let rolEtiketleri = f[1].detay.sort((a, b) => (rolSiralamaGucu[a.rol] || 99) - (rolSiralamaGucu[b.rol] || 99)).map(p => {
+                            return `<span class="formasyon-rol-etiket"><span class="formasyon-isim">${p.isim}:</span> ${rolCeviri[p.rol] || 'Belirsiz'}</span>`;
+                        }).join("");
+                        
+                        let clickFormasyonAttr = `onclick="window.sinerjiFiltrele('${clickIsim}', '${f[0]}')" style="cursor:pointer;" title="Sadece bu kadro yapısıyla atılan maçları göster"`;
+
+                        formasyonHtml += `
+                            <div class="formasyon-satir tiklanabilir-tr" ${clickFormasyonAttr}>
+                                <div class="formasyon-detay">${rolEtiketleri}</div>
+                                <div style="min-width: 120px; text-align: right;">
+                                    <span style="color:#8b949e; font-size:0.9em; margin-right:10px;">${f[1].mac} Maç</span>
+                                    <span style="color:${f_renk}; font-weight:bold;">%${f_wr} WR</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                let formasyonKutuHtml = formasyonHtml ? `<tr id="${formasyonPaneliId}" class="gizle" style="background:#0d1117;"><td colspan="4" style="padding: 15px;"><div class="formasyon-kutusu"><div style="color:#8b949e; font-size:0.85em; text-transform:uppercase; font-weight:bold; margin-bottom:10px;">Kadro Formasyonları (Dizilişler)</div>${formasyonHtml}</div></td></tr>` : "";
+                
+                let baslikTiklaAttr = `onclick="window.sinerjiFiltrele('${clickIsim}')"`;
+                if (aktifSinerjiBoyutu !== "alt_koridor") baslikTiklaAttr = `onclick="window.kutuAc('${formasyonPaneliId}', event)" title="Kadro formasyonlarını görmek için tıkla"`;
 
                 return `
-                    <tr class="tiklanabilir-tr" ${clickAttr}>
+                    <tr class="tiklanabilir-tr" ${baslikTiklaAttr}>
                         <td style="color:#8b949e;">#${index+1}</td>
                         <td style="color:#c9d1d9;">${komp.isim}</td>
                         <td>${komp.mac} Maç</td>
                         <td style="color: ${barRengi}; font-weight: bold;">
                             %${wr} 
-                            <span class="sinerji-skor-etiket" title="Ağırlıklı Sinerji Puanı">SP:&nbsp;${spSkor}</span>
+                            <span class="sinerji-skor-etiket" title="Ağırlıklı Sinerji Puanı (Rol Esnekliği Dahil)">SP:&nbsp;${spSkor}</span>
                             <div class="oran-bar-arkasi"><div class="oran-bar-ici" style="width: ${wr}%; background-color: ${barRengi};"></div></div>
                         </td>
                     </tr>
+                    ${formasyonKutuHtml}
                 `;
             }).join("");
 
@@ -1257,12 +1319,21 @@
             let gosterimHTML_Ek = "";
             if (window.aktifSinerjiEkibi) {
                 filtrelenmisMaclar = filtrelenmisMaclar.filter(grup => {
-                    return grup.map(o => o.oyuncu).sort().join(" + ") === window.aktifSinerjiEkibi;
+                    let isimUyumu = grup.map(o => o.oyuncu).sort().join(" + ") === window.aktifSinerjiEkibi;
+                    if(aktifSinerjiBoyutu === "alt_koridor") isimUyumu = grup.map(o => `${o.oyuncu} (${rolCeviri[o.pozisyon]})`).sort().join(" + ") === window.aktifSinerjiEkibi;
+                    
+                    if (isimUyumu && window.aktifFormasyonFiltresi) {
+                        return grup.map(o => `${o.oyuncu}_${o.pozisyon}`).sort().join("|") === window.aktifFormasyonFiltresi;
+                    }
+                    return isimUyumu;
                 });
+                
+                let baslikEk = window.aktifFormasyonFiltresi ? "seçilen kadro formasyonuyla oynadığı" : "";
+
                 gosterimHTML_Ek = `
                 <div style="background: rgba(88,166,255,0.1); border: 1px solid #58a6ff; padding: 15px 20px; border-radius: 8px; margin: 0 auto 20px auto; width: 100%; max-width: 900px; display:flex; justify-content:space-between; align-items:center; box-sizing: border-box;">
-                    <span style="color:#c9d1d9; font-size:1.1em;"><b style="color:#ffffff;">${window.aktifSinerjiEkibi}</b> ekibinin maçları listeleniyor.</span>
-                    <button onclick="window.sinerjiFiltrele(null)" class="yenile-btn" style="padding: 6px 15px; font-size:0.9em; background:#f85149; border-color:#f85149; box-shadow:none;">❌ Temizle</button>
+                    <span style="color:#c9d1d9; font-size:1.1em;"><b style="color:#ffffff;">${window.aktifSinerjiEkibi}</b> ekibinin ${baslikEk} maçlar listeleniyor.</span>
+                    <button onclick="window.sinerjiFiltrele(null, null)" class="yenile-btn" style="padding: 6px 15px; font-size:0.9em; background:#f85149; border-color:#f85149; box-shadow:none;">❌ Temizle</button>
                 </div>`;
             }
 
@@ -1276,6 +1347,8 @@
                 const sonuc = zaferMi ? "Zafer" : "Bozgun"; const sinif = zaferMi ? "mac-galibiyet" : "mac-bozgun";
                 
                 let oyuncularHtml = "";
+                let oyunSuresi_dk = (grup[0].sure_saniye || 60) / 60;
+
                 grup.sort((a, b) => (rolSiralamaGucu[a.pozisyon] || 99) - (rolSiralamaGucu[b.pozisyon] || 99)).forEach(oyuncu => {
                     let durumDamgasi = '';
                     if (oyuncu.olum === 0) durumDamgasi = `<div class="perfect-badge"><span class="badge-ikon">🌟</span></div>`;
@@ -1291,19 +1364,22 @@
                     }
                     esyalarHtml += '</div>';
 
+                    let csMin = ((oyuncu.cs || 0) / oyunSuresi_dk).toFixed(1);
+                    let rolText = rolCeviri[oyuncu.pozisyon] || 'Belirsiz';
+
                     oyuncularHtml += `
                         <div class="sinerji-satir">
                             <div class="s-sol-blok">
                                 <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${oyuncu.sampiyon}.png" class="s-ikon" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
                                 <div class="s-kimlik">
                                     <span class="s-gercek">${oyuncu.riot_id}</span>
-                                    <span class="s-samp">${formatSampiyon(oyuncu.sampiyon)} ${rolCeviri[oyuncu.pozisyon] !== 'Belirsiz' ? `- <span class="rol-etiket" style="font-size:0.75em; padding:1px 5px;">${rolCeviri[oyuncu.pozisyon]}</span>` : ''}</span>
+                                    <span class="s-samp">${formatSampiyon(oyuncu.sampiyon)} ${rolText !== 'Belirsiz' ? `- <span class="rol-etiket" style="font-size:0.75em; padding:1px 5px;">${rolText}</span>` : ''}</span>
                                 </div>
                             </div>
                             <div class="s-orta-blok">
                                 ${esyalarHtml}
                                 <div class="s-vizyon-kutusu">
-                                    <span title="Minyon Skoru (CS)">🗡️ <span class="v-deger">${oyuncu.cs || 0}</span></span>
+                                    <span title="Minyon Skoru (CS)">🗡️ <span class="v-deger">${oyuncu.cs || 0}</span> <span style="font-size:0.8em; color:#8b949e;">(${csMin}/dk)</span></span>
                                     <span style="margin-left:8px;">👁️ ${oyuncu.gorus_skoru || 0}</span>
                                     <span style="margin-left:8px;">📍 ${oyuncu.normal_totem || 0}</span>
                                     <span class="kontrol-vurgu" style="margin-left:8px;">🛑 ${oyuncu.kontrol_totemi || 0}</span>
