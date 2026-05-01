@@ -10,6 +10,7 @@
         
         h1 { margin: 0; color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8); } 
         h1 span { color: #58a6ff; -webkit-text-stroke: 1px #1f6feb; text-shadow: 0 0 15px rgba(88, 166, 255, 0.6); }
+        .versiyon-etiket { font-size: 0.35em; color: #8b949e; vertical-align: middle; margin-left: 10px; font-weight: bold; -webkit-text-stroke: 0; text-shadow: none; letter-spacing: 0; }
         
         .yenile-btn { background: #238636; color: white; border: 1px solid #2ea043; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1em; display: flex; align-items: center; gap: 8px; box-shadow: 0 0 10px rgba(35, 134, 54, 0.2); }
         .yenile-btn:hover { background: #2ea043; box-shadow: 0 0 15px rgba(35, 134, 54, 0.4); }
@@ -125,7 +126,7 @@
         .s-kimlik { display: flex; flex-direction: column; } 
         .s-gercek { font-weight: bold; color: #ffffff; font-size: 1.05em;} 
         .s-samp { color: #8b949e; font-size: 0.85em; white-space: nowrap; }
-        .s-orta-blok { display: flex; flex-direction: column; align-items: center; flex-grow: 1; }
+        .s-orta-blok { display: flex; flex-direction: column; align-items: center; flex-grow: 1; justify-content:center;}
         .s-esya-kutusu { display: flex; gap: 3px; margin-bottom: 4px; } 
         .s-esya, .s-bos-esya { width: 28px; height: 28px; border-radius: 4px; border: 1px solid #30363d; } 
         .s-bos-esya { background-color: #0d1117; border-style: dashed; }
@@ -152,7 +153,9 @@
     <div id="loader-ekrani"><div class="spinner"></div><div class="loader-metin">Arşiv Taranıyor...</div></div>
 
     <div class="ust-bar">
-        <h1 style="color: #ffffff; letter-spacing: -1.5px; font-weight: 800;">YazlıkDC<span>.GG</span></h1>
+        <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.0.0</span>
+        </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
     
@@ -172,6 +175,7 @@
         <div class="lejant-item"><span class="sinerji-skor-etiket" style="margin:0;">SP</span><span>Sinerji Puanı</span></div>
         <div class="lejant-item"><span class="uzmanlik-skor-etiket" style="margin:0;">UP</span><span>Uzmanlık Puanı</span></div>
         <div class="lejant-item" style="color: #ffd700; font-weight: bold; margin-left:10px; border-left: 1px solid #30363d; padding-left: 15px;">👑 #1 Uzman</div>
+        <div class="lejant-item">🗡️ Minyon (CS/min)</div>
         <div class="lejant-item" style="margin-left: 10px; border-left: 1px solid #30363d; padding-left: 15px;">👁️ Görüş Skoru</div>
         <div class="lejant-item">📍 Normal Totem</div>
         <div class="lejant-item" style="color: #f85149;">🛑 Kontrol Totemi</div>
@@ -327,11 +331,13 @@
             return idB - idA; 
         };
 
-        function davranisHesapla(k, d, a, rol, vizyon, kontrol) {
+        // YENİ: CS/min (cs_dk) parametresi ile oyun stili hesaplama
+        function davranisHesapla(k, d, a, rol, vizyon, kontrol, cs_dk) {
             let kdaSaf = d === 0 ? (k + a) : ((k + a) / d);
             let skorKatkisi = k + a;
 
             if (rol === "UTILITY") {
+                if (cs_dk > 2.0) return "💸 Vergi Memuru (Minyon Çalan)";
                 if (k >= 5 && a <= 8) return "⚔️ Sahte Destek (KS Makinesi)";
                 if (vizyon >= 45 && kontrol >= 5 && kdaSaf >= 3.0) return "👁️ Kusursuz Vizyoner";
                 if (d >= 8 && a >= 12) return "🛡️ Takım İçin Feda (Fedakar)";
@@ -340,6 +346,8 @@
                 return "🤝 Görev Adamı (Destek)";
             }
             if (rol === "MIDDLE" || rol === "BOTTOM") {
+                if (cs_dk >= 7.0 && kdaSaf >= 3.0) return "💰 Kusursuz Ekonomi / Taşıyıcı";
+                if (cs_dk < 4.5 && d >= 7.5) return "📉 Ekonomisi Çökmüş / Ağır Yük";
                 if (d >= 9 && kdaSaf < 1.8) return "☠️ Takım Yükü (Kara Delik)";
                 if (k >= 9 && d >= 7.5) return "🔥 Agresif Gladyatör (Risk Alan)";
                 if (d >= 7.5 && k < d + 2) return "⚠️ Pervasız / Yasuo Sendromu"; 
@@ -348,6 +356,8 @@
                 return "⚖️ Dengeli Taşıyıcı";
             }
             if (rol === "JUNGLE") {
+                if (cs_dk >= 6.0) return "🐺 Orman Canavarı / Güçlü Farm";
+                if (cs_dk < 4.0 && skorKatkisi < 10) return "📉 Kampları İhmal Eden";
                 if (k >= 7 && d <= 4.5) return "🐺 Yırtıcı Avcı";
                 if (a >= 15 && vizyon >= 30) return "🗺️ Taktiksel Beyin";
                 if (d >= 7.5 && kdaSaf < 2.0) return "⚠️ Ormanda Kayıp / Besleme";
@@ -355,6 +365,8 @@
                 return "🌲 Objektif Odaklı";
             }
             if (rol === "TOP") {
+                if (cs_dk >= 6.5 && kdaSaf >= 2.5) return "🏰 Baskın Ayrık İttirici";
+                if (cs_dk < 5.0 && d >= 7.0) return "📉 Koridordan Düşmüş";
                 if (d >= 8.5 && skorKatkisi < 7) return "🏚️ Koridoru Dağılan";
                 if (d >= 8 && k < d) return "⚠️ Ayrık İttirme Kurbanı / Pervasız";
                 if (d >= 7.5 && skorKatkisi >= 10) return "⚔️ Gözü Kara Öncü";
@@ -400,7 +412,7 @@
                 });
                 tumVeriler = Object.values(benzersizVeriler); 
 
-                // KESİN VE KÜRESEL YALNIZ KURT FİLTRESİ (Solo Maçları Siler)
+                // KESİN VE KÜRESEL YALNIZ KURT FİLTRESİ
                 let macGrupKapasitesi = {};
                 tumVeriler.forEach(v => {
                     macGrupKapasitesi[v.mac_id] = (macGrupKapasitesi[v.mac_id] || 0) + 1;
@@ -447,7 +459,6 @@
             if(el) { el.classList.toggle('gizle'); }
         }
 
-        // YENİ: DİNAMİK KAYDIRMA FONKSİYONLARI EKLENDİ
         window.liderlikFiltrele = function(oyuncu) {
             window.aktifLiderlikOyuncu = oyuncu;
             window.ozelFiltre = null; 
@@ -585,6 +596,8 @@
         function cizTakimKarti(grup, vurguOyuncu = "") {
             grup.sort((a, b) => (rolSiralamaGucu[a.pozisyon] || 99) - (rolSiralamaGucu[b.pozisyon] || 99));
             let oyuncularHtml = "";
+            let oyunSuresi_dk = (grup[0].sure_saniye || 60) / 60; 
+
             grup.forEach(oyuncu => {
                 let durumDamgasi = '';
                 if (oyuncu.olum === 0) durumDamgasi = `<div class="perfect-badge"><span class="badge-ikon">🌟</span></div>`;
@@ -603,6 +616,8 @@
                 }
                 esyalarHtml += '</div>';
 
+                let csMin = ((oyuncu.cs || 0) / oyunSuresi_dk).toFixed(1);
+
                 oyuncularHtml += `
                     <div class="sinerji-satir" style="${satirBg} padding: 8px 15px; margin-bottom:2px;">
                         <div class="s-sol-blok">
@@ -617,7 +632,12 @@
                         </div>
                         <div class="s-orta-blok">
                             ${esyalarHtml}
-                            <div class="s-vizyon-kutusu"><span>👁️ ${oyuncu.gorus_skoru || 0}</span><span>📍 ${oyuncu.normal_totem || 0}</span><span class="kontrol-vurgu">🛑 ${oyuncu.kontrol_totemi || 0}</span></div>
+                            <div class="s-vizyon-kutusu">
+                                <span title="CS / CS per Min">🗡️ <span class="v-deger">${oyuncu.cs || 0}</span> <span style="font-size:0.8em; color:#8b949e;">(${csMin}/dk)</span></span>
+                                <span style="margin-left:8px;">👁️ ${oyuncu.gorus_skoru || 0}</span>
+                                <span style="margin-left:8px;">📍 ${oyuncu.normal_totem || 0}</span>
+                                <span class="kontrol-vurgu" style="margin-left:8px;">🛑 ${oyuncu.kontrol_totemi || 0}</span>
+                            </div>
                         </div>
                         <div class="s-sag-blok">${durumDamgasi}<div class="s-kda">${oyuncu.kda}</div></div>
                     </div>
@@ -637,10 +657,15 @@
             veriler.forEach(v => {
                 let safRol = v.pozisyon || "BELIRSIZ"; if(safRol === "BELIRSIZ" || safRol === "INVALID") return;
                 let id = v.oyuncu + "_" + safRol;
-                if(!oyuncuRolSkorlari[id]) oyuncuRolSkorlari[id] = { isim: v.oyuncu, rol: safRol, mac: 0, zafer: 0, k:0, d:0, a:0, gorus:0, sampiyonlar: {} };
+                if(!oyuncuRolSkorlari[id]) oyuncuRolSkorlari[id] = { isim: v.oyuncu, rol: safRol, mac: 0, zafer: 0, k:0, d:0, a:0, gorus:0, cs:0, sure:0, sampiyonlar: {} };
+                
                 oyuncuRolSkorlari[id].mac++;
                 if(v.sonuc === "Zafer" || v.sonuc === "Galibiyet") oyuncuRolSkorlari[id].zafer++;
-                oyuncuRolSkorlari[id].k += v.oldurme; oyuncuRolSkorlari[id].d += v.olum; oyuncuRolSkorlari[id].a += v.asist; oyuncuRolSkorlari[id].gorus += (v.gorus_skoru || 0);
+                
+                oyuncuRolSkorlari[id].k += v.oldurme; oyuncuRolSkorlari[id].d += v.olum; oyuncuRolSkorlari[id].a += v.asist; 
+                oyuncuRolSkorlari[id].gorus += (v.gorus_skoru || 0);
+                oyuncuRolSkorlari[id].cs += (v.cs || 0);
+                oyuncuRolSkorlari[id].sure += (v.sure_saniye || 0);
                 oyuncuRolSkorlari[id].sampiyonlar[v.sampiyon] = (oyuncuRolSkorlari[id].sampiyonlar[v.sampiyon] || 0) + 1;
             });
 
@@ -650,8 +675,11 @@
                 let kda = o.d === 0 ? (o.k + o.a) : ((o.k + o.a)/o.d);
                 let gorusAvg = o.gorus / o.mac;
                 let havuzBoyutu = Object.keys(o.sampiyonlar).length;
+                let cs_dk = o.cs / (o.sure ? (o.sure/60) : 1);
                 
-                o.taktikselSkor = (wrLaplace * hacimCari * 50) + (kda * 3) + (gorusAvg * 0.2) + (havuzBoyutu * 1.5);
+                let csEtkisi = o.rol === "UTILITY" ? 0 : (cs_dk * 3);
+                
+                o.taktikselSkor = (wrLaplace * hacimCari * 50) + (kda * 3) + (gorusAvg * 0.2) + (havuzBoyutu * 1.5) + csEtkisi;
                 o.enIyiSampiyon = Object.keys(o.sampiyonlar).reduce((a, b) => o.sampiyonlar[a] > o.sampiyonlar[b] ? a : b);
                 return o;
             });
@@ -739,6 +767,7 @@
 
                 let toplamMac = oyuncuTumMaclari.length;
                 let toplamK = 0, toplamD = 0, toplamA = 0, toplamGorus = 0, zaferSayisi = 0;
+                let toplamCS = 0, toplamSure = 0;
                 let sampiyonSayaclari = {}; let rolSayaclari = {}; let esyaSayaclari = {};
                 let perfSayisi = 0; let utancSayisi = 0; let asistKraliSayisi = 0; let totNormal = 0; let totKontrol = 0;
 
@@ -746,6 +775,8 @@
                     oyuncuTumMaclari.forEach(m => {
                         toplamK += m.oldurme; toplamD += m.olum; toplamA += m.asist; 
                         toplamGorus += (m.gorus_skoru || 0); totNormal += (m.normal_totem || 0); totKontrol += (m.kontrol_totemi || 0);
+                        toplamCS += (m.cs || 0);
+                        toplamSure += (m.sure_saniye || 0);
                         
                         if(m.olum === 0) perfSayisi++;
                         if(m.olum > 11) utancSayisi++;
@@ -777,8 +808,8 @@
                     });
 
                     let ortK = (toplamK / toplamMac).toFixed(1); let ortD = (toplamD / toplamMac).toFixed(1); let ortA = (toplamA / toplamMac).toFixed(1);
+                    let ortCS_dk = (toplamCS / (toplamSure ? (toplamSure/60) : 1)).toFixed(1);
                     let kdaSaf = toplamD === 0 ? (toplamK + toplamA) : ((toplamK + toplamA) / toplamD);
-                    let avgV = toplamGorus / toplamMac;
                     let winRate = ((zaferSayisi / toplamMac) * 100).toFixed(0);
                     let genelWrRenk = winRate >= 50 ? "#3fb950" : "#f85149";
 
@@ -798,23 +829,11 @@
                     let favoriEsyaHtml = siraliEsyalar.map(e => `<img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${e[0]}.png" style="width: 32px; height: 32px; border-radius: 4px; border: 1px solid #30363d;" title="${e[1]} Kere Alındı">`).join(" ");
                     if(favoriEsyaHtml === "") favoriEsyaHtml = "<span style='font-size:0.8em; color:#8b949e;'>Yeterli eşya verisi yok.</span>";
 
-                    let tarzlar = [];
-                    if (anaRol_EN === "UTILITY") {
-                        if (ortK >= 5 && ortA <= 8) tarzlar.push({ isim: "⚔️ Sahte Destek", renk: "#ff6b6b" });
-                        else if (avgV >= 45 && totKontrol/toplamMac >= 5 && kdaSaf >= 3.0) tarzlar.push({ isim: "👁️ Kusursuz Vizyoner", renk: "#d2a8ff" });
-                        else if (ortD >= 8 && ortA >= 12) tarzlar.push({ isim: "🛡️ Fedakar", renk: "#3fb950" });
-                        else if (ortD >= 7.5 && kdaSaf < 2.0) tarzlar.push({ isim: "⚠️ Ağır Besleme", renk: "#ff6b6b" });
-                        else if (kdaSaf >= 3.5) tarzlar.push({ isim: "👼 Kanat Önderi", renk: "#ffd700" });
-                    } else {
-                        if (ortD >= 9 && kdaSaf < 1.8) tarzlar.push({ isim: "☠️ Takım Yükü", renk: "#ff6b6b" });
-                        else if (ortK >= 9 && ortD >= 7.5) tarzlar.push({ isim: "🔥 Agresif Gladyatör", renk: "#ff9800" });
-                        else if (ortD >= 7.5 && ortK < ortD + 2) tarzlar.push({ isim: "⚠️ Yasuo Sendromu", renk: "#ff6b6b" });
-                        else if (ortK >= 8 && ortD <= 4.5) tarzlar.push({ isim: "🥷 Gölge Suikastçisi", renk: "#58a6ff" });
-                        else if (kdaSaf >= 3.5 && ortK >= 6) tarzlar.push({ isim: "🌟 Hiper Taşıyıcı", renk: "#ffd700" });
-                    }
-                    if (tarzlar.length === 0) tarzlar.push({ isim: "⚖️ Dengeli Oynanış", renk: "#8b949e" });
-
-                    let oyunTarziHtml = tarzlar.map(t => `<div style="margin:2px; font-size:0.9em; font-weight:bold; color:${t.renk}; border: 1px solid ${t.renk}44; background: ${t.renk}11; padding: 4px 8px; border-radius: 6px; display:inline-block;">${t.isim}</div>`).join("");
+                    let avgV = toplamGorus / toplamMac;
+                    let avgKntrl = totKontrol / toplamMac;
+                    
+                    let behavior = davranisHesapla(toplamK/toplamMac, toplamD/toplamMac, toplamA/toplamMac, anaRol_EN, avgV, avgKntrl, parseFloat(ortCS_dk));
+                    let oyunTarziHtml = `<div style="margin:2px; font-size:0.9em; font-weight:bold; color:#58a6ff; border: 1px solid rgba(88,166,255,0.4); background: rgba(88,166,255,0.1); padding: 4px 8px; border-radius: 6px; display:inline-block;">${behavior}</div>`;
 
                     ozetAlani.innerHTML = `
                         <div class="ozet-panosu">
@@ -826,6 +845,7 @@
                             <div class="ozet-kutu" style="text-align: center; border-left: 1px solid #30363d;">
                                 <h3>Ortalama KDA</h3>
                                 <div class="deger vurgu">${ortK} / ${ortD} / ${ortA}</div>
+                                <div style="color:#8b949e; font-size:0.9em; margin-top:4px;">Ortalama CS/min: <span style="color:#ffffff;">${ortCS_dk}</span></div>
                                 <div style="margin-top:12px;">${oyunTarziHtml}</div>
                             </div>
                             <div class="ozet-kutu" style="padding-left: 20px; border-left: 1px solid #30363d;">
@@ -870,11 +890,12 @@
 
                     let c_mac = gosterilecekler.length;
                     if(c_mac > 0) {
-                        let c_k = 0, c_d = 0, c_a = 0, c_win = 0, c_gorus = 0, c_kontrol = 0;
+                        let c_k = 0, c_d = 0, c_a = 0, c_win = 0, c_gorus = 0, c_kontrol = 0, c_cs = 0, c_sure = 0;
                         let c_rol = {}; let c_esya = {};
                         gosterilecekler.forEach(m => {
                             c_k += m.oldurme; c_d += m.olum; c_a += m.asist;
                             c_gorus += (m.gorus_skoru || 0); c_kontrol += (m.kontrol_totemi || 0);
+                            c_cs += (m.cs || 0); c_sure += (m.sure_saniye || 0);
                             
                             if(m.sonuc === "Zafer" || m.sonuc === "Galibiyet") c_win++;
                             let s_rol = m.pozisyon || "BELIRSIZ";
@@ -894,6 +915,7 @@
                         });
 
                         let c_ortK = (c_k / c_mac).toFixed(1); let c_ortD = (c_d / c_mac).toFixed(1); let c_ortA = (c_a / c_mac).toFixed(1);
+                        let c_ortCS_dk = (c_cs / (c_sure ? (c_sure/60) : 1)).toFixed(1);
                         let c_wr = ((c_win / c_mac) * 100).toFixed(0);
                         let c_wrRenk = c_wr >= 50 ? "#3fb950" : "#f85149";
                         let c_anaRol = Object.entries(c_rol).sort((a, b) => b[1] - a[1]);
@@ -901,7 +923,7 @@
                         let c_anaRolTxt = c_anaRol.length > 0 ? rolCeviri[c_anaRolTxt_Eng] : "Belirsiz";
                         let c_favEsyalar = Object.entries(c_esya).sort((a,b) => b[1] - a[1]).slice(0, 6).map(e => `<img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${e[0]}.png" style="width:28px; border-radius:4px; border:1px solid #30363d;" title="${e[1]} Kere Alındı">`).join("");
                         
-                        let behavior = davranisHesapla(c_k/c_mac, c_d/c_mac, c_a/c_mac, c_anaRolTxt_Eng, c_gorus/c_mac, c_kontrol/c_mac);
+                        let behavior = davranisHesapla(c_k/c_mac, c_d/c_mac, c_a/c_mac, c_anaRolTxt_Eng, c_gorus/c_mac, c_kontrol/c_mac, parseFloat(c_ortCS_dk));
 
                         sagKolon.innerHTML = `
                             <div class="liderlik-panosu">
@@ -916,6 +938,10 @@
                                 <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
                                     <span style="color:#8b949e">Ortalama KDA</span>
                                     <span style="font-weight:bold; color:#58a6ff;">${c_ortK} / ${c_ortD} / ${c_ortA}</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                                    <span style="color:#8b949e">Ortalama CS/min</span>
+                                    <span style="font-weight:bold; color:#ffffff;">${c_ortCS_dk}</span>
                                 </div>
                                 <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
                                     <span style="color:#8b949e">Ana Rol</span>
@@ -1063,6 +1089,7 @@
 
                 let panelId = `detay_${veri.mac_id}_${index}`;
                 let panelSinif = window.ozelFiltre ? "" : "gizle"; 
+                let csMin = ((veri.cs || 0) / (veri.sure_saniye / 60)).toFixed(1);
 
                 vitrin.innerHTML += `
                     <div class="oyuncu-karti tiklanabilir-karti ${sinirSinifi}" onclick="window.kutuAc('${panelId}', event)" title="Tüm takımı görmek için tıkla">
@@ -1082,6 +1109,7 @@
                         <div class="kart-alt">
                             ${esyalarHtml}
                             <div class="vizyon-kutusu" style="display:flex; gap:12px; font-size: 0.8em;">
+                                <span title="CS Skoru / CS per min">🗡️ <span class="v-deger">${veri.cs || 0}</span> <span style="font-size:0.8em; color:#8b949e;">(${csMin}/dk)</span></span>
                                 <span title="Görüş Skoru">👁️ <span class="v-deger">${veri.gorus_skoru || 0}</span></span>
                                 <span title="Normal Totem">📍 <span class="v-deger">${veri.normal_totem || 0}</span></span>
                                 <span title="Kontrol Totemi" class="kontrol-vurgu">🛑 <span class="v-deger">${veri.kontrol_totemi || 0}</span></span>
@@ -1274,7 +1302,12 @@
                             </div>
                             <div class="s-orta-blok">
                                 ${esyalarHtml}
-                                <div class="s-vizyon-kutusu"><span>👁️ ${oyuncu.gorus_skoru || 0}</span><span>📍 ${oyuncu.normal_totem || 0}</span><span class="kontrol-vurgu">🛑 ${oyuncu.kontrol_totemi || 0}</span></div>
+                                <div class="s-vizyon-kutusu">
+                                    <span title="Minyon Skoru (CS)">🗡️ <span class="v-deger">${oyuncu.cs || 0}</span></span>
+                                    <span style="margin-left:8px;">👁️ ${oyuncu.gorus_skoru || 0}</span>
+                                    <span style="margin-left:8px;">📍 ${oyuncu.normal_totem || 0}</span>
+                                    <span class="kontrol-vurgu" style="margin-left:8px;">🛑 ${oyuncu.kontrol_totemi || 0}</span>
+                                </div>
                             </div>
                             <div class="s-sag-blok">${durumDamgasi}<div class="s-kda">${oyuncu.kda}</div></div>
                         </div>
