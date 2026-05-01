@@ -161,7 +161,7 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.4.0</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.4.3</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
@@ -672,7 +672,7 @@
                     </div>`;
         }
 
-        function hesaplaRuyaTakim(veriler, baslik_txt) {
+       function hesaplaRuyaTakim(veriler, baslik_txt) {
             const rollerVeRenkleri = [ { rol: "TOP", ad: "Üst Koridor", renk: "#ff9800" }, { rol: "JUNGLE", ad: "Ormancı", renk: "#4caf50" }, { rol: "MIDDLE", ad: "Orta Koridor", renk: "#2196f3" }, { rol: "BOTTOM", ad: "Nişancı", renk: "#e91e63" }, { rol: "UTILITY", ad: "Destek", renk: "#9c27b0" } ];
             
             let oyuncuRolSkorlari = {};
@@ -752,7 +752,12 @@
                     let elit = ruyaKadrosuObj[r.rol];
                     let wr = ((elit.zafer / elit.mac) * 100).toFixed(0);
                     let kdaText = elit.d === 0 ? "Kusursuz" : ((elit.k+elit.a)/elit.d).toFixed(2) + " KDA";
-                    htmlKutu += `<div class="ruya-kutu" style="border-top-color: ${r.renk};"><div class="r-rol" style="color: ${r.renk};">${r.ad}</div><img src="${resimUrlGetir(elit.enIyiSampiyon)}" class="r-ikon" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'"><div class="r-isim">${elit.isim}</div><div class="r-istatistik"><span style="color:#ffffff; font-weight:bold;">%${wr} WR</span> (${elit.mac} Maç)<br><span style="color:#58a6ff;">${kdaText}</span></div></div>`;
+                    
+                    // V5.4.3: Rüya takım kartlarında CS/min değerini gösterme operasyonu
+                    let cs_dk = elit.cs / (elit.sure ? (elit.sure/60) : 1);
+                    let csText = r.rol === "UTILITY" ? "" : `<br><span style="color:#ffffff; font-size:0.9em;">CS/min: ${cs_dk.toFixed(1)}</span>`;
+                    
+                    htmlKutu += `<div class="ruya-kutu" style="border-top-color: ${r.renk};"><div class="r-rol" style="color: ${r.renk};">${r.ad}</div><img src="${resimUrlGetir(elit.enIyiSampiyon)}" class="r-ikon" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'"><div class="r-isim">${elit.isim}</div><div class="r-istatistik"><span style="color:#ffffff; font-weight:bold;">%${wr} WR</span> (${elit.mac} Maç)<br><span style="color:#58a6ff;">${kdaText}</span>${csText}</div></div>`;
                 } else {
                     yetersizVeriVarMi = true;
                     htmlKutu += `<div class="ruya-kutu" style="border-top-color: #30363d; opacity:0.5;"><div class="r-rol" style="color: #8b949e;">${r.ad}</div><div style="width:80px; height:80px; border-radius:50%; background:#161b22; border: 3px dashed #30363d; margin:0 auto 10px auto; display:flex; align-items:center; justify-content:center; font-size:2em;">?</div><div class="r-isim" style="color:#8b949e;">Veri Yok</div><div class="r-istatistik">Yetersiz veri.</div></div>`;
