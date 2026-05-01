@@ -185,6 +185,8 @@ PYTHON BOT SÜRÜM GEÇMİŞİ
 •	v2.0.0 (Eski V11): Riot API'den gameCreation (Tarih) ve gameDuration (Maç Süresi) parametrelerinin toplanmaya başlanması.
 
 •	v1.2.0 (Eski V10-V10.1): Botun gereksiz istek atarak kotaları harcamasını önleyen "Firebase Hafızası (Upsert)" mekanizması ve boşluklu isimleri kodlayan (URL Encoding) yapı.
+
 •	v1.1.0 (Eski V9): Yalnızca son maçlar yerine eski sezonları kapsayan derin 300 maçlık tarama limitine çıkılması.
+
 •	v1.0.0 (Eski V8): Tüm ekip üyelerinin tanımlanarak 5 kişilik maçların 2 kişilik görünmesini çözen çoklu tarama sistemi.
 
