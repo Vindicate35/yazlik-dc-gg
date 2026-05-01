@@ -175,10 +175,15 @@ v1.0.0 (Eski V1-V17) - Temel İnşa Dönemi
 •	Firebase veritabanı bağlantılarının kurulduğu, HTML taslağının oluşturulduğu ve temel Riot API çekim işlemlerinin test edildiği geliştirme fazlarıdır.
 ________________________________________
 PYTHON BOT SÜRÜM GEÇMİŞİ
+
 •	v2.3.0 (Eski V14): Penta, Quadra, Çalınan Objektif ve İlk Kan gibi prestij verilerini çeken "Kozmetik Avcısı" zekası entegre edildi. API kotasını korumak için sadece 'penta' verisi eksik olan maçları tespit eden zeki bypass sistemi (Upsert) yazıldı.
+
 •	v2.2.0 (Eski V13): Sabit maç tarama limitleri kaldırılarak, Riot sunucuları boş liste döndürene kadar geçmiş sezonların diplerine inen "Derin Tarama (Infinite Pagination - Arkeolog)" döngüsü eklendi.
+
 •	v2.1.0 (Eski V12): "429 Too Many Requests" hız sınırlarına takıldığında otomatik beklemeye giren (get_guvenli) güvenli istek sistemi (Çelik İrade).
+
 •	v2.0.0 (Eski V11): Riot API'den gameCreation (Tarih) ve gameDuration (Maç Süresi) parametrelerinin toplanmaya başlanması.
+
 •	v1.2.0 (Eski V10-V10.1): Botun gereksiz istek atarak kotaları harcamasını önleyen "Firebase Hafızası (Upsert)" mekanizması ve boşluklu isimleri kodlayan (URL Encoding) yapı.
 •	v1.1.0 (Eski V9): Yalnızca son maçlar yerine eski sezonları kapsayan derin 300 maçlık tarama limitine çıkılması.
 •	v1.0.0 (Eski V8): Tüm ekip üyelerinin tanımlanarak 5 kişilik maçların 2 kişilik görünmesini çözen çoklu tarama sistemi.
