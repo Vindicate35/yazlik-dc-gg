@@ -161,7 +161,7 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.4.3</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.4.4</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
@@ -281,11 +281,10 @@
         
         let guncelYama = "14.9.1";
 
-        // V5.4.0: GÖRSEL RESTORASYONU (SPAGETTI KOD ENGELLEYİCİ)
         function resimUrlGetir(isim) {
             const urlDüzeltme = { 
                 "FiddleSticks": "Fiddlesticks",
-                "MonkeyKing": "MonkeyKing" // Data Dragon MonkeyKing bekler, arayüz Wukong yazar
+                "MonkeyKing": "MonkeyKing" 
             };
             let safeName = urlDüzeltme[isim] || isim;
             return `https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/champion/${safeName}.png`;
@@ -672,7 +671,7 @@
                     </div>`;
         }
 
-       function hesaplaRuyaTakim(veriler, baslik_txt) {
+        function hesaplaRuyaTakim(veriler, baslik_txt) {
             const rollerVeRenkleri = [ { rol: "TOP", ad: "Üst Koridor", renk: "#ff9800" }, { rol: "JUNGLE", ad: "Ormancı", renk: "#4caf50" }, { rol: "MIDDLE", ad: "Orta Koridor", renk: "#2196f3" }, { rol: "BOTTOM", ad: "Nişancı", renk: "#e91e63" }, { rol: "UTILITY", ad: "Destek", renk: "#9c27b0" } ];
             
             let oyuncuRolSkorlari = {};
@@ -753,7 +752,6 @@
                     let wr = ((elit.zafer / elit.mac) * 100).toFixed(0);
                     let kdaText = elit.d === 0 ? "Kusursuz" : ((elit.k+elit.a)/elit.d).toFixed(2) + " KDA";
                     
-                    // V5.4.3: Rüya takım kartlarında CS/min değerini gösterme operasyonu
                     let cs_dk = elit.cs / (elit.sure ? (elit.sure/60) : 1);
                     let csText = r.rol === "UTILITY" ? "" : `<br><span style="color:#ffffff; font-size:0.9em;">CS/min: ${cs_dk.toFixed(1)}</span>`;
                     
@@ -1181,7 +1179,7 @@
                 let baslikTxt = "🌟 Tüm Zamanların İstatistiksel Rüya Takımı";
                 
                 if (aktifSinerjiBoyutu === "ruya_takim") {
-                    bilgiKutusu.innerHTML = `<div style="background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 8px; padding: 12px 20px; margin-bottom: 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6;"><b style="color: #ffd700;">🌟 İstatistiksel Rüya Takım Nedir?</b><br>Sistem, her rol için o pozisyonda en az 1 maç oynamış oyuncuları analiz eder. Kazanma oranları, KDA vb. point birçok istatistiği baz alarak ekibinizin matematiksel olarak çıkarabileceği <b>"Gelmiş Geçmiş En Korkunç Beşliyi"</b> favori şampiyonlarıyla ekrana çizer.</div>`;
+                    bilgiKutusu.innerHTML = `<div style="background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 8px; padding: 12px 20px; margin-bottom: 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6;"><b style="color: #ffd700;">🌟 İstatistiksel Rüya Takım Nedir?</b><br>Sistem, her rol için o pozisyonda en az 1 maç oynamış oyuncuları analiz eder. Kazanma oranları, KDA vb. birçok istatistiği baz alarak ekibinizin matematiksel olarak çıkarabileceği <b>"Gelmiş Geçmiş En Korkunç Beşliyi"</b> favori şampiyonlarıyla ekrana çizer.</div>`;
                 } else {
                     baslikTxt = "🔥 Haftanın En Formda Beşlisi";
                     bilgiKutusu.innerHTML = `<div style="background: rgba(88, 166, 255, 0.1); border: 1px solid rgba(88, 166, 255, 0.3); border-radius: 8px; padding: 12px 20px; margin-bottom: 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6;"><b style="color: #58a6ff;">🔥 Haftanın Beşlisi Nedir?</b><br>Tüm zamanların istatistikleri yerine, sadece <b>son 7 gün içinde</b> oynanan maçlar analiz edilir. O hafta formda olan oyuncuların güncel performanslarına göre <b>"Haftanın En İyi Beşlisi"</b> oluşturulur. Sistem yine önce en uyumlu Alt Koridor ikilisini merkeze alır.</div>`;
@@ -1279,7 +1277,9 @@
                 let wr = ((komp.zafer / komp.mac) * 100).toFixed(0);
                 let spSkor = komp.sp.toFixed(0);
                 let barRengi = wr >= 50 ? "#3fb950" : "#f85149";
-                let clickIsim = komp.orjinal_isimler;
+                
+                // V5.4.4: Alt koridor için rollü ismi, diğerleri için saf ismi filtreye yolla
+                let clickIsim = aktifSinerjiBoyutu === "alt_koridor" ? komp.isim : komp.orjinal_isimler;
                 
                 let formasyonPaneliId = `formasyon_${index}`;
                 let formasyonHtml = "";
@@ -1311,8 +1311,11 @@
 
                 let formasyonKutuHtml = formasyonHtml ? `<tr id="${formasyonPaneliId}" class="gizle" style="background:#0d1117;"><td colspan="4" style="padding: 15px;"><div class="formasyon-kutusu"><div style="color:#8b949e; font-size:0.85em; text-transform:uppercase; font-weight:bold; margin-bottom:10px;">Kadro Formasyonları (Dizilişler)</div>${formasyonHtml}</div></td></tr>` : "";
                 
-                let baslikTiklaAttr = `onclick="window.sinerjiFiltrele('${clickIsim}')"`;
-                if (aktifSinerjiBoyutu !== "alt_koridor") baslikTiklaAttr = `onclick="window.kutuAc('${formasyonPaneliId}', event)" title="Kadro formasyonlarını görmek için tıkla"`;
+                // Alt koridorsa direkt filtrele, 3'lü/5'li ise akordeonu (formasyonları) aç
+                let baslikTiklaAttr = `onclick="window.sinerjiFiltrele('${clickIsim}')" title="Bu ikilinin maçlarını listele"`;
+                if (aktifSinerjiBoyutu !== "alt_koridor") {
+                    baslikTiklaAttr = `onclick="window.kutuAc('${formasyonPaneliId}', event)" title="Kadro formasyonlarını görmek için tıkla"`;
+                }
 
                 return `
                     <tr class="tiklanabilir-tr" ${baslikTiklaAttr}>
@@ -1481,24 +1484,20 @@
                 return b.sp - a.sp;
             });
 
-           // V5.4.2: KOMPAKT KANBAN VE KUSURSUZ HİZALAMA
             let roleGroups = {};
             siraliUzmanlar.forEach(u => {
                 if(!roleGroups[u.rol]) roleGroups[u.rol] = [];
                 roleGroups[u.rol].push(u);
             });
 
-            // Riot API pozisyonlarını kusursuz formata çeviriyoruz
             const tamRolIsimleri = { "TOP": "Üst Koridor", "JUNGLE": "Orman", "MIDDLE": "Orta Koridor", "BOTTOM": "Nişancı", "UTILITY": "Destek", "BELIRSIZ": "Belirsiz" };
             let sortedRoles = Object.keys(roleGroups).sort((a,b) => (rolSiralamaGucu[a] || 99) - (rolSiralamaGucu[b] || 99));
             
-            // Yan yana dizilim için Flex-Wrap kapsayıcısı
             let htmlIcerik = `<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start; width: 100%; margin-top: 20px;">`;
 
             sortedRoles.forEach(rol => {
                 let rolText = tamRolIsimleri[rol] || "Belirsiz";
                 
-                // Her rol için özel kolon tasarımı (min-width düşürüldü ki sığsınlar)
                 htmlIcerik += `
                     <div style="flex: 1; min-width: 350px; max-width: 500px; background: #090c10; border-radius: 12px; padding: 15px; border: 1px solid #30363d; box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
                         <div style="border-bottom: 2px solid #58a6ff; margin-bottom: 12px; padding-bottom: 8px;">
@@ -1520,11 +1519,9 @@
                     
                     let siraEtiketi = index === 0 ? "👑 #1" : `#${index+1}`;
 
-                    // Sıkışmayı önleyen, iki uçlu (space-between) net tasarım
                     htmlIcerik += `
                         <div class="oyuncu-karti kart-sirali uzman-karti" style="margin: 0; padding: 12px; max-width: 100%;">
                             <div style="display: flex; justify-content: space-between; align-items: center; gap: 5px;">
-                                <!-- Sol Taraf: Kimlik -->
                                 <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 1; overflow: hidden;">
                                     <div class="sira-badge" style="width: 35px; font-size: 1.1em; margin: 0; text-align: center; flex-shrink: 0;">${siraEtiketi}</div>
                                     <img src="${resimUrlGetir(aktifSampiyonFiltresi)}" style="width:40px; height:40px; border-radius:50%; border:2px solid #30363d; flex-shrink: 0;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
@@ -1534,7 +1531,6 @@
                                     </div>
                                 </div>
                                 
-                                <!-- Sağ Taraf: İstatistikler -->
                                 <div style="display: flex; flex-direction: column; align-items: flex-end; text-align: right; flex-shrink: 0;">
                                     <div style="display: flex; align-items: center; gap: 8px;">
                                         <div style="font-size: 1.1em; font-weight: bold; color: ${wr >= 50 ? '#3fb950' : '#f85149'};">%${wr} WR</div>
