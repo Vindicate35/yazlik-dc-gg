@@ -300,7 +300,7 @@
         function tarihFormatla(ms) {
             if(!ms) return "Tarih Yok";
             let d = new Date(ms);
-            return d.toLocaleDateString("tr-TR", {day: '2-digit', month: 'short', hour: '2-digit', minute:'2-digit'});
+            return d.toLocaleDateString("tr-TR", {year: 'numeric', day: '2-digit', month: 'short', hour: '2-digit', minute:'2-digit'});
         }
 
         let tumVeriler = [];
