@@ -108,23 +108,40 @@
         .esya-kart { position: relative; cursor: help; background: #090c10; border: 1px solid #30363d; border-radius: 8px; padding: 8px; text-align: center; transition: all 0.2s; display: flex; align-items: center; justify-content: center;}
         .esya-kart:hover { border-color: #58a6ff; transform: translateY(-3px);}
         .esya-kart img { width: 40px; height: 40px; border-radius: 4px; }
+        /* V5.29.0 MODERN İSTEMCİ TOOLTIP ZIRHI */
         .esya-detay-popup {
             display: none; position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%);
-            background: rgba(9, 12, 16, 0.98); border: 1px solid #58a6ff;
-            padding: 15px; border-radius: 8px; z-index: 999999;
-            width: max-content; max-width: 320px; text-align: left;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.9); backdrop-filter: blur(5px);
-            color: #c9d1d9; font-size: 0.9em; line-height: 1.4; pointer-events: none;
-            white-space: normal;
+            background: #010a13; border: 1px solid #30363d;
+            padding: 0 !important; /* DİKKAT: Eski padding silindi ki başlık tam sığsın */
+            border-radius: 6px; z-index: 999999;
+            width: max-content; min-width: 260px; max-width: 380px; text-align: left;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.9); pointer-events: none;
+            white-space: normal; overflow: hidden;
+            border-top: 2px solid #c8aa6e; border-bottom: 2px solid #c8aa6e;
         }
+        .esya-detay-popup > .esya-isim { display: none !important; } /* Eski basit başlığı yokediyoruz */
         .esya-kapsayici:hover .esya-detay-popup, .esya-kart:hover .esya-detay-popup { display: block; }
-        .esya-detay-popup .esya-isim { color: #ffd700; font-weight: bold; font-size: 1.15em; margin-bottom: 10px; border-bottom: 1px solid #30363d; padding-bottom: 5px; }
-        .esya-detay-popup mainText { display: block; }
-        .esya-detay-popup attention { font-weight: bold; color: #ffffff; }
-        .esya-detay-popup stats { color: #a1d586; display: block; margin-bottom: 10px; }
-        .esya-detay-popup passive { color: #ffeb3b; font-weight: bold; }
-        .esya-detay-popup active { color: #58a6ff; font-weight: bold; }
-        .esya-detay-popup rules { color: #8b949e; font-size: 0.85em; font-style: italic; display: block; margin-top: 5px; }
+        
+        .m-tooltip-header { display: flex; gap: 15px; padding: 12px 15px; background: linear-gradient(to right, #091428, #010a13); border-bottom: 1px solid #1e2328; align-items: flex-start; }
+        .m-tooltip-header img { width: 44px; height: 44px; border: 1px solid #c8aa6e; border-radius: 4px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        .m-header-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .m-header-info .m-isim { color: #f0e6d2; font-weight: bold; font-size: 1.1em; margin-bottom: 3px; text-shadow: 1px 1px 2px #000; }
+        .m-header-info .m-kategori { color: #c8aa6e; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.5px; }
+        .m-fiyat { color: #c8aa6e; font-weight: bold; font-size: 0.95em; display: flex; align-items: center; gap: 4px; }
+        
+        .m-tooltip-body { padding: 15px; background: #010a13; color: #a09b8c; font-size: 0.85em; line-height: 1.5; }
+        .modern-stats-box { margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px; }
+        /* Eşya statlarının alt satıra çirkin şekilde kaymasını yasaklar */
+        .modern-stat-line { display: flex; align-items: center; font-size: 1.05em; white-space: nowrap; }
+        
+        /* Yanlışlıkla silinen Sinerji Puanı (Win Rate) Barlarını geri getirir */
+        .oran-bar-arkasi { background: #30363d; border-radius: 4px; height: 6px; width: 100%; margin-top: 6px; overflow: hidden; }
+        .oran-bar-ici { height: 100%; border-radius: 4px; transition: width 0.5s ease-in-out; }
+        
+        .m-tooltip-body passive { color: #f0e6d2; font-weight: bold; display: inline; }
+        .m-tooltip-body active { color: #c8aa6e; font-weight: bold; display: inline; }
+        .m-tooltip-body attention { color: #ffffff; font-weight: bold; }
+        .m-tooltip-body rules { color: #8b949e; font-size: 0.85em; font-style: italic; display: block; margin-top: 8px; }
 
         .rozet { font-size: 0.75em; padding: 4px 8px; border-radius: 6px; font-weight: bold; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; flex-shrink: 0; box-sizing: border-box; }
         .rozet-penta { background: linear-gradient(45deg, #ff0000, #ff9800); color: #ffffff; border: 1px solid #ff9800; box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); text-transform: uppercase; animation: glow 1.5s infinite alternate; }
@@ -244,7 +261,7 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.28.0</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.30.4</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
@@ -306,7 +323,7 @@
             </div>
             <div class="bilgi-icerik" style="flex:1;">
                 <h3>Yasuo & Yone (Kritik / Dövüşçü Yolu)</h3>
-                <p>Her şampiyonun kendi doğasına ve o anki metaya uygun şekilde 3 tane çekirdek eşyası (core item) olduğundan ve diğer işlevsel tipli eşyaları (qss, tank items, tier 2 boots) almadan önce bu çekirdek eşyalarının bitirilmesi gerekir.</p>
+                <p>Her şampiyonun kendi doğasına ve o anki metaya uygun şekilde 3 tane çekirdek eşyası (core item) olduğundan diğer işlevsel tipli eşyaları (Cıva Yatağan, tank eşyaları, 2. seviye bot) almadan önce bu çekirdek eşyalarının bitirilmesi gerekir.</p>
                 <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
                     <div class="esya-kapsayici" data-item-id="6672"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/6672.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div> <span style="color:#8b949e; font-size:1.5em;">/</span>
                     <div class="esya-kapsayici" data-item-id="3153"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3153.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div>
@@ -314,7 +331,7 @@
                 </div>
                 <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
                     <div class="esya-kapsayici" data-item-id="6673"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/6673.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div>
-                    <span style="color:#c9d1d9;"><b>2. Eşya:</b> Ani patlık hasarlardan korunmak ve hayatta kalmak için <b>Ölümsüz Kalkanyay</b> vazgeçilmezdir.</span>
+                    <span style="color:#c9d1d9;"><b>2. Eşya:</b> Ani patlatma hasarlarından korunmak ve hayatta kalmak için <b>Ölümsüz Kalkanyay</b> vazgeçilmezdir.</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
                     <div class="esya-kapsayici" data-item-id="3036"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3036.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div> <span style="color:#8b949e; font-size:1.5em;">/</span>
@@ -343,7 +360,7 @@
         <div class="kategori-baslik">💚 Destek</div>
         <div id="grid-destek" class="esya-kutuphanesi-grid"></div>
 
-        <div class="kategori-baslik">👢 Çizmeler (Botlar)</div>
+        <div class="kategori-baslik">👟 Botlar</div>
         <div id="grid-botlar" class="esya-kutuphanesi-grid"></div>
     </div>
 
@@ -510,7 +527,71 @@
         </div>
 
 	<div class="yama-karti">
-            <div class="yama-baslik">v5.28.1 - Lejant Panosu Restorasyonu <span class="yama-tarih">Güncel Sürüm</span></div>
+            <div class="yama-baslik">v5.30.4 - Ayrıştırıcı Sözlük Genişlemesi & Hizalama <span class="yama-tarih">Güncel Sürüm</span></div>
+            <ul class="yama-liste">
+                <li><strong>Regex Motoru Sözlük Güncellemesi:</strong> Ayrıştırıcı motora "Taban Can Yenilenmesi" ve "Taban Mana Yenilenmesi" kelimeleri öğretildi. Bilinmeyen kelime olduğu için alt satıra itilen ve arayüzü kıran bu özellikler artık 💖 ve 🌊 ikonlarıyla tek satırda hizalanıyor.</li>
+                <li>Riot API'sinin değer ile isim arasına attığı gizli satır atlama (<code>&lt;br&gt;</code>) komutları Regex içine dahil edilerek zorla ezildi; böylece her değer ve isim birbiriyle jilet gibi aynı hizada kilitlendi.</li>
+            </ul>
+        </div>
+
+	<div class="yama-karti">
+            <div class="yama-baslik">v5.30.3 - Sinerji Barları & Metin Revizyonu <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li><strong>Sinerji UI Restorasyonu:</strong> CSS sadeleştirmesi sırasında kazara silinen Takım Sinerjisi kazanma oranı (Win Rate) renkli alt barları sisteme geri entegre edildi.</li>
+                <li><strong>Wrap Zırhı (Satır Kayması Engeli):</strong> Eşya açıklama panellerindeki özelliklerin (Örn: Saldırı Hızı) kutu daraldığında alt satıra kırılarak çirkin bir görüntü oluşturması engellendi. CSS <code>white-space: nowrap;</code> kalkanı devreye sokuldu.</li>
+                <li>Meta Rehberi sekmesindeki Yasuo & Yone açıklaması, "qss, tier 2 boots" gibi yabancı terimlerden arındırılarak tam Türkçe çevirisi ("Cıva Yatağan, 2. seviye bot") ile daha profesyonel bir yapıya kavuşturuldu.</li>
+            </ul>
+        </div>
+
+	<div class="yama-karti">
+            <div class="yama-baslik">v5.30.2 - "Inception" Bug Hotfix <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li><strong>Görsel Bug Düzeltmesi (Double Wrapping):</strong> Eşya makyajlama motorunun hem API veri çekim aşamasında hem de kütüphane basım aşamasında üst üste çalışmasıyla oluşan "Eşya özelliklerinin pop-up içinde ikili (çift) görünmesi" sorunu çözüldü. Sistem, zaten formatlanmış eşyaları tanıyarak ikinci bir HTML sarmalından kaçınacak şekilde optimize edildi.</li>
+            </ul>
+        </div>
+
+	<div class="yama-karti">
+            <div class="yama-baslik">v5.30.1 - Yapay Enjeksiyon & İkonik Düzeltmeler <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li><strong>Gunmetal Greaves (3172) Enjeksiyonu:</strong> Riot'un Data Dragon API'sinde gizlenen veya çevirisi geciken, Orta Koridor görevi ile açılan 3. Seviye Savaşçı Çizmesi (Gunmetal Greaves) sisteme yapay zeka ile manuel olarak kodlandı. Artık API verisi eksik gelse bile sitemizde kusursuz çalışacak.</li>
+                <li><strong>Görsel (UI) Güncellemeler:</strong> Tüm "Hareket Hızı" statlarına ve "Botlar" kategori başlığına, eski model yerine yepyeni ve daha şık 👟 (Spor Ayakkabı) ikonu entegre edildi.</li>
+                <li>Meta Rehberi sekmesindeki Yasuo & Yone 2. eşya açıklaması metinsel olarak daha profesyonel bir dile ("Ani patlatma hasarlarından korunmak...") çevrildi.</li>
+            </ul>
+        </div>
+
+	<div class="yama-karti">
+            <div class="yama-baslik">v5.30.0 - Mutlak Kontrol & Kategori Zekası <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li><strong>Manuel Sınıflandırma Motoru (Override Map):</strong> Riot'un API verilerindeki etiketleme hatalarına müdahale edildi. Umbra Mızrağı, Aklın Sonu gibi savaşçı eşyaları ile Dinçleştirici Aytaşı, Helia'nın Yankıları, Demir Solari gibi destek eşyaları zorla kendi doğru kategorilerine aktarıldı.</li>
+                <li><strong>İsim Bazlı Çöp Öğütücü & VIP Liste:</strong> Kütüphaneden silinmek istenen 12 çöp eşya (Gargoyl, Karayel vb.) ID gerektirmeden sadece isimleriyle kara listeye alındı. Görünmez olan "Gunmetal Greaves" gibi Sezon 16 eşyaları ise "VIP" zırhı giydirilerek doğrudan Botlar sekmesine çivilendi.</li>
+            </ul>
+        </div>
+
+	<div class="yama-karti">
+            <div class="yama-baslik">v5.29.0 - Modern İstemci Arayüzü & Regex Motoru <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li><strong>Gelişmiş Metin Ayrıştırıcı (Regex Parser):</strong> Riot API'sinden gelen karmaşık ve çöplük halindeki eşya açıklamalarını yakalayan devasa bir JavaScript motoru yazıldı. Bu motor metin içindeki özellikleri (Saldırı Gücü, Can, Zırh vb.) tespit edip oyun içindeki gibi özel renklerle ve ikonlarla (❤️, ⚔️, 🔮, ⏳) HTML'e gömer.</li>
+                <li><strong>Premium Tooltip UI:</strong> Sitedeki tüm eşya açıklamalarının tasarımı (Bireysel, Sinerji, Kütüphane) Riot'un güncel Sezon 16 oyun içi pop-up panellerine (Altın çerçeve, gradyan başlık, altın bedeli) kusursuz şekilde benzetildi.</li>
+            </ul>
+        </div>
+
+	<div class="yama-karti">
+            <div class="yama-baslik">v5.28.3 - Sinerji Panosu & Tip Senkronizasyonu <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li><strong>Statik'ten Dinamiğe Geçiş:</strong> Sinerji Puanı (SP) bilgi kutusu statik HTML'den çıkartılıp doğrudan JavaScript mantığına (Conditional Rendering) bağlandı. Artık sadece SP hesaplamasının aktif olarak yapıldığı "5'li, 3'lü ve Alt Koridor" sekmelerinde görünüp, diğer sekmelerde ekranı işgal etmiyor.</li>
+                <li><strong>Tip (Type) Uyuşmazlığı Düzeltmesi:</strong> Sinerji Puanı kutusunun 5'li ve 3'lü sekmelerde kaybolmasına neden olan JavaScript <code>===</code> (katı eşitlik) veri tipi uyumsuzluğu çözüldü. Rakamlar tırnak içinden çıkarılarak sistemin filtreleme algoritmasındaki "Type Coercion" tuzağı engellendi.</li>
+            </ul>
+        </div>
+
+	<div class="yama-karti">
+            <div class="yama-baslik">v5.28.2 - Rüya Takımı Restorasyonu <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li><strong>Durumsal Arayüz (Conditional UI):</strong> Kod sadeleştirme çalışmaları sırasında kazara gizlenen "Tüm Zamanların Rüya Takımı" ve "Haftanın 5'lisi" bilgi kutucukları (Algoritma Açıklamaları) DOM yapısına yeniden enjekte edildi. Artık sadece ilgili sekmelere tıklandığında ekranda dinamik olarak belirecekler.</li>
+            </ul>
+        </div>
+
+	<div class="yama-karti">
+            <div class="yama-baslik">v5.28.1 - Lejant Panosu Restorasyonu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>Kusursuz Hizalama ve Zırh:</strong> Ana Lejant kutusundaki (Rozet Bilgi Ekranı) CSS çakışmaları ve sola kayma sorunları giderildi.</li>
                 <li>Alt sıradaki okunması zor çıplak metinler, üst sıradaki gibi özel zırhlı rozet (kutu) formatına dönüştürüldü. Kutu tasarımı dış etkenlerden bağımsız (inline-flex) hale getirilerek ekranın tam merkezine kilitlendi.</li>
@@ -639,13 +720,6 @@
         <div id="sinerji-filtre-paneli" style="text-align: center; margin-bottom: 25px; max-width: 900px; margin-left: auto; margin-right: auto;">
             <div style="color: #8b949e; font-weight: bold; margin-bottom: 12px; font-size: 0.9em; text-transform: uppercase;">👥 Ekipleri Süz (Çoklu Seçim):</div>
             <div id="sinerji-filtre-kutusu" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 8px;">
-            </div>
-        </div>
-        
-        <div style="max-width:1200px; margin:0 auto 20px auto; padding:0 15px;">
-            <div style="background: rgba(210, 168, 255, 0.08); border: 1px solid rgba(210, 168, 255, 0.3); border-radius: 8px; padding: 12px 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6;">
-                <b style="color: #d2a8ff;">ℹ️ Sinerji Puanı (SP) Nedir?</b><br>
-                Sistem, takımların kazanma oranlarına <b>Laplace Düzeltmesi</b> uygulayarak şans faktörünü (1 maçta %100 WR) eler. Buna ek olarak, bir ekip farklı rollerle (Formasyonlar) oynayıp yine de kazanabiliyorsa, sistem bu <b>Rol Esnekliğini</b> ödüllendirerek ekibin Sinerji Puanını yukarı çeker. Takım ne kadar esnekse, SP o kadar artar.
             </div>
         </div>
         
@@ -860,11 +934,76 @@
                 const yamalar = await ddragonYamaYaniti.json(); guncelYama = yamalar[0];
 
                 try {
-                    // CACHE BYPASS: Riot veritabanındaki eski eşyaları ezmek için zaman damgalı fetch
                     const itemRes = await fetch(`https://ddragon.leagueoflegends.com/cdn/${guncelYama}/data/tr_TR/item.json?v=` + new Date().getTime());
-                    const itemData = await itemRes.json(); window.itemVeritabani = itemData.data;
+                    const itemData = await itemRes.json(); 
+                    
+                    // V5.29.0 MODERN İSTEMCİ METİN AYRIŞTIRICISI (REGEX PARSER)
+                    for (let id in itemData.data) {
+                        let itm = itemData.data[id];
+                        let name = itm.name;
+                        let gold = (itm.gold && itm.gold.total) ? itm.gold.total : 0;
+                        let rawDesc = itm.description || itm.plaintext || "";
+
+                        let subTitle = "Efsanevi Eşya";
+                        if(itm.tags) {
+                            if(itm.tags.includes("Boots")) subTitle = "Çizme";
+                            else if(gold < 1500 && !itm.tags.includes("Consumable")) subTitle = "Alt Eşya";
+                            else if(itm.tags.includes("Damage")) subTitle = "Saldırı Gücü";
+                            else if(itm.tags.includes("SpellDamage")) subTitle = "Yetenek Gücü";
+                            else if(itm.tags.includes("Armor") || itm.tags.includes("Health")) subTitle = "Tank / Savunma";
+                            else if(itm.tags.includes("ManaRegen") || itm.tags.includes("GoldPer")) subTitle = "Destek";
+                        }
+
+                        let parsed = rawDesc.replace(/<mainText>/g, '').replace(/<\/mainText>/g, '');
+                        // V5.30.4 - Genişletilmiş Sözlük ve Gizli <br> Yokedici Regex
+                        const regex = /(?:<attention>\s*([0-9%.-]+)\s*<\/attention>|\+([0-9%.-]+))\s*(?:<br\s*\/?>|\s)*(Saldırı Gücü|Can Çalma|Taban Can Yenilenmesi|Can Yenilenmesi|Can|Yetenek Gücü|Yetenek Hızı|Saldırı Hızı|Zırh Deşme|Zırh Delme|Zırh|Büyü Direnci|Büyü Nüfuzu|Hareket Hızı|Kritik Vuruş İhtimali|Taban Mana Yenilenmesi|Mana Yenilenmesi|Mana)/gi;
+                        
+                        parsed = parsed.replace(regex, function(match, v1, v2, statName) {
+                            let val = v1 || v2; let sName = statName.trim();
+                            let sNameLower = sName.toLowerCase();
+                            let r = "#a09b8c"; let i = "•";
+                            
+                            if(sNameLower === "can") { r = "#a1d586"; i = "❤️"; }
+                            else if(sNameLower.includes("can yenilenmesi")) { r = "#a1d586"; i = "💖"; }
+                            else if(sNameLower === "saldırı gücü") { r = "#e88245"; i = "⚔️"; }
+                            else if(sNameLower === "yetenek gücü") { r = "#9ea1f9"; i = "🔮"; }
+                            else if(sNameLower === "yetenek hızı") { r = "#c9d1d9"; i = "⏳"; }
+                            else if(sNameLower === "saldırı hızı") { r = "#ffeb3b"; i = "🗡️"; }
+                            else if(sNameLower.includes("zırh") && !sNameLower.includes("delme") && !sNameLower.includes("deşme")) { r = "#f2a65a"; i = "🛡️"; }
+                            else if(sNameLower === "büyü direnci") { r = "#58a6ff"; i = "🧿"; }
+                            else if(sNameLower === "hareket hızı") { r = "#aee2ff"; i = "👟"; }
+                            else if(sNameLower.includes("mana") && !sNameLower.includes("yenilenmesi")) { r = "#58a6ff"; i = "💧"; }
+                            else if(sNameLower.includes("yenilenmesi")) { r = "#aee2ff"; i = "🌊"; }
+                            else if(sNameLower.includes("kritik")) { r = "#f35b5a"; i = "🎯"; }
+                            else if(sNameLower.includes("can çalma")) { r = "#da3633"; i = "🩸"; }
+                            else if(sNameLower.includes("delme") || sNameLower.includes("deşme") || sNameLower.includes("nüfuz")) { r = "#e88245"; i = "🔪"; }
+
+                            return `<div class="modern-stat-line"><span style="width:24px; text-align:center; display:inline-block;">${i}</span> <b style="color:#ffffff; margin-right:4px;">${val}</b> <span style="color:${r};">${sName}</span></div>`;
+                        });
+
+                        parsed = parsed.replace(/<stats>/g, '<div class="modern-stats-box">');
+                        parsed = parsed.replace(/<\/stats>/g, '</div>');
+                        parsed = parsed.replace(/<\/div>\s*<br>/g, '</div>');
+                        parsed = parsed.replace(/<br>\s*<br>/g, '<div style="height:10px;"></div>');
+
+                        itm.description = `
+                            <div class="m-tooltip-header">
+                                <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${id}.png" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
+                                <div class="m-header-info">
+                                    <div class="m-isim">${name}</div>
+                                    <div class="m-kategori">${subTitle}</div>
+                                </div>
+                                ${gold > 0 ? `<div class="m-fiyat"><span style="font-size:1.1em; margin-right:3px;">🪙</span> ${gold}</div>` : ''}
+                            </div>
+                            <div class="m-tooltip-body">
+                                ${parsed}
+                            </div>
+                        `;
+                    }
+                    window.itemVeritabani = itemData.data;
                 } catch(e) { console.warn("Eşya veritabanı yüklenemedi."); }
 
+                // SİLİNEN FIREBASE DAMARLARI BURADA GERİ GELDİ
                 const simdi = new Date().getTime(); const kayitliVeri = localStorage.getItem(CACHE_KEY); const kayitliZaman = localStorage.getItem(CACHE_TIME);
 
                 if (kayitliVeri && kayitliZaman && (simdi - kayitliZaman < CACHE_LIMIT) && !zorlaYenile) {
@@ -895,7 +1034,6 @@
                 let tempSorted = [...tumVeriler].sort((a,b) => a.tarih_ms - b.tarih_ms);
                 tempSorted.forEach(m => { if(m.profil_ikonu) window.guncelIkonlar[m.oyuncu] = m.profil_ikonu; });
 
-                // V5.27.0: Statik rehber eşyalarına API'den dinamik pop-up enjekte ediliyor
                 document.querySelectorAll('.esya-kapsayici[data-item-id]').forEach(el => {
                     let id = el.getAttribute('data-item-id');
                     if(window.itemVeritabani && window.itemVeritabani[id]) {
@@ -907,7 +1045,6 @@
                     }
                 });
 
-                // V5.27.0 DİNAMİK YAMA MOTORU: HTML içindeki tüm eski yamaları (14.9.1 vb) siler, canlı yamayı (16.x) yazar.
                 document.querySelectorAll('img').forEach(img => {
                     if (img.src.includes('cdn/14.9.1/img/')) {
                         img.src = img.src.replace('cdn/14.9.1/img/', `cdn/${guncelYama}/img/`);
@@ -927,42 +1064,75 @@
         // V5.27.0 KATEGORİK EŞYA KÜTÜPHANESİ VE ÇÖP ÖĞÜTÜCÜ
         function renderEsyaKutuphanesi() {
             if(!window.itemVeritabani) return;
+
+            // V5.30.2 - Kaan'ın Gunmetal Greaves (3172) Yapay Enjeksiyonu
+            if (!window.itemVeritabani["3172"]) {
+                window.itemVeritabani["3172"] = {
+                    name: "Gunmetal Greaves",
+                    description: "<mainText><stats><attention> 40%</attention> Saldırı Hızı<br><attention> 45</attention> Hareket Hızı<br><attention> 5%</attention> Can Çalma</stats><br><br><rules>Gereksinim: Orta Koridor Görevini (Midlane Quest) tamamlamak. Tamamlandığında Savaşçı Çizmeleri otomatik olarak bu eşyaya yükseltilir.</rules></mainText>",
+                    gold: { total: 1100 },
+                    tags: ["Boots", "AttackSpeed", "LifeSteal"]
+                };
+            }
             
             const kategoriler = ["dovuscu", "buyucu", "nisanci", "tank", "destek", "botlar"];
             kategoriler.forEach(k => { let el = document.getElementById("grid-" + k); if(el) el.innerHTML = ""; });
 
             let duplicateCheck = new Set();
             
-            // KAAN'IN ÇÖP ÖĞÜTÜCÜSÜ: Sihirdar Vadisinde olmayan, Riot'un API'de unuttuğu tüm çöpler
-            const hurdalik = ["3005", "3330", "3120", "6698", "4403", "7020", "3119", "1001", "1052", "1055", "1056", "3086", "3751", "3052", "3044", "3105", "3077", "3082", "3133", "3067", "3111", "3115"]; 
+            const yasakliIsimler = [
+                "Karayel", "Rizikocunun Bıçağı", "İblis Kral'ın Tacı", "Etyiyen", "Seher Kılıcı", 
+                "Atma'nın Hesaplaşması", "İlahların Kılıcı", "Magma Kalkanı", "Yıldızlı Gece Pelerini", 
+                "Gargoyl Taşzırhı", "Parçalanmış Kraliçe'nin Tacı", "Gaddarlık"
+            ]; 
+            
+            const kategoriZorlamalari = {
+                "Umbra Mızrağı": "dovuscu",
+                "Yıldırım Asası": "buyucu",
+                "Bandle Gaydası": "destek",
+                "Demir Solari'nin Broşu": "destek",
+                "Aklın Sonu": "dovuscu",
+                "Dinçleştirici Aytaşı": "destek",
+                "Helia'nın Yankıları": "destek",
+                "Şafağın Özü": "destek"
+            };
 
             for (let id in window.itemVeritabani) {
                 let itm = window.itemVeritabani[id];
                 let desc = itm.description || "";
+                let plainName = itm.name || "";
                 
                 let isArena = desc.includes("Arena") || desc.includes("Özel Karşılaşma");
                 let isOrnnItem = desc.includes("ornn") || desc.includes("Ornn");
                 let isConsumable = itm.tags && itm.tags.includes("Consumable");
                 
-                // Zeka 1: Eşya başka bir eşyaya DÖNÜŞMÜYORSA (into) efsanevidir!
+                let isBanned = yasakliIsimler.some(yasakli => plainName === yasakli || plainName.includes(yasakli));
+                let isVip = (id === "3172" || plainName === "Gunmetal Greaves");
                 let altEsyaMi = (itm.into && itm.into.length > 0);
+                
+                let isValid = false;
 
-                if (itm.maps && itm.maps["11"] === true && itm.inStore !== false && !hurdalik.includes(id) && !isArena && !isOrnnItem && !isConsumable) {
-                    
+                if (isVip) {
+                    isValid = true;
+                } else if (itm.maps && itm.maps["11"] === true && itm.inStore !== false && !isBanned && !isArena && !isOrnnItem && !isConsumable) {
                     let isBoot = itm.tags && itm.tags.includes("Boots") && itm.gold && itm.gold.total >= 300;
                     let isTearUpgrade = (id === "3040" || id === "3042" || id === "3121"); 
 
-                    // Sadece tamamlanmış eşyalar (into'su olmayanlar) ve dönüşmüş özel eşyalar geçer!
                     if ((!altEsyaMi && itm.gold && itm.gold.total >= 1500) || isBoot || isTearUpgrade) {
-                        let plainName = itm.name;
-                        
-                        if (!duplicateCheck.has(plainName)) {
-                            duplicateCheck.add(plainName);
-                            
-                            // Zeka 2: Eşyanın Statlarına göre Kategorize Et
-                            let tags = itm.tags || [];
-                            let kategori = "dovuscu"; // Varsayılan
+                        isValid = true;
+                    }
+                }
 
+                if (isValid) {
+                    if (!duplicateCheck.has(plainName)) {
+                        duplicateCheck.add(plainName);
+                        
+                        let tags = itm.tags || [];
+                        let kategori = "dovuscu"; 
+
+                        if (kategoriZorlamalari[plainName] || id === "3172") {
+                            kategori = (id === "3172") ? "botlar" : kategoriZorlamalari[plainName];
+                        } else {
                             if (tags.includes("Boots")) {
                                 kategori = "botlar";
                             } else if (tags.includes("GoldPer") || tags.includes("Vision") || ["3107", "3011", "3109", "3222", "3504", "6616"].includes(id)) {
@@ -978,20 +1148,76 @@
                             } else {
                                 kategori = "dovuscu"; 
                             }
+                        }
 
-                            let grid = document.getElementById("grid-" + kategori);
-                            if (grid) {
-                                let div = document.createElement("div");
-                                div.className = "esya-kart";
-                                div.innerHTML = `
+                        let finalHtml = "";
+                        
+                        // INCEPTION BUG'I ÇÖZÜMÜ: Eğer eşya zaten baslat() içinde makyajlandıysa, tekrar HTML'e sarma!
+                        if (desc.includes("m-tooltip-header")) {
+                            finalHtml = desc;
+                        } else {
+                            // Sadece ham kalan (Gunmetal Greaves gibi) eşyaları makyajla
+                            let parsed = desc.replace(/<mainText>/g, '').replace(/<\/mainText>/g, '');
+                            // V5.30.4 - Genişletilmiş Sözlük ve Gizli <br> Yokedici Regex
+                        const regex = /(?:<attention>\s*([0-9%.-]+)\s*<\/attention>|\+([0-9%.-]+))\s*(?:<br\s*\/?>|\s)*(Saldırı Gücü|Can Çalma|Taban Can Yenilenmesi|Can Yenilenmesi|Can|Yetenek Gücü|Yetenek Hızı|Saldırı Hızı|Zırh Deşme|Zırh Delme|Zırh|Büyü Direnci|Büyü Nüfuzu|Hareket Hızı|Kritik Vuruş İhtimali|Taban Mana Yenilenmesi|Mana Yenilenmesi|Mana)/gi;
+                        
+                        parsed = parsed.replace(regex, function(match, v1, v2, statName) {
+                            let val = v1 || v2; let sName = statName.trim();
+                            let sNameLower = sName.toLowerCase();
+                            let r = "#a09b8c"; let i = "•";
+                            
+                            if(sNameLower === "can") { r = "#a1d586"; i = "❤️"; }
+                            else if(sNameLower.includes("can yenilenmesi")) { r = "#a1d586"; i = "💖"; }
+                            else if(sNameLower === "saldırı gücü") { r = "#e88245"; i = "⚔️"; }
+                            else if(sNameLower === "yetenek gücü") { r = "#9ea1f9"; i = "🔮"; }
+                            else if(sNameLower === "yetenek hızı") { r = "#c9d1d9"; i = "⏳"; }
+                            else if(sNameLower === "saldırı hızı") { r = "#ffeb3b"; i = "🗡️"; }
+                            else if(sNameLower.includes("zırh") && !sNameLower.includes("delme") && !sNameLower.includes("deşme")) { r = "#f2a65a"; i = "🛡️"; }
+                            else if(sNameLower === "büyü direnci") { r = "#58a6ff"; i = "🧿"; }
+                            else if(sNameLower === "hareket hızı") { r = "#aee2ff"; i = "👟"; }
+                            else if(sNameLower.includes("mana") && !sNameLower.includes("yenilenmesi")) { r = "#58a6ff"; i = "💧"; }
+                            else if(sNameLower.includes("yenilenmesi")) { r = "#aee2ff"; i = "🌊"; }
+                            else if(sNameLower.includes("kritik")) { r = "#f35b5a"; i = "🎯"; }
+                            else if(sNameLower.includes("can çalma")) { r = "#da3633"; i = "🩸"; }
+                            else if(sNameLower.includes("delme") || sNameLower.includes("deşme") || sNameLower.includes("nüfuz")) { r = "#e88245"; i = "🔪"; }
+
+                            return `<div class="modern-stat-line"><span style="width:24px; text-align:center; display:inline-block;">${i}</span> <b style="color:#ffffff; margin-right:4px;">${val}</b> <span style="color:${r};">${sName}</span></div>`;
+                        });
+
+                            parsed = parsed.replace(/<stats>/g, '<div class="modern-stats-box">');
+                            parsed = parsed.replace(/<\/stats>/g, '</div>');
+                            parsed = parsed.replace(/<\/div>\s*<br>/g, '</div>');
+                            parsed = parsed.replace(/<br>\s*<br>/g, '<div style="height:10px;"></div>');
+
+                            let goldStr = (itm.gold && itm.gold.total) ? `<div class="m-fiyat"><span style="font-size:1.1em; margin-right:3px;">🪙</span> ${itm.gold.total}</div>` : '';
+                            let subTitle = (kategori === "botlar") ? "Çizme" : "Efsanevi Eşya";
+
+                            finalHtml = `
+                                <div class="m-tooltip-header">
                                     <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${id}.png" onerror="this.style.display='none'">
-                                    <div class="esya-detay-popup">
-                                        <div class="esya-isim">${plainName}</div>
-                                        ${desc}
+                                    <div class="m-header-info">
+                                        <div class="m-isim">${plainName}</div>
+                                        <div class="m-kategori">${subTitle}</div>
                                     </div>
-                                `;
-                                grid.appendChild(div);
-                            }
+                                    ${goldStr}
+                                </div>
+                                <div class="m-tooltip-body">
+                                    ${parsed}
+                                </div>
+                            `;
+                        }
+
+                        let grid = document.getElementById("grid-" + kategori);
+                        if (grid) {
+                            let div = document.createElement("div");
+                            div.className = "esya-kart";
+                            div.innerHTML = `
+                                <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${id}.png" onerror="this.style.display='none'">
+                                <div class="esya-detay-popup">
+                                    ${finalHtml} 
+                                </div>
+                            `;
+                            grid.appendChild(div);
                         }
                     }
                 }
@@ -1716,20 +1942,33 @@
             
             vitrin.innerHTML = ""; ozetAlani.innerHTML = ""; filtrePaneli.classList.remove("gizle"); 
 
+            const bilgiKutusu = document.getElementById("sinerji-bilgi-kutusu");
+            bilgiKutusu.innerHTML = ""; // Önce kutuyu temizle
+
+            // KAAN'IN YENİ KONTROL NOKTASI: Hangi bilgi kutusu görünecek?
+            if (aktifSinerjiBoyutu === 5 || aktifSinerjiBoyutu === 3 || aktifSinerjiBoyutu === "alt_koridor") {
+                bilgiKutusu.innerHTML = `<div style="background: rgba(210, 168, 255, 0.08); border: 1px solid rgba(210, 168, 255, 0.3); border-radius: 8px; padding: 12px 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6; margin-bottom: 20px;">
+                <b style="color: #d2a8ff;">ℹ️ Sinerji Puanı (SP) Nedir?</b><br>
+                Sistem, takımların kazanma oranlarına <b>Laplace Düzeltmesi</b> uygulayarak şans faktörünü (1 maçta %100 WR) eler. Buna ek olarak, bir ekip farklı rollerle (Formasyonlar) oynayıp yine de kazanabiliyorsa, sistem bu <b>Rol Esnekliğini</b> ödüllendirerek ekibin Sinerji Puanını yukarı çeker. Takım ne kadar esnekse, SP o kadar artar.
+            </div>`;
+            }
+
             if (aktifSinerjiBoyutu === "ruya_takim" || aktifSinerjiBoyutu === "haftanin_ruya_takimi") {
                 filtrePaneli.classList.add("gizle"); let veriHavuzu = temelVeriler; let baslikTxt = "🌟 Tüm Zamanların İstatistiksel Rüya Takımı";
                 if (aktifSinerjiBoyutu === "ruya_takim") {
-                    // Bilgi kutusu
+                    bilgiKutusu.innerHTML = `<div style="background: rgba(255, 215, 0, 0.08); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 8px; padding: 12px 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6; margin-bottom: 20px;"><b style="color: #ffd700;">🌟 Rüya Takım Algoritması:</b><br>Tüm zamanların istatistikleri harmanlanarak her rolün en iyi oyuncusu (Win Rate, KDA, Görüş, Hasar ve Sinerji Puanı üzerinden) seçilir. Eğer oyuncular Alt Koridorda ikili bir sinerji yakalamışsa sistem onları parçalamaz, takımın omurgası yapar.</div>`;
                 } else {
                     baslikTxt = "🔥 Haftanın En Formda Beşlisi";
+                    bilgiKutusu.innerHTML = `<div style="background: rgba(88, 166, 255, 0.08); border: 1px solid rgba(88, 166, 255, 0.3); border-radius: 8px; padding: 12px 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6; margin-bottom: 20px;"><b style="color: #58a6ff;">🔥 Haftanın 5'lisi Algoritması:</b><br>Sadece son 7 gün içinde atılan maçlar taranarak, o haftanın en formda oyuncuları rollerine göre belirlenir. Haftalık momentum ve istatistiksel zirve baz alınır.</div>`;
                     let simdiMs = new Date().getTime(); let birHaftaMilisaniye = 7 * 24 * 60 * 60 * 1000; let sinirTarih = simdiMs - birHaftaMilisaniye;
                     veriHavuzu = temelVeriler.filter(v => v.tarih_ms && v.tarih_ms >= sinirTarih);
                 }
+
                 if(veriHavuzu.length === 0) { ozetAlani.innerHTML = `<div style="text-align:center; padding: 50px; font-size:1.2em; color:#f85149;">Bu zaman dilimi (Son 7 Gün) için yeterli veri bulunamadı. Lütfen "Tüm Zamanlar" sekmesine dönün.</div>`; btnDahaFazla.classList.add("gizle"); return; }
                 ozetAlani.innerHTML = hesaplaRuyaTakim(veriHavuzu, baslikTxt); btnDahaFazla.classList.add("gizle"); return;
             }
 
-            const macGruplari = {}; temelVeriler.forEach(v => { if(!macGruplari[v.mac_id]) macGruplari[v.mac_id] = []; macGruplari[v.mac_id].push(v); });
+            const macGruplari = {}; temelVeriler.forEach(v => { if(!macGruplari[v.mac_id]) macGruplari[v.mac_id] = []; macGruplari[v.mac_id].push(v); });
             let filtrelenmisMaclar = []; let tabloBasligi = "";
 
             if (aktifSinerjiBoyutu === "alt_koridor") {
