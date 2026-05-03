@@ -261,7 +261,7 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.30.5</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.31.0</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
@@ -523,9 +523,26 @@
     <div id="arayuz-yama" class="gizle" style="max-width: 1000px; margin: 0 auto;">
         
        <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">YAZLIKDC.GG SÜRÜM GEÇMİŞİ (PATCH NOTES)</h2>
+
+	<div class="yama-karti">
+            <div class="yama-baslik">v5.31.0 - Zirve Analizi: Ortalamalar & Tekil Liderlik <span class="yama-tarih">Güncel Sürüm</span></div>
+            <ul class="yama-liste">
+                <li><strong>Liderlik Algoritması Revizyonu:</strong> Filtre butonlarındaki "Tek Maçlık Rekor" sistemi tamamen çöpe atıldı. Yerine, oyuncuların tüm maçlarını gruplayarak (Aggregation) başarıyı <strong>Maç Sayısına Oranlayan</strong> gerçekçi ortalama sistemi getirildi.</li>
+                <li><strong>DOM Hack (Klonla ve Yok Et):</strong> Eski butonlardaki arızalı kod blokları JavaScript klonlama metoduyla ezilerek devreden çıkarıldı.</li>
+                <li>Listelerde aynı oyuncunun birden fazla kez yer alması (Mükerrer Kayıt) engellendi; her oyuncu kendi ana kimliği ve güncel ortalaması ile tek bir satırda temsil ediliyor. Puanların altına <code>(Örn: 15 Maç Ortalaması)</code> damgası vurularak istatistiksel şeffaflık sağlandı.</li>
+            </ul>
+        </div>
         
+	<div class="yama-karti">
+            <div class="yama-baslik">v5.30.6 - Sezon 16 Regex Uyumu & Zeke Operasyonu <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li><strong>Regex Motoru Sezon 16 Güncellemesi:</strong> Ayrıştırıcı motorun sözlüğüne Riot'un yeni terimleri olan "Ulti Hızı (Nihai Yetenek Hızı)" ve "Mutlak Sömürü" eklendi. Bu özelliklerin bilinmediği için alt satıra itilmesi ve arayüzü kaydırması hatası kökten çözüldü. Yeni terimlere özel (🔁 ve 🧛) ikonları atandı.</li>
+                <li><strong>Sınıflandırma Müdahalesi:</strong> Riot verilerinde yanlış etiketlenen "Zeke'nin Ahengi" eşyası, Kategori Zorlama (Override Map) sistemine eklenerek kalıcı olarak Destek (Support) sekmesine transfer edildi.</li>
+            </ul>
+        </div>
+
         <div class="yama-karti">
-            <div class="yama-baslik">v5.30.5 - Tarihi Arşivin Restorasyonu <span class="yama-tarih">Güncel Sürüm</span></div>
+            <div class="yama-baslik">v5.30.5 - Tarihi Arşivin Restorasyonu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>Arşiv Genişletmesi:</strong> Geçmiş sürümlerin haksız yere sıkıştırıldığı özet bloğu parçalandı. Sistemin v1.0.0'dan bu yana geçirdiği tüm kritik evrimler kendi detaylı kartlarına kavuştu.</li>
                 <li>Arayüzün gereksiz yere uzamasını engellemek için, eski sürümleri DOM içinde tutan ancak görsel olarak bir tıkla açılıp kapanmasını sağlayan "Arşivi Aç/Gizle" zekası eklendi.</li>
@@ -1354,7 +1371,8 @@
 
                         let parsed = rawDesc.replace(/<mainText>/g, '').replace(/<\/mainText>/g, '');
                         // V5.30.4 - Genişletilmiş Sözlük ve Gizli <br> Yokedici Regex
-                        const regex = /(?:<attention>\s*([0-9%.-]+)\s*<\/attention>|\+([0-9%.-]+))\s*(?:<br\s*\/?>|\s)*(Saldırı Gücü|Can Çalma|Taban Can Yenilenmesi|Can Yenilenmesi|Can|Yetenek Gücü|Yetenek Hızı|Saldırı Hızı|Zırh Deşme|Zırh Delme|Zırh|Büyü Direnci|Büyü Nüfuzu|Hareket Hızı|Kritik Vuruş İhtimali|Taban Mana Yenilenmesi|Mana Yenilenmesi|Mana)/gi;
+                        // V5.30.6 - Sezon 16 Uyumlu Genişletilmiş Regex Sözlüğü
+                        const regex = /(?:<attention>\s*([0-9%.-]+)\s*<\/attention>|\+([0-9%.-]+))\s*(?:<br\s*\/?>|\s)*(Saldırı Gücü|Can Çalma|Mutlak Sömürü|Taban Can Yenilenmesi|Can Yenilenmesi|Can|Yetenek Gücü|Yetenek Hızı|Nihai Yetenek Hızı|Ulti Hızı|Saldırı Hızı|Zırh Deşme|Zırh Delme|Zırh|Büyü Direnci|Büyü Nüfuzu|Hareket Hızı|Kritik Vuruş İhtimali|Taban Mana Yenilenmesi|Mana Yenilenmesi|Mana)/gi;
                         
                         parsed = parsed.replace(regex, function(match, v1, v2, statName) {
                             let val = v1 || v2; let sName = statName.trim();
@@ -1366,6 +1384,7 @@
                             else if(sNameLower === "saldırı gücü") { r = "#e88245"; i = "⚔️"; }
                             else if(sNameLower === "yetenek gücü") { r = "#9ea1f9"; i = "🔮"; }
                             else if(sNameLower === "yetenek hızı") { r = "#c9d1d9"; i = "⏳"; }
+                            else if(sNameLower.includes("ulti") || sNameLower.includes("nihai yetenek")) { r = "#ff9800"; i = "🔁"; } // YENİ: Ulti Hızı
                             else if(sNameLower === "saldırı hızı") { r = "#ffeb3b"; i = "🗡️"; }
                             else if(sNameLower.includes("zırh") && !sNameLower.includes("delme") && !sNameLower.includes("deşme")) { r = "#f2a65a"; i = "🛡️"; }
                             else if(sNameLower === "büyü direnci") { r = "#58a6ff"; i = "🧿"; }
@@ -1374,6 +1393,7 @@
                             else if(sNameLower.includes("yenilenmesi")) { r = "#aee2ff"; i = "🌊"; }
                             else if(sNameLower.includes("kritik")) { r = "#f35b5a"; i = "🎯"; }
                             else if(sNameLower.includes("can çalma")) { r = "#da3633"; i = "🩸"; }
+                            else if(sNameLower.includes("mutlak sömürü")) { r = "#da3633"; i = "🧛"; } // YENİ: Mutlak Sömürü
                             else if(sNameLower.includes("delme") || sNameLower.includes("deşme") || sNameLower.includes("nüfuz")) { r = "#e88245"; i = "🔪"; }
 
                             return `<div class="modern-stat-line"><span style="width:24px; text-align:center; display:inline-block;">${i}</span> <b style="color:#ffffff; margin-right:4px;">${val}</b> <span style="color:${r};">${sName}</span></div>`;
@@ -1449,8 +1469,12 @@
                     }
                 });
 
+                // V5.31.1 - VERİYİ GLOBALE AÇMA (KİLİDİ KIRDIK)
+                window.tumVeriler = tumVeriler; 
+                
                 sekmeOlustur(); ekraniGuncelle(true); 
-                renderEsyaKutuphanesi(); 
+                renderEsyaKutuphanesi();
+                modernLiderlikMotoru(window.tumVeriler);
 
             } catch (hata) { 
                 console.error("Hata:", hata); alert("Veriler çekilirken bir hata oluştu.");
@@ -1492,7 +1516,8 @@
                 "Aklın Sonu": "dovuscu",
                 "Dinçleştirici Aytaşı": "destek",
                 "Helia'nın Yankıları": "destek",
-                "Şafağın Özü": "destek"
+                "Şafağın Özü": "destek",
+                "Zeke'nin Ahengi": "destek" // V5.30.6 - Zeke zorla Destek sekmesine alındı
             };
 
             for (let id in window.itemVeritabani) {
@@ -1557,7 +1582,8 @@
                             // Sadece ham kalan (Gunmetal Greaves gibi) eşyaları makyajla
                             let parsed = desc.replace(/<mainText>/g, '').replace(/<\/mainText>/g, '');
                             // V5.30.4 - Genişletilmiş Sözlük ve Gizli <br> Yokedici Regex
-                        const regex = /(?:<attention>\s*([0-9%.-]+)\s*<\/attention>|\+([0-9%.-]+))\s*(?:<br\s*\/?>|\s)*(Saldırı Gücü|Can Çalma|Taban Can Yenilenmesi|Can Yenilenmesi|Can|Yetenek Gücü|Yetenek Hızı|Saldırı Hızı|Zırh Deşme|Zırh Delme|Zırh|Büyü Direnci|Büyü Nüfuzu|Hareket Hızı|Kritik Vuruş İhtimali|Taban Mana Yenilenmesi|Mana Yenilenmesi|Mana)/gi;
+                        // V5.30.6 - Sezon 16 Uyumlu Genişletilmiş Regex Sözlüğü
+                        const regex = /(?:<attention>\s*([0-9%.-]+)\s*<\/attention>|\+([0-9%.-]+))\s*(?:<br\s*\/?>|\s)*(Saldırı Gücü|Can Çalma|Mutlak Sömürü|Taban Can Yenilenmesi|Can Yenilenmesi|Can|Yetenek Gücü|Yetenek Hızı|Nihai Yetenek Hızı|Ulti Hızı|Saldırı Hızı|Zırh Deşme|Zırh Delme|Zırh|Büyü Direnci|Büyü Nüfuzu|Hareket Hızı|Kritik Vuruş İhtimali|Taban Mana Yenilenmesi|Mana Yenilenmesi|Mana)/gi;
                         
                         parsed = parsed.replace(regex, function(match, v1, v2, statName) {
                             let val = v1 || v2; let sName = statName.trim();
@@ -1569,6 +1595,7 @@
                             else if(sNameLower === "saldırı gücü") { r = "#e88245"; i = "⚔️"; }
                             else if(sNameLower === "yetenek gücü") { r = "#9ea1f9"; i = "🔮"; }
                             else if(sNameLower === "yetenek hızı") { r = "#c9d1d9"; i = "⏳"; }
+                            else if(sNameLower.includes("ulti") || sNameLower.includes("nihai yetenek")) { r = "#ff9800"; i = "🔁"; } // YENİ: Ulti Hızı
                             else if(sNameLower === "saldırı hızı") { r = "#ffeb3b"; i = "🗡️"; }
                             else if(sNameLower.includes("zırh") && !sNameLower.includes("delme") && !sNameLower.includes("deşme")) { r = "#f2a65a"; i = "🛡️"; }
                             else if(sNameLower === "büyü direnci") { r = "#58a6ff"; i = "🧿"; }
@@ -1577,6 +1604,7 @@
                             else if(sNameLower.includes("yenilenmesi")) { r = "#aee2ff"; i = "🌊"; }
                             else if(sNameLower.includes("kritik")) { r = "#f35b5a"; i = "🎯"; }
                             else if(sNameLower.includes("can çalma")) { r = "#da3633"; i = "🩸"; }
+                            else if(sNameLower.includes("mutlak sömürü")) { r = "#da3633"; i = "🧛"; } // YENİ: Mutlak Sömürü
                             else if(sNameLower.includes("delme") || sNameLower.includes("deşme") || sNameLower.includes("nüfuz")) { r = "#e88245"; i = "🔪"; }
 
                             return `<div class="modern-stat-line"><span style="width:24px; text-align:center; display:inline-block;">${i}</span> <b style="color:#ffffff; margin-right:4px;">${val}</b> <span style="color:${r};">${sName}</span></div>`;
@@ -2642,6 +2670,207 @@
         });
 
         baslat(false);
+	// V5.31.0 - MUTLAK LİDERLİK VE ORTALAMALAR MOTORU (OVERRIDE)
+        function modernLiderlikMotoru(veriDizisi) {
+            if (!veriDizisi || veriDizisi.length === 0) return;
+            
+            let oyuncuIstatistikleri = {};
+
+            // 1. OYUNCU BAZLI GRUPLAMA
+            veriDizisi.forEach(mac => {
+                let isim = mac.oyuncu;
+                if (!oyuncuIstatistikleri[isim]) {
+                    oyuncuIstatistikleri[isim] = {
+                        oyuncu: isim,
+                        ikon: window.guncelIkonlar ? window.guncelIkonlar[isim] || mac.profil_ikonu || "29" : mac.profil_ikonu || "29",
+                        macSayisi: 0,
+                        toplamSkor: 0,
+                        toplamOlum: 0,
+                        toplamAsist: 0,
+                        toplamGorus: 0,
+                        toplamCs: 0
+                    };
+                }
+                oyuncuIstatistikleri[isim].toplamSkor += Number(mac.skor) || 0;
+                oyuncuIstatistikleri[isim].toplamOlum += Number(mac.olum) || 0;
+                oyuncuIstatistikleri[isim].toplamAsist += Number(mac.asist) || 0;
+                oyuncuIstatistikleri[isim].toplamGorus += Number(mac.gorus_skoru) || 0;
+                oyuncuIstatistikleri[isim].toplamCs += Number(mac.cs_per_min) || 0;
+                oyuncuIstatistikleri[isim].macSayisi += 1;
+            });
+
+            // 2. ORTALAMA MATEMATİĞİ
+            let ortalamaVeriler = Object.values(oyuncuIstatistikleri).map(p => {
+                return {
+                    oyuncu: p.oyuncu,
+                    ikon: p.ikon,
+                    macSayisi: p.macSayisi,
+                    ortSkor: p.toplamSkor / p.macSayisi,
+                    ortOlum: p.toplamOlum / p.macSayisi,
+                    ortAsist: p.toplamAsist / p.macSayisi,
+                    ortGorus: p.toplamGorus / p.macSayisi,
+                    ortCs: p.toplamCs / p.macSayisi
+                };
+            });
+
+            // 3. JİLET GİBİ ÇİZİM FONKSİYONU
+            function listeyiCiz(listeId, data, siralamaKriteri, formatEki) {
+                let kutu = document.getElementById(listeId);
+                if (!kutu) return; // Kutu bulunamazsa sessizce pas geçer, sistemi çökertmez
+                
+                kutu.innerHTML = ""; // ESKİ ÇÖP VERİLERİ BURADA YOK EDİYORUZ
+                
+                data.sort((a, b) => b[siralamaKriteri] - a[siralamaKriteri]);
+                let top10 = data.slice(0, 10);
+
+                top10.forEach((kisi, index) => {
+                    let div = document.createElement("div");
+                    div.className = "liderlik-satir"; 
+                    div.style.display = "flex";
+                    div.style.justifyContent = "space-between";
+                    div.style.alignItems = "center";
+                    div.style.padding = "8px 0";
+                    div.style.borderBottom = "1px solid rgba(200, 170, 110, 0.1)";
+
+                    let podyumRenk = "#f0e6d2"; let madalya = `${index + 1}.`; let podyumShadow = "none";
+                    if (index === 0) { podyumRenk = "#ffd700"; madalya = "🥇"; podyumShadow = "0 0 8px rgba(255, 215, 0, 0.6)"; }
+                    else if (index === 1) { podyumRenk = "#c0c0c0"; madalya = "🥈"; podyumShadow = "0 0 8px rgba(192, 192, 192, 0.6)"; }
+                    else if (index === 2) { podyumRenk = "#cd7f32"; madalya = "🥉"; podyumShadow = "0 0 8px rgba(205, 127, 50, 0.6)"; }
+
+                    let yama = window.guncelYama || "14.9.1";
+                    
+                    div.innerHTML = `
+                        <div style="display:flex; align-items:center; gap:10px; color:${podyumRenk}; text-shadow:${podyumShadow}; font-weight:bold;">
+                            <span style="width: 22px; text-align: center;">${madalya}</span>
+                            <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/${kisi.ikon}.png" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/14.9.1/img/profileicon/29.png'" style="width:28px; height:28px; border-radius:50%; border:1px solid ${podyumRenk};">
+                            <span>${kisi.oyuncu}</span>
+                        </div>
+                        <div style="text-align: right; line-height: 1.2;">
+                            <span style="color:#ffffff; font-weight:bold; font-size:1.1em;">${kisi[siralamaKriteri].toFixed(1)}</span> <span style="color:#a09b8c; font-size:0.85em;">${formatEki}</span><br>
+                            <span style="font-size:0.7em; color:#8b949e;">(${kisi.macSayisi} Maç)</span>
+                        </div>
+                    `;
+                    kutu.appendChild(div);
+                });
+            }
+
+            // DİKKAT: HTML'indeki div ID'leri ile buradaki isimler aynı olmalı.
+            // Örnek: <div id="liste-skor"></div>
+            listeyiCiz("liste-skor", [...ortalamaVeriler], "ortSkor", "Ort.");
+            listeyiCiz("liste-olum", [...ortalamaVeriler], "ortOlum", "Ort.");
+            listeyiCiz("liste-asist", [...ortalamaVeriler], "ortAsist", "Ort.");
+            listeyiCiz("liste-gorus", [...ortalamaVeriler], "ortGorus", "Ort.");
+            listeyiCiz("liste-farm", [...ortalamaVeriler], "ortCs", "CS/Dk");
+        }
+	// V5.31.1 - SİBER ZIRH: MUTLAK YAKALAMA (CAPTURE PHASE EVENT LISTENER)
+        document.addEventListener("click", function(e) {
+            let id = e.target.id;
+            let liderlikButonlari = ["btn-oldurme", "btn-olum", "btn-asist", "btn-gorus", "btn-csmin"];
+            
+            if (liderlikButonlari.includes(id)) {
+                // 1. ESKİ KODU BOĞMA: Tıklama olayını eski kodlara ulaşmadan yutuyoruz.
+                e.stopPropagation(); 
+                e.preventDefault();
+                
+                // 2. Buton Görünümü (Aktif/Pasif)
+                document.querySelectorAll("#ana-filtreler .filtre-btn").forEach(b => b.classList.remove("aktif"));
+                e.target.classList.add("aktif");
+
+                // 3. VERİ KONTROLÜ (Sessiz çöküşleri engeller)
+                // Kaan, eğer kodunda veriler başka bir isimdeyse (Örn: window.macVerileri), onu buraya eklemeliyiz.
+                let kaynakVeri = window.tumVeriler || window.filtrelenmisVeriler || window.veriDizisi || window.oyuncuVerileri;
+                
+                if (!kaynakVeri || kaynakVeri.length === 0) {
+                    alert("🚨 MOTOR ÇALIŞTI AMA VERİ YOK! Kaan, maç verilerinin tutulduğu JavaScript değişkeninin adını (Örn: tumVeriler) bulmamız lazım. Sistem veriyi bulamadı.");
+                    return;
+                }
+
+                let oyuncuIstatistikleri = {};
+
+                // OYUNCU BAZLI GRUPLAMA (AGGREGATION)
+                kaynakVeri.forEach(mac => {
+                    let isim = mac.oyuncu;
+                    if (!oyuncuIstatistikleri[isim]) {
+                        oyuncuIstatistikleri[isim] = {
+                            oyuncu: isim,
+                            ikon: window.guncelIkonlar ? window.guncelIkonlar[isim] || mac.profil_ikonu || "29" : mac.profil_ikonu || "29",
+                            macSayisi: 0,
+                            toplamSkor: 0,
+                            toplamOlum: 0,
+                            toplamAsist: 0,
+                            toplamGorus: 0,
+                            toplamCs: 0
+                        };
+                    }
+                    oyuncuIstatistikleri[isim].toplamSkor += Number(mac.skor) || 0;
+                    oyuncuIstatistikleri[isim].toplamOlum += Number(mac.olum) || 0;
+                    oyuncuIstatistikleri[isim].toplamAsist += Number(mac.asist) || 0;
+                    oyuncuIstatistikleri[isim].toplamGorus += Number(mac.gorus_skoru) || 0;
+                    oyuncuIstatistikleri[isim].toplamCs += Number(mac.cs_per_min) || 0;
+                    oyuncuIstatistikleri[isim].macSayisi += 1;
+                });
+
+                // ORTALAMA MATEMATİĞİ
+                let ortalamaVeriler = Object.values(oyuncuIstatistikleri).map(p => {
+                    return {
+                        oyuncu: p.oyuncu, ikon: p.ikon, macSayisi: p.macSayisi,
+                        ortSkor: p.toplamSkor / p.macSayisi,
+                        ortOlum: p.toplamOlum / p.macSayisi,
+                        ortAsist: p.toplamAsist / p.macSayisi,
+                        ortGorus: p.toplamGorus / p.macSayisi,
+                        ortCs: p.toplamCs / p.macSayisi
+                    };
+                });
+
+                // Seçime göre kriter belirle
+                let siralamaKriteri = "ortSkor"; let formatEki = "Ort. Kill";
+                if (id === "btn-olum") { siralamaKriteri = "ortOlum"; formatEki = "Ort. Ölüm"; }
+                else if (id === "btn-asist") { siralamaKriteri = "ortAsist"; formatEki = "Ort. Asist"; }
+                else if (id === "btn-gorus") { siralamaKriteri = "ortGorus"; formatEki = "Ort. Görüş"; }
+                else if (id === "btn-csmin") { siralamaKriteri = "ortCs"; formatEki = "CS/Dk"; }
+
+                // Sırala ve İlk 10'u Kes
+                ortalamaVeriler.sort((a, b) => b[siralamaKriteri] - a[siralamaKriteri]);
+                let top10 = ortalamaVeriler.slice(0, 10);
+
+                // ÇİZİM ALANI
+                let kutu = document.getElementById("bireysel-veriler");
+                if (!kutu) {
+                    alert("🚨 HATA: HTML'de 'bireysel-veriler' id'li kutu bulunamadı!");
+                    return;
+                }
+                kutu.innerHTML = ""; 
+
+                top10.forEach((kisi, index) => {
+                    let div = document.createElement("div");
+                    div.style.display = "flex"; div.style.justifyContent = "space-between"; div.style.alignItems = "center";
+                    div.style.padding = "15px"; div.style.marginBottom = "10px";
+                    div.style.backgroundColor = "rgba(22, 27, 34, 0.8)"; div.style.border = "1px solid #30363d"; div.style.borderRadius = "8px";
+
+                    let podyumRenk = "#c9d1d9"; let madalya = `${index + 1}.`; let podyumShadow = "none";
+                    if (index === 0) { podyumRenk = "#ffd700"; madalya = "🥇"; podyumShadow = "0 0 8px rgba(255, 215, 0, 0.6)"; }
+                    else if (index === 1) { podyumRenk = "#c0c0c0"; madalya = "🥈"; podyumShadow = "0 0 8px rgba(192, 192, 192, 0.6)"; }
+                    else if (index === 2) { podyumRenk = "#cd7f32"; madalya = "🥉"; podyumShadow = "0 0 8px rgba(205, 127, 50, 0.6)"; }
+
+                    let yama = window.guncelYama || "14.9.1";
+                    div.innerHTML = `
+                        <div style="display:flex; align-items:center; gap:15px; color:${podyumRenk}; text-shadow:${podyumShadow}; font-size: 1.2em; font-weight:bold;">
+                            <span style="width: 30px; text-align: center;">${madalya}</span>
+                            <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/${kisi.ikon}.png" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/14.9.1/img/profileicon/29.png'" style="width:40px; height:40px; border-radius:50%; border:2px solid ${podyumRenk};">
+                            <span>${kisi.oyuncu}</span>
+                        </div>
+                        <div style="text-align: right; line-height: 1.3;">
+                            <span style="color:#ffffff; font-weight:bold; font-size:1.4em;">${kisi[siralamaKriteri].toFixed(1)}</span> <span style="color:#a09b8c; font-size:0.9em;">${formatEki}</span><br>
+                            <span style="font-size:0.8em; color:#8b949e;">(${kisi.macSayisi} Maç Ortalaması)</span>
+                        </div>
+                    `;
+                    kutu.appendChild(div);
+                });
+
+                let btnDahaFazla = document.getElementById("btn-daha-fazla-bireysel");
+                if(btnDahaFazla) btnDahaFazla.classList.add("gizle");
+            }
+        }, true); // TRUE parametresi motoru Capture Phase'de (herkesten önce) çalıştırır.
     </script>
 </body>
 </html>
