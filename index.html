@@ -277,6 +277,11 @@
             display: flex; align-items: center; gap: 10px;
         }
         .esya-kutuphanesi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 10px; margin-top: 10px;}
+	/* 🛠️ EŞYA SİMÜLATÖRÜ CSS */
+        .sim-slot { width: 45px; height: 45px; border-radius: 6px; border: 2px dashed #30363d; background: #090c10; cursor: pointer; display: flex; align-items: center; justify-content: center; overflow: hidden; transition: all 0.2s;}
+        .sim-slot:hover { border-color: #f85149; background: rgba(248, 81, 73, 0.1); }
+        .sim-slot img { width: 100%; height: 100%; object-fit: cover; }
+        .sim-stat-satir { display: flex; justify-content: space-between; align-items: center; background: rgba(22, 27, 34, 0.8); padding: 6px 12px; border-radius: 6px; border: 1px solid #21262d; font-size: 0.95em; }
 
 	/* V5.37.0 - MUTLAK TOOLTIP (İMLEÇLE ÜSTÜNE GELİNCE AÇILAN KUTU) */
         [data-tooltip] {
@@ -330,7 +335,7 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.48.0</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.49.0</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
@@ -381,57 +386,103 @@
         </div>
     </div>
 
-    <!-- SEZON 16 EŞYA KÜTÜPHANESİ -->
-<div id="arayuz-esya" class="gizle" style="max-width: 1200px; margin: 0 auto;">
-        <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px;">Kritik Eşya Dizilimleri & Meta Rehberi</h2>
+  <!-- SEZON 16 EŞYA KÜTÜPHANESİ VE SİMÜLATÖR -->
+    <div id="arayuz-esya" class="gizle" style="max-width: 1200px; margin: 0 auto;">
         
-        <div class="bilgi-karti">
-            <div style="display:flex; flex-direction:row; gap:10px;">
-                <img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/champion/Yasuo.png" alt="Yasuo" style="width:60px; height:60px;">
-                <img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/champion/Yone.png" alt="Yone" style="width:60px; height:60px;">
+       <!-- 🗂️ EŞYA ALT SEKMELERİ -->
+        <div class="tab-konteynir" id="esya-tabs" style="margin-bottom: 30px;">
+            <button class="tab-btn aktif" id="btn-esya-sim" onclick="window.esyaSekmeDegistir('simulator')">🛠️ İnteraktif Simülatör</button>
+            <button class="tab-btn" id="btn-esya-reh" onclick="window.esyaSekmeDegistir('rehber')">📚 Meta Rehberi</button>
+        </div>
+
+        <!-- 1. SEKME İÇERİĞİ: SİMÜLATÖR VE KÜTÜPHANE (Varsayılan Açık) -->
+        <div id="esya-sekme-simulator">
+            
+            <!-- 🛠️ İNTERAKTİF EŞYA SİMÜLATÖRÜ (TEORİK DİZİLİM) -->
+            <div class="esya-similator-kapsayici" style="background: #0d1117; border: 1px solid #58a6ff; border-radius: 12px; padding: 25px; margin: 30px auto; box-shadow: 0 0 30px rgba(88, 166, 255, 0.15);">
+                <h3 style="color: #ffffff; text-align: center; margin-top: 0; margin-bottom: 20px; font-size: 1.4em;">🛠️ İnteraktif Eşya Simülatörü</h3>
+                <p style="text-align: center; color: #8b949e; margin-bottom: 25px; font-size: 0.9em;">Aşağıdaki kütüphaneden eşyalara tıklayarak envanterinize ekleyin. Çıkarmak için slota tıklayın.</p>
+                
+                <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start;">
+                    <!-- Sol Kısım: 6 Slotluk Envanter -->
+                    <div style="background: #161b22; padding: 20px; border-radius: 10px; border: 1px dashed #30363d; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div style="color: #8b949e; font-size: 0.85em; text-transform: uppercase; margin-bottom: 15px; font-weight: bold;">Envanter</div>
+                        <div id="sim-envanter" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; transition: border 0.3s;">
+                            <div class="sim-slot" onclick="window.simEsyaCikar(0)"></div>
+                            <div class="sim-slot" onclick="window.simEsyaCikar(1)"></div>
+                            <div class="sim-slot" onclick="window.simEsyaCikar(2)"></div>
+                            <div class="sim-slot" onclick="window.simEsyaCikar(3)"></div>
+                            <div class="sim-slot" onclick="window.simEsyaCikar(4)"></div>
+                            <div class="sim-slot" onclick="window.simEsyaCikar(5)"></div>
+                        </div>
+                        <button onclick="window.simSifirla()" class="mini-kapat" style="background:#f85149; margin-top: 20px; padding: 6px 15px;">🗑️ Dizilimi Temizle</button>
+                    </div>
+                    
+                    <!-- Sağ Kısım: Hesaplanmış Toplam İstatistikler -->
+                    <div style="flex: 1; min-width: 300px; background: #161b22; padding: 20px; border-radius: 10px; border: 1px solid #30363d;">
+                        <div style="color: #58a6ff; font-size: 0.9em; text-transform: uppercase; margin-bottom: 15px; text-align: center; font-weight: bold;">Kazanılan Toplam İstatistikler</div>
+                        <div id="sim-statlar" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div style="color:#8b949e; grid-column: 1 / -1; text-align:center; margin: 20px 0;">Kütüphaneden eşya seçerek dizilime başlayın.</div>
+                        </div>
+                        <div id="sim-altin" style="margin-top: 20px; text-align: center; color: #ffd700; font-weight: bold; font-size: 1.3em; border-top: 1px dashed #30363d; padding-top: 15px;">Toplam Maliyet: 0 🪙</div>
+                    </div>
+                </div>
             </div>
-            <div class="bilgi-icerik" style="flex:1;">
-                <h3>Yasuo & Yone (Kritik / Dövüşçü Yolu)</h3>
-                <p>Her şampiyonun kendi doğasına ve o anki metaya uygun şekilde 3 tane çekirdek eşyası (core item) olduğundan diğer işlevsel tipli eşyaları (Cıva Yatağan, tank eşyaları, 2. seviye bot) almadan önce bu çekirdek eşyalarının bitirilmesi gerekir.</p>
-                <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-                    <div class="esya-kapsayici" data-item-id="6672"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/6672.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div> <span style="color:#8b949e; font-size:1.5em;">/</span>
-                    <div class="esya-kapsayici" data-item-id="3153"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3153.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div>
-                    <span style="color:#c9d1d9;"><b>1. Eşya:</b> Bir isabet etkili dövüşçü eşyası. Karşıda kırılganlar varsa <b>Kraken Katili</b>, tanklar varsa <b>Mahvolmuş Kralın Kılıcı</b>.</span>
+                
+            <h3 style="color: #58a6ff; text-align: center; margin-top: 50px; margin-bottom: 10px; border-bottom: 1px dashed #30363d; padding-bottom: 10px;">Tüm Aktif Efsanevi Eşya Kütüphanesi</h3>
+            <p style="text-align: center; color: #8b949e; margin-bottom: 30px;">Kütüphaneden eşyalara tıklayarak yukarıdaki simülatöre ekleyebilirsiniz.</p>
+            
+            <div class="kategori-baslik">⚔️ Dövüşçü & Suikastçı</div>
+            <div id="grid-dovuscu" class="esya-kutuphanesi-grid"></div>
+
+            <div class="kategori-baslik">🔮 Büyücü</div>
+            <div id="grid-buyucu" class="esya-kutuphanesi-grid"></div>
+
+            <div class="kategori-baslik">🏹 Nişancı</div>
+            <div id="grid-nisanci" class="esya-kutuphanesi-grid"></div>
+
+            <div class="kategori-baslik">🛡️ Tank</div>
+            <div id="grid-tank" class="esya-kutuphanesi-grid"></div>
+
+            <div class="kategori-baslik">💚 Destek</div>
+            <div id="grid-destek" class="esya-kutuphanesi-grid"></div>
+
+            <div class="kategori-baslik">👟 Botlar</div>
+            <div id="grid-botlar" class="esya-kutuphanesi-grid"></div>
+        </div>
+
+        <!-- 2. SEKME İÇERİĞİ: META REHBERİ (Varsayılan Gizli) -->
+        <div id="esya-sekme-rehber" class="gizle">
+            <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px;">Kritik Eşya Dizilimleri & Meta Rehberi</h2>
+            
+             <div class="bilgi-karti">
+                <div style="display:flex; flex-direction:row; gap:10px;">
+                    <img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/champion/Yasuo.png" alt="Yasuo" style="width:60px; height:60px;">
+                    <img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/champion/Yone.png" alt="Yone" style="width:60px; height:60px;">
                 </div>
-                <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-                    <div class="esya-kapsayici" data-item-id="6673"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/6673.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div>
-                    <span style="color:#c9d1d9;"><b>2. Eşya:</b> Ani patlatma hasarlarından korunmak ve hayatta kalmak için <b>Ölümsüz Kalkanyay</b> vazgeçilmezdir.</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-                    <div class="esya-kapsayici" data-item-id="3036"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3036.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div> <span style="color:#8b949e; font-size:1.5em;">/</span>
-                    <div class="esya-kapsayici" data-item-id="3033"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3033.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div> <span style="color:#8b949e; font-size:1.5em;">/</span>
-                    <div class="esya-kapsayici" data-item-id="3031"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3031.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div>
-                    <span style="color:#c9d1d9;"><b>3. Eşya:</b> Zırh delme kritik eşyası (<b>Dominik Efendinin Hürmetleri</b> veya <b>Fani Hatıratı</b>) veya saf hasar için <b>Ebedi Kılıç</b>.</span>
+                <div class="bilgi-icerik" style="flex:1;">
+                    <h3>Yasuo & Yone (Kritik / Dövüşçü Yolu)</h3>
+                    <p>Her şampiyonun kendi doğasına ve o anki metaya uygun şekilde 3 tane çekirdek eşyası (core item) olduğundan diğer işlevsel tipli eşyaları (Cıva Yatağan, tank eşyaları, 2. seviye bot) almadan önce bu çekirdek eşyalarının bitirilmesi gerekir.</p>
+                    <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                        <div class="esya-kapsayici" data-item-id="6672"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/6672.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div> <span style="color:#8b949e; font-size:1.5em;">/</span>
+                        <div class="esya-kapsayici" data-item-id="3153"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3153.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div>
+                        <span style="color:#c9d1d9;"><b>1. Eşya:</b> Bir isabet etkili dövüşçü eşyası. Karşıda kırılganlar varsa <b>Kraken Katili</b>, tanklar varsa <b>Mahvolmuş Kralın Kılıcı</b>.</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                        <div class="esya-kapsayici" data-item-id="6673"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/6673.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div>
+                        <span style="color:#c9d1d9;"><b>2. Eşya:</b> Ani patlatma hasarlarından korunmak ve hayatta kalmak için <b>Ölümsüz Kalkanyay</b> vazgeçilmezdir.</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                        <div class="esya-kapsayici" data-item-id="3036"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3036.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div> <span style="color:#8b949e; font-size:1.5em;">/</span>
+                        <div class="esya-kapsayici" data-item-id="3033"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3033.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div> <span style="color:#8b949e; font-size:1.5em;">/</span>
+                        <div class="esya-kapsayici" data-item-id="3031"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3031.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div>
+                        <span style="color:#c9d1d9;"><b>3. Eşya:</b> Zırh delme kritik eşyası (<b>Dominik Efendinin Hürmetleri</b> veya <b>Fani Hatıratı</b>) veya saf hasar için <b>Ebedi Kılıç</b>.</span>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <h3 style="color: #58a6ff; text-align: center; margin-top: 50px; margin-bottom: 10px; border-bottom: 1px dashed #30363d; padding-bottom: 10px;">Tüm Aktif Efsanevi Eşya Kütüphanesi</h3>
-        <p style="text-align: center; color: #8b949e; margin-bottom: 30px;">Üzerine gelerek eşyaların özelliklerini görebilirsiniz. Yalnızca Sihirdar Vadisi'nde tamamlanmış eşyalar listelenir.</p>
-        
-        <div class="kategori-baslik">⚔️ Dövüşçü & Suikastçı</div>
-        <div id="grid-dovuscu" class="esya-kutuphanesi-grid"></div>
-
-        <div class="kategori-baslik">🔮 Büyücü</div>
-        <div id="grid-buyucu" class="esya-kutuphanesi-grid"></div>
-
-        <div class="kategori-baslik">🏹 Nişancı</div>
-        <div id="grid-nisanci" class="esya-kutuphanesi-grid"></div>
-
-        <div class="kategori-baslik">🛡️ Tank</div>
-        <div id="grid-tank" class="esya-kutuphanesi-grid"></div>
-
-        <div class="kategori-baslik">💚 Destek</div>
-        <div id="grid-destek" class="esya-kutuphanesi-grid"></div>
-
-        <div class="kategori-baslik">👟 Botlar</div>
-        <div id="grid-botlar" class="esya-kutuphanesi-grid"></div>
     </div>
+
     <div id="arayuz-run" class="gizle" style="max-width: 1200px; margin: 0 auto;">
         <h2 style="color: #ffffff; text-align: center; margin-bottom: 20px;">Ekip Rün Simülatörü</h2>
         <p style="text-align: center; color: #8b949e; margin-bottom: 30px;">Tıklayarak ağaçlardaki rünleri seçip kombine edebilirsiniz. Aynı satırdan sadece biri seçilebilir.</p>
@@ -710,7 +761,7 @@
 
             <div class="harita-kapsayici">
                 <!-- Varsayılan olarak ilk açılacak harita -->
-               <img id="aktif-taktik-haritasi" src="erken-oyun-orman.png" alt="Taktik Haritası" onerror="this.onerror=null; this.src='https://ddragon.leagueoflegends.com/cdn/13.24.1/img/map/map11.png';">
+               <img id="aktif-taktik-haritasi" src="erken-oyun-orman.png" alt="Taktik Haritası">
             </div>
         </div>
 
@@ -739,8 +790,17 @@
         
        <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">YAZLIKDC.GG SÜRÜM GEÇMİŞİ (PATCH NOTES)</h2>
 
+	<div class="yama-karti">
+            <div class="yama-baslik">v5.49.0 - Kusursuz Simülatör ve İkonik Optimizasyon <span class="yama-tarih">Yeni</span></div>
+            <ul class="yama-liste">
+                <li><strong>Sonsuz Döngü Kırıcı:</strong> Çift ikon basılmasına (Inception Bug) ve eşyaların yanlış özellik göstermesine neden olan kök HTML sorunları kalıcı olarak temizlendi.</li>
+                <li><strong>Mutlak Simülatör Motoru:</strong> İnteraktif eşya simülatörü artık sadece Saldırı/Yetenek Gücü gibi temel istatistikleri değil; eşyalardan gelen <em>tüm</em> özellikleri (Sıvışma, Zırh, İyileştirme vb.) dinamik ve eksiksiz bir şekilde okuyup hesaplıyor.</li>
+                <li><strong>Görsel Evrim:</strong> "İyileştirme ve Kalkan Gücü" istatistiği için doğanın gücünü simgeleyen 🌿 ikonu ve göz yormayan özel yeşil renk paleti sisteme entegre edildi.</li>
+            </ul>
+        </div>
+
         <div class="yama-karti">
-            <div class="yama-baslik">v5.48.0 - Scouting Raporu: Efektif Şampiyon Havuzu <span class="yama-tarih">Yeni</span></div>
+            <div class="yama-baslik">v5.48.0 - Scouting Raporu: Efektif Şampiyon Havuzu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>Gelişmiş Analiz:</strong> Bireysel profillere "🎯 Efektif Havuz" filtresi eklendi. Sadece oynamakla kalmayıp, takımın kaderini değiştirdiğin (En az 3 maç, %50+ WR, Yüksek KDA veya Hasar/Şifa/CS katkısı) şampiyonlar özel bir algoritmaya bağlandı.</li>
                 <li><strong>Dinamik Şampiyon Vitrini:</strong> Efektif şampiyonlar filtresine tıklandığında alt alta maç geçmişi dizmek yerine, profesyonel bir e-sporcu raporu (Scouting Report) gibi şampiyonların detaylı istatistik kartları (Ort. KDA, Hasar, CS Farkı, Flame Horizon) ekrana çiziliyor.</li>
@@ -1606,8 +1666,211 @@
             "Chogath": "Cho'Gath", "Khazix": "Kha'Zix", "Velkoz": "Vel'Koz", "Kaisa": "Kai'Sa", "Leblanc": "LeBlanc"
         };
 
+	// 🛠️ EŞYA SİMÜLATÖRÜ MOTORU
+        window.simEnvanter = [null, null, null, null, null, null];
+
+        window.simEsyaEkle = function(itemId) {
+            let bosIndex = window.simEnvanter.indexOf(null);
+            if(bosIndex !== -1) {
+                window.simEnvanter[bosIndex] = itemId;
+                window.simGuncelle();
+            } else {
+                // Envanter 6/6 Doluysa Uyar
+                let slotKutu = document.getElementById("sim-envanter");
+                slotKutu.style.border = "2px solid #f85149";
+                slotKutu.style.borderRadius = "8px";
+                slotKutu.style.padding = "5px";
+                setTimeout(() => { slotKutu.style.border = "none"; slotKutu.style.padding = "0"; }, 300);
+            }
+        };
+
+        window.simEsyaCikar = function(index) {
+            if(window.simEnvanter[index] !== null) {
+                window.simEnvanter[index] = null;
+                window.simGuncelle();
+            }
+        };
+
+        window.simSifirla = function() {
+            window.simEnvanter = [null, null, null, null, null, null];
+            window.simGuncelle();
+        };
+	// 🛠️ EŞYA SEKMESİ (SİMÜLATÖR/REHBER) YÖNETİM MOTORU
+        window.esyaSekmeDegistir = function(hedef) {
+            // 1. Buton ışıklarını ayarla
+            document.getElementById('btn-esya-sim').classList.remove('aktif');
+            document.getElementById('btn-esya-reh').classList.remove('aktif');
+            
+            if(hedef === 'simulator') document.getElementById('btn-esya-sim').classList.add('aktif');
+            else document.getElementById('btn-esya-reh').classList.add('aktif');
+
+            // 2. İçerikleri tamamen kapat
+            document.getElementById('esya-sekme-simulator').classList.add('gizle');
+            document.getElementById('esya-sekme-rehber').classList.add('gizle');
+            
+            // 3. Sadece istenen içeriği aç
+            document.getElementById('esya-sekme-' + hedef).classList.remove('gizle');
+        };
+
+      // 🛠️ GELİŞMİŞ EŞYA SİMÜLATÖRÜ MOTORU (Tüm İstatistikleri Otonom Okuyan Zırh)
+        window.simGuncelle = function() {
+            let slotlar = document.querySelectorAll('.sim-slot');
+            let yama = typeof guncelYama !== 'undefined' ? guncelYama : "14.23.1";
+            
+            window.simEnvanter.forEach((itemId, idx) => {
+                if(itemId) {
+                    slotlar[idx].innerHTML = `<img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/${itemId}.png" onerror="this.onerror=null; this.src='https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/${itemId}.png';">`;
+                    slotlar[idx].style.borderStyle = "solid";
+                    slotlar[idx].style.borderColor = "#58a6ff";
+                } else {
+                    slotlar[idx].innerHTML = ``;
+                    slotlar[idx].style.borderStyle = "dashed";
+                    slotlar[idx].style.borderColor = "#30363d";
+                }
+            });
+
+            let t_altin = 0;
+            let statsMap = {};
+            let statsOrjinalIsimler = {}; 
+            
+            window.simEnvanter.forEach(id => {
+                 let itm = window.itemVeritabani ? window.itemVeritabani[String(id)] : null;
+                 if(itm) {
+                     if(itm.gold && itm.gold.total) t_altin += itm.gold.total;
+                     
+                     let rawDesc = itm.description || "";
+                     
+                     // 🎯 ZIRH: Regex'in takılmasını önlemek için DOĞRUDAN bizim yarattığımız beyaz sayıları arıyoruz!
+                     // Sadece <b style="color:#ffffff; ...>DEĞER</b><span ...>İSİM</span> şablonuna kilitlenir.
+                     const regex = /<b style="color:#ffffff; margin-right:6px;">([+0-9%.-]+)<\/b><span[^>]*>([^<]+)<\/span>/gi;
+                     
+                     let match;
+                     while ((match = regex.exec(rawDesc)) !== null) {
+                         let valStr = match[1];
+                         let statName = match[2].trim();
+                         
+                         let normName = statName.replace(/I/g, 'ı').replace(/İ/g, 'i').toLowerCase();
+                         let val = parseFloat(valStr.replace('%','').replace('+',''));
+                         
+                         if (!isNaN(val)) {
+                             statsMap[normName] = (statsMap[normName] || 0) + val;
+                             statsOrjinalIsimler[normName] = statName; // Orijinal yazımı korur
+                         }
+                     }
+                 }
+            });
+
+            let statHtml = "";
+            for(let key in statsMap) {
+                let val = statsMap[key];
+                let isPercent = key.includes("ihtimali") || key.includes("çalma") || key.includes("sömürü") || key.includes("hızı") || key.includes("delme") || key.includes("nüfuzu") || key.includes("sıvışma") || key.includes("yenilenmesi") || key.includes("iyileştirme") || key.includes("kalkan");
+                let displayVal = parseFloat(val.toFixed(2)) + (isPercent ? "%" : "");
+                
+                let r = "#a09b8c"; let i = "•"; 
+                let displayName = statsOrjinalIsimler[key] || key.toUpperCase(); 
+                
+                // 🎨 SENİN EFSANEVİ RENK VE İKON SKALAN
+                if (key.includes("büyü nüfuz")) { r = "#8e44ad"; i = "🌌"; }
+                else if (key.includes("yetenek güc")) { r = "#9ea1f9"; i = "🔮"; } 
+                else if (key.includes("saldırı güc")) { r = "#ffb84d"; i = "⚔️"; } 
+                else if (key.includes("zırh delme")) { r = "#e65c00"; i = "🔽"; } 
+                else if (key.includes("zırh deşme")) { r = "#ff4500"; i = "🪓"; } 
+                else if (key === "zırh" || (key.includes("zırh") && !key.includes("delme") && !key.includes("deşme"))) { r = "#ffd700"; i = "🛡️"; }
+                else if (key.includes("büyü direnc")) { r = "#87cefa"; i = "🧿"; } 
+                else if (key.includes("yetenek hız") || key.includes("ulti") || key.includes("nihai")) { r = "#ffffff"; i = "⏳"; } 
+                else if (key.includes("saldırı hız")) { r = "#ffeb3b"; i = "🗡️"; }
+                else if (key.includes("hareket hız")) { r = "#aee2ff"; i = "👟"; }
+                else if (key.includes("kritik")) { r = "#f35b5a"; i = "🎯"; }
+                else if (key.includes("can yenilenmes")) { r = "#a1d586"; i = "💖"; }
+                else if (key.includes("mana yenilenmes")) { r = "#aee2ff"; i = "🌊"; }
+                else if (key.includes("can çalm")) { r = "#da3633"; i = "🩸"; }
+                else if (key.includes("mutlak sömürü")) { r = "#da3633"; i = "🧛"; }
+                else if (key.includes("sıvışma")) { r = "#e0e0e0"; i = "🛡️"; }
+                else if (key.includes("iyileştirme") || key.includes("kalkan")) { r = "#3fb950"; i = "🌿"; } 
+                else if (key.includes("can") && !key.includes("çal") && !key.includes("sömürü") && !key.includes("yenilenmes")) { r = "#a1d586"; i = "❤️"; }
+                else if (key.includes("mana") && !key.includes("yenilenmes")) { r = "#58a6ff"; i = "💧"; }
+                else { r = "#c9d1d9"; i = "✨"; } 
+
+                statHtml += `<div class="sim-stat-satir"><span>${i} <span style="color:${r}">${displayName}</span></span><b style="color:#ffffff">+${displayVal}</b></div>`;
+            }
+
+            if(statHtml === "") statHtml = `<div style="color:#8b949e; grid-column: 1 / -1; text-align:center; margin: 20px 0;">Kütüphaneden eşya seçerek dizilime başlayın.</div>`;
+            document.getElementById("sim-statlar").innerHTML = statHtml;
+            document.getElementById("sim-altin").innerText = "Toplam Maliyet: " + t_altin + " 🪙";
+        };
+
+      // 🛠️ V5.32.0 KATEGORİK EŞYA KÜTÜPHANESİ (Hafif ve Kusursuz Motor)
+        function renderEsyaKutuphanesi() {
+            if(!window.itemVeritabani) return;
+
+            const kategoriler = ["dovuscu", "buyucu", "nisanci", "tank", "destek", "botlar"];
+            kategoriler.forEach(k => { let el = document.getElementById("grid-" + k); if(el) el.innerHTML = ""; });
+
+            let duplicateCheck = new Set();
+            const yasakliIsimler = ["Karayel", "Rizikocunun Bıçağı", "İblis Kral'ın Tacı", "Etyiyen", "Seher Kılıcı", "Atma'nın Hesaplaşması", "İlahların Kılıcı", "Magma Kalkanı", "Yıldızlı Gece Pelerini", "Gargoyl Taşzırhı", "Parçalanmış Kraliçe'nin Tacı", "Gaddarlık"]; 
+            const kategoriZorlamalari = { "Umbra Mızrağı": "dovuscu", "Yıldırım Asası": "buyucu", "Bandle Gaydası": "destek", "Demir Solari'nin Broşu": "destek", "Aklın Sonu": "dovuscu", "Dinçleştirici Aytaşı": "destek", "Helia'nın Yankıları": "destek", "Şafağın Özü": "destek", "Zeke'nin Ahengi": "destek" };
+
+            let yama = typeof guncelYama !== 'undefined' ? guncelYama : "14.23.1"; 
+
+            for (let id in window.itemVeritabani) {
+                let itm = window.itemVeritabani[id];
+                let plainName = itm.name || "";
+                
+                // 🎯 Açıklama zaten "baslat" içinde kusursuz şekilde formatlandı! Direkt alıyoruz.
+                let desc = itm.description || "";
+                
+                let isArena = desc.includes("Arena") || desc.includes("Özel Karşılaşma");
+                let isOrnnItem = desc.includes("ornn") || desc.includes("Ornn");
+                let isConsumable = itm.tags && itm.tags.includes("Consumable");
+                
+                let isBanned = yasakliIsimler.some(yasakli => plainName === yasakli || plainName.includes(yasakli));
+                let isVip = (id === "3172" || plainName === "Gunmetal Greaves");
+                let altEsyaMi = (itm.into && itm.into.length > 0);
+                let isValid = false;
+
+                if (isVip) {
+                    isValid = true;
+                } else if (itm.maps && itm.maps["11"] === true && itm.inStore !== false && !isBanned && !isArena && !isOrnnItem && !isConsumable) {
+                    let isBoot = itm.tags && itm.tags.includes("Boots") && itm.gold && itm.gold.total > 300;
+                    let isTearUpgrade = (id === "3040" || id === "3042" || id === "3121"); 
+                    if ((!altEsyaMi && itm.gold && itm.gold.total >= 1500) || isBoot || isTearUpgrade) isValid = true;
+                }
+
+                if (isValid && !duplicateCheck.has(plainName)) {
+                    duplicateCheck.add(plainName);
+                    let tags = itm.tags || [];
+                    let kategori = "dovuscu"; 
+
+                    if (kategoriZorlamalari[plainName] || id === "3172") {
+                        kategori = (id === "3172") ? "botlar" : kategoriZorlamalari[plainName];
+                    } else {
+                        if (tags.includes("Boots")) kategori = "botlar";
+                        else if (tags.includes("GoldPer") || tags.includes("Vision") || ["3107", "3011", "3109", "3222", "3504", "6616"].includes(id)) kategori = "destek";
+                        else if (tags.includes("CriticalStrike") || (tags.includes("AttackSpeed") && tags.includes("Damage") && !tags.includes("Health"))) kategori = "nisanci";
+                        else if (tags.includes("SpellDamage") || tags.includes("ManaRegen")) kategori = "buyucu";
+                        else if ((tags.includes("Armor") || tags.includes("SpellBlock")) && !tags.includes("Damage")) kategori = "tank";
+                        else if (tags.includes("Health") && !tags.includes("Damage") && !tags.includes("SpellDamage")) kategori = "tank";
+                        else kategori = "dovuscu"; 
+                    }
+
+                    let grid = document.getElementById("grid-" + kategori);
+                    if (grid) {
+                        let div = document.createElement("div");
+                        div.className = "esya-kart";
+                        div.setAttribute("onclick", `window.simEsyaEkle('${id}')`);
+                        div.innerHTML = `
+                            <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/${id}.png" onerror="this.onerror=null; this.src='https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/${id}.png';">
+                            <div class="esya-detay-popup">
+                                ${desc} 
+                            </div>
+                        `;
+                        grid.appendChild(div);
+                    }
+                }
+            }
+        }
         function formatSampiyon(isim) { return sampiyonIsimCeviri[isim] || isim; }
-        let guncelYama = "14.9.1"; // Başlangıç yaması, API'den son yama çekilecek.
+        let guncelYama = "14.23.1"; // Başlangıç yaması, API'den son yama çekilecek.
 
         function resimUrlGetir(isim) {
             const urlDüzeltme = { "FiddleSticks": "Fiddlesticks", "MonkeyKing": "MonkeyKing" };
@@ -1763,6 +2026,16 @@
                     const itemRes = await fetch(`https://ddragon.leagueoflegends.com/cdn/${guncelYama}/data/tr_TR/item.json?v=` + new Date().getTime());
                     const itemData = await itemRes.json(); 
                     
+                    if (!itemData.data["3172"]) {
+                        itemData.data["3172"] = {
+                            name: "Gunmetal Greaves",
+                            description: "<mainText><stats><attention> 40%</attention> Saldırı Hızı<br><attention> 45</attention> Hareket Hızı<br><attention> 5%</attention> Can Çalma</stats><br><br><rules>Gereksinim: Orta Koridor Görevini (Midlane Quest) tamamlamak. Tamamlandığında Savaşçı Çizmeleri otomatik olarak bu eşyaya yükseltilir.</rules></mainText>",
+                            gold: { total: 1100 },
+                            tags: ["Boots", "AttackSpeed", "LifeSteal"]
+                        };
+                    }
+
+                    // 🎯 TEK SEFERLİK KUSURSUZ BOYAMA MOTORU BURADA ÇALIŞIR
                     for (let id in itemData.data) {
                         let itm = itemData.data[id];
                         let name = itm.name;
@@ -1779,72 +2052,111 @@
                             else if(itm.tags.includes("ManaRegen") || itm.tags.includes("GoldPer")) subTitle = "Destek";
                         }
 
-                        let parsed = rawDesc.replace(/<mainText>/g, '').replace(/<\/mainText>/g, '');
+                        let parsed = rawDesc.replace(/<mainText>/gi, '').replace(/<\/mainText>/gi, '');
+                        let statsBlock = "";
                         
-                        // 1. DİNAMİK SATIR OKUYUCU (REGEX SÖZLÜĞÜNÜ ÇÖPE ATTIK, HER ŞEYİ OKUR)
+                        // ANA STATS KUTUSU BOYAMASI
                         let statsMatch = parsed.match(/<stats>(.*?)<\/stats>/si);
                         if (statsMatch) {
-                            let statsContent = statsMatch[1];
-                            let statLines = statsContent.split(/<br\s*\/?>|\n/gi); // Satır satır ayır
+                            let statLines = statsMatch[1].split(/<br\s*\/?>|\n/gi); 
                             let newStatsContent = "";
                             
                             statLines.forEach(line => {
                                 let cleanLine = line.replace(/<br\s*\/?>/gi, '').trim();
                                 if(!cleanLine) return;
-
-                                // Sayıyı ve Metni Ayır (Örn: "<attention> 40</attention> Zırh" veya "10% Can Çalma")
+                                
                                 let numMatch = cleanLine.match(/(?:<attention>\s*([+0-9%.-]+)\s*<\/attention>|([+0-9%.-]+))/i);
                                 let val = ""; let sName = cleanLine;
-                                
                                 if (numMatch) {
                                     val = numMatch[1] || numMatch[2];
                                     sName = cleanLine.replace(numMatch[0], '').trim();
                                 }
-
-                                let sNameLower = sName.toLowerCase();
-                                let r = "#a09b8c"; let i = "•"; // Varsayılan renk ve ikon (Tanınmayan özellik gelirse bunu basar)
                                 
-                                // Kelime içinde ne geçiyorsa otomatik yakala
-                                if(sNameLower.includes("can") && !sNameLower.includes("çalma") && !sNameLower.includes("sömürü")) { r = "#a1d586"; i = sNameLower.includes("yenilenmesi") ? "💖" : "❤️"; }
-                                else if(sNameLower.includes("saldırı gücü")) { r = "#e88245"; i = "⚔️"; }
-                                else if(sNameLower.includes("yetenek gücü")) { r = "#9ea1f9"; i = "🔮"; }
-                                else if(sNameLower.includes("yetenek hızı") || sNameLower.includes("ulti hızı")) { r = "#c9d1d9"; i = "⏳"; }
-                                else if(sNameLower.includes("saldırı hızı")) { r = "#ffeb3b"; i = "🗡️"; }
-                                else if(sNameLower.includes("zırh") && !sNameLower.includes("delme") && !sNameLower.includes("deşme")) { r = "#f2a65a"; i = "🛡️"; }
-                                else if(sNameLower.includes("büyü direnci")) { r = "#58a6ff"; i = "🧿"; }
-                                else if(sNameLower.includes("hareket hızı")) { r = "#aee2ff"; i = "👟"; }
-                                else if(sNameLower.includes("mana")) { r = "#58a6ff"; i = sNameLower.includes("yenilenmesi") ? "🌊" : "💧"; }
-                                else if(sNameLower.includes("kritik")) { r = "#f35b5a"; i = "🎯"; }
-                                else if(sNameLower.includes("çalma") || sNameLower.includes("sömürü")) { r = "#da3633"; i = "🩸"; }
-                                else if(sNameLower.includes("delme") || sNameLower.includes("deşme") || sNameLower.includes("nüfuz")) { r = "#e88245"; i = "🔪"; }
-                                else if(sNameLower.includes("sıvışma")) { r = "#e0e0e0"; i = "🛡️"; }
-                                else if(sNameLower.includes("iyileştirme") || sNameLower.includes("kalkan")) { r = "#2ea043"; i = "💚"; }
-
-                                // Mutlak dikey hizalama (Kutu içine hapsediyoruz, alt satıra asla kayamaz)
+                                sName = sName.replace(/<[^>]*>?/gm, '').trim();
+                                let sNameLower = sName.replace(/I/g, 'ı').replace(/İ/g, 'i').toLowerCase();
+                                let r = "#a09b8c"; let i = "•"; 
+                                
+                                if(sNameLower.includes("büyü nüfuz")) { r = "#8e44ad"; i = "🌌"; sName="Büyü Nüfuzu"; }
+                                else if(sNameLower.includes("yetenek güc")) { r = "#9ea1f9"; i = "🔮"; sName="Yetenek Gücü"; }
+                                else if(sNameLower.includes("saldırı güc")) { r = "#ffb84d"; i = "⚔️"; sName="Saldırı Gücü"; }
+                                else if(sNameLower.includes("zırh delme")) { r = "#e65c00"; i = "🔽"; sName="Zırh Delme"; }
+                                else if(sNameLower.includes("zırh deşme")) { r = "#ff4500"; i = "🪓"; sName="Zırh Deşme"; }
+                                else if(sNameLower === "zırh" || (sNameLower.includes("zırh") && !sNameLower.includes("delme") && !sNameLower.includes("deşme"))) { r = "#ffd700"; i = "🛡️"; sName="Zırh"; }
+                                else if(sNameLower.includes("büyü direnc")) { r = "#87cefa"; i = "🧿"; sName="Büyü Direnci"; }
+                                else if(sNameLower.includes("yetenek hız") || sNameLower.includes("ulti") || sNameLower.includes("nihai")) { r = "#ffffff"; i = "⏳"; sName="Yetenek Hızı"; }
+                                else if(sNameLower.includes("saldırı hız")) { r = "#ffeb3b"; i = "🗡️"; sName="Saldırı Hızı"; }
+                                else if(sNameLower.includes("hareket hız")) { r = "#aee2ff"; i = "👟"; sName="Hareket Hızı"; }
+                                else if(sNameLower.includes("kritik")) { r = "#f35b5a"; i = "🎯"; sName="Kritik Vuruş İhtimali"; }
+                                else if(sNameLower.includes("can yenilenmes")) { r = "#a1d586"; i = "💖"; sName="Can Yenilenmesi"; }
+                                else if(sNameLower.includes("mana yenilenmes")) { r = "#aee2ff"; i = "🌊"; sName="Mana Yenilenmesi"; }
+                                else if(sNameLower.includes("can çalm")) { r = "#da3633"; i = "🩸"; sName="Can Çalma"; }
+                                else if(sNameLower.includes("mutlak sömürü")) { r = "#da3633"; i = "🧛"; sName="Mutlak Sömürü"; }
+                                else if(sNameLower.includes("sıvışma")) { r = "#e0e0e0"; i = "🛡️"; sName="Sıvışma"; }
+				else if(sNameLower.includes("iyileştirme") || sNameLower.includes("kalkan")) { r = "#3fb950"; i = "🌿"; sName="İyileştirme ve Kalkan Gücü"; }
+                                else if(sNameLower === "can" || (sNameLower.includes("can") && !sNameLower.includes("çal") && !sNameLower.includes("yenilenmes"))) { r = "#a1d586"; i = "❤️"; sName="Can"; }
+                                else if(sNameLower === "mana" || (sNameLower.includes("mana") && !sNameLower.includes("yenilenmes"))) { r = "#58a6ff"; i = "💧"; sName="Mana"; }
+                                else if(sNameLower.includes("delme") || sNameLower.includes("deşme") || sNameLower.includes("nüfuz")) { r = "#e88245"; i = "🔪"; } 
+                                
                                 if (val) {
-                                    newStatsContent += `<div style="display:flex; align-items:center; margin-bottom:4px; font-size:1.05em;"><span style="width:22px; text-align:left;">${i}</span><b style="color:#ffffff; margin-right:6px;">${val}</b><span style="color:${r};">${sName}</span></div>`;
+                                    newStatsContent += `<div style="display:flex; align-items:center; margin-bottom:4px; font-size:1.05em;"><span style="width:22px; text-align:left;">${i}</span><b style="color:#ffffff; margin-right:6px;">${val}</b><span style="color:${r}; font-weight:bold;">${sName}</span></div>`;
                                 } else {
-                                    newStatsContent += `<div style="display:flex; align-items:center; margin-bottom:4px; font-size:1.05em;"><span style="color:${r};">${sName}</span></div>`;
+                                    newStatsContent += `<div style="display:flex; align-items:center; margin-bottom:4px; font-size:1.05em;"><span style="color:${r}; font-weight:bold;">${sName}</span></div>`;
                                 }
                             });
-                            
-                            parsed = parsed.replace(statsMatch[0], `<div style="display:flex; flex-direction:column; margin-bottom:8px; border-bottom:1px solid #1e2328; padding-bottom:8px;">${newStatsContent}</div>`);
+                            statsBlock = `<div class="modern-stats-box" style="display:flex; flex-direction:column; margin-bottom:8px; border-bottom:1px solid #1e2328; padding-bottom:8px;">${newStatsContent}</div>`;
+                            parsed = parsed.replace(statsMatch[0], '@@STATS_BLOCK@@');
                         }
 
-                        // 2. INLINE (SATIR İÇİ) RENKLENDİRME MOTORU
-                        // Riot, <passive> etiketini başlık için değil, cümlenin içindeki kelimeleri sarıya boyamak için kullanıyormuş!
-                        parsed = parsed.replace(/<passive>(.*?)<\/passive>/gi, '<b style="color:#ffd700;">$1</b>');
+                        // PASİFLERİN İÇİNDEKİ BOYAMALAR
+                        parsed = parsed.replace(/<passive>(.*?)<\/passive>/gi, '<b style="color:#f85149;">$1</b>');
                         parsed = parsed.replace(/<active>(.*?)<\/active>/gi, '<b style="color:#58a6ff;">$1</b>');
                         parsed = parsed.replace(/<rules>(.*?)<\/rules>\s*(?:<br\s*\/?>\s*)*/gi, '<div style="margin-top:6px; font-size:0.85em; color:#8b949e; font-style:italic; line-height:1.3;">$1</div>');
-                        parsed = parsed.replace(/<attention>(.*?)<\/attention>/gi, '<b style="color:#ffffff;">$1</b>'); 
-                        
-                        // Kalan çöp <br>'leri temizle ve çoklu boşlukları teke düşür
+                        parsed = parsed.replace(/<attention>(.*?)<\/attention>/gi, '<b style="color:#ffffff;">$1</b>');
+
+                        parsed = parsed.replace(/Büyü Nüfuzu|büyü nüfuzu|Büyü nüfuzu/gi, '@@MNPEN@@');
+                        parsed = parsed.replace(/Zırh Delme|zırh delme|Zırh delme/gi, '@@ARPEN@@');
+                        parsed = parsed.replace(/Zırh Deşme|zırh deşme|Zırh deşme/gi, '@@LETHAL@@');
+                        parsed = parsed.replace(/Yetenek Gücü|yetenek gücü|Yetenek gücü/gi, '@@AP@@');
+                        parsed = parsed.replace(/Saldırı Gücü|saldırı gücü|Saldırı gücü/gi, '@@AD@@');
+                        parsed = parsed.replace(/Büyü Direnci|büyü direnci|Büyü direnci/gi, '@@MR@@');
+                        parsed = parsed.replace(/Hareket Hızı|hareket hızı|Hareket hızı/gi, '@@MS@@');
+                        parsed = parsed.replace(/Saldırı Hızı|saldırı hızı|Saldırı hızı/gi, '@@AS@@');
+                        parsed = parsed.replace(/Yetenek Hızı|yetenek hızı|Yetenek hızı/gi, '@@AH@@');
+                        parsed = parsed.replace(/Kritik Vuruş İhtimali|Kritik vuruş ihtimali|kritik vuruş ihtimali/gi, '@@CRIT@@');
+                        parsed = parsed.replace(/Mutlak Sömürü|mutlak sömürü|Mutlak sömürü/gi, '@@OMNI@@');
+                        parsed = parsed.replace(/Can Yenilenmesi|can yenilenmesi|Can yenilenmesi/gi, '@@HP_REGEN@@');
+                        parsed = parsed.replace(/Mana Yenilenmesi|mana yenilenmesi|Mana yenilenmesi/gi, '@@MP_REGEN@@');
+                        parsed = parsed.replace(/Can Çalma|can çalma|Can çalma/gi, '@@LIFESTEAL@@');
+                        parsed = parsed.replace(/(^|\s|>)(Zırh)($|\s|<|[.,])/gi, '$1@@ARMOR@@$3');
+                        parsed = parsed.replace(/(^|\s|>)(Can)($|\s|<|[.,])/gi, '$1@@HP@@$3');
+                        parsed = parsed.replace(/(^|\s|>)(Mana)($|\s|<|[.,])/gi, '$1@@MP@@$3');
+
+                        parsed = parsed.replace(/@@MNPEN@@/g, '<span style="color:#8e44ad; font-weight:bold;">🌌 Büyü Nüfuzu</span>');
+                        parsed = parsed.replace(/@@ARPEN@@/g, '<span style="color:#e65c00; font-weight:bold;">🔽 Zırh Delme</span>');
+                        parsed = parsed.replace(/@@LETHAL@@/g, '<span style="color:#ff4500; font-weight:bold;">🪓 Zırh Deşme</span>');
+                        parsed = parsed.replace(/@@AP@@/g, '<span style="color:#9ea1f9; font-weight:bold;">🔮 Yetenek Gücü</span>');
+                        parsed = parsed.replace(/@@AD@@/g, '<span style="color:#ffb84d; font-weight:bold;">⚔️ Saldırı Gücü</span>');
+                        parsed = parsed.replace(/@@MR@@/g, '<span style="color:#87cefa; font-weight:bold;">🧿 Büyü Direnci</span>');
+                        parsed = parsed.replace(/@@MS@@/g, '<span style="color:#aee2ff; font-weight:bold;">👟 Hareket Hızı</span>');
+                        parsed = parsed.replace(/@@AS@@/g, '<span style="color:#ffeb3b; font-weight:bold;">🗡️ Saldırı Hızı</span>');
+                        parsed = parsed.replace(/@@AH@@/g, '<span style="color:#ffffff; font-weight:bold;">⏳ Yetenek Hızı</span>');
+                        parsed = parsed.replace(/@@CRIT@@/g, '<span style="color:#f35b5a; font-weight:bold;">🎯 Kritik Vuruş İhtimali</span>');
+                        parsed = parsed.replace(/@@OMNI@@/g, '<span style="color:#da3633; font-weight:bold;">🧛 Mutlak Sömürü</span>');
+                        parsed = parsed.replace(/@@HP_REGEN@@/g, '<span style="color:#a1d586; font-weight:bold;">💖 Can Yenilenmesi</span>');
+                        parsed = parsed.replace(/@@MP_REGEN@@/g, '<span style="color:#aee2ff; font-weight:bold;">🌊 Mana Yenilenmesi</span>');
+                        parsed = parsed.replace(/@@LIFESTEAL@@/g, '<span style="color:#da3633; font-weight:bold;">🩸 Can Çalma</span>');
+                        parsed = parsed.replace(/@@ARMOR@@/g, '<span style="color:#ffd700; font-weight:bold;">🛡️ Zırh</span>');
+                        parsed = parsed.replace(/@@HP@@/g, '<span style="color:#a1d586; font-weight:bold;">❤️ Can</span>');
+                        parsed = parsed.replace(/@@MP@@/g, '<span style="color:#58a6ff; font-weight:bold;">💧 Mana</span>');
+
                         parsed = parsed.replace(/^(?:<br\s*\/?>)+|(?:<br\s*\/?>)+$/gi, '');
                         parsed = parsed.replace(/(?:<br\s*\/?>){2,}/gi, '<br>');
 
+                        parsed = parsed.replace('@@STATS_BLOCK@@', statsBlock);
+
                         itm.description = `
                             <div class="m-tooltip-header">
-                                <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${id}.png" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
+                                <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${id}.png" onerror="this.onerror=null; this.src='https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/${id}.png';">
                                 <div class="m-header-info">
                                     <div class="m-isim">${name}</div>
                                     <div class="m-kategori">${subTitle}</div>
@@ -1859,9 +2171,7 @@
                     window.itemVeritabani = itemData.data;
                 } catch(e) { console.warn("Eşya veritabanı yüklenemedi."); }
 
-		// V5.36.0 - KUSURSUZ RÜN MOTORU (ID VE İSİM BAZLI GARANTİLİ EŞLEŞTİRME)
                 try {
-                    // DDragon'un resmi güncel yama dosyasına bağlanıyoruz ki 404 hatası almayalım!
                     const runeRes = await fetch(`https://ddragon.leagueoflegends.com/cdn/${guncelYama}/data/tr_TR/runesReforged.json`);
                     const runeData = await runeRes.json();
                     
@@ -1869,7 +2179,6 @@
                     runeData.forEach(agac => {
                         agac.slots.forEach(slot => {
                             slot.runes.forEach(run => {
-                                // Riot'un URL'sinin sonundaki dosya adını alıyoruz (örn: presstheattack.png)
                                 let dosyaAdi = run.icon.split('/').pop().toLowerCase();
                                 let temizAciklama = run.shortDesc.replace(/<[^>]*>?/gm, '');
                                 runSozlugu[dosyaAdi] = run.name + ": " + temizAciklama;
@@ -1879,41 +2188,28 @@
 
                     document.querySelectorAll('.run-ikon').forEach(img => {
                         let imgDosyaAdi = img.src.split('/').pop().toLowerCase();
-                        
-                        // Ufak stat rünlerini atla, onların açıklamaları HTML'de sabit ve güvenli
                         if (imgDosyaAdi.includes("statmod")) return; 
 
                         let tooltipAyarlandi = false;
-                        
-                        // 1. Resmin dosya adıyla Riot'un dosya adını eşleştir
                         if (runSozlugu[imgDosyaAdi]) {
                             img.setAttribute('data-tooltip', runSozlugu[imgDosyaAdi]);
                             tooltipAyarlandi = true;
                         } else {
-                            // 2. Parçalı eşleşme zırhı (Riot'un garip LethalTempoTemp isimlendirmelerine karşı)
                             for (let key in runSozlugu) {
                                 if (imgDosyaAdi.includes(key.replace('.png', '')) || key.includes(imgDosyaAdi.replace('.png', ''))) {
                                     img.setAttribute('data-tooltip', runSozlugu[key]);
-                                    tooltipAyarlandi = true;
-                                    break;
+                                    tooltipAyarlandi = true; break;
                                 }
                             }
                         }
                         
-                        if(!tooltipAyarlandi) {
-                            img.setAttribute('data-tooltip', "Veri bulunamadı.");
-                        }
+                        if(!tooltipAyarlandi) img.setAttribute('data-tooltip', "Veri bulunamadı.");
                         
-                        // 404 KORUMASI: Eğer Riot'un DDragon sunucusunda resim eksikse, CommunityDragon'dan çek!
                         img.onerror = function() {
-                            this.onerror = null; // Sonsuz döngüyü engelle
+                            this.onerror = null; 
                             let cdUrl = this.src.toLowerCase().split('img/')[1];
-                            if(cdUrl) {
-                                this.src = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/${cdUrl}`;
-                            } else {
-                                this.src = "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png";
-                                this.style.opacity = "0.3";
-                            }
+                            if(cdUrl) this.src = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/${cdUrl}`;
+                            else { this.src = "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png"; this.style.opacity = "0.3"; }
                         };
                     });
                 } catch(e) { console.error("[Rün Motoru] Hata:", e); }
@@ -1934,9 +2230,7 @@
                 tumVeriler.forEach(m => {
                     let isimKontrol = m.oyuncu ? m.oyuncu.toLowerCase() : "";
                     let riotIdKontrol = m.riot_id ? m.riot_id.toLowerCase() : "";
-                    if(isimKontrol.includes("yazlıkdcflex") || riotIdKontrol.includes("yazlıkdcflex")) {
-                        m.oyuncu = "Taner";
-                    }
+                    if(isimKontrol.includes("yazlıkdcflex") || riotIdKontrol.includes("yazlıkdcflex")) m.oyuncu = "Taner";
                 });
 
                 let macGrupKapasitesi = {}; tumVeriler.forEach(v => { macGrupKapasitesi[v.mac_id] = (macGrupKapasitesi[v.mac_id] || 0) + 1; });
@@ -1982,163 +2276,6 @@
                 console.error("Hata:", hata); alert("Veriler çekilirken bir hata oluştu.");
             } finally {
                 setTimeout(() => { document.getElementById("loader-ekrani").style.opacity = "0"; setTimeout(() => document.getElementById("loader-ekrani").style.display = "none", 500); }, 300);
-            }
-        }
-
-        // V5.32.0 KATEGORİK EŞYA KÜTÜPHANESİ VE ÇÖP ÖĞÜTÜCÜ
-        function renderEsyaKutuphanesi() {
-            if(!window.itemVeritabani) return;
-
-            if (!window.itemVeritabani["3172"]) {
-                window.itemVeritabani["3172"] = {
-                    name: "Gunmetal Greaves",
-                    description: "<mainText><stats><attention> 40%</attention> Saldırı Hızı<br><attention> 45</attention> Hareket Hızı<br><attention> 5%</attention> Can Çalma</stats><br><br><rules>Gereksinim: Orta Koridor Görevini (Midlane Quest) tamamlamak. Tamamlandığında Savaşçı Çizmeleri otomatik olarak bu eşyaya yükseltilir.</rules></mainText>",
-                    gold: { total: 1100 },
-                    tags: ["Boots", "AttackSpeed", "LifeSteal"]
-                };
-            }
-            
-            const kategoriler = ["dovuscu", "buyucu", "nisanci", "tank", "destek", "botlar"];
-            kategoriler.forEach(k => { let el = document.getElementById("grid-" + k); if(el) el.innerHTML = ""; });
-
-            let duplicateCheck = new Set();
-            
-            const yasakliIsimler = [
-                "Karayel", "Rizikocunun Bıçağı", "İblis Kral'ın Tacı", "Etyiyen", "Seher Kılıcı", 
-                "Atma'nın Hesaplaşması", "İlahların Kılıcı", "Magma Kalkanı", "Yıldızlı Gece Pelerini", 
-                "Gargoyl Taşzırhı", "Parçalanmış Kraliçe'nin Tacı", "Gaddarlık"
-            ]; 
-            
-            const kategoriZorlamalari = {
-                "Umbra Mızrağı": "dovuscu", "Yıldırım Asası": "buyucu", "Bandle Gaydası": "destek",
-                "Demir Solari'nin Broşu": "destek", "Aklın Sonu": "dovuscu", "Dinçleştirici Aytaşı": "destek",
-                "Helia'nın Yankıları": "destek", "Şafağın Özü": "destek", "Zeke'nin Ahengi": "destek" 
-            };
-
-            for (let id in window.itemVeritabani) {
-                let itm = window.itemVeritabani[id];
-                let desc = itm.description || "";
-                let plainName = itm.name || "";
-                
-                let isArena = desc.includes("Arena") || desc.includes("Özel Karşılaşma");
-                let isOrnnItem = desc.includes("ornn") || desc.includes("Ornn");
-                let isConsumable = itm.tags && itm.tags.includes("Consumable");
-                
-                let isBanned = yasakliIsimler.some(yasakli => plainName === yasakli || plainName.includes(yasakli));
-                let isVip = (id === "3172" || plainName === "Gunmetal Greaves");
-                let altEsyaMi = (itm.into && itm.into.length > 0);
-                
-                let isValid = false;
-
-                if (isVip) {
-                    isValid = true;
-                } else if (itm.maps && itm.maps["11"] === true && itm.inStore !== false && !isBanned && !isArena && !isOrnnItem && !isConsumable) {
-                    // DİKKAT: 300 Altınlık Hurda Çizmeler (Örn: Çizme) Katledildi (> 300)
-                    let isBoot = itm.tags && itm.tags.includes("Boots") && itm.gold && itm.gold.total > 300;
-                    let isTearUpgrade = (id === "3040" || id === "3042" || id === "3121"); 
-
-                    if ((!altEsyaMi && itm.gold && itm.gold.total >= 1500) || isBoot || isTearUpgrade) {
-                        isValid = true;
-                    }
-                }
-
-                if (isValid) {
-                    if (!duplicateCheck.has(plainName)) {
-                        duplicateCheck.add(plainName);
-                        
-                        let tags = itm.tags || [];
-                        let kategori = "dovuscu"; 
-
-                        if (kategoriZorlamalari[plainName] || id === "3172") {
-                            kategori = (id === "3172") ? "botlar" : kategoriZorlamalari[plainName];
-                        } else {
-                            if (tags.includes("Boots")) {
-                                kategori = "botlar";
-                            } else if (tags.includes("GoldPer") || tags.includes("Vision") || ["3107", "3011", "3109", "3222", "3504", "6616"].includes(id)) {
-                                kategori = "destek";
-                            } else if (tags.includes("CriticalStrike") || (tags.includes("AttackSpeed") && tags.includes("Damage") && !tags.includes("Health"))) {
-                                kategori = "nisanci";
-                            } else if (tags.includes("SpellDamage") || tags.includes("ManaRegen")) {
-                                kategori = "buyucu";
-                            } else if ((tags.includes("Armor") || tags.includes("SpellBlock")) && !tags.includes("Damage")) {
-                                kategori = "tank";
-                            } else if (tags.includes("Health") && !tags.includes("Damage") && !tags.includes("SpellDamage")) {
-                                kategori = "tank";
-                            } else {
-                                kategori = "dovuscu"; 
-                            }
-                        }
-
-                        let finalHtml = "";
-                        
-                        if (desc.includes("m-tooltip-header")) {
-                            finalHtml = desc;
-                        } else {
-                            let parsed = desc.replace(/<mainText>/g, '').replace(/<\/mainText>/g, '');
-                            
-                            const regex = /(?:<br\s*\/?>|\s)*(?:<attention>\s*([+0-9%.-]+)\s*<\/attention>|([+0-9%.-]+))\s*(Saldırı Gücü|Can Çalma|Mutlak Sömürü|Taban Can Yenilenmesi|Can Yenilenmesi|Can|Yetenek Gücü|Yetenek Hızı|Nihai Yetenek Hızı|Ulti Hızı|Saldırı Hızı|Zırh Deşme|Zırh Delme|Zırh|Büyü Direnci|Büyü Nüfuzu|Hareket Hızı|Kritik Vuruş İhtimali|Taban Mana Yenilenmesi|Mana Yenilenmesi|Mana)(?:<br\s*\/?>)?/gi;
-                            
-                            parsed = parsed.replace(regex, function(match, v1, v2, statName) {
-                                let val = v1 || v2; let sName = statName.trim();
-                                let sNameLower = sName.toLowerCase();
-                                let r = "#a09b8c"; let i = "•";
-                                
-                                if(sNameLower === "can") { r = "#a1d586"; i = "❤️"; }
-                                else if(sNameLower.includes("can yenilenmesi")) { r = "#a1d586"; i = "💖"; }
-                                else if(sNameLower === "saldırı gücü") { r = "#e88245"; i = "⚔️"; }
-                                else if(sNameLower === "yetenek gücü") { r = "#9ea1f9"; i = "🔮"; }
-                                else if(sNameLower === "yetenek hızı") { r = "#c9d1d9"; i = "⏳"; }
-                                else if(sNameLower.includes("ulti") || sNameLower.includes("nihai yetenek")) { r = "#ff9800"; i = "🔁"; }
-                                else if(sNameLower === "saldırı hızı") { r = "#ffeb3b"; i = "🗡️"; }
-                                else if(sNameLower.includes("zırh") && !sNameLower.includes("delme") && !sNameLower.includes("deşme")) { r = "#f2a65a"; i = "🛡️"; }
-                                else if(sNameLower === "büyü direnci") { r = "#58a6ff"; i = "🧿"; }
-                                else if(sNameLower === "hareket hızı") { r = "#aee2ff"; i = "👟"; }
-                                else if(sNameLower.includes("mana") && !sNameLower.includes("yenilenmesi")) { r = "#58a6ff"; i = "💧"; }
-                                else if(sNameLower.includes("yenilenmesi")) { r = "#aee2ff"; i = "🌊"; }
-                                else if(sNameLower.includes("kritik")) { r = "#f35b5a"; i = "🎯"; }
-                                else if(sNameLower.includes("can çalma")) { r = "#da3633"; i = "🩸"; }
-                                else if(sNameLower.includes("mutlak sömürü")) { r = "#da3633"; i = "🧛"; }
-                                else if(sNameLower.includes("delme") || sNameLower.includes("deşme") || sNameLower.includes("nüfuz")) { r = "#e88245"; i = "🔪"; }
-
-                                return `<div style="display: flex; align-items: center; white-space: nowrap !important; font-size: 1.05em; margin-bottom: 3px; line-height: 1;"><span style="width:24px; text-align:left; display:inline-block;">${i}</span> <b style="color:#ffffff; margin-right:6px;">${val}</b> <span style="color:${r};">${sName}</span></div>`;
-                            });
-
-                            parsed = parsed.replace(/<stats>/g, '<div class="modern-stats-box" style="display:flex; flex-direction:column; gap:2px; margin-bottom: 8px;">');
-                            parsed = parsed.replace(/<\/stats>/g, '</div>');
-                            parsed = parsed.replace(/<\/div>\s*<br\s*\/?>/g, '</div>');
-
-                            let goldStr = (itm.gold && itm.gold.total) ? `<div class="m-fiyat"><span style="font-size:1.1em; margin-right:3px;">🪙</span> ${itm.gold.total}</div>` : '';
-                            let subTitle = (kategori === "botlar") ? "Çizme" : "Efsanevi Eşya";
-
-                            finalHtml = `
-                                <div class="m-tooltip-header">
-                                    <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${id}.png" onerror="this.style.display='none'">
-                                    <div class="m-header-info">
-                                        <div class="m-isim">${plainName}</div>
-                                        <div class="m-kategori">${subTitle}</div>
-                                    </div>
-                                    ${goldStr}
-                                </div>
-                                <div class="m-tooltip-body">
-                                    ${parsed}
-                                </div>
-                            `;
-                        }
-
-                        let grid = document.getElementById("grid-" + kategori);
-                        if (grid) {
-                            let div = document.createElement("div");
-                            div.className = "esya-kart";
-                            div.innerHTML = `
-                                <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${id}.png" onerror="this.style.display='none'">
-                                <div class="esya-detay-popup">
-                                    ${finalHtml} 
-                                </div>
-                            `;
-                            grid.appendChild(div);
-                        }
-                    }
-                }
             }
         }
 
@@ -3842,6 +3979,7 @@ rozetlerHTML += '</div>';
                     // YENİ EKLENEN ZIRH: Eğer bu ufak rün (statmod) ise, JS motoru bunu pas geçsin!
                     let resimAdi = img.src.split('/').pop().toLowerCase();
                     if (resimAdi.includes("statmod")) return;
+                    let eslesenDosya = null;
 
                     if(sozluk[resimAdi]) {
                         eslesenDosya = resimAdi;
