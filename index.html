@@ -335,7 +335,7 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.49.0</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.50.0</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
@@ -791,7 +791,17 @@
        <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">YAZLIKDC.GG SÜRÜM GEÇMİŞİ (PATCH NOTES)</h2>
 
 	<div class="yama-karti">
-            <div class="yama-baslik">v5.49.0 - Kusursuz Simülatör ve İkonik Optimizasyon <span class="yama-tarih">Yeni</span></div>
+            <div class="yama-baslik">v5.50.0 - Mutlak İzolasyon ve Otonom Simülatör <span class="yama-tarih">Yeni</span></div>
+            <ul class="yama-liste">
+                <li><strong>Sinerji İzolasyonu (Katı Eşitlik):</strong> Sinerji Keşif Motoru (Combinatorics) yeniden kalibre edildi. "3'lü Sinerji" sekmesi artık 5'li maçların içindeki alt permütasyonları çekmek yerine, <em>sadece ve sadece</em> 3 kişilik kemik kadro (+2 yabancı) ile girilen maçları süzüyor. 5'li maçların 3'lü istatistiklerini kirletmesi imkansız hale getirildi.</li>
+                <li><strong>Sonsuz Döngü Kırıcı:</strong> Eşya açıklamalarında kendi kendini boyayarak çift ikona (Inception Bug) sebep olan HTML çakışması kökten kazındı. Boyama motoru doğrudan API veri çekim aşamasına (Oluşturma Anına) taşınarak sistem rahatlatıldı.</li>
+                <li><strong>Mutlak Simülatör Motoru:</strong> İnteraktif eşya simülatöründeki beyaz liste sınırı kaldırıldı. Simülatör artık pasif yeteneklerdeki alakasız sayıları (Örn: Tahsildar'ın %5 infazı) stat sanmıyor; sadece ve güvenli bir şekilde "İstatistik Kutusu" içindeki <em>tüm</em> özellikleri (Sıvışma, Zırh, İyileştirme vb.) otonom olarak okuyup hesaplıyor.</li>
+                <li><strong>Doğanın Gücü:</strong> Destek eşyalarındaki "İyileştirme ve Kalkan Gücü" özelliği için özel parlak yeşil renk paleti ve 🌿 ikonu sisteme mühürlendi.</li>
+            </ul>
+        </div>
+
+	<div class="yama-karti">
+            <div class="yama-baslik">v5.49.0 - Kusursuz Simülatör ve İkonik Optimizasyon <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>Sonsuz Döngü Kırıcı:</strong> Çift ikon basılmasına (Inception Bug) ve eşyaların yanlış özellik göstermesine neden olan kök HTML sorunları kalıcı olarak temizlendi.</li>
                 <li><strong>Mutlak Simülatör Motoru:</strong> İnteraktif eşya simülatörü artık sadece Saldırı/Yetenek Gücü gibi temel istatistikleri değil; eşyalardan gelen <em>tüm</em> özellikleri (Sıvışma, Zırh, İyileştirme vb.) dinamik ve eksiksiz bir şekilde okuyup hesaplıyor.</li>
@@ -3264,17 +3274,7 @@
             const macGruplari = {}; temelVeriler.forEach(v => { if(!macGruplari[v.mac_id]) macGruplari[v.mac_id] = []; macGruplari[v.mac_id].push(v); });
             let filtrelenmisMaclar = []; let tabloBasligi = "";
 
-            // KOMBİNASYON ÜRETİCİSİ (Alt Grupları Keşfeder)
-            function getCombinations(array, size) {
-                const result = [];
-                function p(t, i) {
-                    if (t.length === size) { result.push(t); return; }
-                    if (i + 1 > array.length) return;
-                    p(t.concat(array[i]), i + 1); p(t, i + 1);
-                }
-                p([], 0); return result;
-            }
-
+            // 🎯 KOMBİNASYON ÜRETİCİSİ İPTAL - KATI İZOLASYON ZIRHI GELDİ
             if (aktifSinerjiBoyutu === "alt_koridor") {
                 tabloBasligi = "🏹 En İyi Alt Koridor İkilileri (Nişancı + Destek)";
                 Object.values(macGruplari).forEach(grup => {
@@ -3284,23 +3284,22 @@
             } else {
                 let eklenti = {5: "'li", 4: "'lü", 3: "'lü", 2: "'li"}[aktifSinerjiBoyutu] || "'li";
                 let hedefBoyut = parseInt(aktifSinerjiBoyutu);
-                tabloBasligi = `🌟 En Çok Birlikte Oynayan ${hedefBoyut}${eklenti} Ekipler (${aktifSezonFiltresi})`;
                 
-                // YENİ KEŞİF ZEKASI: 4 kişi bile girseler, içlerinden 3'lü ve 2'li sinerjileri bulur.
+                if (hedefBoyut === 3) {
+                    tabloBasligi = `🌟 Saf 3'lü Sinerji (Sadece 3 Ekip + 2 Yabancı) (${aktifSezonFiltresi})`;
+                } else {
+                    tabloBasligi = `🌟 En Çok Birlikte Oynayan ${hedefBoyut}${eklenti} Ekipler (${aktifSezonFiltresi})`;
+                }
+                
                 Object.values(macGruplari).forEach(grup => {
-                    if (grup.length >= hedefBoyut) {
-                        let altKombinasyonlar = getCombinations(grup, hedefBoyut);
-                        altKombinasyonlar.forEach(komb => filtrelenmisMaclar.push(komb));
+                    // MUTLAK İZOLASYON: Seçilen sayıyla tam eşleşen maçları alır.
+                    if (grup.length === hedefBoyut) {
+                        filtrelenmisMaclar.push(grup);
                     }
                 });
             }
 
             if (filtrelenmisMaclar.length === 0) { vitrin.innerHTML = `<p style="text-align: center; font-size: 1.2em; margin-top: 50px;">Bu kategoride henüz uygun bir analiz verisi bulunamadı.</p>`; btnDahaFazla.classList.add("gizle"); return; }
-            
-            if (window.aktifSinerjiOyuncular && window.aktifSinerjiOyuncular.length > 0) {
-                filtrelenmisMaclar = filtrelenmisMaclar.filter(grup => { return window.aktifSinerjiOyuncular.every(secili => grup.some(p => p.oyuncu === secili)); });
-                if (filtrelenmisMaclar.length === 0) { vitrin.innerHTML = `<p style="text-align: center; font-size: 1.2em; margin-top: 50px;">Seçili kombinasyona ait kayıt bulunamadı.</p>`; return; }
-            }
 
             let kompIstatistik = {};
             filtrelenmisMaclar.forEach(grup => {
