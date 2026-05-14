@@ -2676,9 +2676,9 @@
                 let t_penta = 0, t_quadra = 0, t_triple = 0, t_double = 0, t_calinan = 0, t_ilkKan = 0;
 
                 if (toplamMac > 0) {
-                    // YENİ DEĞİŞKENLER (Arka Planda CS Farkı ve GPM Takibi)
                     // YENİ DEĞİŞKENLER (Arka Planda CS Farkı, GPM ve Flame Horizon Takibi)
                     let t_cs_farki = 0, t_gpm = 0, t_ilk10cs = 0, gecerli_koridor_mac = 0, t_flame_horizon = 0;
+                    let t_gecerli_cs = 0, t_gecerli_sure = 0; // 🎯 YENİ ZIRH: Sadece Koridor CS'leri
 
                     oyuncuTumMaclari.forEach(m => {
                         toplamK += m.oldurme; toplamD += m.olum; toplamA += m.asist; 
@@ -2690,13 +2690,16 @@
                         t_sifa += ((m.iyilesme_takim || 0) + (m.kalkan_takim || 0));
                         t_cc += (m.cc_suresi || 0);
 
-                        // YENİ VERİLERİN TOPLANMASI VE FLAME HORIZON ZEKASI
                         t_cs_farki += (m.koridor_minyon_farki || 0);
                         t_gpm += (m.dakika_basi_altin || 0);
                         t_ilk10cs += (m.ilk_10_dk_minyon || 0);
+                        
+                        // 🛑 DESTEK ZIRHI EKLENİYOR
                         if(m.pozisyon !== "UTILITY") {
                             gecerli_koridor_mac++;
-                            if (Math.round(m.koridor_minyon_farki || 0) >= 100) t_flame_horizon++; // FLAME HORIZON AVCISI
+                            t_gecerli_cs += (m.cs || 0); // Sadece koridorda alınan minyonlar
+                            t_gecerli_sure += (m.sure_saniye || 0); // Sadece koridordaki süre
+                            if (Math.round(m.koridor_minyon_farki || 0) >= 100) t_flame_horizon++; 
                         }
                         
                         if(m.olum === 0) perfSayisi++; if(window.checkSabotaj(m)) utancSayisi++; if(m.asist === window.tumMacMaxAsist[m.mac_id] && m.asist > 0) asistKraliSayisi++;
@@ -2741,7 +2744,8 @@
 
                     // ORTALAMA MATEMATİĞİ
                     let ortK = (toplamK / toplamMac).toFixed(1); let ortD = (toplamD / toplamMac).toFixed(1); let ortA = (toplamA / toplamMac).toFixed(1);
-                    let ortCS_dk = (toplamCS / (toplamSure ? (toplamSure/60) : 1)).toFixed(1);
+                    // 🎯 YENİ: Ortalama CS hesabında artık sadece koridordaki minyonları koridordaki zamana böler!
+                    let ortCS_dk = (t_gecerli_cs / (t_gecerli_sure ? (t_gecerli_sure/60) : 1)).toFixed(1);
                     let winRate = ((zaferSayisi / toplamMac) * 100).toFixed(0); let genelWrRenk = winRate >= 50 ? "#3fb950" : "#f85149";
 
                     // YENİ YUVARLANMIŞ ORTALAMALAR (CS Farkı, GPM, 10. Dk)
@@ -3695,13 +3699,12 @@ rozetlerHTML += '</div>';
         });
 
         baslat(false);
-	// V5.31.0 - MUTLAK LİDERLİK VE ORTALAMALAR MOTORU (OVERRIDE)
+	// V5.49.0 - MUTLAK LİDERLİK VE ORTALAMALAR MOTORU (DESTEK CS HARİÇ)
         function modernLiderlikMotoru(veriDizisi) {
             if (!veriDizisi || veriDizisi.length === 0) return;
             
             let oyuncuIstatistikleri = {};
 
-            // 1. OYUNCU BAZLI GRUPLAMA
             veriDizisi.forEach(mac => {
                 let isim = mac.oyuncu;
                 if (!oyuncuIstatistikleri[isim]) {
@@ -3709,14 +3712,11 @@ rozetlerHTML += '</div>';
                             oyuncu: isim,
                             ikon: window.guncelIkonlar ? window.guncelIkonlar[isim] || mac.profil_ikonu || 29 : mac.profil_ikonu || 29,
                             macSayisi: 0,
-                            toplamSkor: 0,
-                            toplamOlum: 0,
-                            toplamAsist: 0,
-                            toplamGorus: 0,
-                            toplamCs: 0
+                            toplamSkor: 0, toplamOlum: 0, toplamAsist: 0, toplamGorus: 0,
+                            toplamCs: 0, csMacSayisi: 0 // 🎯 YENİ: Sadece Destek OLMAYAN maçları sayacağız!
                         };
                     }
-                // V5.31.4 - PYTHON BOT VERİ SENKRONİZASYONU VE CS/DK MATEMATİĞİ
+                
                 let oyunSuresiDk = (Number(mac.sure_saniye) || 60) / 60;
                 let dakikadaMinyon = (Number(mac.cs) || 0) / oyunSuresiDk;
 
@@ -3724,29 +3724,30 @@ rozetlerHTML += '</div>';
                 oyuncuIstatistikleri[isim].toplamOlum += Number(mac.olum) || 0;
                 oyuncuIstatistikleri[isim].toplamAsist += Number(mac.asist) || 0;
                 oyuncuIstatistikleri[isim].toplamGorus += Number(mac.gorus_skoru) || 0;
-                oyuncuIstatistikleri[isim].toplamCs += dakikadaMinyon;
+                
+                // 🛑 DESTEK ZIRHI: Eğer rol Destek (UTILITY) değilse CS'i topla!
+                if (mac.pozisyon !== "UTILITY") {
+                    oyuncuIstatistikleri[isim].toplamCs += dakikadaMinyon;
+                    oyuncuIstatistikleri[isim].csMacSayisi += 1;
+                }
+                
                 oyuncuIstatistikleri[isim].macSayisi += 1;
             });
 
-            // 2. ORTALAMA MATEMATİĞİ
             let ortalamaVeriler = Object.values(oyuncuIstatistikleri).map(p => {
                 return {
-                    oyuncu: p.oyuncu,
-                    ikon: p.ikon,
-                    macSayisi: p.macSayisi,
-                    ortSkor: p.toplamSkor / p.macSayisi,
-                    ortOlum: p.toplamOlum / p.macSayisi,
-                    ortAsist: p.toplamAsist / p.macSayisi,
-                    ortGorus: p.toplamGorus / p.macSayisi,
-                    ortCs: p.toplamCs / p.macSayisi
+                    oyuncu: p.oyuncu, ikon: p.ikon, macSayisi: p.macSayisi,
+                    ortSkor: p.macSayisi > 0 ? (p.toplamSkor / p.macSayisi) : 0,
+                    ortOlum: p.macSayisi > 0 ? (p.toplamOlum / p.macSayisi) : 0,
+                    ortAsist: p.macSayisi > 0 ? (p.toplamAsist / p.macSayisi) : 0,
+                    ortGorus: p.macSayisi > 0 ? (p.toplamGorus / p.macSayisi) : 0,
+                    ortCs: p.csMacSayisi > 0 ? (p.toplamCs / p.csMacSayisi) : 0 // 🎯 Sadece koridor maçlarına böler!
                 };
             });
 
-            // 3. JİLET GİBİ ÇİZİM FONKSİYONU
             function listeyiCiz(listeId, data, siralamaKriteri, formatEki) {
                 let kutu = document.getElementById(listeId);
                 if (!kutu) return; 
-                
                 kutu.innerHTML = ""; 
                 
                 data.sort((a, b) => b[siralamaKriteri] - a[siralamaKriteri]);
@@ -3755,24 +3756,20 @@ rozetlerHTML += '</div>';
                 top10.forEach((kisi, index) => {
                     let div = document.createElement("div");
                     div.className = "liderlik-satir"; 
-                    div.style.display = "flex";
-                    div.style.justifyContent = "space-between";
-                    div.style.alignItems = "center";
-                    div.style.padding = "8px 0";
-                    div.style.borderBottom = "1px solid rgba(200, 170, 110, 0.1)";
+                    div.style.display = "flex"; div.style.justifyContent = "space-between"; div.style.alignItems = "center";
+                    div.style.padding = "8px 0"; div.style.borderBottom = "1px solid rgba(200, 170, 110, 0.1)";
 
-                    // MADALYA MATEMATİĞİ
                     let podyumRenk = "#c9d1d9"; let madalya = `${index + 1}.`; let podyumShadow = "none"; let madalyaBoyut = "1.2em";
                     if (index === 0) { podyumRenk = "#ffd700"; madalya = "🥇"; podyumShadow = "0 0 10px rgba(255, 215, 0, 0.8)"; madalyaBoyut = "2.2em"; }
                     else if (index === 1) { podyumRenk = "#c0c0c0"; madalya = "🥈"; podyumShadow = "0 0 8px rgba(192, 192, 192, 0.7)"; madalyaBoyut = "1.8em"; }
                     else if (index === 2) { podyumRenk = "#cd7f32"; madalya = "🥉"; podyumShadow = "0 0 8px rgba(205, 127, 50, 0.6)"; madalyaBoyut = "1.5em"; }
 
-                    let yama = window.guncelYama || (typeof guncelYama !== 'undefined' ? guncelYama : "16.9.1");
+                    let yama = window.guncelYama || (typeof guncelYama !== 'undefined' ? guncelYama : "14.23.1");
 
                     div.innerHTML = `
                         <div style="display:flex; align-items:center; gap:15px; color:${podyumRenk}; text-shadow:${podyumShadow}; font-weight:bold;">
                             <div style="width: 45px; display: flex; justify-content: center; align-items: center; font-size: ${madalyaBoyut}; flex-shrink: 0;">${madalya}</div>
-                            <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/${kisi.ikon}.png" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/16.9.1/img/profileicon/29.png'" style="width:45px; height:45px; border-radius:50%; border:2px solid ${podyumRenk}; object-fit: cover; flex-shrink: 0;">
+                            <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/${kisi.ikon}.png" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/29.png'" style="width:45px; height:45px; border-radius:50%; border:2px solid ${podyumRenk}; object-fit: cover; flex-shrink: 0;">
                             <div style="display: flex; flex-direction: column; line-height: 1.2;">
                                 <span style="font-size: 1.05em; font-weight: bold; color: #ffffff; white-space: nowrap;">${guncelRiotID[kisi.oyuncu] || kisi.oyuncu}</span>
                                 <span style="font-size: 0.8em; color: #8b949e; font-style: italic;">${kisi.oyuncu}</span>
@@ -3785,7 +3782,7 @@ rozetlerHTML += '</div>';
                     `;
                     kutu.appendChild(div);
                 });
-            } // İŞTE SENİN KODUNDA KOPAN VE SİTEYİ ÇÖKERTEN PARANTEZLER BURASIYDI!
+            }
 
             listeyiCiz("liste-skor", [...ortalamaVeriler], "ortSkor", "Ort.");
             listeyiCiz("liste-olum", [...ortalamaVeriler], "ortOlum", "Ort.");
@@ -3793,14 +3790,13 @@ rozetlerHTML += '</div>';
             listeyiCiz("liste-gorus", [...ortalamaVeriler], "ortGorus", "Ort.");
             listeyiCiz("liste-farm", [...ortalamaVeriler], "ortCs", "CS/Dk");
         }
-        // V5.31.4 - SİBER ZIRH (KUSURSUZ VERİ SENKRONİZASYONU VE MATEMATİK)
+
         document.addEventListener("click", function(e) {
             let id = e.target.id;
             let liderlikButonlari = ["btn-oldurme", "btn-olum", "btn-asist", "btn-gorus", "btn-csmin"];
             
             if (liderlikButonlari.includes(id)) {
-                e.stopPropagation(); 
-                e.preventDefault();
+                e.stopPropagation(); e.preventDefault();
                 
                 document.querySelectorAll("#ana-filtreler .filtre-btn").forEach(b => b.classList.remove("aktif"));
                 e.target.classList.add("aktif");
@@ -3814,14 +3810,9 @@ rozetlerHTML += '</div>';
                     let isim = mac.oyuncu;
                     if (!oyuncuIstatistikleri[isim]) {
                         oyuncuIstatistikleri[isim] = {
-                            oyuncu: isim,
-                            ikon: window.guncelIkonlar ? window.guncelIkonlar[isim] || mac.profil_ikonu || 29 : mac.profil_ikonu || 29,
-                            macSayisi: 0,
-                            toplamSkor: 0,
-                            toplamOlum: 0,
-                            toplamAsist: 0,
-                            toplamGorus: 0,
-                            toplamCs: 0
+                            oyuncu: isim, ikon: window.guncelIkonlar ? window.guncelIkonlar[isim] || mac.profil_ikonu || 29 : mac.profil_ikonu || 29,
+                            macSayisi: 0, toplamSkor: 0, toplamOlum: 0, toplamAsist: 0, toplamGorus: 0,
+                            toplamCs: 0, csMacSayisi: 0 // 🎯 YENİ
                         };
                     }
                     
@@ -3832,15 +3823,24 @@ rozetlerHTML += '</div>';
                     oyuncuIstatistikleri[isim].toplamOlum += Number(mac.olum) || 0;
                     oyuncuIstatistikleri[isim].toplamAsist += Number(mac.asist) || 0;
                     oyuncuIstatistikleri[isim].toplamGorus += Number(mac.gorus_skoru) || 0;
-                    oyuncuIstatistikleri[isim].toplamCs += dakikadaMinyon;
+                    
+                    // 🛑 DESTEK ZIRHI
+                    if (mac.pozisyon !== "UTILITY") {
+                        oyuncuIstatistikleri[isim].toplamCs += dakikadaMinyon;
+                        oyuncuIstatistikleri[isim].csMacSayisi += 1;
+                    }
+
                     oyuncuIstatistikleri[isim].macSayisi += 1;
                 });
 
                 let ortalamaVeriler = Object.values(oyuncuIstatistikleri).map(p => {
                     return {
                         oyuncu: p.oyuncu, ikon: p.ikon, macSayisi: p.macSayisi,
-                        ortSkor: p.toplamSkor / p.macSayisi, ortOlum: p.toplamOlum / p.macSayisi,
-                        ortAsist: p.toplamAsist / p.macSayisi, ortGorus: p.toplamGorus / p.macSayisi, ortCs: p.toplamCs / p.macSayisi
+                        ortSkor: p.macSayisi > 0 ? (p.toplamSkor / p.macSayisi) : 0, 
+                        ortOlum: p.macSayisi > 0 ? (p.toplamOlum / p.macSayisi) : 0,
+                        ortAsist: p.macSayisi > 0 ? (p.toplamAsist / p.macSayisi) : 0, 
+                        ortGorus: p.macSayisi > 0 ? (p.toplamGorus / p.macSayisi) : 0, 
+                        ortCs: p.csMacSayisi > 0 ? (p.toplamCs / p.csMacSayisi) : 0 // 🎯 Koridor maçı böleni
                     };
                 });
 
@@ -3857,8 +3857,7 @@ rozetlerHTML += '</div>';
                 if (!kutu) return;
                 kutu.innerHTML = ""; 
 
-                // V16 YAMA KONTROLÜ - Riot'un bozuk linklerini ezer
-                let yama = window.guncelYama || (typeof guncelYama !== 'undefined' ? guncelYama : "16.9.1");
+                let yama = window.guncelYama || (typeof guncelYama !== 'undefined' ? guncelYama : "14.23.1");
 
                 top10.forEach((kisi, index) => {
                     let div = document.createElement("div");
@@ -3874,7 +3873,7 @@ rozetlerHTML += '</div>';
                     div.innerHTML = `
                         <div style="display:flex; align-items:center; gap:15px; color:${podyumRenk}; text-shadow:${podyumShadow}; font-weight:bold;">
                             <div style="width: 45px; display: flex; justify-content: center; align-items: center; font-size: ${madalyaBoyut}; flex-shrink: 0;">${madalya}</div>
-                            <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/${kisi.ikon}.png" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/16.9.1/img/profileicon/29.png'" style="width:45px; height:45px; border-radius:50%; border:2px solid ${podyumRenk}; object-fit: cover; flex-shrink: 0;">
+                            <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/${kisi.ikon}.png" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/29.png'" style="width:45px; height:45px; border-radius:50%; border:2px solid ${podyumRenk}; object-fit: cover; flex-shrink: 0;">
                             <div style="display: flex; flex-direction: column; line-height: 1.2;">
                                 <span style="font-size: 1.05em; font-weight: bold; color: #ffffff; white-space: nowrap;">${guncelRiotID[kisi.oyuncu] || kisi.oyuncu}</span>
                                 <span style="font-size: 0.8em; color: #8b949e; font-style: italic;">${kisi.oyuncu}</span>
@@ -3891,7 +3890,7 @@ rozetlerHTML += '</div>';
                 let btnDahaFazla = document.getElementById("btn-daha-fazla-bireysel");
                 if(btnDahaFazla) btnDahaFazla.classList.add("gizle");
             }
-        }, true); // TRUE parametresi motoru Capture Phase'de (herkesten önce) çalıştırır.
+        }, true);
 
 	// EŞYA HESAPLAMA MOTORU
         function oyuncuEsyaIstatistikleriniHesapla(esyaIdDizisi) {
