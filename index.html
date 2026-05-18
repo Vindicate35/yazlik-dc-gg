@@ -328,6 +328,44 @@
             height: 30px !important; 
             border-width: 2px;
         }
+	/* 🎯 v5.55.3 - KUSURSUZ GÖRSEL HİYERARŞİ VE TAM KİMLİK RESTORASYONU */
+
+        /* 1. Sitenin HİÇBİR yerinde oyuncu isimleri üç noktayla (...) KESİLMEYECEK */
+        .sinerji-satir div, 
+        .s-sol-blok, 
+        .s-kimlik, 
+        div[style*="ellipsis"], 
+        span[style*="ellipsis"] {
+            white-space: nowrap !important;
+            overflow: visible !important;
+            text-overflow: clip !important;
+        }
+
+        /* 2. Künye alanını 190px'ten 260px'e esneterek uzun isimlerin sığmasını garantiliyoruz */
+        div[style*="width: 190px"], 
+        div[style*="width: 160px"], 
+        .s-sol-blok,
+        .s-kimlik {
+            width: 260px !important; /* İsimlerin tek satırda kırpılmadan parlaması için ideal genişlik */
+            flex-shrink: 0 !important;
+        }
+
+        /* 3. Maç kartı başlıklarındaki (Sekme KAPALIYKEN) Anahtar Rünleri 30px yapma ve Altın Zırh enjeksiyonu */
+        .mac-ust-bilgi img[src*="perk-images"], 
+        .mac-ust-bilgi img[src*="perks"],
+        div[class*="ust"] img[src*="perk"],
+        .mac-ust-bilgi .s-ikon + img {
+            width: 30px !important; /* Açık karttaki anahtar rün boyutuyla eşitlendi */
+            height: 30px !important;
+            border: 2px solid #ffd700 !important; /* Altın Çerçeve */
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.6) !important; /* Parlama Aurası */
+            border-radius: 50% !important;
+            background: #000 !important;
+            vertical-align: middle;
+            margin-right: 10px !important;
+            margin-left: 5px !important;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -335,7 +373,7 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.55.1</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.55.3</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
@@ -791,11 +829,29 @@
     <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">YAZLIKDC.GG SÜRÜM GEÇMİŞİ (PATCH NOTES)</h2>
 
     <div class="yama-karti">
-        <div class="yama-baslik">v5.55.1 - Canlı Çekirdek Sıcak Tamiratı <span class="yama-tarih">Yeni</span></div>
+        <div class="yama-baslik">v5.55.3 - Kusursuz Görsel Hiyerarşi ve Tam Kimlik Restorasyonu <span class="yama-tarih">Yeni</span></div>
+        <ul class="yama-liste">
+            <li><strong>Tam İsim (Ellipsis) Restorasyonu:</strong> Sitenin hiçbir yerinde oyuncu isimleri üç noktayla (...) kesilmeyecek şekilde genişlik sınırları 260px'e esnetilip CSS kırpma kuralları iptal edildi. Bütün kimlikler tam okunabilirliğe kavuştu.</li>
+            <li><strong>Evrensel Rün Ölçekleme:</strong> Kapalı maç sekmelerinin başlığında bulunan anahtar rün görselleri, açık kartlardaki gibi 30px boyutuna getirilerek Altın Aura zırhıyla donatıldı.</li>
+            <li><strong>Global Rehber Dedektörü:</strong> Eşya Dizilimleri sekmesindeki kör olan popup motoru, global event delegation (mousemove) algoritmasıyla yeniden hayata döndürüldü; sitedeki statik/dinamik tüm eşya açıklamaları mutlak olarak aktif edildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.55.2 - Mutlak Dikey Hizalama ve Çakışma Zırhı <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Matryoshka (İç İçe Geçme) Kırıcı:</strong> JavaScript döngüsü sırasında etiketlerin yanlış kapanması sonucu oyuncuların birbirinin içine girmesine sebep olan merdiven çökmesi kökten onarıldı; <code>cizTakimKarti</code> iskeleti kusursuzlaştırıldı.</li>
+            <li><strong>DOM Dikey Zorlama:</strong> Sinerji satırlarının içine girdiği ana kutuyu ZORLA dikey (alt alta) çalıştıran CSS zırhı eklendi. Rün boyutları değişse dahi kutuların yana taşması veya birbirini ezmesi yasaklandı.</li>
+            <li><strong>Milyon (m) Formatı Matematik Motoru:</strong> 11651.0k gibi okuması zor kaba rakamlar 11.6m şeklinde jilet gibi net bir formata geçirilerek e-spor arayüzü standartları sağlandı. Profil rünleri büyütüldü.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.55.1 - Canlı Çekirdek Sıcak Tamiratı <span class="yama-tarih"></span></div>
         <ul class="yama-liste">
             <li><strong>ReferenceError İmhası:</strong> <code>cizTakimKarti</code> motorunun içindeki <code>miniRunHTML</code> harf hatası (typo) tespit edilerek imha edildi; çöken sinerji ekran güncelleme motoru otonom olarak ayağa kaldırıldı.</li>
             <li><strong>Anti-Yellow Çakışma Filtresi:</strong> Eski sürümlerden sızan ve yeni mutlak motorla üst üste binerek çift pop-up çıkmasına yol açan yerel CSS yapıları, küresel bir style enjeksiyonu ile tamamen felç edildi.</li>
-            <li><strong>Stat Shards Senkronizasyonu:</strong> Küçük istatistik rünlerinin yer değiştirmesiyle bozulan mantıksal açıklamalar ile tarayıcıdaki ters can simgesi görselleri (Sabit / Seviyeye Göre Can) DOM seviyesinde dinamik olarak takas edilerek senkronize edildi.</li>
+            <li><strong>Stat Shards Senkronizasyonu:</strong> Küçük istatistik rünlerinin yer değiştirmesiyle bozulan mantıksal açıklamalar ile tarayıcıdaki ters can simgesi görselleri DOM seviyesinde dinamik olarak takas edilerek senkronize edildi.</li>
             <li><strong>Metin Arındırma:</strong> <code>Cash Back</code> rününün Türkçe araç ipucu açıklamasındaki İngilizce ekler temizlenerek "Özel İndirim" olarak sadeleştirildi.</li>
         </ul>
     </div>
@@ -1974,10 +2030,13 @@
             return `${dk}:${sn.toString().padStart(2, '0')}`;
         }
 
-        function formatK(num) {
-            if (!num) return "0";
-            if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
-            return num;
+        function formatK(val) {
+            if (val == null || val === undefined) return 0;
+            // Eğer sayı 1 Milyondan büyükse (Örn: 11651000 -> 11.65m)
+            if (val >= 1000000) return (val / 1000000).toFixed(2) + 'm';
+            // Eğer sayı 1 Binden büyükse (Örn: 24500 -> 24.5k)
+            if (val >= 1000) return (val / 1000).toFixed(1) + 'k';
+            return val;
         }
 
         function tarihFormatla(ms) {
@@ -2136,6 +2195,22 @@
             // DİKKAT: Eşyalar için saf beyaz (#ffffff) kullanıyoruz.
             if(data) window.gosterMutlakPopup(e, data.name, data.description, '#ffffff');
         };
+
+	// 🎯 V5.55.3 - KÜRESEL EŞYA DEDEKTÖRÜ (Kör Kalan Rehber Eşyalarını Kurtarma Zırhı)
+        document.addEventListener('mousemove', function(e) {
+            if(e.target && e.target.tagName === 'IMG' && e.target.src.includes('/item/')) {
+                let itemId = e.target.src.split('/').pop().split('.')[0];
+                if(itemId && !isNaN(itemId)) {
+                    e.target.style.cursor = "help";
+                    if (window.popupItemTetikle) window.popupItemTetikle(e, parseInt(itemId));
+                }
+            }
+        });
+        document.addEventListener('mouseout', function(e) {
+            if(e.target && e.target.tagName === 'IMG' && e.target.src.includes('/item/')) {
+                if (window.gizleMutlakPopup) window.gizleMutlakPopup();
+            }
+        });
 
         window.popupRuneTetikle = function(e, runeId) {
             if(!runeId || runeId === 0) {
@@ -2635,6 +2710,7 @@
             }
         }
 
+        // 🔮 V5.55.2 - KUSURSUZ ÇEKİRDEK MAÇ KART MOTORU (TAG DENGELİ & MİLYON FORMATLI)
         function cizTakimKarti(grup, vurguOyuncu = "") {
             grup.sort((a, b) => (rolSiralamaGucu[a.pozisyon] || 99) - (rolSiralamaGucu[b.pozisyon] || 99));
             let oyuncularHtml = ""; 
@@ -2646,16 +2722,17 @@
             grup.forEach(oyuncu => {
                 let durumDamgasi = window.rozetUret ? window.rozetUret(oyuncu) : "";
                 let isTarget = (oyuncu.oyuncu === vurguOyuncu);
-                let satirBg = isTarget ? "background: rgba(88, 166, 255, 0.1); border-left: 4px solid #58a6ff;" : "background: rgba(13, 17, 23, 0.6);";
+                let satirBg = isTarget ? "background: rgba(88, 166, 255, 0.05); border-left: 4px solid #58a6ff;" : "background: rgba(13, 17, 23, 0.6);";
 
                 const fK = (val) => { if (typeof formatK === "function") return formatK(val); return val >= 1000 ? (val / 1000).toFixed(1) + 'k' : (val || 0); };
 
+                let yaMin = ((oyuncu.cs || 0) / oyunSuresi_dk).toFixed(1);
                 let yuvCsFark = Math.round(oyuncu.koridor_minyon_farki || 0);
                 let yuvGpm = Math.round(oyuncu.dakika_basi_altin || 0);
                 let toplamDestek = (oyuncu.iyilesme_takim || 0) + (oyuncu.kalkan_takim || 0);
                 let hasarYuzde = maxHasar > 0 ? ((oyuncu.hasar_sampiyon || 0) / maxHasar) * 100 : 0;
 
-                // 🌟 SİNERJİ / AÇIK MAÇ EŞYALARI
+                // 🌟 SÖZLEŞMELİ EŞYA DÖNGÜSÜ
                 let esyalarHtml = '<div class="s-esya-kutusu" style="display:flex; gap:2px; margin-bottom: 4px;">';
                 if(oyuncu.esyalar) {
                     oyuncu.esyalar.forEach((itemId, index) => {
@@ -2669,30 +2746,33 @@
                 }
                 esyalarHtml += '</div>';
 
-                // 🌟 SİNERJİ / AÇIK MAÇ RÜNLERİ (ZIRHLI GÜVENLİ DÖNGÜ)
-                let runlerDetayHtml = '<div class="s-run-sayfasi-kutusu" style="display:flex; gap:5px; align-items:center; background: rgba(0, 0, 0, 0.4); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(88,166,255,0.15); margin-bottom: 8px; width: fit-content;">';
-                runlerDetayHtml += '<span style="font-size: 0.7em; color: #58a6ff; font-weight: bold; margin-right: 5px;">RÜNLER:</span>';
-                
+                // 🌟 ZIRHLI RÜN DÖNGÜSÜ (ANAHTAR RÜN 30PX ALTIN ÇERÇEVELİ)
+                let runlerDetayHtml = "";
                 if (oyuncu.runler && Array.isArray(oyuncu.runler) && oyuncu.runler.length > 0) {
-                    oyuncu.runler.forEach(runId => {
+                    oyuncu.runler.forEach((runId, index) => {
                         let rData = window.runeIdMap ? window.runeIdMap[runId] : null;
                         let srcUrl = rData ? `https://ddragon.leagueoflegends.com/cdn/img/${rData.icon}` : 'https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png';
-                        runlerDetayHtml += `<img src="${srcUrl}" style="width:22px; height:22px; border-radius:50%; border:1px solid #30363d; background:#000; cursor:help; margin:0;" onmousemove="window.popupRuneTetikle(event, ${runId || 0})" onmouseleave="window.gizleMutlakPopup()">`;
+                        
+                        let ekstraStil = index === 0 
+                            ? 'width:30px; height:30px; border-radius:50%; border:2px solid #ffd700; box-shadow: 0 0 8px rgba(255,215,0,0.6); margin-right: 6px; transform: translateY(-2px);' 
+                            : 'width:22px; height:22px; border-radius:50%; border:1px solid #30363d; margin:0;';
+                            
+                        runlerDetayHtml += `<img src="${srcUrl}" style="${ekstraStil} background:#000; cursor:help;" onmousemove="window.popupRuneTetikle(event, ${runId || 0})" onmouseleave="window.gizleMutlakPopup()">`;
                     });
-                } else { runlerDetayHtml += `<span style="font-size:0.75em; color:#8b949e; font-style:italic;">Veri Yok</span>`; }
-                runlerDetayHtml += '</div>';
+                } else { 
+                    runlerDetayHtml += `<span style="font-size:0.75em; color:#8b949e; font-style:italic;">Veri Yok</span>`; 
+                }
 
-                // SOLDAKİ MİNİ RÜNLER (DÜZELTİLMİŞ ALAN)
+                // SOLDAKİ MİNİ RÜNLER (PROXIMITY RADAR)
                 let mAnaRun = (window.runeIdMap && oyuncu.ana_run_id) ? window.runeIdMap[oyuncu.ana_run_id] : null;
                 let mAltRun = (window.runeIdMap && oyuncu.alt_run_agaci_id) ? window.runeIdMap[oyuncu.alt_run_agaci_id] : null;
 
                 let miniAnaSrc = mAnaRun ? `https://ddragon.leagueoflegends.com/cdn/img/${mAnaRun.icon}` : 'https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png';
                 let miniAltSrc = mAltRun ? `https://ddragon.leagueoflegends.com/cdn/img/${mAltRun.icon}` : 'https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png';
 
-                let miniAnaRunHTML = `<img src="${miniAnaSrc}" style="width:18px; height:18px; border-radius:50%; border: 1px solid #30363d; background:#000; cursor:help;" onmousemove="window.popupRuneTetikle(event, ${oyuncu.ana_run_id || 0})" onmouseleave="window.gizleMutlakPopup()">`;
-                let miniAltRunHTML = `<img src="${miniAltSrc}" style="width:18px; height:18px; border-radius:50%; border: 1px solid #30363d; background:#000; cursor:help;" onmousemove="window.popupRuneTetikle(event, ${oyuncu.alt_run_agaci_id || 0})" onmouseleave="window.gizleMutlakPopup()">`;
+                let miniAnaRunHTML = `<img src="${miniAnaSrc}" style="width:24px; height:24px; border-radius:50%; border: 1px solid #ffd700; background:#000; cursor:help;" onmousemove="window.popupRuneTetikle(event, ${oyuncu.ana_run_id || 0})" onmouseleave="window.gizleMutlakPopup()">`;
+                let miniAltRunHTML = `<img src="${miniAltSrc}" style="width:16px; height:16px; border-radius:50%; border: 1px solid #30363d; background:#000; cursor:help;" onmousemove="window.popupRuneTetikle(event, ${oyuncu.alt_run_agaci_id || 0})" onmouseleave="window.gizleMutlakPopup()">`;
 
-                let csMin = ((oyuncu.cs || 0) / oyunSuresi_dk).toFixed(1);
                 let ilk10CsHTML = (oyuncu.ilk_10_dk_minyon && oyuncu.pozisyon !== "UTILITY") ? `<span style="color: #8b949e; font-size: 0.85em; margin-left: 5px;">(10. Dk: ${oyuncu.ilk_10_dk_minyon} CS)</span>` : '';
 
                 let rozetlerHTML = '<div class="mac-rozetleri" style="display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px;">';
@@ -2709,13 +2789,14 @@
                     partnerHTML = `<div style="font-size: 0.75em; color: #d2a8ff; font-weight: bold;">🤝 ${oyuncu.koridor_partneri}</div>`;
                 }
 
+                // 🎯 BURADAKİ TÜM ETİKETLER KUSURSUZ ŞEKİLDE KAPATILDI (MERDİVEN ETKİSİ YOK EDİLDİ)
                 oyuncularHtml += `
                     <div class="sinerji-satir" style="${satirBg} display: flex; align-items: flex-start; padding: 12px 15px; margin-bottom:4px; border-bottom: 1px solid #21262d; width: 100%; box-sizing: border-box;">
                         
                         <div style="width: 190px; flex-shrink: 0; display: flex; align-items: center; gap: 10px;">
                             <img src="${ikonUrlGetir(oyuncu.profil_ikonu || 29)}" style="width:38px; height:38px; border-radius: 6px;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
                             
-                            <div style="display: flex; flex-direction: column; gap: 3px; flex-shrink: 0;">
+                            <div style="display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; align-items: center;">
                                 ${miniAnaRunHTML}
                                 ${miniAltRunHTML}
                             </div>
@@ -2729,10 +2810,14 @@
 
                         <div style="flex: 1; padding: 0 15px; min-width: 0;">
                             ${esyalarHtml}
-                            ${runlerDetayHtml}
+                            
+                            <div class="s-run-sayfasi-kutusu" style="display:flex; gap:5px; align-items:center; background: rgba(0, 0, 0, 0.4); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(88,166,255,0.15); margin-bottom: 8px; width: fit-content; flex-wrap: wrap;">
+                                <span style="font-size: 0.7em; color: #58a6ff; font-weight: bold; margin-right: 5px;">RÜNLER:</span>
+                                ${runlerDetayHtml}
+                            </div>
                             
                             <div style="display:flex; gap:10px; font-size:0.8em; color:#8b949e; align-items:center; margin-bottom: 6px;">
-                                <span>🗡️ <b style="color:#fff;">${oyuncu.cs || 0}</b> <span style="font-size:0.9em;">(${csMin}/dk)</span> ${ilk10CsHTML}</span>
+                                <span>🗡️ <b style="color:#fff;">${oyuncu.cs || 0}</b> <span style="font-size:0.9em;">(${yaMin}/dk)</span> ${ilk10CsHTML}</span>
                                 <span>👁️ ${oyuncu.gorus_skoru || 0}</span>
                                 <span>🛑 ${oyuncu.kontrol_totemi || 0}</span>
                             </div>
@@ -3366,7 +3451,7 @@
                 let toplamDestek = (veri.iyilesme_takim || 0) + (veri.kalkan_takim || 0);
                 let fDestek = (typeof formatK === "function") ? formatK(toplamDestek) : toplamDestek;
                 let fHasar = (typeof formatK === "function") ? formatK(veri.hasar_sampiyon) : veri.hasar_sampiyon;
-                let fTank = (typeof formatK === "function") ? formatK(veri.hasar_alinan) : veri.hasar_alinan;
+                let fTank = (typeof formatK === "function") ? formatK(veri.hasar_sogurulan) : veri.hasar_sogurulan;
 
                 vitrin.innerHTML += `
                     <div class="oyuncu-karti tiklanabilir-karti ${sinirSinifi}" onclick="window.kutuAc('${panelId}', event)">
