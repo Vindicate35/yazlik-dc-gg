@@ -335,7 +335,7 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.50.0</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.55.1</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
@@ -787,773 +787,852 @@
 
     <!-- SÜRÜM GEÇMİŞİ ANAYASASI -->
     <div id="arayuz-yama" class="gizle" style="max-width: 1000px; margin: 0 auto;">
+    
+    <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">YAZLIKDC.GG SÜRÜM GEÇMİŞİ (PATCH NOTES)</h2>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.55.1 - Canlı Çekirdek Sıcak Tamiratı <span class="yama-tarih">Yeni</span></div>
+        <ul class="yama-liste">
+            <li><strong>ReferenceError İmhası:</strong> <code>cizTakimKarti</code> motorunun içindeki <code>miniRunHTML</code> harf hatası (typo) tespit edilerek imha edildi; çöken sinerji ekran güncelleme motoru otonom olarak ayağa kaldırıldı.</li>
+            <li><strong>Anti-Yellow Çakışma Filtresi:</strong> Eski sürümlerden sızan ve yeni mutlak motorla üst üste binerek çift pop-up çıkmasına yol açan yerel CSS yapıları, küresel bir style enjeksiyonu ile tamamen felç edildi.</li>
+            <li><strong>Stat Shards Senkronizasyonu:</strong> Küçük istatistik rünlerinin yer değiştirmesiyle bozulan mantıksal açıklamalar ile tarayıcıdaki ters can simgesi görselleri (Sabit / Seviyeye Göre Can) DOM seviyesinde dinamik olarak takas edilerek senkronize edildi.</li>
+            <li><strong>Metin Arındırma:</strong> <code>Cash Back</code> rününün Türkçe araç ipucu açıklamasındaki İngilizce ekler temizlenerek "Özel İndirim" olarak sadeleştirildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.55.0 - Küresel DOM Devrimi ve Akıllı Pop-Up Motoru <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Evrensel Mutlak Konumlandırma (Global DOM):</strong> Popup araç ipucu yapıları maç kartlarının içinden sökülerek doğrudan <code>document.body</code> köküne bağlandı. Sitedeki tüm yerel çerçeve kısıtlamaları (overflow/z-index) tamamen bypass edildi.</li>
+            <li><strong>Sinerji Sabit Ekran Restorasyonu:</strong> Takım Sinerjisi sekmesindeki maç kartlarının akordeon kilitlenme sorunları, filtre seçildiğinde doğrudan açık ve listelenmiş gelen kararlı statik düzene dönülerek çözüldü.</li>
+            <li><strong>Otonom Simülatör Hizalaması:</strong> Ekip Rün Simülatöründeki ikonlar yeni mutlak araç ipucu motoruna entegre edilerek simülatörün sayfa düzenini kaydıran HTML çakışmaları tamamen temizlendi.</li>
+            <li><strong>Renk Hiyerarşisi Standardı:</strong> Küresel pop-up pencerelerinde eşya başlıkları keskin saf beyaz (<code>#ffffff</code>), rünler ise karakteristik auralı mavi (<code>#58a6ff</code>) yapılarak görsel disiplin sağlandı.</li>
+            <li><strong>Kapalı Kart Desteği:</strong> Maç kartları henüz açılmamışken mini rünlerin ve eşyaların üzerine gelindiğinde pop-up motorunun otonom tetiklenmesi sağlandı.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.54.0 - Katman Zırhı Tahkimatı <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Z-Index Zırhı:</strong> Rün açıklamalarının diğer oyuncu kartlarının altında kalmasını önlemek için yerel popup pencerelerine <code>z-index: 99999</code> katman zırhı eklenmesi test edildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.53.0 - Native Title CSS Bypass <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Kök Hücre Çözümü:</strong> Sinerji kartlarının içindeki kilitli flexbox yapılarında yerel CSS engellerini aşmak amacıyla, tarayıcının yerleşik <code>title</code> parametresi üzerinden rün açıklaması okutulması denendi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.52.0 - Tam Rün Vitrini ve Genişletilmiş Maç Panelleri <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Detay Paneli Entegrasyonu:</strong> Bireysel profil ve Sinerji maç geçmişi kartlarına, veritabanından (Bot v3.2.0) gelen rün ID'lerini anında görselleştiren dinamik DDragon yuvaları eklendi.</li>
+            <li><strong>6'lı Rün Dizilimi:</strong> Sinerji detay paneline oyuncuların maçta seçtiği 6 rünün tamamını Türkçe açıklamalarıyla birlikte listeleyen etkileşimli rün seridi dahil edildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.51.0 - Zırhlı Sinerji Çipleri ve Hata Ayıklama <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Event Bubbling Engeli:</strong> Takım Sinerjisi sekmesindeki isim filtrelerinde yaşanan yanlış hedefe tıklama sorunları çözüldü, süzme algoritmasına <code>.trim().toLowerCase()</code> zırhı yerleştirildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.50.0 - Mutlak Sinerji İzolasyonu ve Otonom Simülatör <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Sinerji İzolasyonu (Katı Eşitlik):</strong> Sinerji Keşif Motoru (Combinatorics) yeniden kalibre edildi. "3'lü Sinerji" sekmesi artık 5'li maçların içindeki alt permütasyonları çekmek yerine, <em>sadece ve sadece</em> 3 kişilik kemik kadro (+2 yabancı) ile girilen maçları süzüyor.</li>
+            <li><strong>Mutlak Simülatör Motoru:</strong> İnteraktif eşya simülatöründeki beyaz liste sınırı kaldırıldı. Simülatör artık pasif yeteneklerdeki alakasız sayıları stat sanmıyor; "İstatistik Kutusu" içindeki <em>tüm</em> özellikleri otonom olarak okuyup hesaplıyor.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.49.0 - Sonsuz Döngü Kırıcı ve Şifa İkonu <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Inception Bug Çözümü:</strong> Eşya açıklamalarında kendi kendini boyayarak çift ikona sebep olan HTML çakışması kökten kazındı. Boyama motoru doğrudan API veri çekim aşamasına taşındı.</li>
+            <li><strong>Şifa Zırhı:</strong> Destek eşyalarındaki "İyileştirme ve Kalkan Gücü" özelliği için özel parlak yeşil renk paleti ve 🌿 ikonu sisteme mühürlendi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.48.0 - Scouting Raporu: Efektif Şampiyon Havuzu <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Efektif Havuz Filtresi:</strong> Bireysel profillere takımın kaderini değiştirdiğin (En az 3 maç, %50+ WR, Yüksek KDA veya Hasar katkısı) şampiyonları süzen özel bir algoritma eklendi.</li>
+            <li><strong>Dinamik Şampiyon Vitrini:</strong> Efektif şampiyonlar seçildiğinde profesyonel bir e-sporcu raporu (Scouting Report) gibi şampiyonların detaylı istatistik kartları ekrana çiziliyor.</li>
+            <li><strong>Otonom Yama Otomasyonu:</strong> Sürüm geçmişi arayüzü tam otomasyona geçirildi. Yeni yamalar renk efektlerini otonom alırken, eski yamalar tek bir tuşla açılan tarihi arşive sessizce taşınıyor.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.47.0 - Efsanelerin Dönüşü: Flame Horizon <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Filtreleme Devrimi:</strong> Bireysel profillere "🌋 Flame Horizon" filtresi eklendi. Rakibine 100+ CS farkı attığın efsanevi maçları tek tıkla listeleyebilirsin.</li>
+            <li><strong>Görsel Analiz:</strong> Takım sinerjisi maç başlıklarına şampiyon ikonları ve ekip içindeki Flame Horizon başarımları entegre edildi.</li>
+            <li><strong>Performans Çekirdeği:</strong> Sinerji Puanı (SP) hesaplamasına "Nişancı Dominasyonu" (CS Farkı) ağırlığı eklenerek alt koridor analizleri %100 gerçekçi hale getirildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.46.0 - Derin Veri Entegrasyonu ve UX Optimizasyonu <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Derin Veri Katmanı:</strong> Maç kartlarına Şampiyon Hasarı (💥), Tanklanan Hasar (🛡️) ve Takım Desteği (💚) verileri milimetrik olarak işlendi.</li>
+            <li><strong>Destek Rolü Zırhı (Utility Guard):</strong> Destek oyuncuları için istatistiksel gürültü yaratan "10. Dakika CS" ve "CS Farkı" rozetleri, otonom bir algoritma ile gizlenerek arayüz sadeleştirildi.</li>
+            <li><strong>Görsel Stabilizasyon:</strong> "Temizle" ve "Kapat" butonları standart zarif boyutlara çekildi; <code>!important</code> kalkanı ile tarayıcılar arası boyut tutarsızlıkları kökten çözüldü.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.45.0 - Gelişmiş Maç Kartı Analitiği ve Dinamik Rozetler <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Erken Oyun Şeffaflığı:</strong> Maç kartlarındaki CS verisine "10. Dakika CS" bilgisi entegre edilerek erken oyun performansı görünür kılındı.</li>
+            <li><strong>Koridor Partneri (Duo) Tanımlaması:</strong> BOTTOM ve UTILITY rollerinde oynanan maçlar için aynı takımdaki eşleşmiş partneri tespit eden otonom bilgi satırı eklendi.</li>
+            <li><strong>Algoritmik Rozet Sistemi:</strong> Belirli kalite eşiklerini aşan performansları (+20 CS Farkı, +450 GPM) maç kartlarına anında mühürleyen dinamik CSS rozet altyapısı kuruldu.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.44.0 - Ekonomi Motoru ve Erken Oyun İstatistikleri <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Arka Plan Veri Madenciliği (Bot V21):</strong> Python veri çekme algoritması, standart maç verilerinin ötesine geçerek Riot'un "Challenges" (Görevler) veritabanına bağlandı.</li>
+            <li><strong>Yeni Metrikler:</strong> Dakika Başı Altın (GPM), 10. Dakika Minyon Sayısı, Maksimum Koridor Minyon Farkı, Alınan Barikat Sayısı ve Erken Oyun Üstünlüğü gibi safkan ekonomi verileri entegre edildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.43.0 - Yasal Kalkan (Footer) Entegrasyonu <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Hukuki Koruma Protokolü:</strong> Sitenin en alt kısmına (Footer), Riot Games'in "Topluluk Projeleri Kullanım Politikası" ile %100 uyumlu standart yasal feragatname (Disclaimer) ve telif hakkı uyumluluk beyanı işlendi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.42.1 - Sonsuz Döngü (Infinite Loop) Hotfix <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Network Tıkanıklığı Giderildi:</strong> Taktik tahtasında <code>onerror</code> mekanizmasının Riot CDragon sunucularındaki kırık bir linkle eşleşmesi sonucu oluşan sonsuz yükleme hatası durduruldu (<code>this.onerror=null;</code> parametresi enjekte edildi).</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.42.0 - İnteraktif Taktik Tahtası (Map Swapper) <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Harita Rotasyon Modülü:</strong> Statik görselleri temel alan dinamik bir "Taktik Tahtası" inşa edildi. Yumuşak geçiş algoritması sayesinde, oyun evreleri arasındaki harita değişimleri akıcı hale getirildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.41.1 - Mutlak Gizleme Zırhı (Soft Delete) <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Liderlik Filtre Temizliği:</strong> Liderlik tablolarının üstünde yer alan hantal filtre butonları silindi. Null çökme riskini önlemek için "Soft Delete" (<code>display: none;</code>) korumasına geçildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.41.0 - Kanban Çerçeve Kalibrasyonu <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Responsive Kanban Düzenlemesi:</strong> Şampiyon uzmanları sekmesinde ekran daraldığında ortaya çıkan kaymaları önlemek için isimlerin ve statların yan yana dizilim matrisleri esnek CSS flexbox sınırlarıyla tahkim edildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.40.0 - Sezon 16 DataDragon Rün Entegrasyonu & Fiddlesticks Fix <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>runesReforged Bağlantısı:</strong> Oyundan kalkan rünleri barındıran hantal CommunityDragon veri tabanı söküldü. Rün motoru, canlı yama sürümünü kullanarak doğrudan resmi DataDragon'un güncel <code>runesReforged.json</code> dosyasına bağlandı.</li>
+            <li><strong>Rol Hiyerarşisi (Görsel Dağılım):</strong> Şampiyon uzmanları sekmesindeki düz liste mimarisi yıkıldı. Şampiyon uzmanları rollere göre kategorize edilerek büyük başlıklar altında gruplandı.</li>
+            <li><strong>Riot Spagetti Kodu Filtresi (Fiddlesticks Fix):</strong> Sistemin kalbine entegre edilen <code>resimUrlGetir</code> fonksiyonu sayesinde Riot'un veritabanındaki saçma harf duyarlılıkları (FiddleSticks -> Fiddlesticks) filtrelendi ve görsel yükleme körlüğü giderildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.39.0 - Eşya Mimarili Rün Motoru <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Tooltip Restorasyonu:</strong> CSS pseudo-element sınırlamaları nedeniyle çalışmayan rün açıklama kutuları iptal edildi. Rün ikonları dinamik olarak <code>esya-kapsayici</code> sınıflarına sarılarak, eşyalarla %100 aynı çalışan tooltip mekaniği inşa edildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.38.0 - Rün Oto-Tamir Motoru (Auto-Heal) <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Dinamik URL Enjeksiyonu:</strong> Sunuculardaki büyük/küçük harf duyarlılığı nedeniyle bozulan rün görselleri için Oto-Tamir motoru yazıldı. Kırık HTML resim etiketleri anında onarılıyor.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.37.0 - Dinamik Tooltip & Eşya Hesaplama Motoru <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Metin Kırmayan CSS Pseudo Motoru:</strong> Üstüne gelindiğinde anında beliren, animasyonlu ve metin kırmayan CSS pseudo-element motoru eklendi.</li>
+            <li><strong>Statik Matematik Modülü:</strong> Global eşya veri tabanını okuyarak oyuncuların anlık toplam altın, saldırı gücü ve yetenek gücü değerlerini hesaplayan modül entegre edildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.36.0 - DDragon ve CDragon Sinerjisi <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>404 Fallback Zırhı:</strong> Eski rün ikonlarındaki bulunamadı hataları giderildi. Sistem rünleri oyun içi dosya adı bazında analiz edip, Sezon 16'nın resmi Türkçe açıklamalarını ikonların içine kusursuzca enjekte ediyor.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.35.0 - HTML Kasa Temizliği <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Rün İskeleti Yenilemesi:</strong> Arayüzdeki eski, statik ve sahte rün HTML kodları kökten silindi. Rün kütüphanesi kırık linklerden tamamen arındırılarak güncel CommunityDragon sunucularına bağlandı.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.34.0 - Mutlak Rün Restorasyonu ve Canlı Çeviri <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Görsel ve Metin Tamir Motoru:</strong> Eski rün isimleri yüzünden bozulan görselleri Sezon 16 dosyalarıyla onaran sistem yazıldı. İngilizce rün isimleri iptal edilerek Riot'un güncel yamasındaki Türkçe açıklamalar dinamik olarak gömüldü.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.33.0 - Satır İçi Renklendirme Algoritması <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Mejai Operasyonu:</strong> Riot'un etiketlerini cümle ortasında kullanmasından doğan "Metin Parçalanması" sorunu çözüldü. Açıklamalar kelime kelime satır içi taranarak fosforlu kalem stiliyle boyanıyor.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.32.0 - Dinamik Satır Okuyucu (Line-Parser) & Hurda Temizliği <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Block-Flex Mimarisi:</strong> Eşya istatistiklerini hizalamak için kullanılan dar Regex sözlüğü çöpe atıldı. Özellikleri satır satır kutulara hapseden mutlak tasarım mimarisi kuruldu, statların alt satıra kayması engellendi.</li>
+            <li><strong>Hurda Ayıklayıcı:</strong> Eşya kütüphanesini kirleten "300 Altınlık Saf Çizmeler" API taramasından tamamen men edildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.31.9 - Menü Arası Kalibrasyon <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Görsel Gizleme Zırhı:</strong> Farklı sekme ve menüler arası geçişlerde elemanların ekranda asılı kalmasını engellyen CSS katmanları optimize edildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.31.8 - Çift Kontrol Mekanizması <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Double-Check Filtresi:</strong> Oyuncu sekmelerindeki filtre kırıntılarını ve gösterim limitlerini anında sıfırlayan çift yönlü kontrol mekanizması devreye sokuldu.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.31.7 - Profil İkon Hafızası <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Evrensel İkon Senkronizatörü:</strong> Profil ikonları veri tabanındaki en güncel maç tarihine göre taranarak mutlak senkronize edildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.31.6 - Dinamik Temizlik Motoru <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>DOM Temizlik Tetikleyicisi:</strong> Ekran her güncellendiğinde tüm sekme filtrelerini sıfırlayan akıllı temizlik mekanizması entegre edildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.31.5 - Regex Kelime Hizalaması <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Satır Kayması Engeli:</strong> Regex motoruna nowrap zırhı giydirilerek, eşya detaylarındaki üçlünün ekran daraldığında alt satıra kayması çözüldü.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.31.4 - Liderlik Podyumu ve Madalyalar <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Görsel Rekabet Modülü:</strong> Liderlik tabloları baştan tasarlandı. Altın, gümüş ve bronz madalyalarla, sabit hizalama kutularıyla ve gölgelendirmelerle kalite arşa çıkarıldı.</li>
+            <li><strong>Gelişmiş Matematik Motoru:</strong> Python bot verileriyle tam uyumlu çalışacak şekilde CS/Dakika matematiği eklendi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.31.3 - Taner Kimlik Konsolidasyonu <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Kimlik Birleştirme:</strong> Sistemde çift kayıt oluşturan <em>"YazlıkDCFlex"</em> Riot ID'si, kalıcı olarak ana kimlik olan <em>"Taner"</em> ile tek bir ID altında birleştirildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.31.2 - Sinerji Keşif Motoru (Combinatorics & Delta) <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Kombinasyon Üreticisi:</strong> Takım gruplarını tarayarak içlerindeki gizli sinerjileri ortaya çıkaran matematiksel keşif algoritması yazıldı.</li>
+            <li><strong>Sinerji Puanı (SP) ve Laplace Düzeltmesi:</strong> 1 maçta %100 kazanma oranı gibi yanıltıcı istatistikleri elemek için Laplace düzeltmesi eklendi.</li>
+            <li><strong>Rüya Takım Algoritması:</strong> En formda oyuncuları analiz edip birleştiren "Haftanın 5'lisi" ve "Rüya Takım" modülleri entegre edildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.31.1 - Küresel Veri Erişimi <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Global Kilit Kırıcı:</strong> <code>tumVeriler</code> değişkeni kilitlerinden kurtarılarak globale taşındı, sistemin veri okuma hızı maksimize edildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.31.0 - Zirve Analizi: Ortalamalar & Tekil Liderlik <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Maç Sayısına Oranlayan Ortalama Sistemi:</strong> Filtre butonlarındaki "Tek Maçlık Rekor" sistemi çöpe atıldı. Yerine başarıyı Maç Sayısına Oranlayan gerçekçi ortalama sistemi getirildi.</li>
+            <li><strong>DOM Hack:</strong> Eski butonlardaki arızalı kod blokları JavaScript klonlama metoduyla ezilerek devreden çıkarıldı. Mükerrer kayıtlar tamamen engellendi.</li>
+        </ul>
+    </div>
         
-       <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">YAZLIKDC.GG SÜRÜM GEÇMİŞİ (PATCH NOTES)</h2>
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.30.6 - Sezon 16 Regex Uyumu & Zeke Operasyonu <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Regex Motoru Sezon 16 Güncellemesi:</strong> Ayrıştırıcı motorun sözlüğüne "Ulti Hızı" ve "Mutlak Sömürü" eklendi. Yeni terimlere özel ikonları atandı.</li>
+            <li><strong>Sınıflandırma Müdahalesi:</strong> Yanlış etiketlenen "Zeke'nin Ahengi" eşyası, Kategori Zorlama sistemine eklenerek kalıcı olarak Destek sekmesine transfer edildi.</li>
+        </ul>
+    </div>
 
-	<div class="yama-karti">
-            <div class="yama-baslik">v5.50.0 - Mutlak İzolasyon ve Otonom Simülatör <span class="yama-tarih">Yeni</span></div>
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.30.5 - Tarihi Arşivin Restorasyonu <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Arşiv Genişletmesi:</strong> Geçmiş sürümlerin haksız yere sıkıştırıldığı özet bloğu parçalandı. Sürümler kendi detaylı kartlarına kavuştu.</li>
+            <li>Eski sürümleri DOM içinde tutan ancak görsel olarak bir tıkla açılıp kapanmasını sağlayan "Arşivi Aç/Gizle" zekası eklendi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.30.4 - Ayrıştırıcı Sözlük Genişlemesi & Hizalama <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Regex Motoru Sözlük Güncellemesi:</strong> Ayrıştırıcı motora "Taban Can Yenilenmesi" ve "Taban Mana Yenilenmesi" öğretildi. Özellikler artık ikonlarıyla tek satıra hizalanıyor.</li>
+            <li>Riot API'sinin değer ile isim arasına attığı gizli satır atlama komutları Regex içine dahil edilerek ezildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.30.3 - Sinerji Barları & Metin Revizyonu <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Sinerji UI Restorasyonu:</strong> CSS sadeleştirmesi sırasında kazara silinen Takım Sinerjisi kazanma oranı renkli alt barları sisteme geri entegre edildi.</li>
+            <li><strong>Wrap Zırhı (Satır Kayması Engeli):</strong> Eşya açıklama panellerindeki özelliklerin kutu daraldığında alt satıra kırılarak çirkin bir görüntü oluşturması engellendi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.30.2 - "Inception" Bug Hotfix <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Görsel Bug Düzeltmesi (Double Wrapping):</strong> Eşya makyajlama motorunun üst üste çalışmasıyla oluşan "Eşya özelliklerinin pop-up içinde ikili görünmesi" sorunu çözüldü.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.30.1 - Yapay Enjeksiyon & İkonik Düzeltmeler <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Gunmetal Greaves (3172) Enjeksiyonu:</strong> Riot'un Data Dragon API'sinde gizlenen 3. Seviye Savaşçı Çizmesi sisteme manuel olarak kodlandı.</li>
+            <li><strong>Görsel UI Güncellemeler:</strong> Tüm "Hareket Hızı" statlarına ve "Botlar" kategori başlığına model yerine yepyeni ve daha şık 👟 ikonu entegre edildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.30.0 - Mutlak Kontrol & Kategori Zekası <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Manuel Sınıflandırma Motoru (Override Map):</strong> Riot'un API verilerindeki etiketleme hatalarına müdahale edildi. Savaşçı ve destek eşyaları zorla kendi doğru kategorilerine aktarıldı.</li>
+            <li><strong>İsim Bazlı Çöp Öğütücü & VIP Liste:</strong> Kütüphaneden silinmek istenen 12 çöp eşya ID gerektirmeden sadece isimleriyle kara listeye alındı.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.29.0 - Modern İstemci Arayüzü & Regex Motoru <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Gelişmiş Metin Ayrıştırıcı (Regex Parser):</strong> Riot API'sinden gelen açıklamaları yakalayan devasa bir JavaScript motoru yazıldı. Bu motor metin içindeki özellikleri tespit edip renklerle HTML'e gömer.</li>
+            <li><strong>Premium Tooltip UI:</strong> Sitedeki tüm eşya açıklamalarının tasarımı Riot'un güncel Sezon 16 oyun içi pop-up panellerine benzetildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.28.3 - Durumsal Arayüz ve Tip Senkronizasyonu <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Tip (Type) Uyuşmazlığı Düzeltmesi:</strong> Sinerji Puanı kutusunun sekmelerde kaybolmasına neden olan JavaScript katı eşitlik veri tipi uyumsuzluğu çözüldü. Rakamlar tırnak içinden çıkarıldı.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.28.2 - Algoritma Açıklama Restorasyonu <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Durumsal Arayüz (Conditional UI):</strong> Kod sadeleştirme çalışmaları sırasında kazara gizlenen "Tüm Zamanların Rüya Takımı" ve "Haftanın 5'lisi" bilgi kutucukları DOM yapısına yeniden enjekte edildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.28.1 - Lejant Panosu Hizalaması <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Kusursuz Hizalama ve Zırh:</strong> Ana Lejant kutusundaki CSS çakışmaları ve sola kayma sorunları giderildi. Alt sıradaki metinler özel zırhlı rozet formatına dönüştürüldü.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.28.0 - Durumsal Panel Çekirdek Entegrasyonu <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Mimarî Altyapı Hazırlığı:</strong> Sinerji SP bilgi kutusunun ve rüya takım algoritma panellerinin farklı sekmelerde kaybolmasını engelleyecek JavaScript koşullu render mimarisinin çekirdek iskelet sistemi sıfırdan kodlandı.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.27.0 - Sezon 16 Dinamik Entegrasyonu ve Hurdalık Temizliği <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Gelişmiş Çöp Öğütücü:</strong> Riot API'sinden gelen eski "Karayel" ve "Gaddarlık" gibi oyundan silinmiş çöp eşyalar özel bir kara liste ile sistemden tamamen kazındı.</li>
+            <li><strong>Dinamik Yama Motoru:</strong> Arayüze gömülü olan eski sezon görsel bağlantılarını otomatik olarak tespit edip, canlı sunucudaki en taze yama versiyonuyla anında değiştiren sistem eklendi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.26.0 - Kategorik Kütüphane & Arındırma <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Gelişmiş Algoritmik Eşya Filtresi:</strong> Riot API'sinden çekilen verilerdeki Bami'nin Alevi, Ağırkan gibi "Alt Eşyalar" tespit edildi. Koda <code>!itm.into</code> şartı eklenerek tüm ara eşyalar kökten silindi.</li>
+            <li><strong>Kategorik Sınıflandırma:</strong> Eşya Kütüphanesi 6 farklı zeki başlığa (Dövüşçü, Büyücü, Nişancı, Destek, Tank, Botlar) bölündü.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.25.0 - Dinamik Rehber Entegrasyonu <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Akıllı Meta Rehberi:</strong> Eşya Bilgisi sekmesinde statik olarak hazırlanan şampiyon rehberlerindeki eşyalar Riot API veritabanına bağlandı. Artık rehberdeki ikonların üzerine gelindiğinde orijinal oyun içi Pop-Up'ları açılıyor.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.24.0 - Sinerji Özgürlüğü & Mutlak Görünürlük <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Sinerji Pop-Up Düzeltmesi:</strong> Takım Sinerjisi sekmesindeki maç kartlarında eşya özelliklerinin kesilmesine yol açan tüm gizli <code>overflow: hidden</code> kilitleri tespit edilip parçalandı.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.23.0 - Modüler Güncelleme Mimarisi <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Modüler Sistem Altyapısı:</strong> Güncelleme ve enjeksiyon süreçleri parçalı mimariye geçirilerek kodun bakım kolaylığı artırıldı.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.22.0 - Oyun İçi Eşya Menü Tasarımı <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Arayüz Şeffaflığı:</strong> Eşya Bilgisi kütüphanesi ve tüm maç geçmişi kartları için oyun içindeki gibi yeşil/sarı stat renklerine sahip Profesyonel Pop-Up panelleri kodlandı.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.21.0 - Sınırsız Ufuklar (Limitless Grid) <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Orantılı Grid Mimarisi:</strong> Özet panosunu eşit parçalara bölen katı yapı, içerik yoğunluğuna göre dinamik olarak genişleyen ızgara sistemiyle değiştirildi. Kutuların dar ekranlarda patlamasını engellemek için <code>flex-wrap</code> zırhları entegre edildi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.20.0 - Derin Veri Konumlandırması <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Metrik Optimizasyonu:</strong> Maç kartlarının ana yüzündeki Hasar Barları takım detay ekranına taşındı. Bireysel sekmenin tepesindeki özet panosuna Toplam Hasar, Tank, Şifa ve Görüş analizleri eklendi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.19.0 - Grid Önbellek Kalibrasyonu <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>CSS Çakışma Önleyici:</strong> Özet panosundaki CSS Grid yapısının tarayıcı önbelleğindeki eski kural setleriyle çakışması ve render kaymaları engellendi.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.18.0 - Kusursuz Simetri ve Izgara Dönüşümü <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Özet Panosu Katı Izgara Sistemi:</strong> Özet kutucuklarındaki CSS Flexbox yapısı tamamen grid mimarisi ile değiştirildi.</li>
+            <li><strong>Gelişmiş İpucu (Tooltip) Optimizasyonu:</strong> Ekranın dışına taşan uzun açıklamalar zırhla terbiye edildi.</li>
+        </ul>
+    </div>
+
+    <button id="btn-eski-yamalar" class="daha-fazla-btn" style="margin-bottom: 20px;">⬇️ Eski Sürümleri Aç</button>
+
+    <div id="eski-yamalar-kapsayici" class="gizle" style="opacity: 1.0 !important;">
+
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.17.0 - Smurf Zekası ve Derin Madencilik Gelişmeleri <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Sinerji İzolasyonu (Katı Eşitlik):</strong> Sinerji Keşif Motoru (Combinatorics) yeniden kalibre edildi. "3'lü Sinerji" sekmesi artık 5'li maçların içindeki alt permütasyonları çekmek yerine, <em>sadece ve sadece</em> 3 kişilik kemik kadro (+2 yabancı) ile girilen maçları süzüyor. 5'li maçların 3'lü istatistiklerini kirletmesi imkansız hale getirildi.</li>
-                <li><strong>Sonsuz Döngü Kırıcı:</strong> Eşya açıklamalarında kendi kendini boyayarak çift ikona (Inception Bug) sebep olan HTML çakışması kökten kazındı. Boyama motoru doğrudan API veri çekim aşamasına (Oluşturma Anına) taşınarak sistem rahatlatıldı.</li>
-                <li><strong>Mutlak Simülatör Motoru:</strong> İnteraktif eşya simülatöründeki beyaz liste sınırı kaldırıldı. Simülatör artık pasif yeteneklerdeki alakasız sayıları (Örn: Tahsildar'ın %5 infazı) stat sanmıyor; sadece ve güvenli bir şekilde "İstatistik Kutusu" içindeki <em>tüm</em> özellikleri (Sıvışma, Zırh, İyileştirme vb.) otonom olarak okuyup hesaplıyor.</li>
-                <li><strong>Doğanın Gücü:</strong> Destek eşyalarındaki "İyileştirme ve Kalkan Gücü" özelliği için özel parlak yeşil renk paleti ve 🌿 ikonu sisteme mühürlendi.</li>
+                <li><strong>Smurf Zekası (v5.17.0):</strong> Oyuncuların farklı yan hesaplarla oynadığı maçları analiz edip tek bir ana kimlik altında birleştiren altyapı kuruldu. Tablolardaki bölünmeler engellendi.</li>
             </ul>
         </div>
 
-	<div class="yama-karti">
-            <div class="yama-baslik">v5.49.0 - Kusursuz Simülatör ve İkonik Optimizasyon <span class="yama-tarih"></span></div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.16.0 - Kütüphane & Kozmetik Evrimi <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Sonsuz Döngü Kırıcı:</strong> Çift ikon basılmasına (Inception Bug) ve eşyaların yanlış özellik göstermesine neden olan kök HTML sorunları kalıcı olarak temizlendi.</li>
-                <li><strong>Mutlak Simülatör Motoru:</strong> İnteraktif eşya simülatörü artık sadece Saldırı/Yetenek Gücü gibi temel istatistikleri değil; eşyalardan gelen <em>tüm</em> özellikleri (Sıvışma, Zırh, İyileştirme vb.) dinamik ve eksiksiz bir şekilde okuyup hesaplıyor.</li>
-                <li><strong>Görsel Evrim:</strong> "İyileştirme ve Kalkan Gücü" istatistiği için doğanın gücünü simgeleyen 🌿 ikonu ve göz yormayan özel yeşil renk paleti sisteme entegre edildi.</li>
+                <li><strong>Yeni Sekme - Eşya Bilgisi ve Rün Düzeni:</strong> Navigasyona spesifik şampiyonlar için durumsal eşya dizilimlerini anlatan kritik meta rehberi ve İnteraktif Rün Tahtası arayüzü kuruldu. Custom CSS Tooltip motoru yazılarak yerel beyaz açıklamalar iptal edildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.48.0 - Scouting Raporu: Efektif Şampiyon Havuzu <span class="yama-tarih"></span></div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.15.0 - Analitik Şeffaflık & Takım Zekası <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Gelişmiş Analiz:</strong> Bireysel profillere "🎯 Efektif Havuz" filtresi eklendi. Sadece oynamakla kalmayıp, takımın kaderini değiştirdiğin (En az 3 maç, %50+ WR, Yüksek KDA veya Hasar/Şifa/CS katkısı) şampiyonlar özel bir algoritmaya bağlandı.</li>
-                <li><strong>Dinamik Şampiyon Vitrini:</strong> Efektif şampiyonlar filtresine tıklandığında alt alta maç geçmişi dizmek yerine, profesyonel bir e-sporcu raporu (Scouting Report) gibi şampiyonların detaylı istatistik kartları (Ort. KDA, Hasar, CS Farkı, Flame Horizon) ekrana çiziliyor.</li>
-                <li><strong>Otonom Yama Motoru:</strong> Sürüm geçmişi arayüzü tam otomasyona geçirildi. Yeni yamalar renk efektlerini otonom olarak kendi alıyor, eski yamalar tek bir tuşla açılan tarihi arşive sessizce taşınıyor. Renk kodlarıyla manuel uğraşma devri kapandı.</li>
+                <li><strong>Gelişmiş Sabotaj (V2):</strong> Bir oyuncunun sabotajcı sayılması için artık sadece "Takım Kills" değil, "Takım Toplam Skoru ve Asisti" baz alıyor. Kartların sağ üstüne Takım KDA Paneli entegre edildi.</li>
             </ul>
         </div>
 
-	<div class="yama-karti" style="border-color: #58a6ff;">
-    <div class="yama-baslik" style="color: #ff5722;">v5.47.0 - Efsanelerin Dönüşü: Flame Horizon <span class="yama-tarih"></span></div>
-    <ul class="yama-liste">
-        <li><strong>Filtreleme Devrimi:</strong> Bireysel profillere "🌋 Flame Horizon" filtresi eklendi. Artık rakibine 100+ CS farkı attığın efsanevi maçları tek tıkla listeleyebilirsin.</li>
-        <li><strong>Görsel Analiz:</strong> Takım sinerjisi maç başlıklarına şampiyon ikonları ve ekip içindeki Flame Horizon başarımları entegre edildi.</li>
-        <li><strong>Performans Çekirdeği:</strong> Sinerji Puanı (SP) hesaplamasına "Nişancı Dominasyonu" (CS Farkı) ağırlığı eklenerek alt koridor analizleri %100 gerçekçi hale getirildi.</li>
-    </ul>
-</div>
-
-	<div class="yama-karti" style="border-color: #58a6ff;">
-            <div class="yama-baslik">v5.46.0 - Derin Veri Entegrasyonu ve UX Optimizasyonu <span class="yama-tarih"></span></div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.14.0 - Porofessor Etiketleri & Derin Madencilik <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Derin Veri Katmanı:</strong> Hem bireysel hem de sinerji maç kartlarına Şampiyon Hasarı (💥), Tanklanan Hasar (🛡️) ve Takım Desteği (💚 - Şifa/Kalkan) verileri milimetrik olarak işlendi.</li>
-                <li><strong>Destek Rolü Zırhı (Utility Guard):</strong> Destek oyuncuları için istatistiksel gürültü yaratan "10. Dakika CS" ve "CS Farkı" rozetleri, otonom bir algoritma ile gizlenerek arayüz sadeleştirildi.</li>
-                <li><strong>Görsel Stabilizasyon (CSS Zırhı):</strong> "Temizle" ve "Kapat" butonları standart zarif boyutlara çekildi; <code>!important</code> kalkanı ile tarayıcılar arası boyut tutarsızlıkları kökten çözüldü.</li>
-                <li><strong>Sistem Restorasyonu:</strong> Sinerji sekmesindeki çifte veri enjeksiyonu, "csMin" tanımlama hataları ve sözdizimi (Syntax) krizleri giderilerek sistem %100 stabil hale getirildi.</li>
+                <li><strong>Performans Rozetleri:</strong> Maç kartlarının içine oyuncunun davranışını okuyan rozetler eklendi. Uzmanlık ve Sinerji puanı hesaplamalarına şampiyon hasarı, takım kalkanı/şifası, tanklanan hasar ve CC süreleri katıldı.</li>
             </ul>
         </div>
 
-	<div class="yama-karti">
-            <div class="yama-baslik">v5.45.0 - Gelişmiş Maç Kartı Analitiği ve Dinamik Rozetler <span class="yama-tarih"></span></div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.13.2 - Sezon Filtre Yapılandırması <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Erken Oyun Şeffaflığı:</strong> Maç kartlarındaki CS (Minyon) verisine "10. Dakika CS" bilgisi entegre edilerek erken oyun performansı görünür kılındı.</li>
-                <li><strong>Koridor Partneri (Duo) Tanımlaması:</strong> Sadece BOTTOM ve UTILITY (Nişancı ve Destek) rollerinde oynanan maçlar için geçerli olmak üzere, aynı takımdaki eşleşmiş partneri tespit eden otonom bilgi satırı eklendi.</li>
-                <li><strong>Algoritmik Rozet Sistemi:</strong> Belirli kalite eşiklerini aşan performansları (örn: +20 CS Farkı, +450 GPM, Koridor Dominasyonu) maç kartlarına anında mühürleyen dinamik CSS rozet altyapısı kuruldu.</li>
+                <li><strong>Hafıza Yönetimi:</strong> Sürüm geçmişi sekmesi açıldığında, filtre butonlarının DOM yükünü hafifleten geçici bellek boşaltması yapıldı ve render süreleri optimize edildi.</li>
             </ul>
         </div>
 
-	<div class="yama-karti">
-            <div class="yama-baslik">v5.44.0 - Ekonomi Motoru ve Erken Oyun İstatistikleri <span class="yama-tarih"></span></div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.13.1 - UI Odaklanması <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Arka Plan Veri Madenciliği (Bot V21):</strong> Python veri çekme algoritması, standart maç verilerinin ötesine geçerek Riot'un "Challenges" (Görevler) veritabanına bağlandı.</li>
-                <li><strong>Yeni Metrikler:</strong> Dakika Başı Altın (GPM), 10. Dakika Minyon Sayısı, Maksimum Koridor Minyon Farkı, Alınan Barikat Sayısı ve Erken Oyun Üstünlüğü gibi safkan ekonomi ve dominasyon verileri sisteme entegre edildi.</li>
+                <li>Sürüm Geçmişi sekmesi açıldığında, gereksiz kalabalık yapan "Sezon Filtreleri" ve "Lejant" kutuları gizlenerek tam odaklı bir okuma deneyimi sağlandı.</li>
             </ul>
         </div>
 
-	<div class="yama-karti">
-            <div class="yama-baslik">v5.43.0 - Yasal Kalkan (Footer) Entegrasyonu <span class="yama-tarih"></span></div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.13.0 - Anayasa Güncellemesi <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Hukuki Koruma Protokolü:</strong> Sitenin en alt kısmına (Footer), Riot Games'in Topluluk Projeleri Politikası ile %100 uyumlu standart yasal feragatname (Disclaimer) eklendi.</li>
-                <li><strong>Telif Hakkı Uyumluluğu:</strong> Riftkit, CDragon veya oyun içi görsellerin ticari olmayan yerel kullanımı için gereken fikri mülkiyet beyanı HTML iskeletine kalıcı olarak işlenerek proje hukuki güvence altına alındı.</li>
+                <li>Sürüm geçmişi doğrudan arayüze entegre edilerek ayrı bir sekme olarak eklendi.</li>
             </ul>
         </div>
 
-	<div class="yama-karti">
-            <div class="yama-baslik">v5.42.1 - Sonsuz Döngü (Infinite Loop) Hotfix <span class="yama-tarih"></span></div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.12.0 - Kusursuz Simetri <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Network (Ağ) Tıkanıklığı Giderildi:</strong> Taktik tahtasında kullanıcı tarafından henüz eklenmemiş resimlerin tetiklediği <code>onerror</code> (geri dönüş/yedek) mekanizmasının, Riot CDragon sunucularındaki kırık bir linkle eşleşmesi sonucu oluşan "Sonsuz Yükleme Döngüsü" hatası tespit edildi.</li>
-                <li><strong>Hata Kırıcı Zırh:</strong> <code>onerror</code> döngüsünü kalıcı olarak durduran <code>this.onerror=null;</code> parametresi koda enjekte edildi ve yedek harita görseli stabil, kırılmaz bir DDragon URL'si ile güncellendi. Site yükleme süreleri normale döndü.</li>
+                <li>CSS Flexbox hataları nedeniyle özet panosunda yaşanan alt satıra kayma ve formasyon bozulmaları nowrap zırhıyla engellendi. Profil özetindeki 5 kutu askeri nizama sokuldu.</li>
             </ul>
         </div>
 
-	<div class="yama-karti">
-            <div class="yama-baslik">v5.42.0 - İnteraktif Taktik Tahtası (Map Swapper) <span class="yama-tarih"></span></div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.11.0 - Geniş Açılı Tasarım & Güncel Kimlik <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Harita Rotasyon Modülü:</strong> Riftkit benzeri kompleks taktik tahtalarının sisteme getireceği kod yükünden (Canvas API) kaçınılarak, kullanıcı tanımlı statik görselleri temel alan dinamik bir "Taktik Tahtası" inşa edildi.</li>
-                <li><strong>DOM Fade Animasyonu:</strong> JavaScript üzerinden kontrol edilen yumuşak geçiş (Opaklık) algoritması sayesinde, oyun evreleri (Erken Oyun, Baron Kurulumu vb.) arasındaki harita değişimleri kusursuz ve göz yormayan bir akıcılığa kavuşturuldu.</li>
+                <li>Özet panosu genişliği 1400px'e çıkarıldı. Sistem tüm arşivi taranarak oyuncunun en son kullandığı Sihirdar İkonunu tespit eden ve bunu tüm tablolara yansıtan akıllı hafıza sistemine kavuştu.</li>
             </ul>
         </div>
 
-	<div class="yama-karti">
-            <div class="yama-baslik">v5.41.1 - Mutlak Gizleme Zırhı (Soft Delete) <span class="yama-tarih"></span></div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.10.1 - Formasyon UI Yaması <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>DOM Manipülasyonu:</strong> "👥 Liderlik Filtresi" alanını HTML'den silmenin yarattığı çökme (Null) riskini ortadan kaldırmak için "Soft Delete" yöntemine geçildi. Sistem arka planda filtreleri oluşturmaya devam ederken, <code>ekraniGuncelle</code> motoru aracılığıyla bu alan kalıcı olarak <code>display: none;</code> ve <code>gizle</code> sınıflarıyla görünmez kılındı.</li>
+                <li>Takım Sinerjisi bölümünde kaybolan Kadro Formasyonları CSS etiketleri ve boşluk düzenlemeleri onarıldı.</li>
             </ul>
         </div>
 
-	<div class="yama-karti">
-            <div class="yama-baslik">v5.41.0 - Arayüz Sadeleştirmesi ve Filtre İmhası <span class="yama-tarih"></span></div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.10.0 - Zirve Analizi & Sabotaj Revizyonu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Görsel Yükün Hafifletilmesi:</strong> Liderlik tablolarının üstünde yer alan ve 17 kişilik tüm oyuncu havuzunu barındıran "👥 Liderlik Filtresi" butonları, arayüzü sadeleştirmek amacıyla HTML ve JavaScript motorundan kalıcı olarak silindi.</li>
-                <li><strong>Null Koruması:</strong> Silinen HTML DOM elemanlarının JavaScript tarafında yaratacağı çökme riskini (NullReferenceException) önlemek için <code>sekmeOlustur()</code> fonksiyonundaki döngüler ve buton yaratma algoritmaları devre dışı bırakıldı.</li>
+                <li><strong>Kusursuz Rüya Takımı:</strong> Tüm zamanların verisi taranarak her pozisyonun istatistiksel olarak en kusursuz oyuncusunu bulup bir araya getiren Laplace destekli zeka eklendi. Son 7 günün momentumunu ölçen "Haftanın 5'lisi" algoritması yazıldı.</li>
+                <li><strong>Gelişmiş Sabotaj Algoritması:</strong> Oyuncunun Sabotaj damgası yemesi için artık sadece 12 kere ölmesi yetmiyor. Eğer takım skorunun yarısından fazlasına katkı verdiyse sistem onu Sabotajcı ilan etmiyor.</li>
+                <li>Liderlik filtrelerine "Görüş Skorları" ve "Farm Kralları (CS/min)" sekmeleri eklendi. Destek rolü CS/min liderliğinden adil olmak adına men edildi.</li>
             </ul>
         </div>
 
-	<div class="yama-karti">
-            <div class="yama-baslik">v5.40.0 - Sezon 16 DataDragon Rün Entegrasyonu <span class="yama-tarih"></span></div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.9.1 - UI Kalibrasyonu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Yeni Sezon Senkronizasyonu:</strong> Eski ve oyundan kalkmış rünleri (Sürat Coşkusu vb.) barındıran hantal CommunityDragon <code>perks.json</code> veri tabanı sistemden tamamen söküldü.</li>
-                <li><strong>runesReforged Bağlantısı:</strong> Rün motoru, sistemin yakaladığı <code>window.guncelYama</code> değişkenini (Örn: 16.9.1) kullanarak doğrudan resmi DataDragon'un güncel <code>runesReforged.json</code> dosyasına bağlandı. Ağaç ve slot hiyerarşisi kırılarak Sezon 16'nın taptaze rünleri sisteme enjekte edildi.</li>
-                <li><strong>Kalkmış Rün Uyarı Sistemi:</strong> HTML kodunda unutulan eski sezon rünleri için "Eski/Kalkmış Rün" uyarısı veren yeni hata ayıklama mesajı eklendi.</li>
+                <li>Penta/Quadra/Triple yazılarındaki CSS kayma hatası düzeltildi. Kariyer & Vurgunlar başlığı standart kurumsal formatata çekildi.</li>
             </ul>
         </div>
 
-	<div class="yama-karti">
-            <div class="yama-baslik">v5.39.0 - Eşya Mimarili Rün Motoru ve Dedektif Modu <span class="yama-tarih"></span></div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.9.0 - Hizalı ve Dinamik Arayüz <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>DOM Klonlama (Tooltip Restorasyonu):</strong> CSS pseudo-element sınırlamaları nedeniyle çalışmayan rün açıklama kutuları iptal edildi. Rün ikonları dinamik olarak <code>esya-kapsayici</code> ve <code>esya-detay-popup</code> sınıflarına sarılarak, eşyalarla %100 aynı çalışan kusursuz tooltip mekaniği inşa edildi.</li>
-                <li><strong>Kırık Resim Dedektifi:</strong> İsim uyumsuzluğu veya <code>onerror</code> döngüsü nedeniyle yüklenmeyen rünler için hata ayıklayıcı eklendi. Bozulan ikonların üzerine gelindiğinde HTML içindeki hatalı dosya yolunu gösteren "Eşleşme Hatası" uyarı panosu aktif edildi.</li>
+                <li>Quadra ve Penta verilerinin yanına Triple Kill istatistiği entegre edildi. Alt filtrelere Quadra, Triple ve İlk Kan filtre düğmeleri eklendi.</li>
             </ul>
         </div>
 
-	<div class="yama-karti">
-            <div class="yama-baslik">v5.38.0 - Rün Oto-Tamir Motoru (Auto-Heal) <span class="yama-tarih"></span></div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.8.0 - Kozmetik ve İkonik Navigasyon <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Dinamik URL Enjeksiyonu:</strong> CDragon sunucularındaki büyük/küçük harf duyarlılığı ve isimlendirme değişiklikleri nedeniyle bozulan rün görselleri (Örn: Nakitle Öde, Sürat Coşkusu) için Oto-Tamir motoru yazıldı. Sistem artık API'den doğru dosya yolunu çekip, kırık HTML resim etiketlerini (<code>img src</code>) anında eziyor ve onarıyor.</li>
-                <li><strong>Hata Ayıklayıcı Modülün Kaldırılması:</strong> Teşhis için kullanılan çerçeveli (Border) test modülü görevini tamamlayıp devreden çıkarıldı; tüm görseller orijinal tasarımlarına döndürüldü.</li>
+                <li>Riot API'sinden çekilen Sihirdar Profil İkonları arayüze entegre edildi. Tablolar oyuncuların kendi simgeleriyle kişiselleştirildi.</li>
             </ul>
         </div>
 
-	<div class="yama-karti">
-            <div class="yama-baslik">v5.37.0 - Dinamik Tooltip & Eşya Hesaplama Motoru <span class="yama-tarih"></span></div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.7.0 - Dinamik Keskin Nişancı Filtresi <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Görsel Tooltip Zırhı:</strong> Rünler ve ikonlar için farenin imleciyle üstüne gelindiğinde anında beliren, animasyonlu ve metin kırmayan (pre-wrap) CSS pseudo-element motoru eklendi.</li>
-                <li><strong>Statik Matematik Modülü:</strong> Riot API'sinden çekilen global eşya veri tabanını (<code>window.itemVeritabani</code>) okuyarak oyuncuların anlık toplam altın, saldırı gücü ve yetenek gücü gibi değerlerini çeken hesaplama fonksiyonu sisteme entegre edildi.</li>
+                <li>Bireysel profillerde sağ taraftaki rol kartlarına tıklandığında sol taraftaki maç listesinin anında o role göre süzülmesi sağlandı.</li>
             </ul>
         </div>
 
-	<div class="yama-karti">
-            <div class="yama-baslik">v5.36.0 - Kusursuz Rün Motoru <span class="yama-tarih"></span></div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.6.0 - Dinamik Kimlik Çözümleme (Smurf Entegrasyonu) <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>DDragon ve CDragon Sinerjisi:</strong> Eski ikonlardaki 404 (Bulunamadı) hataları giderildi. Sistem artık rünleri doğrudan oyun içi dosya adı bazında analiz edip, Sezon 16'nın resmi Türkçe açıklamalarını ikonların içine kusursuzca enjekte ediyor. Eksik Riot dosyaları için otomatik CommunityDragon yedeklemesi (Fallback) zırhı eklendi.</li>
+                <li>Yan hesapların ve eski isimlerin ana kimlikle birleştirildiği altyapı kuruldu. Maç kartlarında o günkü nostaljik isim mühürlü kalıyor.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.35.0 - HTML Kasa Temizliği ve CDragon Bağlantısı</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.5.1 - Kapsamlı Profil Özeti <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Rün İskeleti Yenilemesi:</strong> Arayüzdeki eski, statik ve sahte rün HTML kodları kökten silindi. Rün kütüphanesi kırık linklerden tamamen arındırılarak %100 oranında güncel CommunityDragon sunucularının resmi URL'lerine bağlandı.</li>
+                <li>Bireysel profil özet panosu 4 kutudan 5 kutuya çıkarılarak, "Rol & Donanım" istatistikleri ile yeni eklenen "Vurgunlar & Başarılar" verileri kusursuz bir yatay simetriyle birleştirildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.34.0 - Mutlak Rün Restorasyonu</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.5.0 - Prestij ve Kozmetik Avcısı <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Görsel ve Metin Tamir Motoru:</strong> Eski rün isimleri yüzünden (Örn: Aftershock -> Veteranaftermath) bozulan görseller ve metinler için CommunityDragon bağlantılı "Tamir Motoru" yazıldı. Sistem HTML'deki kırık isimleri tespit edip, Sezon 16 dosyalarıyla anında değiştiriyor.</li>
-                <li><strong>Canlı Çeviri Enjeksiyonu:</strong> Tüm İngilizce rün isimleri iptal edilerek Riot'un güncel yamasındaki Türkçe açıklamalar, rün ikonlarının içine "Tooltip" olarak dinamik şekilde gömüldü.</li>
+                <li>Pentakill, Quadrakill, Çalınan Objektif og İlk Kan verileri entegre edildi. Vurgunlar & Başarılar paneli ve maç kartlarına parlayan rozetler eklendi. Sabotaj tespit sistemi ve Utanç Listesi aktif edildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.33.0 - Satır İçi (Inline) Renklendirme Algoritması</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.4.4 - Sinerji Bağlantı Yaması <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Mejai Operasyonu:</strong> Riot'un <code>&lt;passive&gt;</code> etiketlerini cümle başı yerine cümle ortasında (Fosforlu kalem gibi) kullanmasından doğan "Metin Parçalanması" sorunu kökten çözüldü.</li>
-                <li>Açıklamalar artık blok halinde değil, Wiki sitelerindeki gibi kelime kelime <strong>satır içi (inline)</strong> taranarak sadece renk ve kalınlık alıyor. Görsel bütünlük garanti altına alındı.</li>
+                <li>Alt Koridor listesindeki ikililere tıklandığında maçların listelenmesini engelleyen İsim Eşleştirme hatası giderildi, özel isim çözümleyici yazıldı.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.32.0 - Dinamik Satır Okuyucu (Line-Parser) & Çizme Hurdası Temizliği</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.4.3 - Kusursuz Rüya Takımı Revizyonu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Kelime Avından Satır Okumaya Geçiş:</strong> Eşya istatistiklerini hizalamak için kullanılan dar sözlük (Regex) çöpe atıldı. Yerine, eşya özelliklerini ne olduğuna bakmaksızın (Sıvışma, Zıplama vs.) satır satır kutulara hapseden (Block-Flex) mutlak tasarım mimarisi kuruldu. Eşya statlarının alt satıra kayması teknik olarak imkânsız hale getirildi.</li>
-                <li><strong>Hurda Ayıklayıcı:</strong> Eşya kütüphanesini kirleten "300 Altınlık Saf Çizmeler" API taramasından tamamen men edildi. Sistem sadece gelişmiş/bitmiş eşyaları baz alıyor.</li>
+                <li>"Tüm Zamanların Rüya Takımı" ve "Haftanın 5'lisi" panolarına, algoritmadaki CS/min istatistikleri görsel olarak çivilendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.31.6 - v5.31.9: Arayüz Zırhı ve DOM Gizleme</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.4.2 - Kompakt Kanban Dizilimi <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Evrensel İkon Senkronizatörü (v5.31.7):</strong> Oyuncuların profil ikonları, veri tabanındaki en güncel maç tarihine (<code>tarih_ms</code>) göre taranarak mutlak bir şekilde senkronize edildi. Eski ve tutarsız ikon kaymaları tamamen önlendi.</li>
-                <li><strong>Görsel Gizleme Zırhı (v5.31.8 - v5.31.9):</strong> Oyuncu sekmeleri, filtre başlıkları ve liderlik alanı için "Çift Dikiş" (Double Check) gizleme mantığı yazıldı. Farklı menülerde alakasız filtrelerin ekranda asılı kalması engellendi.</li>
-                <li><strong>Dinamik Temizlik Motoru (v5.31.6):</strong> Ekran güncellendiğinde tüm sekme filtrelerini ve gösterim limitlerini (15 maç) anında sıfırlayan akıllı temizlik mekanizması devreye sokuldu.</li>
+                <li>Şampiyon uzmanları sekmesinde ekran daraldığında ortaya çıkan tasarım hatası giderildi. İstatistiklerin ismin altına kaymasını engelleyen dizilim getirildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.31.4 - v5.31.5: Siber Zırh, Liderlik Görseli ve Regex Hizalama</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.4.1 - Grid Hücre Stabilizasyonu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Liderlik Podyumu ve Madalyalar (v5.31.4):</strong> Liderlik tabloları tamamen yeniden tasarlandı. Altın (🥇), gümüş (🥈) ve bronz (🥉) madalyalarla süslenmiş, 45 piksellik sabit hizalama kutuları ve gölgelendirmelerle (Text-Shadow) görsel kalite arşa çıkarıldı.</li>
-                <li><strong>Gelişmiş Matematik Motoru (v5.31.4):</strong> Python bot verileriyle tam uyumlu çalışacak şekilde CS/Dakika matematiği eklendi. Tüm veriler tekil maçlardan çıkarılıp oyuncu bazlı kusursuz ortalamalara döküldü.</li>
-                <li><strong>Satır Kayması Engeli (v5.31.5):</strong> Regex motoruna <code>white-space: nowrap;</code> zırhı giydirilerek, eşya detaylarındaki ikon, değer ve metin üçlüsünün ekran daraldığında alt satıra kırılarak bozulması kökten çözüldü.</li>
+                <li><strong>Responsive Hücre Hizalaması:</strong> Şampiyon kartlarındaki metin ve ikonların ekran daraldığında taşmasını önleyen esnek flexbox sınırları tahkim edildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.31.2: Sinerji Keşif Motoru (Combinatorics & Delta)</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.4.0 - Şampiyon Rol Hiyerarşisi (Kaan'ın Vizyonu) <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Kombinasyon Üreticisi:</strong> Takım gruplarını tarayarak içlerindeki 2'li, 3'lü ve 4'lü gizli sinerjileri ortaya çıkaran matematiksel keşif (Combinatorics) algoritması yazıldı.</li>
-                <li><strong>Sinerji Puanı (SP) ve Laplace Düzeltmesi:</strong> 1 maçta %100 kazanma oranı gibi yanıltıcı istatistikleri elemek için Laplace düzeltmesi eklendi. Rol esnekliği (farklı formasyonlarda kazanabilme) algoritmaya dahil edilerek takımların "Ağırlıklı Sinerji Puanı" hesaplama sistemi oluşturuldu.</li>
-                <li><strong>Rüya Takım Algoritması:</strong> Tüm zamanların ve son 7 günün en formda oyuncularını KDA, Görüş, Hasar ve Sinerji Puanı üzerinden analiz edip birleştiren "Haftanın 5'lisi" ve "Rüya Takım" modülleri arayüze entegre edildi.</li>
+                <li><strong>Rol Hiyerarşisi (Görsel Dağılım):</strong> Şampiyon uzmanları sekmesindeki düz liste mimarisi yıkıldı. Şampiyon uzmanları rollere göre kategorize edilerek büyük başlıklar altında gruplandı.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.31.1 ve v5.31.3: Veri Kilitleri ve Kimlik Birleştirme</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.3.0 - Kompakt Şablon Çekirdek Entegrasyonu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Kimlik Birleştirme (v5.31.3):</strong> Sistemde çift kayıt oluşturan <em>"YazlıkDCFlex"</em> Riot ID'si, kalıcı olarak ana kimlik olan <em>"Taner"</em> ile tek bir ID altında birleştirilerek veri kirliliği önlendi.</li>
-                <li><strong>Küresel Veri Erişimi (v5.31.1):</strong> <code>tumVeriler</code> değişkeni kilitlerinden kurtarılarak <code>window.tumVeriler</code> formatıyla globale taşındı, sistemin veri okuma hızı ve modüller arası erişilebilirliği maksimize edildi.</li>
+                <li><strong>Arka Plan Düzen İskeleti:</strong> Sinerji ve takım kompozisyonu verilerini işlemek üzere arka planda çalışacak ilk şablon katmanı iskelete dahil edildi, veri transfer hızı optimize edildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.31.0 - Zirve Analizi: Ortalamalar & Tekil Liderlik</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.2.0 - Şampiyon Raporu Rol Ayrımı <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Liderlik Algoritması Revizyonu:</strong> Filtre butonlarındaki "Tek Maçlık Rekor" sistemi tamamen çöpe atıldı. Yerine, oyuncuların tüm maçlarını gruplayarak (Aggregation) başarıyı <strong>Maç Sayısına Oranlayan</strong> gerçekçi ortalama sistemi getirildi.</li>
-                <li><strong>DOM Hack (Klonla ve Yok Et):</strong> Eski butonlardaki arızalı kod blokları JavaScript klonlama metoduyla ezilerek devreden çıkarıldı.</li>
-                <li>Listelerde aynı oyuncunun birden fazla kez yer alması (Mükerrer Kayıt) engellendi; her oyuncu kendi ana kimliği ve güncel ortalaması ile tek bir satırda temsil ediliyor. Puanların altına <code>(Örn: 15 Maç Ortalaması)</code> damgası vurularak istatistiksel şeffaflık sağlandı.</li>
-            </ul>
-        </div>
-        
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.30.6 - Sezon 16 Regex Uyumu & Zeke Operasyonu <span class="yama-tarih"></span></div>
-            <ul class="yama-liste">
-                <li><strong>Regex Motoru Sezon 16 Güncellemesi:</strong> Ayrıştırıcı motorun sözlüğüne Riot'un yeni terimleri olan "Ulti Hızı (Nihai Yetenek Hızı)" ve "Mutlak Sömürü" eklendi. Bu özelliklerin bilinmediği için alt satıra itilmesi ve arayüzü kaydırması hatası kökten çözüldü. Yeni terimlere özel (🔁 ve 🧛) ikonları atandı.</li>
-                <li><strong>Sınıflandırma Müdahalesi:</strong> Riot verilerinde yanlış etiketlenen "Zeke'nin Ahengi" eşyası, Kategori Zorlama (Override Map) sistemine eklenerek kalıcı olarak Destek (Support) sekmesine transfer edildi.</li>
+                <li><strong>Şampiyon Raporu Rol Ayrımı (Role Isolation):</strong> Destek rolü ile koridor rollerinin minyon verilerinin aynı havuzda eriyerek cezalandırılması engellendi. Sağ taraftaki Şampiyon Raporu tekil yapıdan çıkarıldı; sistem her rol için ayrı bir rapor kartı basıyor.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.30.5 - Tarihi Arşivin Restorasyonu <span class="yama-tarih"></span></div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.1.0 - Kadro Formasyonları & Rol Esnekliği <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Arşiv Genişletmesi:</strong> Geçmiş sürümlerin haksız yere sıkıştırıldığı özet bloğu parçalandı. Sistemin v1.0.0'dan bu yana geçirdiği tüm kritik evrimler kendi detaylı kartlarına kavuştu.</li>
-                <li>Arayüzün gereksiz yere uzamasını engellemek için, eski sürümleri DOM içinde tutan ancak görsel olarak bir tıkla açılıp kapanmasını sağlayan "Arşivi Aç/Gizle" zekası eklendi.</li>
+                <li><strong>"Kadro Formasyonları" Alt Tablosu:</strong> Sinerji tablosundaki herhangi bir ekibe tıklandığında açılan detay panelinde, o ekibin hangi Rol Dağılımıyla (Formasyonla) kaç maç oynadığı ve bu dizilişin net galibiyet oranları listelenmeye başladı.</li>
+                <li><strong>Rol Esnekliği Katsayısı:</strong> Laplace Sinerji Puanı algoritmasına yeni bir katsayı eklendi. Farklı rollerde de galibiyet alabilen ekiplerin esneklik gücü sistem tarafından ödüllendirilerek SP skorları yukarı çekildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.30.4 - Ayrıştırıcı Sözlük Genişlemesi & Hizalama</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v5.0.0 (Eski V55) - Hasat Zamanı & Ekonomi Devrimi <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Regex Motoru Sözlük Güncellemesi:</strong> Ayrıştırıcı motora "Taban Can Yenilenmesi" ve "Taban Mana Yenilenmesi" kelimeleri öğretildi. Bilinmeyen kelime olduğu için alt satıra itilen bu özellikler artık 💖 ve 🌊 ikonlarıyla tek satırda hizalanıyor.</li>
-                <li>Riot API'sinin değer ile isim arasına attığı gizli satır atlama (<code>&lt;br&gt;</code>) komutları Regex içine dahil edilerek ezildi, değer ve isim birbiriyle jilet gibi aynı hizada kilitlendi.</li>
+                <li><strong>SemVer Standardizasyonu:</strong> Versiyonlama mantığı Semantic Versioning standardına (v5.0.0) çekildi.</li>
+                <li><strong>Büyük Veri Entegrasyonu:</strong> Sadece KDA değil; Orman/Koridor minyon ayrımı, Dakika Başına Düşen Minyon (CS/min), Toplam Görüş, Tanklanan Hasar, Şifa ve Kitle Kontrol süreleri arayüze işlendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.30.3 - Sinerji Barları & Metin Revizyonu</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v4.9.4 (Eski V54) - Sabotaj Harekâtı <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Sinerji UI Restorasyonu:</strong> CSS sadeleştirmesi sırasında kazara silinen Takım Sinerjisi kazanma oranı (Win Rate) renkli alt barları sisteme geri entegre edildi.</li>
-                <li><strong>Wrap Zırhı (Satır Kayması Engeli):</strong> Eşya açıklama panellerindeki özelliklerin kutu daraldığında alt satıra kırılarak çirkin bir görüntü oluşturması engellendi. CSS <code>white-space: nowrap;</code> kalkanı devreye sokuldu.</li>
-                <li>Meta Rehberi sekmesindeki Yasuo & Yone açıklaması, "qss, tier 2 boots" gibi yabancı terimlerden arındırılarak tam Türkçe çevirisi ("Cıva Yatağan, 2. seviye bot") ile daha profesyonel bir yapıya kavuşturuldu.</li>
+                <li>Bireysel profillerdeki "11+ Ölüm" ifadesi doğrudan kırmızı "SABOTAJ" etiketiyle değiştirilerek dürüst bir forma dönüştürüldü.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.30.2 - "Inception" Bug Hotfix</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v4.9.3 (Eski V52-V53) - Kusursuz Simetri ve Akıllı Navigasyon <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Görsel Bug Düzeltmesi (Double Wrapping):</strong> Eşya makyajlama motorunun hem API veri çekim aşamasında hem de kütüphane basım aşamasında üst üste çalışmasıyla oluşan "Eşya özelliklerinin pop-up içinde ikili (çift) görünmesi" sorunu çözüldü. Sistem, zaten formatlanmış eşyaları tanıyarak optimize edildi.</li>
+                <li>Filtreleme ve arama kutularının sola yaslanma sorunu çözüldü, tüm kutular ekran merkezine hizalandı. Liderlik tablolarındaki ilk 3 sıraya Altın, Gümüş ve Bronz podyum parlamaları getirildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.30.1 - Yapay Enjeksiyon & İkonik Düzeltmeler</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v4.9.2 (Eski V51) - Büyük Uyanış <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Gunmetal Greaves (3172) Enjeksiyonu:</strong> Riot'un Data Dragon API'sinde gizlenen veya çevirisi geciken, Orta Koridor görevi ile açılan 3. Seviye Savaşçı Çizmesi (Gunmetal Greaves) sisteme yapay zeka ile manuel olarak kodlandı. Artık API verisi eksik gelse bile sitemizde kusursuz çalışacak.</li>
-                <li><strong>Görsel (UI) Güncellemeler:</strong> Tüm "Hareket Hızı" statlarına ve "Botlar" kategori başlığına, eski model yerine yepyeni ve daha şık 👟 (Spor Ayakkabı) ikonu entegre edildi.</li>
-                <li>Meta Rehberi sekmesindeki Yasuo & Yone 2. eşya açıklaması metinsel olarak daha profesyonel bir dile ("Ani patlatma hasarlarından korunmak...") çevrildi.</li>
+                <li>Destek profillerinin yüklenmesi sırasında arayüzü çökerten (k is not defined) ortalama skor/asist matematiği hatası tamamen çözüldü.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.30.0 - Mutlak Kontrol & Kategori Zekası</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v4.9.1 (Eski V50) - Kimlik Operasyonu & Nihai Temizlik <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Manuel Sınıflandırma Motoru (Override Map):</strong> Riot'un API verilerindeki etiketleme hatalarına müdahale edildi. Umbra Mızrağı, Aklın Sonu gibi savaşçı eşyaları ile Dinçleştirici Aytaşı, Helia'nın Yankıları, Demir Solari gibi destek eşyaları zorla kendi doğru kategorilerine aktarıldı.</li>
-                <li><strong>İsim Bazlı Çöp Öğütücü & VIP Liste:</strong> Kütüphaneden silinmek istenen 12 çöp eşya (Gargoyl, Karayel vb.) ID gerektirmeden sadece isimleriyle kara listeye alındı. Görünmez olan "Gunmetal Greaves" gibi Sezon 16 eşyaları ise "VIP" zırhı giydirilerek doğrudan Botlar sekmesine çivilendi.</li>
+                <li>Metinlerin alt satıra düşmesini engelleyen CSS korumaları uygulandı. TR sunucusundan taşınan hesapların ve "lilliana" gibi eski isimlerin eşleştirilmesini sağlayan kimlik çözümleyici sisteme entegre edildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.29.0 - Modern İstemci Arayüzü & Regex Motoru</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v4.9.0 (Eski V49) - Null Koruması Ön Hazırlık Katmanı <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Gelişmiş Metin Ayrıştırıcı (Regex Parser):</strong> Riot API'sinden gelen karmaşık ve çöplük halindeki eşya açıklamalarını yakalayan devasa bir JavaScript motoru yazıldı. Bu motor metin içindeki özellikleri (Saldırı Gücü, Can, Zırh vb.) tespit edip oyun içindeki gibi özel renklerle ve ikonlarla (❤️, ⚔️, 🔮, ⏳) HTML'e gömer.</li>
-                <li><strong>Premium Tooltip UI:</strong> Sitedeki tüm eşya açıklamalarının tasarımı (Bireysel, Sinerji, Kütüphane) Riot'un güncel Sezon 16 oyun içi pop-up panellerine (Altın çerçeve, gradyan başlık, altın bedeli) kusursuz şekilde benzetildi.</li>
+                <li><strong>Hata Yakalama Altyapısı:</strong> API'den gelen bozuk eski Riot verilerinin ve kayıp rün ID'lerinin arayüzü kilitlemesini engellemek amacıyla ilk Null durumları için yakalama blokları iskelete dahil edildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.28.3 - Sinerji Panosu & Tip Senkronizasyonu</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v4.8.0 (Eski V48) - Saf Kan Ekip & Çelik Zırh <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Statik'ten Dinamiğe Geçiş:</strong> Sinerji Puanı (SP) bilgi kutusu statik HTML'den çıkartılıp doğrudan JavaScript mantığına (Conditional Rendering) bağlandı. Artık sadece SP hesaplamasının aktif olarak yapıldığı "5'li, 3'lü ve Alt Koridor" sekmelerinde görünüp, diğer sekmelerde ekranı işgal etmiyor.</li>
-                <li><strong>Tip (Type) Uyuşmazlığı Düzeltmesi:</strong> Sinerji Puanı kutusunun 5'li ve 3'lü sekmelerde kaybolmasına neden olan JavaScript <code>===</code> (katı eşitlik) veri tipi uyumsuzluğu çözüldü. Rakamlar tırnak içinden çıkarılarak sistemin filtreleme algoritmasındaki "Type Coercion" tuzağı engellendi.</li>
+                <li>Fiyatı veya veritabanı kaydı olmayan bozuk eski Riot eşyalarının arayüzü çökerterek "Fatal Error" verdirmesi engellendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.28.2 - Rüya Takımı Restorasyonu</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v4.7.0 (Eski V47) - Özgür Profiller <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Durumsal Arayüz (Conditional UI):</strong> Kod sadeleştirme çalışmaları sırasında kazara gizlenen "Tüm Zamanların Rüya Takımı" ve "Haftanın 5'lisi" bilgi kutucukları (Algoritma Açıklamaları) DOM yapısına yeniden enjekte edildi. Artık sadece ilgili sekmelere tıklandığında ekranda dinamik olarak belirecekler.</li>
+                <li>Lejant ve eşya barlarındaki CSS sıkışmaları ile solo maç filtresinin neden olduğu profillerin silinmesi hatası çözüldü.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.28.1 - Lejant Panosu Restorasyonu</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v4.6.0 (Eski V44-V46) - Yalnız Kurt Silici & Zaman Senkronizasyonu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Kusursuz Hizalama ve Zırh:</strong> Ana Lejant kutusundaki (Rozet Bilgi Ekranı) CSS çakışmaları ve sola kayma sorunları giderildi.</li>
-                <li>Alt sıradaki okunması zor çıplak metinler, üst sıradaki gibi özel zırhlı rozet (kutu) formatına dönüştürüldü. Kutu tasarımı dış etkenlerden bağımsız (inline-flex) hale getirilerek ekranın tam merkezine kilitlendi.</li>
+                <li>Ekip içinden en az 2 kişi olmayan solo Esnek maçları sistemden çöpe atan "Saf Kan Ekip" filtresi eklendi. Maç bilgisindeki tarih ve süre eksikliğini kopyalayarak çözen "Zaman Senkronizasyonu" oluşturuldu.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.27.0 - Sezon 16 Dinamik Entegrasyonu ve Hurdalık Temizliği</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v4.5.0 (Eski V43) - Okunabilirlik ve Sabit Kadro <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Gelişmiş Çöp Öğütücü (Hurdalık Filtresi):</strong> Riot API'sinin Sihirdar Vadisi listesinde unutulan eski "Karayel" ve "Gaddarlık" gibi oyundan silinmiş veya diğer modlara ait çöp eşyalar özel bir kara liste ile sistemden tamamen kazındı. Kütüphanede yalnızca aktif ve gerçek Efsanevi eşyalara yer verildi.</li>
-                <li><strong>Dinamik Yama Motoru (Sezon 16 Akıcılığı):</strong> Arayüze gömülü olan eski sezon (14.9.1 vb.) görsel bağlantılarını otomatik olarak tespit edip, canlı sunucudaki en taze yama versiyonuyla (16.x) anında değiştiren sistem eklendi.</li>
+                <li>Görseldeki metin boyutları büyütüldü (1.8em). Sisteme 15 kişilik kadro kodla sabitlendi, böylece Esnek maç atmayan kişilerin de profillerinde yer alması sağlandı.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.26.0 - Kategorik Kütüphane & Arındırma</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v4.4.0 (Eski V41-V42) - UI Restorasyonu ve Zaman Damgaları <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Gelişmiş Algoritmik Eşya Filtresi:</strong> Riot API'sinden çekilen verilerdeki Bami'nin Alevi, Ağırkan gibi "Alt Eşyalar" tespit edildi. Koda <code>!itm.into</code> şartı eklenerek tüm ara eşyalar kökten silindi.</li>
-                <li><strong>Kategorik Sınıflandırma:</strong> Eşya Kütüphanesi 6 farklı zeki başlığa (Dövüşçü, Büyücü, Nişancı, Destek, Tank, Botlar) bölündü. Eşyalar içerdikleri statlara göre bu kategorilere otomatik dağıtıldı.</li>
-                <li>Şampiyon Uzmanları sekmesi gereksiz veri kalabalığından kurtarılarak Ana Lejant barı o sekmeye özel olarak kalıcı şekilde kapatıldı.</li>
+                <li>HTML profilleri restore edildi, zaman ve maç süresi etiketleri profillere yerleştirildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.25.0 - Dinamik Rehber Entegrasyonu</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v4.3.0 (Eski V38-V40) - Rüya Takımı ve Haftanın Beşlisi <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Akıllı Meta Rehberi:</strong> Eşya Bilgisi sekmesinde statik olarak hazırlanan şampiyon rehberlerindeki eşyalar Riot API veritabanına bağlandı. Artık rehberdeki ikonların üzerine gelindiğinde basit isimler yerine, orijinal oyun içi Pop-Up'ları açılıyor.</li>
+                <li>Maç zamanlarının analize katılmasıyla "Haftanın 5'lisi" ve rol bazlı "Tüm Zamanların Rüya Takımı" sekmeleri eklendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.24.0 - Sinerji Özgürlüğü & Mutlak Görünürlük</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v4.2.0 (Eski V36-V37) - Davranış Kalibrasyonu ve Uzmanlık Puanı <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Sinerji Pop-Up Düzeltmesi:</strong> Takım Sinerjisi sekmesindeki maç kartlarında eşya özelliklerinin kesilmesine (clipping) yol açan tüm gizli <code>overflow: hidden</code> kilitleri tespit edilip parçalandı.</li>
-                <li><strong>Dinamik Köşe Koruması:</strong> Özgür bırakılan sınırların tasarımda sivri köşeler yaratmaması için sınır yuvarlama (Border-Radius Override) uygulandı.</li>
+                <li>Sinerji Skoru (SP) ile Şampiyon Uzmanlık Puanı (UP) terimleri görsel ve ismen ayrıldı. Mükerrer maç silici eklendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.22.0 / v5.23.0 - Arayüz Şeffaflığı ve Pop-Up Motoru</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v4.1.0 (Eski V34-V35) - Şampiyon Makyajı ve Alfabetik Sıralama <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Oyun İçi Eşya Menüsü:</strong> Eşya Bilgisi kütüphanesi ve tüm maç geçmişi kartları için oyun içindeki gibi yeşil/sarı stat renklerine sahip <strong>Profesyonel Pop-Up</strong> panelleri kodlandı.</li>
-                <li><strong>Modüler Güncelleme (CI/CD):</strong> Sistem güncellemeleri parçalı (Component-Based) mimariye geçirildi.</li>
+                <li>Riot API'den dönen hatalı kod isimlerinin arayüzde doğru gözükmesi için makyaj sözlüğü eklendi. Alfabetik sıralama Türkçe'ye uygun hale getirildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.21.0 - Sınırsız Ufuklar (Limitless Grid)</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v4.0.1 (Eski V33) - KDA Eşitlik Bozucu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Orantılı Grid Mimarisi:</strong> Özet panosunu eşit parçalara bölen katı yapı, içerik yoğunluğuna göre dinamik olarak genişleyen ızgara sistemiyle değiştirildi. "Kariyer & Vurgunlar" gibi yoğun kutular artık ihtiyaç duydukları genişliği alıyor.</li>
-                <li><strong>Özet Panosu Esnekliği:</strong> Yazıların, eşyaların ve verilerin dar ekranlarda kutuyu patlatmaması için alt satıra nazikçe geçmelerini sağlayan <code>flex-wrap</code> zırhları entegre edildi.</li>
+                <li>Şampiyon uzmanları tablosunda galibiyet oranları eşit olduğunda "KDA" değerinin eşitlik bozucu olarak kullanılması sağlandı.</li>
             </ul>
         </div>
 
-        <div class="yama-karti">
-            <div class="yama-baslik">v5.18.0 / v5.20.0 - Kusursuz Simetri & Derin Madencilik</div>
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v4.0.0 (Eski V31-V32) - Markalaşma ve Çoklu Sinerji Seçimi <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
-                <li><strong>Özet Panosu Kati Izgara:</strong> Özet kutucuklarındaki CSS Flexbox yapısı tamamen <code>grid</code> mimarisi ile değiştirildi.</li>
-                <li><strong>Gelişmiş İpucu (Tooltip) Optimizasyonu:</strong> Ekranın dışına taşan uzun açıklamalar <code>white-space: normal</code> ve <code>max-width: 250px</code> zırhıyla terbiye edildi.</li>
-                <li><strong>Derin Veri Konumu:</strong> Maç kartlarının ana yüzündeki Hasar Barları takım detay ekranına taşındı. Bireysel sekmenin tepesindeki özet panosuna Toplam Hasar, Tank, Şifa ve Görüş analizleri eklendi.</li>
+                <li>Sitenin HTML başlığı ve logosu "YazlıkDC.GG" olarak markalaştırıldı. Takım Sinerjisi kısmına çoklu seçim yapılabilen Filtre Çipleri entegre edildi.</li>
             </ul>
         </div>
 
-      <!-- ARŞİV BUTONU -->
-        <button id="btn-eski-yamalar" class="daha-fazla-btn" style="margin-bottom: 20px;">⬇️ Eski Sürümleri Aç</button>
-
-        <div id="eski-yamalar-kapsayici" class="gizle">
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.17.0 - Kimlik Çözümleyici (Smurf Zekası)</div>
-                <ul class="yama-liste">
-                    <li><strong>Dinamik Kimlik Algoritması:</strong> Ekipteki oyuncuların farklı yan hesaplarla (Smurf) oynadığı maçları analiz edip tek bir ana kimlik altında birleştiren altyapı kuruldu. Liderlik tablolarındaki bölünmeler engellendi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.16.0 - Kütüphane & Kozmetik Evrimi</div>
-                <ul class="yama-liste">
-                    <li><strong>Yeni Sekme - Eşya Bilgisi:</strong> Navigasyona spesifik şampiyonlar (Yasuo/Yone) için durumsal eşya dizilimlerini anlatan kritik meta rehberi eklendi.</li>
-                    <li><strong>Yeni Sekme - Rün Dizilimi:</strong> Oyuncuların maç öncesi teorik dizilimler yapabileceği İnteraktif Rün Tahtası arayüzü kuruldu.</li>
-                    <li><strong>Custom CSS Tooltip Motoru:</strong> İşletim sisteminin varsayılan beyaz açıklamaları iptal edildi. Artık rozetlerin üzerine gelindiğinde siteye özel siyah/gri tonlarında, okuması kolay bilgi kutucukları açılıyor.</li>
-                    <li>Bireysel profil maç kartlarındaki "Verilen Hasar" (Damage Dealt) istatistiğinin altına, performansı görsel olarak kanıtlayan <strong>Hasar Oran Barı</strong> eklendi.</li>
-                    <li>Derin Veri (Deep Data) başlıklarındaki metinler "💥 Verilen Hasar, 🛡️ Tanklanan Hasar, 💚 İyileştirme ve Kalkan, ❄️ Uygulanan Kitle Kontrol" olarak güncellendi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.15.0 - Analitik Şeffaflık & Takım Zekası</div>
-                <ul class="yama-liste">
-                    <li><strong>Gelişmiş Sabotaj (V2):</strong> Bir oyuncunun sabotajcı sayılması için artık sadece "Takım Kills" değil, "Takım Toplam Skoru ve Asisti" (takim_skoru + takim_asisti / 2) baz alınıyor. Kötü oynayıp çok ölse de takıma asistleriyle destek olan oyuncular kırmızı damgadan kurtuluyor.</li>
-                    <li><strong>Takım KDA Paneli:</strong> Maç kartlarının sağ üst köşesine tüm takımın toplam KDA durumu (Örn: ⚔️ Takım: 35/20/50) entegre edildi.</li>
-                    <li><strong>Derin Veri Vitrini:</strong> Maç kartlarının içine Şampiyon Hasarı (💥), Tanklanan Hasar (🛡️), Şifa/Kalkan (💚) ve Kitle Kontrol (❄️) verileri şık bir bar halinde eklendi.</li>
-                    <li>Uzmanlık Puanı (UP) etiketi, Şampiyonlar sekmesinde Magenta (Neon Pembe) tarzına bürünerek SP ile aynı kurumsal estetiğe çekildi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.14.0 - Porofessor Etiketleri & Derin Madencilik</div>
-                <ul class="yama-liste">
-                    <li><strong>Performans Rozetleri:</strong> Maç kartlarının içine oyuncunun davranışını okuyan yeşil ve kırmızı analiz rozetleri (Örn: "Kule Yıkıcı", "Ölümsüz", "Şifa Makinesi") entegre edildi.</li>
-                    <li>Profil özetindeki "Kariyer & Vurgunlar" paneline <strong>Double Kill (İkide İki)</strong> verisi eklendi. Genişlik kaymaları önlendi.</li>
-                    <li><strong>Zeki Algoritma (UP/SP):</strong> Uzmanlık ve Sinerji puanı hesaplamalarına şampiyon hasarı, takım kalkanı/şifası, tanklanan hasar ve CC süreleri gibi derin madencilik verileri katıldı. Artık destekler ve tanklar KDA'dan bağımsız olarak hakkını alacak.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.13.1 - UI Odaklanması</div>
-                <ul class="yama-liste">
-                    <li>Sürüm Geçmişi (Yama Notları) sekmesi açıldığında, gereksiz kalabalık yapan "Sezon Filtreleri" ve "Lejant (Rozet Bilgileri)" kutuları gizlenerek tam odaklı bir okuma deneyimi sağlandı.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.13.0 - Anayasa Güncellemesi</div>
-                <ul class="yama-liste">
-                    <li>Sürüm geçmişi (Patch Notes) doğrudan arayüze entegre edilerek ayrı bir sekme olarak (📜 Sürüm Geçmişi) eklendi.</li>
-                </ul>
-            </div>
-            
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.12.0 - Kusursuz Simetri</div>
-                <ul class="yama-liste">
-                    <li>CSS Flexbox hataları nedeniyle özet panosunda yaşanan "alt satıra kayma" ve formasyon bozulmaları <code>nowrap</code> zırhıyla engellendi.</li>
-                    <li>Profil özetindeki 5 kutu yatay ve dikey merkezleme ile askeri bir nizama sokuldu.</li>
-                    <li>Maç kartlarındaki kontrol totemi ve vizyon simgelerinin taşma problemi düzeltildi.</li>
-                </ul>
-            </div>
-            
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.11.0 - Geniş Açılı Tasarım & Güncel Kimlik</div>
-                <ul class="yama-liste">
-                    <li>Özet panosu genişliği 1400px'e çıkarılarak istatistiklerin nefes alması sağlandı. Favori eşyalar tek satıra hizalandı.</li>
-                    <li><strong>Dynamic Icon Memory:</strong> Sistem tüm arşivi tarayarak oyuncunun en son kullandığı Sihirdar İkonunu tespit eden ve bunu tüm tablolara (Liderlik, Şampiyonlar) yansıtan akıllı hafıza sistemine kavuştu.</li>
-                    <li>Takım sinerjisindeki SP (Sinerji Puanı) değerleri, dikkat çekmesi için neon eflatun bir arka plan zırhına büründürüldü.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.10.1 - Formasyon UI Yaması</div>
-                <ul class="yama-liste">
-                    <li>Takım Sinerjisi bölümünde kaybolan Kadro Formasyonları (Dizilişler) CSS etiketleri ve boşluk düzenlemeleri onarıldı.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.10.0 - Zirve Analizi & Sabotaj Revizyonu</div>
-                <ul class="yama-liste">
-                    <li><strong>Kusursuz Rüya Takımı:</strong> Tüm zamanların verisi taranarak her pozisyonun istatistiksel olarak en kusursuz oyuncusunu (WR, KDA, Görüş, Hasar) bulup bir araya getiren Laplace destekli zeka eklendi.</li>
-                    <li><strong>Haftanın 5'lisi:</strong> Son 7 günün momentumunu ölçen ve haftanın en formda oyuncularını podyuma çıkaran algoritma yazıldı.</li>
-                    <li><strong>Gelişmiş Sabotaj Algoritması:</strong> Oyuncunun Sabotaj damgası yemesi için artık sadece 12 kere ölmesi yetmiyor. Eğer takım skorunun yarısından fazlasına katkı verdiyse (taşıyorsa), sistem onu Sabotajcı ilan etmiyor.</li>
-                    <li>Liderlik filtrelerine "Görüş Skorları" ve "Farm Kralları (CS/min)" sekmeleri eklendi. Destek (Utility) rolü CS/min liderliğinden adil olmak adına men edildi.</li>
-                    <li>Şampiyon Uzmanları sekmesindeki devasa şampiyon ikonları 70px boyutuna küçültüldü.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.9.1 - UI Kalibrasyonu</div>
-                <ul class="yama-liste">
-                    <li>Penta/Quadra/Triple yazılarındaki CSS kayma hatası düzeltildi. Kariyer & Vurgunlar başlığı standart kurumsal formata çekildi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.9.0 - Hizalı ve Dinamik Arayüz</div>
-                <ul class="yama-liste">
-                    <li>Quadra ve Penta verilerinin yanına <strong>Triple Kill (Üçte Üç)</strong> istatistiği entegre edildi.</li>
-                    <li>Bireysel profilin alt filtrelerine Quadra, Triple ve İlk Kan için tıklanabilir filtre düğmeleri eklendi.</li>
-                    <li>Lejant barındaki tüm rozetler (Badge) askeri nizama sokuldu ve maç kartlarındaki KDA değerlerinin üstüne şık bir yatay satır olarak yerleştirildi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.8.0 - Kozmetik ve İkonik Navigasyon</div>
-                <ul class="yama-liste">
-                    <li>Riot API'sinden çekilen Sihirdar Profil İkonları arayüze entegre edildi. Liderlik ve Şampiyon panoları oyuncuların kendi simgeleriyle kişiselleştirildi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.7.0 - Dinamik Keskin Nişancı Filtresi</div>
-                <ul class="yama-liste">
-                    <li>Bireysel profillerde sağ taraftaki rol kartlarına (Örn: Nişancı, Üst) tıklandığında sol taraftaki maç listesinin anında o role göre süzülmesi sağlandı (Interactive Filtering).</li>
-                    <li>Bireysel maç filtreleme barına prestij rozetleri (Penta, Çalıntı, İlk Kan) için dinamik butonlar eklendi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.6.0 - Dinamik Kimlik Çözümleme (Smurf Entegrasyonu)</div>
-                <ul class="yama-liste">
-                    <li>Yan hesapların (Smurf) ve eski isimlerin ana kimlikle birleştirildiği (Data Consolidation) "Dynamic ID Resolution" altyapısı kuruldu.</li>
-                    <li>Liderlik tablolarında ve şampiyon sekmelerinde sistemin otomatik olarak güncel ana hesabı göstermesi, geçmiş maç kartlarında ise o günkü nostaljik ismin (Alias) mühürlü kalması sağlandı.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.5.1 - Kapsamlı Profil Özeti</div>
-                <ul class="yama-liste">
-                    <li>Bireysel profil özet panosu 4 kutudan 5 kutuya çıkarılarak, "Rol & Donanım" istatistikleri ile yeni eklenen "Vurgunlar & Başarılar" verileri kusursuz bir yatay simetriyle birleştirildi.</li>
-                    <li>"Kusursuz Maç" ve "Sabotaj" istatistikleri aynı satırda birleştirilerek dikey alandan tasarruf edildi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.5.0 - Prestij ve Kozmetik Avcısı</div>
-                <ul class="yama-liste">
-                    <li>Arka planda toplanan Pentakill, Quadrakill, Çalınan Objektif ve İlk Kan (First Blood) verileri arayüze entegre edildi.</li>
-                    <li>Bireysel profil özetine "Vurgunlar & Başarılar" paneli ve maç kartlarına parlayan özel animasyonlu rozetler eklendi.</li>
-                    <li>Tarih etiketlerine yıl verisi (Örn: 2026) eklenerek geçmiş sezonlardaki kazıların kronolojik olarak anlaşılması sağlandı.</li>
-                    <li>Takımı geriye çeken oyuncuları tespit etmek için "11'den fazla ölüm ve takım skorunun %50'sinden azına katkı" şartlarını arayan Sabotaj (☠️) tespit sistemi aktif edildi. Utanç Listesi arayüze eklendi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.4.4 - Sinerji Bağlantı Yaması</div>
-                <ul class="yama-liste">
-                    <li>Alt Koridor listesindeki ikililere (Nişancı + Destek) tıklandığında maçların listelenmesini engelleyen İsim Eşleştirme (String Matching) hatası giderildi. Alt koridor tıklamaları için özel isim çözümleyici yazıldı.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.4.3 - Kusursuz Rüya Takımı Revizyonu</div>
-                <ul class="yama-liste">
-                    <li>"Tüm Zamanların Rüya Takımı" ve "Haftanın 5'lisi" panolarına, arka plandaki algoritmada zaten var olan CS/min (Minyon/Dakika) istatistikleri görsel olarak çivilendi. Destek rolü, adaleti sağlamak için bu görselden muaf tutuldu.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.4.2 - Kompakt Kanban Dizilimi</div>
-                <ul class="yama-liste">
-                    <li>Şampiyon uzmanları sekmesinde ekran daraldığında ortaya çıkan tasarım (flex-wrap) hatası giderildi.</li>
-                    <li>İstatistiklerin ismin altına kaymasını engelleyen ve boşlukları yok eden jilet gibi yan yana (Kanban stili) dizilim getirildi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v5.0.0 (Eski V55) - Hasat Zamanı & Ekonomi Devrimi</div>
-                <ul class="yama-liste">
-                    <li>Versiyonlama mantığı Semantic Versioning standardına (v5.0.0) çekildi.</li>
-                    <li><strong>Büyük Veri (Big Data) Entegrasyonu:</strong> Sadece KDA değil; Orman/Koridor minyon ayrımı, Dakika Başına Düşen Minyon (CS/min), Toplam Görüş, Tanklanan Hasar, Şifa ve Kitle Kontrol (CC) süreleri gibi oyunun kaderini belirleyen derin veriler arayüze işlendi.</li>
-                    <li>Riot'tan çekilen orman ve koridor minyonları ile "CS/min" hesaplaması getirildi.</li>
-                    <li>"Vergi Memuru", "Kusursuz Ekonomi" ve "Orman Canavarı" şeklinde yepyeni, profesyonel oyun tarzı algoritmaları eklendi.</li>
-                    <li>Yeni ekip üyeleri Furkan ve Nurettin sisteme dahil edildi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v4.9.4 (Eski V54) - Sabotaj Harekâtı</div>
-                <ul class="yama-liste">
-                    <li>Bireysel profillerdeki "11+ Ölüm" ifadesi doğrudan kırmızı "SABOTAJ" etiketiyle değiştirilerek acımasız ve dürüst bir formata dönüştürüldü.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v4.9.3 (Eski V52-V53) - Kusursuz Simetri ve Akıllı Navigasyon</div>
-                <ul class="yama-liste">
-                    <li>Filtreleme ve arama kutularının sola yaslanma sorunu çözüldü, tüm kutular ekran merkezine (margin: 0 auto;) hizalandı.</li>
-                    <li>Liderlik tablolarındaki ilk 3 sıraya Altın, Gümüş ve Bronz efektli podyum parlamaları getirildi (Rekabetin Rengi).</li>
-                    <li>Maçlara veya takımlara tıklandığında ekranın DOM koordinatlarıyla hedef içeriğe akıcı bir şekilde kayması (Dinamik Navigasyon) sağlandı.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v4.9.2 (Eski V51) - Büyük Uyanış</div>
-                <ul class="yama-liste">
-                    <li>Destek (Utility) profillerinin yüklenmesi sırasında arayüzü çökerten (k is not defined) ortalama skor/asist matematiği hatası tamamen çözüldü.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v4.9.1 (Eski V49-V50) - Kimlik Operasyonu & Nihai Temizlik</div>
-                <ul class="yama-liste">
-                    <li>Metinlerin alt satıra düşmesini engelleyen CSS korumaları (white-space: nowrap) uygulandı.</li>
-                    <li>TR sunucusundan taşınan hesapların ve "lilliana" gibi eski isimlerin eşleştirilmesini sağlayan kimlik çözümleyici (Identity Resolver) sisteme entegre edildi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v4.8.0 (Eski V48) - Saf Kan Ekip & Çelik Zırh</div>
-                <ul class="yama-liste">
-                    <li>Fiyatı veya veritabanı kaydı olmayan bozuk eski Riot eşyalarının arayüzü çökerterek "Fatal Error" verdirmesi engellendi.</li>
-                    <li>Solo maçları engelleyen filtre, sitenin en tepesine taşınarak kesinleştirildi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v4.7.0 (Eski V47) - Özgür Profiller</div>
-                <ul class="yama-liste">
-                    <li>Lejant ve eşya barlarındaki CSS sıkışmaları ile solo maç filtresinin neden olduğu profillerin silinmesi hatası çözüldü.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v4.6.0 (Eski V44-V46) - Yalnız Kurt Silici & Zaman Senkronizasyonu</div>
-                <ul class="yama-liste">
-                    <li>Ekip içinden en az 2 kişi olmayan "Yalnız Kurt" (solo) Esnek maçları sistemden çöpe atan "Saf Kan Ekip" filtresi eklendi.</li>
-                    <li>Maç bilgisindeki tarih ve süre eksikliğini diğer oyunculardan kopyalayarak çözen "Zaman Senkronizasyonu" oluşturuldu.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v4.5.0 (Eski V43) - Okunabilirlik ve Sabit Kadro</div>
-                <ul class="yama-liste">
-                    <li>Görseldeki metin boyutları büyütüldü (1.8em).</li>
-                    <li>Sisteme 15 kişilik kadro kodla sabitlendi, böylece Esnek maç atmayan kişilerin de "Veri bulunamadı" olarak profillerinde yer alması sağlandı.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v4.4.0 (Eski V41-V42) - UI Restorasyonu ve Zaman Damgaları</div>
-                <ul class="yama-liste">
-                    <li>HTML profilleri ve çöken tasarımlar restore edildi.</li>
-                    <li>Zaman ve maç süresi etiketleri profillere yerleştirildi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v4.3.0 (Eski V38-V40) - Rüya Takımı ve Haftanın Beşlisi</div>
-                <ul class="yama-liste">
-                    <li>Maç zamanlarının ve sürelerinin analize katılmasıyla "Haftanın 5'lisi" ve rol bazlı "Tüm Zamanların Rüya Takımı" sekmeleri eklendi.</li>
-                    <li>Yalnızca Nişancı ve Destek rollerinin baz alındığı Alt Koridor sinerjisi geliştirilerek rüya takım önceliklerine dahil edildi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v4.2.0 (Eski V36-V37) - Davranış Kalibrasyonu ve Uzmanlık Puanı</div>
-                <ul class="yama-liste">
-                    <li>Rol davranışlarındaki görüş/asist hedefleri gerçekçi değerlere kalibre edildi.</li>
-                    <li>Sinerji Skoru (SP, eflatun) ile Şampiyon Uzmanlık Puanı (UP, magenta) terimleri görsel ve ismen birbirinden ayrıldı.</li>
-                    <li>Veritabanındaki klon maçları tekillendiren (mükerrer silici) özellik eklendi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v4.1.0 (Eski V34-V35) - Şampiyon Makyajı ve Alfabetik Sıralama</div>
-                <ul class="yama-liste">
-                    <li>Riot API'den dönen hatalı kod isimlerinin (MonkeyKing -> Wukong) arayüzde doğru gözükmesi için makyaj/çeviri sözlüğü eklendi.</li>
-                    <li>Alfabe sıralamalarının Türkçe'ye uygun yapılması sağlandı.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v4.0.1 (Eski V33) - KDA Eşitlik Bozucu</div>
-                <ul class="yama-liste">
-                    <li>Şampiyon uzmanları tablosunda galibiyet oranları eşit olduğunda "KDA" değerinin eşitlik bozucu olarak kullanılması sağlandı.</li>
-                    <li>Liderlik filtrelerindeki kırılmalar tamir edildi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v4.0.0 (Eski V31-V32) - Markalaşma ve Çoklu Sinerji Seçimi</div>
-                <ul class="yama-liste">
-                    <li>Sitenin HTML başlığı ve logosu "YazlıkDC.GG" olarak markalaştırıldı.</li>
-                    <li>Takım sinerjisi kısmına çoklu seçim yapılabilen "Filtre Çipleri" ile Netflix tarzı bir filtreleme mantığına geçirildi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v3.3.1 (Eski V30) - Zaman Çizgisi Yaması</div>
-                <ul class="yama-liste">
-                    <li>Kod yamalarından kaynaklı karmaşıklıklar tek dosya halinde birleştirildi.</li>
-                    <li>ABW geçişi sonrası EUW maçlarının TR maçlarının altında kalmasına neden olan alfabetik hata çözüldü.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v3.3.0 (Eski V28-V29) - Role-Aware AI ve Pervasız Sendromu</div>
-                <ul class="yama-liste">
-                    <li>Oyuncuların fazla ölüp az skor çıkardığı maçları tespit eden "Yasuo Sendromu (Pervasız)" filtresi yazıldı.</li>
-                    <li>Davranış algoritması rollere özel (Destek, Orman, Orta, Üst) hale getirilerek, oyuncuların görevine göre (Örn: Fedakar Koruyucu) analiz edilmesi sağlandı.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v3.2.0 (Eski V27) - Ultimate Player Analytics</div>
-                <ul class="yama-liste">
-                    <li>Oyunculara birden fazla oyun tarzı rozeti verilebilmesini sağlayan çoklu-etiket sistemi getirildi.</li>
-                    <li>Sağ sütuna detaylı "Şampiyon Raporu" paneli eklendi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v3.1.1 (Eski V26) - Kişisel Filtreler ve UI Şeffaflığı</div>
-                <ul class="yama-liste">
-                    <li>Şampiyon uzmanları sekmesindeki SP yazısının alt satıra kayması CSS ile engellendi.</li>
-                    <li>Bireysel profile "Perfect KDA", "11+ Ölüm" ve şampiyon filtreleme özellikleri eklendi.</li>
-                    <li>Sinerji hesaplamasındaki Laplace mantığını açıklayan bilgi kutuları oluşturuldu.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v3.1.0 (Eski V25) - Yapay Zeka Sinerjisi ve Rol Esnekliği</div>
-                <ul class="yama-liste">
-                    <li>"Bitmiş Eşyalar" yazısı "Favori Eşyalar" olarak düzeltildi ve "3'li" yazım hatası giderildi.</li>
-                    <li>Sinerji puanına, takımların farklı dizilimlerle oynayabilme başarısını ölçen "Rol Esnekliği" katsayısı eklendi.</li>
-                    <li>Laplace SP skoru Şampiyon Uzmanları listesine de dahil edildi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v3.0.0 (Eski V24) - OP.GG Ultimate</div>
-                <ul class="yama-liste">
-                    <li>Sürüm Geçmişi (Patch Notes) arayüzü bağımsız bir sekme olarak anayasaya dönüştürüldü (Anayasanın Doğuşu).</li>
-                    <li>Açılır pencereler (pop-up), profil içi akordeon düzene geçirildi.</li>
-                    <li>Liderlik filtrelerine kişi bazlı "Tıkla ve Süz" seçeneği getirildi.</li>
-                    <li>Kariyer başarıları (Perfect KDA, 11+ Ölüm vb.) için ayrı bir kutu tasarlandı.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v2.2.0 (Eski V23) - Gerçek Eşya Filtresi ve Maç Otopsi Ekranı</div>
-                <ul class="yama-liste">
-                    <li>Eşya filtresine Riot API entegrasyonu sağlandı ve sadece "bitmiş" eşyalar (1600+ altın ve çizmeler) gösterilmeye başlandı.</li>
-                    <li>Maçlara tıklandığında tüm takım istatistiklerini OP.GG tarzında açan bir sistem geliştirildi.</li>
-                    <li>Rekorlarda her zaman "en yeni maçın" öne çıkması sağlandı.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v2.1.0 (Eski V22) - Ultimate Scouting</div>
-                <ul class="yama-liste">
-                    <li>Liderlik tablolarındaki hizalama sorunu çözüldü ve bu tablolar tıklanabilir filtre butonlarına dönüştürüldü.</li>
-                    <li>Oyunculara istatistiklerine göre "Hiper Taşıyıcı", "Vizyoner" gibi otomatik oyun tarzı rozetleri atayan sistem, favori eşyalar paneli ve şampiyon ikonları eklendi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v2.0.0 (Eski V21) - Veri Bilimi Zekası</div>
-                <ul class="yama-liste">
-                    <li>Bireysel liderlik tabloları toplam skorlar yerine "Tek Maç Rekorlarına" göre sıralanmaya başladı.</li>
-                    <li>Takım sinerjisi kazanma oranlarına, az maç yapanların haksız yükselişini engelleyen "Laplace Yumuşatması (Sinerji Skoru)" algoritması entegre edildi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v1.2.0 (Eski V20) - Final UX</div>
-                <ul class="yama-liste">
-                    <li>En çok ölenler sekmesi "☠️ Utanç Listesi" olarak adlandırıldı.</li>
-                    <li>Liderlik panosundaki skorların kaç maçta elde edildiğini gösteren ortalama ibareleri eklendi.</li>
-                    <li>Şampiyon Uzmanları kartları göz yormaması için merkeze toplandı.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v1.1.0 (Eski V18-V19) - Genişletilmiş Lejant ve İkonlar</div>
-                <ul class="yama-liste">
-                    <li>Sitedeki ikonların ne anlama geldiğini açıklayan çok kapsayıcı bir "Rozet Bilgisi (Lejant)" çubuğu eklendi.</li>
-                    <li>Lejanta totem/görüş ikonları da eklendi ve arayüzü sadeleştirmek için başındaki "Lejant:" yazısı silindi.</li>
-                </ul>
-            </div>
-
-            <div class="yama-karti">
-                <div class="yama-baslik">v1.0.0 (Eski V1-V17) - Temel İnşa Dönemi</div>
-                <ul class="yama-liste">
-                    <li>Sistemin ilk temelleri atıldı. Temel Firebase bağlantısı sağlandı ve saf maç verileri (Kazanma, Kaybetme, KDA) arayüze yansıtıldı.</li>
-                </ul>
-            </div>
-            
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v3.3.1 (Eski V30) - Zaman Çizgisi Yaması <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li>ABW geçişi sonrası EUW maçlarının TR maçlarının altında kalmasına neden olan alfabetik hata çözüldü.</li>
+            </ul>
         </div>
+
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v3.3.0 (Eski V28-V29) - Role-Aware AI ve Pervasız Sendromu <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li>Oyuncuların fazla ölüp az skor çıkardığı maçları tespit eden "Yasuo Sendromu (Pervasız)" filtresi yazıldı. Davranış algoritması rollere özel hale getirildi.</li>
+            </ul>
+        </div>
+
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v3.2.0 (Eski V27) - Ultimate Player Analytics <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li>Oyunculara birden fazla oyun tarzı rozeti verilebilmesini sağlayan çoklu-etiket sistemi getirildi. Sağ sütuna detaylı "Şampiyon Raporu" paneli eklendi.</li>
+            </ul>
+        </div>
+
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v3.1.1 (Eski V26) - Kişisel Filtreler ve UI Şeffaflığı <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li>Bireysel profile "Perfect KDA", "11+ Ölüm" ve şampiyon filtreleme özellikleri eklendi.</li>
+            </ul>
+        </div>
+
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v3.1.0 (Eski V25) - Yapay Zeka Sinerjisi ve Rol Esnekliği <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li>Sinerji puanına, takımların farklı dizilimlerle oynayabilme başarısını ölçen "Rol Esnekliği" katsayısı eklendi.</li>
+            </ul>
+        </div>
+
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v3.0.0 (Eski V24) - OP.GG Ultimate <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li>Sürüm Geçmişi arayüzü bağımsız bir sekme olarak anayasaya dönüştürüldü. Açılır pencereler profil içi akordeon düzene geçirildi.</li>
+            </ul>
+        </div>
+
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v2.2.0 (Eski V23) - Gerçek Eşya Filtresi ve Maç Otopsi Ekranı <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li>Eşya filtresine Riot API entegrasyonu sağlandı ve sadece bitmiş eşyalar gösterilmeye başlandı. Takım istatistiklerini OP.GG tarzında açan sistem geliştirildi.</li>
+            </ul>
+        </div>
+
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v2.1.0 (Eski V22) - Ultimate Scouting <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li>Liderlik tabloları filtre butonlarına dönüştürüldü. Otomatik oyun tarzı rozetleri atayan sistem, favori eşyalar paneli ve şampiyon ikonları eklendi.</li>
+            </ul>
+        </div>
+
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v2.0.0 (Eski V21) - Veri Bilimi Zekası <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li>Bireysel liderlik tabloları Tek Maç Rekorlarına göre sıralanmaya başladı. Takım Sinerjisi kazanma oranlarına Laplace Yumuşatması algoritması entegre edildi.</li>
+            </ul>
+        </div>
+
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v1.2.0 (Eski V20) - Final UX <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li>En çok ölenler sekmesi "☠️ Utanç Listesi" olarak adlandırıldı. Ortalama ibareleri eklendi.</li>
+            </ul>
+        </div>
+
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v1.1.0 (Eski V18-V19) - Genişletilmiş Lejant ve İkonlar <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li>Sitedeki ikonların ne anlama geldiğini açıklayan çok kapsayıcı bir "Rozet Bilgisi (Lejant)" çubuğu eklendi.</li>
+            </ul>
+        </div>
+
+        <div class="yama-karti" style="border-color: #58a6ff;">
+            <div class="yama-baslik">v1.0.0 (Eski V1-V17) - Temel İnşa Dönemi <span class="yama-tarih"></span></div>
+            <ul class="yama-liste">
+                <li>Sistemin temelleri atıldı. Temel Firebase bağlantısı sağlandı ve saf maç verileri (Kazanma, Kaybetme, KDA) arayüze yansıtıldı.</li>
+            </ul>
+        </div>
+    </div>
 
         <div class="yama-karti" style="border-color: #ffd700;">
             <div class="yama-baslik" style="color: #ffd700;">🤖 PYTHON BOT SÜRÜM GEÇMİŞİ</div>
             <ul class="yama-liste">
-		<li><strong>v3.1.0 (Eski v23):</strong> "Volkanik Veri Takibi". Maç bazlı CS farkı verileri üzerinden 'Flame Horizon' (100+ fark) durumlarını anlık tespit eden ve veritabanında bayraklayan (flagging) mantıksal katman eklendi.</li>
-		<li><strong>v3.0.0 (Eski v22):</strong> "Kahin (Oracle) Motoru". Riot'un gizli 'Challenges' (Görevler) API'sine bağlantı kuruldu. Salt skor tablosu aşılarak; Dakika Başı Altın (GPM), 10. Dakika Minyonu, Koridor Minyon Farkı ve Erken Oyun Üstünlüğü gibi kompleks ekonomi metrikleri veri tabanına mühürlenmeye başlandı.</li>
+                <li><strong>v3.2.0:</strong> "Derin Rün Madenciliği". Riot API üzerinden <code>perks</code> objesi parçalanarak oyuncuların seçtiği <em>Ana Rün</em>, <em>Alt Rün Ağacı</em> ve maçta kullanılan tüm <em>alt rünlerin ID'leri</em> (array olarak) otonom şekilde çekilip Firebase'e aktarılmaya başlandı.</li>
+                <li><strong>v3.1.0 (Eski v23):</strong> "Volkanik Veri Takibi". Maç bazlı CS farkı verileri üzerinden 'Flame Horizon' (100+ fark) durumlarını anlık tespit eden ve veritabanında bayraklayan (flagging) mantıksal katman eklendi.</li>
+                <li><strong>v3.0.0 (Eski v22):</strong> "Kahin (Oracle) Motoru". Riot'un gizli 'Challenges' (Görevler) API'sine bağlantı kuruldu. Salt skor tablosu aşılarak; Dakika Başı Altın (GPM), 10. Dakika Minyonu, Koridor Minyon Farkı ve Erken Oyun Üstünlüğü gibi kompleks ekonomi metrikleri veri tabanına mühürlenmeye başlandı.</li>
                 <li><strong>v2.6.0 (Eski v19-v21):</strong> "Bağlantı Dedektifi". Sinerji ağlarını kurabilmek için, aynı takımda alt koridoru (Nişancı ve Destek) paylaşan oyuncuları tespit edip "koridor_partneri" değişkeniyle birbirine bağlayan otonom ilişki algoritması yazıldı.</li>
                 <li><strong>v2.5.0 (Eski v18):</strong> "Derin Veri Madenciliği". Hasar, Kalkan, İyileştirme, CC Süresi ve Kule yıkım metrikleri arşive kazındı.</li>
                 <li><strong>v2.4.0 (Eski v17):</strong> Sabotaj algoritması için takımın toplam skorunu (takim_skoru) hesaplayan analiz zekası eklendi.</li>
@@ -2023,6 +2102,55 @@
             return "⚖️ Standart Oynanış";
         }
 
+	// 🚀 V5.55.0 - AKILLI MUTLAK POP-UP MOTORU (Sarı Kutuları Kökten Engelleyen Zırh)
+        window.gosterMutlakPopup = function(e, baslik, icerik, renk) {
+            // Sitedeki tüm eski sarı CSS popup'larını tamamen görünmez yapıyoruz:
+            if(!document.getElementById("anti-yellow-css")) {
+                let style = document.createElement("style");
+                style.id = "anti-yellow-css";
+                style.innerHTML = ".esya-detay-popup, .mac-karti .esya-detay-popup { display: none !important; visibility: hidden !important; opacity: 0 !important; }";
+                document.head.appendChild(style);
+            }
+
+            let tt = document.getElementById("mutlak-tooltip");
+            if (!tt) {
+                tt = document.createElement("div"); tt.id = "mutlak-tooltip";
+                tt.style.cssText = "position:absolute; z-index:9999999; background:rgba(10,15,22,0.95); border:1px solid #000; border-radius:8px; padding:10px; box-shadow:0 0 20px rgba(0,0,0,0.9); pointer-events:none; display:none; min-width:250px; max-width:320px; color:#c9d1d9;";
+                document.body.appendChild(tt);
+            }
+            tt.style.borderColor = renk;
+            tt.innerHTML = `<div style="color:${renk}; font-weight:bold; font-size:1.1em; border-bottom:1px solid #30363d; padding-bottom:5px; margin-bottom:5px;">${baslik}</div><div style="font-size:0.85em; line-height:1.4;">${icerik.replace(/ \| /g, "<br><br>")}</div>`;
+            tt.style.display = "block";
+            let x = e.pageX + 15; let y = e.pageY + 15;
+            if (x + 320 > window.innerWidth) x = e.pageX - 335;
+            tt.style.left = x + "px"; tt.style.top = y + "px";
+        };
+
+        window.gizleMutlakPopup = function() {
+            let tt = document.getElementById("mutlak-tooltip");
+            if(tt) tt.style.display = "none";
+        };
+
+        window.popupItemTetikle = function(e, itemId) {
+            let data = window.itemVeritabani && window.itemVeritabani[itemId] ? window.itemVeritabani[itemId] : null;
+            // DİKKAT: Eşyalar için saf beyaz (#ffffff) kullanıyoruz.
+            if(data) window.gosterMutlakPopup(e, data.name, data.description, '#ffffff');
+        };
+
+        window.popupRuneTetikle = function(e, runeId) {
+            if(!runeId || runeId === 0) {
+                window.gosterMutlakPopup(e, "Eksik Veri", "Bu oyuncunun rün bilgisi maç veritabanında eksik.", '#58a6ff');
+                return;
+            }
+            let data = window.runeIdMap ? window.runeIdMap[runeId] : null;
+            if(data) {
+                window.gosterMutlakPopup(e, data.name, data.desc, '#58a6ff');
+            } else {
+                // 🛡️ Yamadan silinen rünler için koruma kalkanı
+                window.gosterMutlakPopup(e, "Kaldırılmış Rün (ID: " + runeId + ")", "Bu rün eski bir sezona ait olduğu için Riot API güncel sürümünden tamamen silinmiş. Görsel o yüzden yüklenemedi.", '#58a6ff');
+            }
+        };
+
         // V5.32.0 - SEZON 16 MUTLAK EŞYA MOTORU (HİZALAMA ZIRHI VE ÇİZME TEMİZLİĞİ)
         async function baslat(zorlaYenile = false) {
             document.getElementById("loader-ekrani").style.display = "flex";
@@ -2181,48 +2309,113 @@
                     window.itemVeritabani = itemData.data;
                 } catch(e) { console.warn("Eşya veritabanı yüklenemedi."); }
 
+                // V5.55.0 - DERİN RÜN ID HAFIZA MOTORU (Stat Modu, Eksik Rün ve Ters İkon Kusursuz Yaması)
                 try {
                     const runeRes = await fetch(`https://ddragon.leagueoflegends.com/cdn/${guncelYama}/data/tr_TR/runesReforged.json`);
                     const runeData = await runeRes.json();
                     
-                    let runSozlugu = {};
+                    window.runeIdMap = {}; 
+                    window.dosyaAdiToRuneId = {}; 
+                    
                     runeData.forEach(agac => {
+                        window.runeIdMap[agac.id] = { name: agac.name, icon: agac.icon, desc: agac.name + " Ağacı" };
+                        
                         agac.slots.forEach(slot => {
                             slot.runes.forEach(run => {
                                 let dosyaAdi = run.icon.split('/').pop().toLowerCase();
-                                let temizAciklama = run.shortDesc.replace(/<[^>]*>?/gm, '');
-                                runSozlugu[dosyaAdi] = run.name + ": " + temizAciklama;
+                                let temizAciklama = run.longDesc.replace(/<br\s*[\/]?>/gi, "<br><br>").replace(/<[^>]*>?/gm, '');
+                                let guvenliAciklama = temizAciklama.replace(/'/g, "&#39;").replace(/"/g, "&quot;");
+                                let guvenliIsim = run.name.replace(/'/g, "&#39;").replace(/"/g, "&quot;");
+                                
+                                window.dosyaAdiToRuneId[dosyaAdi] = run.id; 
+                                
+                                window.runeIdMap[run.id] = {
+                                    name: guvenliIsim,
+                                    icon: run.icon,
+                                    desc: guvenliAciklama
+                                };
                             });
                         });
                     });
 
+                    // 🛡️ MÜHENDİSLİK YAMASI: RIOT'UN EKSİK BIRAKTIĞI UFAK RÜNLER & ÖZEL İNDİRİM VERİSİ
+                    const ozelHafizaYamasi = [
+                        { id: 5008, dosya: "statmodsadaptiveforceicon.png", name: "Değişken Kuvvet", desc: "+9 Değişken Kuvvet (Saldırı Gücü veya Yetenek Gücü verir)." },
+                        { id: 5005, dosya: "statmodsattackspeedicon.png", name: "Saldırı Hızı", desc: "+%10 Saldırı Hızı." },
+                        { id: 5007, dosya: "statmodscdricon.png", name: "Yetenek Hızı", desc: "+8 Yetenek Hızı." },
+                        { id: 5002, dosya: "statmodsarmoricon.png", name: "Zırh", desc: "+6 Zırh." },
+                        { id: 5003, dosya: "statmodsmagicresicon1.png", name: "Büyü Direnci", desc: "+8 Büyü Direnci." },
+                        { id: 5003, dosya: "statmodsmagicresicon.png", name: "Büyü Direnci", desc: "+8 Büyü Direnci." },
+                        { id: 5001, dosya: "statmodshealthscalingicon.png", name: "Seviyeye Göre Can", desc: "+10 ila 180 Can (Seviyeye bağlı olarak artar)." },
+                        { id: 5011, dosya: "statmodshealthplusicon.png", name: "Sabit Can", desc: "+65 Sabit Can verir." },
+                        { id: 5010, dosya: "statmodshealthplusicon.png", name: "Sabit Can", desc: "+65 Sabit Can verir." },
+                        
+                        // Kaan'ın İstediği Saf Çeviri ve Eski Esnek Rünler
+                        { id: 9991, dosya: "stormraiderssurge.png", name: "Yıldırım Yağmacısının Cinneti", desc: "Bir rakip şampiyona 3 saniye içinde azami canının %30'u kadar hasar vermek, 3 saniyeliğine %40 Hareket Hızı ve %75 Sıvışma sağlar." },
+                        { id: 9992, dosya: "thunderlordsdecree.png", name: "Yıldırım Yağmacısının Cinneti", desc: "Bir rakip şampiyona 3 saniye içinde azami canının %30'u kadar hasar vermek, 3 saniyeliğine %40 Hareket Hızı ve %75 Sıvışma sağlar." },
+                        { id: 8361, dosya: "cashback.png", name: "Özel İndirim", desc: "Efsanevi eşya satın aldığında harcadığın altının %6'sını nakit olarak iade alırsın." },
+                        { id: 8362, dosya: "futuresmarket.png", name: "Vadeli İşlemler / Özel İndirim", desc: "Eşyaları oyun içi borçlanma limitini kullanarak önceden satın alabilirsin." }
+                    ];
+
+                    ozelHafizaYamasi.forEach(item => {
+                        window.dosyaAdiToRuneId[item.dosya] = item.id;
+                        if(!window.runeIdMap[item.id]) {
+                            window.runeIdMap[item.id] = { name: item.name, icon: "perk-images/StatMods/" + item.dosya, desc: item.desc };
+                        }
+                    });
+
+                    // 🎯 RÜN SİMÜLATÖRÜ & KÜRESEL GÖRSEL TARAYICI MOTORU (Sadece .run-ikon'ları hedefler)
                     document.querySelectorAll('.run-ikon').forEach(img => {
                         let imgDosyaAdi = img.src.split('/').pop().toLowerCase();
-                        if (imgDosyaAdi.includes("statmod")) return; 
+                        let oLogName = imgDosyaAdi;
 
-                        let tooltipAyarlandi = false;
-                        if (runSozlugu[imgDosyaAdi]) {
-                            img.setAttribute('data-tooltip', runSozlugu[imgDosyaAdi]);
-                            tooltipAyarlandi = true;
-                        } else {
-                            for (let key in runSozlugu) {
-                                if (imgDosyaAdi.includes(key.replace('.png', '')) || key.includes(imgDosyaAdi.replace('.png', ''))) {
-                                    img.setAttribute('data-tooltip', runSozlugu[key]);
-                                    tooltipAyarlandi = true; break;
+                        // 🔄 TERS SİMGE KALKANI: Mantıksal aramayı bozmadan sadece fiziksel ikonları takas et!
+                        if (imgDosyaAdi === "statmodshealthscalingicon.png") {
+                            img.src = img.src.replace(/statmodshealthscalingicon/gi, "statmodshealthplusicon");
+                            oLogName = "statmodshealthscalingicon.png";
+                        } else if (imgDosyaAdi === "statmodshealthplusicon.png") {
+                            img.src = img.src.replace(/statmodshealthplusicon/gi, "statmodshealthscalingicon");
+                            oLogName = "statmodshealthplusicon.png";
+                        }
+
+                        // Eğer bu eleman simülatör altındaki küçük istatistik rünü ise doğrudan metni manipüle et:
+                        let eKapsayici = img.closest('.esya-kapsayici');
+                        if (eKapsayici) {
+                            let bIsim = "İstatistik";
+                            let bDesc = "";
+                            if (oLogName === "statmodshealthplusicon.png") {
+                                bIsim = "Sabit Can";
+                                bDesc = '<b style="color:#a1d586;">+65 Can</b> verir.';
+                            } else if (oLogName === "statmodshealthscalingicon.png") {
+                                bIsim = "Seviyeye Göre Can";
+                                bDesc = '<b style="color:#a1d586;">+10 ila 180 Can</b> (Seviyeye bağlı olarak artar).';
+                            } else {
+                                let bIsimEl = eKapsayici.querySelector('.esya-isim');
+                                let bDescEl = eKapsayici.querySelector('.m-tooltip-body');
+                                if (bIsimEl && bDescEl) {
+                                    bIsim = bIsimEl.innerText.trim();
+                                    bDesc = bDescEl.innerHTML.trim();
                                 }
                             }
+                            img.removeAttribute('data-tooltip');
+                            img.style.cursor = "help";
+                            img.onmousemove = (e) => window.gosterMutlakPopup(e, bIsim, bDesc, '#58a6ff');
+                            img.onmouseleave = () => window.gizleMutlakPopup();
+                            return;
                         }
-                        
-                        if(!tooltipAyarlandi) img.setAttribute('data-tooltip', "Veri bulunamadı.");
-                        
-                        img.onerror = function() {
-                            this.onerror = null; 
-                            let cdUrl = this.src.toLowerCase().split('img/')[1];
-                            if(cdUrl) this.src = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/${cdUrl}`;
-                            else { this.src = "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png"; this.style.opacity = "0.3"; }
-                        };
+
+                        let rId = window.dosyaAdiToRuneId[oLogName];
+                        if (rId) {
+                            img.removeAttribute('data-tooltip'); 
+                            img.style.cursor = "help";
+                            img.onmousemove = (e) => window.popupRuneTetikle(e, rId);
+                            img.onmouseleave = () => window.gizleMutlakPopup();
+                        }
                     });
-                } catch(e) { console.error("[Rün Motoru] Hata:", e); }
+
+                } catch(e) { 
+                    console.error("[Rün Motoru] Hata:", e); 
+                }
 
                 const simdi = new Date().getTime(); const kayitliVeri = localStorage.getItem(CACHE_KEY); const kayitliZaman = localStorage.getItem(CACHE_TIME);
 
@@ -2258,17 +2451,6 @@
 
                 let tempSorted = [...tumVeriler].sort((a,b) => a.tarih_ms - b.tarih_ms);
                 tempSorted.forEach(m => { if(m.profil_ikonu) window.guncelIkonlar[m.oyuncu] = m.profil_ikonu; });
-
-                document.querySelectorAll('.esya-kapsayici[data-item-id]').forEach(el => {
-                    let id = el.getAttribute('data-item-id');
-                    if(window.itemVeritabani && window.itemVeritabani[id]) {
-                        let itm = window.itemVeritabani[id];
-                        let popup = document.createElement('div');
-                        popup.className = 'esya-detay-popup';
-                        popup.innerHTML = `<div class="esya-isim">${itm.name}</div>${itm.description || itm.plaintext || ""}`;
-                        el.appendChild(popup);
-                    }
-                });
 
                 document.querySelectorAll('img').forEach(img => {
                     if (img.src.includes('cdn/14.9.1/img/')) {
@@ -2440,134 +2622,145 @@
             });
             sampiyonDD.addEventListener("change", (e) => { aktifSampiyonFiltresi = e.target.value; ekraniGuncelle(true); });
             
+            // 🎯 KİLİTLİ ÇİP MOTORU (Bubble-Click Korumalı)
             const sinerjiFiltreKutusu = document.getElementById("sinerji-filtre-kutusu");
             if(sinerjiFiltreKutusu) {
                 sinerjiFiltreKutusu.innerHTML = '';
                 TUM_EKIP_ISIMLERI.forEach(isim => {
                     let btn = document.createElement("button"); btn.className = "chip-btn"; btn.innerHTML = `👤 ${isim}`;
-                    btn.onclick = (e) => { window.sinerjiCokluFiltreTetikle(isim, e.target); }; sinerjiFiltreKutusu.appendChild(btn);
+                    // Ercan veya Kaan'ın emojisine gelse bile katı referansla butonu parlatır:
+                    btn.onclick = function() { window.sinerjiCokluFiltreTetikle(isim, this); }; 
+                    sinerjiFiltreKutusu.appendChild(btn);
                 });
             }
         }
 
         function cizTakimKarti(grup, vurguOyuncu = "") {
-    grup.sort((a, b) => (rolSiralamaGucu[a.pozisyon] || 99) - (rolSiralamaGucu[b.pozisyon] || 99));
-    let oyuncularHtml = ""; 
-    let oyunSuresi_dk = (grup[0].sure_saniye || 60) / 60; 
-    
-    let maxHasar = 0;
-    grup.forEach(p => { if((p.hasar_sampiyon || 0) > maxHasar) maxHasar = p.hasar_sampiyon; });
+            grup.sort((a, b) => (rolSiralamaGucu[a.pozisyon] || 99) - (rolSiralamaGucu[b.pozisyon] || 99));
+            let oyuncularHtml = ""; 
+            let oyunSuresi_dk = (grup[0].sure_saniye || 60) / 60; 
+            
+            let maxHasar = 0;
+            grup.forEach(p => { if((p.hasar_sampiyon || 0) > maxHasar) maxHasar = p.hasar_sampiyon; });
 
-    grup.forEach(oyuncu => {
-        let durumDamgasi = window.rozetUret ? window.rozetUret(oyuncu) : "";
-        let isTarget = (oyuncu.oyuncu === vurguOyuncu);
-        let satirBg = isTarget ? "background: rgba(88, 166, 255, 0.1); border-left: 4px solid #58a6ff;" : "background: rgba(13, 17, 23, 0.6);";
+            grup.forEach(oyuncu => {
+                let durumDamgasi = window.rozetUret ? window.rozetUret(oyuncu) : "";
+                let isTarget = (oyuncu.oyuncu === vurguOyuncu);
+                let satirBg = isTarget ? "background: rgba(88, 166, 255, 0.1); border-left: 4px solid #58a6ff;" : "background: rgba(13, 17, 23, 0.6);";
 
-        const fK = (val) => {
-            if (typeof formatK === "function") return formatK(val);
-            return val >= 1000 ? (val / 1000).toFixed(1) + 'k' : (val || 0);
-        };
+                const fK = (val) => { if (typeof formatK === "function") return formatK(val); return val >= 1000 ? (val / 1000).toFixed(1) + 'k' : (val || 0); };
 
-        let yuvCsFark = Math.round(oyuncu.koridor_minyon_farki || 0);
-        let yuvGpm = Math.round(oyuncu.dakika_basi_altin || 0);
-        let toplamDestek = (oyuncu.iyilesme_takim || 0) + (oyuncu.kalkan_takim || 0);
-        let hasarYuzde = maxHasar > 0 ? ((oyuncu.hasar_sampiyon || 0) / maxHasar) * 100 : 0;
+                let yuvCsFark = Math.round(oyuncu.koridor_minyon_farki || 0);
+                let yuvGpm = Math.round(oyuncu.dakika_basi_altin || 0);
+                let toplamDestek = (oyuncu.iyilesme_takim || 0) + (oyuncu.kalkan_takim || 0);
+                let hasarYuzde = maxHasar > 0 ? ((oyuncu.hasar_sampiyon || 0) / maxHasar) * 100 : 0;
 
-        let esyalarHtml = '<div class="s-esya-kutusu" style="display:flex; gap:2px; margin-bottom: 6px;">';
-        if(oyuncu.esyalar) {
-            oyuncu.esyalar.forEach((itemId, index) => {
-                if(itemId > 0) {
-                    esyalarHtml += `<div class="esya-kapsayici"><img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${itemId}.png" style="width:26px; height:26px; border-radius:4px;"></div>`;
-                } else {
-                    esyalarHtml += `<div style="width:26px; height:26px; background: rgba(0,0,0,0.2); border-radius:4px;"></div>`;
+                // 🌟 SİNERJİ / AÇIK MAÇ EŞYALARI
+                let esyalarHtml = '<div class="s-esya-kutusu" style="display:flex; gap:2px; margin-bottom: 4px;">';
+                if(oyuncu.esyalar) {
+                    oyuncu.esyalar.forEach((itemId, index) => {
+                        if(itemId > 0) {
+                            esyalarHtml += `<div class="esya-kapsayici" style="margin:0;"><img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${itemId}.png" style="width:26px; height:26px; border-radius:4px; cursor:help;" onerror="this.onerror=null; this.src='https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/${itemId}.png';" onmousemove="window.popupItemTetikle(event, ${itemId || 0})" onmouseleave="window.gizleMutlakPopup()"></div>`;
+                        } else {
+                            esyalarHtml += `<div style="width:26px; height:26px; background: rgba(0,0,0,0.2); border-radius:4px;"></div>`;
+                        }
+                        if(index === 5) esyalarHtml += `<div style="width: 4px;"></div>`; 
+                    });
                 }
-                if(index === 5) esyalarHtml += `<div style="width: 4px;"></div>`; 
-            });
-        }
-        esyalarHtml += '</div>';
+                esyalarHtml += '</div>';
 
-        // HATA BURADAYDI! Kayıp csMin değişkeni geri döndü!
-        let csMin = ((oyuncu.cs || 0) / oyunSuresi_dk).toFixed(1);
-
-        // UTILITY Zırhı: Desteklerden 10. Dk bilgisini gizler
-        let ilk10CsHTML = (oyuncu.ilk_10_dk_minyon && oyuncu.pozisyon !== "UTILITY") ? `<span style="color: #8b949e; font-size: 0.85em; margin-left: 5px;">(10. Dk: ${oyuncu.ilk_10_dk_minyon} CS)</span>` : '';
-
-        let rozetlerHTML = '<div class="mac-rozetleri" style="display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px;">';
-        if (oyuncu.erken_oyun_ustunlugu === 1) {
-            rozetlerHTML += `<span style="background: rgba(255, 69, 58, 0.15); color: #ff453a; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; border: 1px solid rgba(255, 69, 58, 0.3);">🔥 Dominant</span>`;
-        }
-        // UTILITY Zırhı ve FLAME HORIZON Algoritması
-        if (oyuncu.pozisyon !== "UTILITY") {
-            if (yuvCsFark >= 100) {
-                // 100+ CS Farkı: Efsanevi Flame Horizon Rozeti (Parlak Turuncu/Kırmızı)
-                rozetlerHTML += `<span style="background: rgba(255, 87, 34, 0.15); color: #ff5722; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; border: 1px solid rgba(255, 87, 34, 0.5); font-weight: bold; text-shadow: 0 0 5px rgba(255,87,34,0.4);">🌋 FLAME HORIZON (+${yuvCsFark} CS)</span>`;
-            } else if (yuvCsFark >= 10) {
-                // Standart 10-99 CS Farkı: Klasik Mavi Rozet
-                rozetlerHTML += `<span style="background: rgba(10, 132, 255, 0.15); color: #58a6ff; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; border: 1px solid rgba(10, 132, 255, 0.3);">⚔️ +${yuvCsFark} CS Farkı</span>`;
-            }
-        }
-        if (yuvGpm >= 400) {
-            rozetlerHTML += `<span style="background: rgba(255, 214, 10, 0.15); color: #ffd60a; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; border: 1px solid rgba(255, 214, 10, 0.3);">💰 ${yuvGpm} GPM</span>`;
-        }
-        rozetlerHTML += '</div>';
-
-        let partnerHTML = "";
-        if ((oyuncu.pozisyon === "BOTTOM" || oyuncu.pozisyon === "UTILITY") && oyuncu.koridor_partneri && oyuncu.koridor_partneri !== "Yok") {
-            partnerHTML = `<div style="font-size: 0.75em; color: #d2a8ff; font-weight: bold;">🤝 ${oyuncu.koridor_partneri}</div>`;
-        }
-
-        oyuncularHtml += `
-            <div class="sinerji-satir" style="${satirBg} display: flex; align-items: flex-start; padding: 12px 15px; margin-bottom:4px; border-bottom: 1px solid #21262d; width: 100%; box-sizing: border-box;">
+                // 🌟 SİNERJİ / AÇIK MAÇ RÜNLERİ (ZIRHLI GÜVENLİ DÖNGÜ)
+                let runlerDetayHtml = '<div class="s-run-sayfasi-kutusu" style="display:flex; gap:5px; align-items:center; background: rgba(0, 0, 0, 0.4); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(88,166,255,0.15); margin-bottom: 8px; width: fit-content;">';
+                runlerDetayHtml += '<span style="font-size: 0.7em; color: #58a6ff; font-weight: bold; margin-right: 5px;">RÜNLER:</span>';
                 
-                <div style="width: 190px; flex-shrink: 0; display: flex; align-items: center; gap: 10px;">
-                    <img src="${ikonUrlGetir(oyuncu.profil_ikonu || 29)}" style="width:38px; height:38px; border-radius: 6px;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
-                    <div style="overflow: hidden;">
-                        <div style="font-weight: bold; font-size: 0.9em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #c9d1d9;">${oyuncu.riot_id}</div>
-                        <div style="font-size: 0.75em; color: #8b949e;">${oyuncu.sampiyon}</div>
-                        ${partnerHTML}
-                    </div>
-                </div>
+                if (oyuncu.runler && Array.isArray(oyuncu.runler) && oyuncu.runler.length > 0) {
+                    oyuncu.runler.forEach(runId => {
+                        let rData = window.runeIdMap ? window.runeIdMap[runId] : null;
+                        let srcUrl = rData ? `https://ddragon.leagueoflegends.com/cdn/img/${rData.icon}` : 'https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png';
+                        runlerDetayHtml += `<img src="${srcUrl}" style="width:22px; height:22px; border-radius:50%; border:1px solid #30363d; background:#000; cursor:help; margin:0;" onmousemove="window.popupRuneTetikle(event, ${runId || 0})" onmouseleave="window.gizleMutlakPopup()">`;
+                    });
+                } else { runlerDetayHtml += `<span style="font-size:0.75em; color:#8b949e; font-style:italic;">Veri Yok</span>`; }
+                runlerDetayHtml += '</div>';
 
-                <div style="flex: 1; padding: 0 15px; min-width: 0;">
-                    ${esyalarHtml}
-                    
-                    <div style="display:flex; gap:10px; font-size:0.8em; color:#8b949e; align-items:center; margin-bottom: 6px;">
-                        <span>🗡️ <b style="color:#fff;">${oyuncu.cs || 0}</b> <span style="font-size:0.9em;">(${csMin}/dk)</span> ${ilk10CsHTML}</span>
-                        <span>👁️ ${oyuncu.gorus_skoru || 0}</span>
-                        <span>🛑 ${oyuncu.kontrol_totemi || 0}</span>
-                    </div>
+                // SOLDAKİ MİNİ RÜNLER (DÜZELTİLMİŞ ALAN)
+                let mAnaRun = (window.runeIdMap && oyuncu.ana_run_id) ? window.runeIdMap[oyuncu.ana_run_id] : null;
+                let mAltRun = (window.runeIdMap && oyuncu.alt_run_agaci_id) ? window.runeIdMap[oyuncu.alt_run_agaci_id] : null;
 
-                    ${rozetlerHTML}
+                let miniAnaSrc = mAnaRun ? `https://ddragon.leagueoflegends.com/cdn/img/${mAnaRun.icon}` : 'https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png';
+                let miniAltSrc = mAltRun ? `https://ddragon.leagueoflegends.com/cdn/img/${mAltRun.icon}` : 'https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png';
 
-                    <div style="margin-top:10px; width:100%;">
-                        <div style="display:flex; justify-content:flex-start; gap:20px; font-size:0.75em; color:#8b949e; margin-bottom:3px;">
-                            <span>💥 Hasar: <b style="color:#f85149;">${fK(oyuncu.hasar_sampiyon)}</b></span>
-                            <span>🛡️ Tank: <b style="color:#58a6ff;">${fK(oyuncu.hasar_sogurulan)}</b></span>
-                            <span>💚 Destek: <b style="color:#3fb950;">${fK(toplamDestek)}</b></span>
+                let miniAnaRunHTML = `<img src="${miniAnaSrc}" style="width:18px; height:18px; border-radius:50%; border: 1px solid #30363d; background:#000; cursor:help;" onmousemove="window.popupRuneTetikle(event, ${oyuncu.ana_run_id || 0})" onmouseleave="window.gizleMutlakPopup()">`;
+                let miniAltRunHTML = `<img src="${miniAltSrc}" style="width:18px; height:18px; border-radius:50%; border: 1px solid #30363d; background:#000; cursor:help;" onmousemove="window.popupRuneTetikle(event, ${oyuncu.alt_run_agaci_id || 0})" onmouseleave="window.gizleMutlakPopup()">`;
+
+                let csMin = ((oyuncu.cs || 0) / oyunSuresi_dk).toFixed(1);
+                let ilk10CsHTML = (oyuncu.ilk_10_dk_minyon && oyuncu.pozisyon !== "UTILITY") ? `<span style="color: #8b949e; font-size: 0.85em; margin-left: 5px;">(10. Dk: ${oyuncu.ilk_10_dk_minyon} CS)</span>` : '';
+
+                let rozetlerHTML = '<div class="mac-rozetleri" style="display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px;">';
+                if (oyuncu.erken_oyun_ustunlugu === 1) { rozetlerHTML += `<span style="background: rgba(255, 69, 58, 0.15); color: #ff453a; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; border: 1px solid rgba(255, 69, 58, 0.3);">🔥 Dominant</span>`; }
+                if (oyuncu.pozisyon !== "UTILITY") {
+                    if (yuvCsFark >= 100) rozetlerHTML += `<span style="background: rgba(255, 87, 34, 0.15); color: #ff5722; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; border: 1px solid rgba(255, 87, 34, 0.5); font-weight: bold;">🌋 FLAME HORIZON (+${yuvCsFark} CS)</span>`;
+                    else if (yuvCsFark >= 10) rozetlerHTML += `<span style="background: rgba(10, 132, 255, 0.15); color: #58a6ff; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; border: 1px solid rgba(10, 132, 255, 0.3);">⚔️ +${yuvCsFark} CS Farkı</span>`;
+                }
+                if (yuvGpm >= 400) { rozetlerHTML += `<span style="background: rgba(255, 214, 10, 0.15); color: #ffd60a; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; border: 1px solid rgba(255, 214, 10, 0.3);">💰 ${yuvGpm} GPM</span>`; }
+                rozetlerHTML += '</div>';
+
+                let partnerHTML = "";
+                if ((oyuncu.pozisyon === "BOTTOM" || oyuncu.pozisyon === "UTILITY") && oyuncu.koridor_partneri && oyuncu.koridor_partneri !== "Yok") {
+                    partnerHTML = `<div style="font-size: 0.75em; color: #d2a8ff; font-weight: bold;">🤝 ${oyuncu.koridor_partneri}</div>`;
+                }
+
+                oyuncularHtml += `
+                    <div class="sinerji-satir" style="${satirBg} display: flex; align-items: flex-start; padding: 12px 15px; margin-bottom:4px; border-bottom: 1px solid #21262d; width: 100%; box-sizing: border-box;">
+                        
+                        <div style="width: 190px; flex-shrink: 0; display: flex; align-items: center; gap: 10px;">
+                            <img src="${ikonUrlGetir(oyuncu.profil_ikonu || 29)}" style="width:38px; height:38px; border-radius: 6px;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
+                            
+                            <div style="display: flex; flex-direction: column; gap: 3px; flex-shrink: 0;">
+                                ${miniAnaRunHTML}
+                                ${miniAltRunHTML}
+                            </div>
+
+                            <div style="overflow: hidden;">
+                                <div style="font-weight: bold; font-size: 0.9em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #c9d1d9;">${guncelRiotID[oyuncu.oyuncu] || oyuncu.riot_id || oyuncu.oyuncu}</div>
+                                <div style="font-size: 0.75em; color: #8b949e;">${oyuncu.sampiyon}</div>
+                                ${partnerHTML}
+                            </div>
                         </div>
-                        <div style="height:4px; background:#30363d; border-radius:2px; width:100%;">
-                            <div style="height:100%; border-radius:2px; background:#da3633; width:${hasarYuzde}%;"></div>
+
+                        <div style="flex: 1; padding: 0 15px; min-width: 0;">
+                            ${esyalarHtml}
+                            ${runlerDetayHtml}
+                            
+                            <div style="display:flex; gap:10px; font-size:0.8em; color:#8b949e; align-items:center; margin-bottom: 6px;">
+                                <span>🗡️ <b style="color:#fff;">${oyuncu.cs || 0}</b> <span style="font-size:0.9em;">(${csMin}/dk)</span> ${ilk10CsHTML}</span>
+                                <span>👁️ ${oyuncu.gorus_skoru || 0}</span>
+                                <span>🛑 ${oyuncu.kontrol_totemi || 0}</span>
+                            </div>
+
+                            ${rozetlerHTML}
+
+                            <div style="margin-top:10px; width:100%;">
+                                <div style="display:flex; justify-content:flex-start; gap:20px; font-size:0.75em; color:#8b949e; margin-bottom:3px;">
+                                    <span>💥 Hasar: <b style="color:#f85149;">${fK(oyuncu.hasar_sampiyon)}</b></span>
+                                    <span>🛡️ Tank: <b style="color:#58a6ff;">${fK(oyuncu.hasar_sogurulan)}</b></span>
+                                    <span>💚 Destek: <b style="color:#3fb950;">${fK(toplamDestek)}</b></span>
+                                </div>
+                                <div style="height:4px; background:#30363d; border-radius:2px; width:100%;">
+                                    <div style="height:100%; border-radius:2px; background:#da3633; width:${hasarYuzde}%;"></div>
+                                </div>
+                            </div>
                         </div>
+
+                        <div style="width: 80px; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
+                            <div style="font-size: 1.1em; font-weight: bold; color: #c9d1d9;">${oyuncu.kda}</div>
+                            <div style="transform: scale(0.85); transform-origin: right;">${durumDamgasi}</div>
+                        </div>
+
                     </div>
-                </div>
-
-                <div style="width: 80px; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
-                    <div style="font-size: 1.1em; font-weight: bold; color: #c9d1d9;">${oyuncu.kda}</div>
-                    <div style="transform: scale(0.85); transform-origin: right;">${durumDamgasi}</div>
-                </div>
-
-            </div>
-        `;
-    });
-
-    return `
-        <div style="background:#0d1117; border-radius:8px; padding:5px; border: 1px solid #30363d; margin-top: 15px;">
-            <div style="font-size: 0.75em; color: #8b949e; padding: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; border-bottom: 1px solid #21262d;">
-                TAKIM ANALİZİ VE SİNERJİ VERİLERİ
-            </div>
-            ${oyuncularHtml}
-        </div>`;
-}
+                `;
+            });
+            return oyuncularHtml;
+        }
 
         function hesaplaRuyaTakim(veriler, baslik_txt) {
             const rollerVeRenkleri = [ { rol: "TOP", ad: "Üst Koridor", renk: "#ff9800" }, { rol: "JUNGLE", ad: "Ormancı", renk: "#4caf50" }, { rol: "MIDDLE", ad: "Orta Koridor", renk: "#2196f3" }, { rol: "BOTTOM", ad: "Nişancı", renk: "#e91e63" }, { rol: "UTILITY", ad: "Destek", renk: "#9c27b0" } ];
@@ -3183,6 +3376,12 @@
                         </div>
                         <div class="kart-ust">
                             <img src="${resimUrlGetir(veri.sampiyon)}" class="sampiyon-ikon" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
+                            
+                            <div style="display: flex; flex-direction: column; gap: 5px; margin-right: 15px; justify-content: center;">
+                                <img src="https://ddragon.leagueoflegends.com/cdn/img/${window.runeIdMap && window.runeIdMap[veri.ana_run_id] ? window.runeIdMap[veri.ana_run_id].icon : 'perk-images/Styles/RunesIcon.png'}" style="width:28px; height:28px; border-radius:50%; border: 1px solid #30363d; background:#000; cursor:help;" onmousemove="window.popupRuneTetikle(event, ${veri.ana_run_id})" onmouseleave="window.gizleMutlakPopup()">
+                                <img src="https://ddragon.leagueoflegends.com/cdn/img/${window.runeIdMap && window.runeIdMap[veri.alt_run_agaci_id] ? window.runeIdMap[veri.alt_run_agaci_id].icon : 'perk-images/Styles/RunesIcon.png'}" style="width:28px; height:28px; border-radius:50%; border: 1px solid #30363d; background:#000; cursor:help;" onmousemove="window.popupRuneTetikle(event, ${veri.alt_run_agaci_id})" onmouseleave="window.gizleMutlakPopup()">
+                            </div>
+
                             <div class="kimlik">
                                 <div>
                                     <span class="oyun-id-ana">${veri.riot_id} - ${veri.oyuncu}</span>
@@ -3236,281 +3435,204 @@
             else btnDahaFazla.classList.add("gizle");
         }
 
-        // V5.31.2 - SİNERJİ KEŞİF MOTORU (COMBINATORICS & DELTA ANALİZİ)
-        function sinerjiBas() {
-            let temelVeriler = [...tumVeriler];
-            if (aktifSezonFiltresi !== "Tümü") temelVeriler = temelVeriler.filter(v => v.sezon === aktifSezonFiltresi);
+        // 🔮 V5.55.0 - SİNERJİ KEŞİF MOTORU (KUSURSUZ ENJEKSİYON MATRİSİ)
+function sinerjiBas() {
+    let temelVeriler = [...tumVeriler];
+    if (aktifSezonFiltresi !== "Tümü") temelVeriler = temelVeriler.filter(v => v.sezon === aktifSezonFiltresi);
 
-            const vitrin = document.getElementById("sinerji-veriler"); const ozetAlani = document.getElementById("sinerji-ozet-alani");
-            const btnDahaFazla = document.getElementById("btn-daha-fazla-sinerji"); const filtrePaneli = document.getElementById("sinerji-filtre-paneli");
-            
-            vitrin.innerHTML = ""; ozetAlani.innerHTML = ""; filtrePaneli.classList.remove("gizle"); 
+    const vitrin = document.getElementById("sinerji-veriler"); const ozetAlani = document.getElementById("sinerji-ozet-alani");
+    const btnDahaFazla = document.getElementById("btn-daha-fazla-sinerji"); const filtrePaneli = document.getElementById("sinerji-filtre-paneli");
+    
+    vitrin.innerHTML = ""; ozetAlani.innerHTML = ""; filtrePaneli.classList.remove("gizle"); 
 
-            const bilgiKutusu = document.getElementById("sinerji-bilgi-kutusu");
-            if(bilgiKutusu) bilgiKutusu.innerHTML = "";
+    const bilgiKutusu = document.getElementById("sinerji-bilgi-kutusu");
+    if(bilgiKutusu) bilgiKutusu.innerHTML = "";
 
-            if (aktifSinerjiBoyutu === 5 || aktifSinerjiBoyutu === 3 || aktifSinerjiBoyutu === "alt_koridor" || aktifSinerjiBoyutu === 2) {
-                if(bilgiKutusu) bilgiKutusu.innerHTML = `<div style="background: rgba(210, 168, 255, 0.08); border: 1px solid rgba(210, 168, 255, 0.3); border-radius: 8px; padding: 12px 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6; margin-bottom: 20px;">
-                <b style="color: #d2a8ff;">ℹ️ Sinerji Puanı (SP) Nedir?</b><br>
-                Sistem, takımların kazanma oranlarına <b>Laplace Düzeltmesi</b> uygulayarak şans faktörünü (1 maçta %100 WR) eler. Buna ek olarak, bir ekip farklı rollerle (Formasyonlar) oynayıp yine de kazanabiliyorsa, sistem bu <b>Rol Esnekliğini</b> ödüllendirerek ekibin Sinerji Puanını yukarı çeker. Takım ne kadar esnekse, SP o kadar artar.
-            </div>`;
-            }
+    if (aktifSinerjiBoyutu === 5 || aktifSinerjiBoyutu === 3 || aktifSinerjiBoyutu === "alt_koridor" || aktifSinerjiBoyutu === 2) {
+        if(bilgiKutusu) bilgiKutusu.innerHTML = `<div style="background: rgba(210, 168, 255, 0.08); border: 1px solid rgba(210, 168, 255, 0.3); border-radius: 8px; padding: 12px 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6; margin-bottom: 20px;">
+        <b style="color: #d2a8ff;">ℹ️ Sinerji Puanı (SP) Nedir?</b><br>
+        Sistem, takımların kazanma oranlarına <b>Laplace Düzeltmesi</b> uygulayarak şans faktörünü (1 maçta %100 WR) eler. Buna ek olarak, bir ekip farklı rollerle (Formasyonlar) oynayıp yine de kazanabiliyorsa, sistem bu <b>Rol Esnekliğini</b> ödüllendirerek ekibin Sinerji Puanını yukarı çeker. Takım ne kadar esnekse, SP o kadar artar.
+    </div>`;
+    }
 
-            if (aktifSinerjiBoyutu === "ruya_takim" || aktifSinerjiBoyutu === "haftanin_ruya_takimi") {
-                filtrePaneli.classList.add("gizle"); let veriHavuzu = temelVeriler; let baslikTxt = "🌟 Tüm Zamanların İstatistiksel Rüya Takımı";
-                if (aktifSinerjiBoyutu === "ruya_takim") {
-                    if(bilgiKutusu) bilgiKutusu.innerHTML = `<div style="background: rgba(255, 215, 0, 0.08); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 8px; padding: 12px 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6; margin-bottom: 20px;"><b style="color: #ffd700;">🌟 Rüya Takım Algoritması:</b><br>Tüm zamanların istatistikleri harmanlanarak her rolün en iyi oyuncusu (Win Rate, KDA, Görüş, Hasar ve Sinerji Puanı üzerinden) seçilir. Eğer oyuncular Alt Koridorda ikili bir sinerji yakalamışsa sistem onları parçalamaz, takımın omurgası yapar.</div>`;
-                } else {
-                    baslikTxt = "🔥 Haftanın En Formda Beşlisi";
-                    if(bilgiKutusu) bilgiKutusu.innerHTML = `<div style="background: rgba(88, 166, 255, 0.08); border: 1px solid rgba(88, 166, 255, 0.3); border-radius: 8px; padding: 12px 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6; margin-bottom: 20px;"><b style="color: #58a6ff;">🔥 Haftanın 5'lisi Algoritması:</b><br>Sadece son 7 gün içinde atılan maçlar taranarak, o haftanın en formda oyuncuları rollerine göre belirlenir. Haftalık momentum ve istatistiksel zirve baz alınır.</div>`;
-                    let simdiMs = new Date().getTime(); let birHaftaMilisaniye = 7 * 24 * 60 * 60 * 1000; let sinirTarih = simdiMs - birHaftaMilisaniye;
-                    veriHavuzu = temelVeriler.filter(v => v.tarih_ms && v.tarih_ms >= sinirTarih);
-                }
-
-                if(veriHavuzu.length === 0) { ozetAlani.innerHTML = `<div style="text-align:center; padding: 50px; font-size:1.2em; color:#f85149;">Bu zaman dilimi (Son 7 Gün) için yeterli veri bulunamadı. Lütfen "Tüm Zamanlar" sekmesine dönün.</div>`; btnDahaFazla.classList.add("gizle"); return; }
-                ozetAlani.innerHTML = hesaplaRuyaTakim(veriHavuzu, baslikTxt); btnDahaFazla.classList.add("gizle"); return;
-            }
-
-            const macGruplari = {}; temelVeriler.forEach(v => { if(!macGruplari[v.mac_id]) macGruplari[v.mac_id] = []; macGruplari[v.mac_id].push(v); });
-            let filtrelenmisMaclar = []; let tabloBasligi = "";
-
-            // 🎯 KOMBİNASYON ÜRETİCİSİ İPTAL - KATI İZOLASYON ZIRHI GELDİ
-            if (aktifSinerjiBoyutu === "alt_koridor") {
-                tabloBasligi = "🏹 En İyi Alt Koridor İkilileri (Nişancı + Destek)";
-                Object.values(macGruplari).forEach(grup => {
-                    let bottomList = grup.filter(p => p.pozisyon === "BOTTOM"); let utilityList = grup.filter(p => p.pozisyon === "UTILITY");
-                    if (bottomList.length > 0 && utilityList.length > 0) filtrelenmisMaclar.push([bottomList[0], utilityList[0]]);
-                });
-            } else {
-                let eklenti = {5: "'li", 4: "'lü", 3: "'lü", 2: "'li"}[aktifSinerjiBoyutu] || "'li";
-                let hedefBoyut = parseInt(aktifSinerjiBoyutu);
-                
-                if (hedefBoyut === 3) {
-                    tabloBasligi = `🌟 Saf 3'lü Sinerji (Sadece 3 Ekip + 2 Yabancı) (${aktifSezonFiltresi})`;
-                } else {
-                    tabloBasligi = `🌟 En Çok Birlikte Oynayan ${hedefBoyut}${eklenti} Ekipler (${aktifSezonFiltresi})`;
-                }
-                
-                Object.values(macGruplari).forEach(grup => {
-                    // MUTLAK İZOLASYON: Seçilen sayıyla tam eşleşen maçları alır.
-                    if (grup.length === hedefBoyut) {
-                        filtrelenmisMaclar.push(grup);
-                    }
-                });
-            }
-
-            if (filtrelenmisMaclar.length === 0) { vitrin.innerHTML = `<p style="text-align: center; font-size: 1.2em; margin-top: 50px;">Bu kategoride henüz uygun bir analiz verisi bulunamadı.</p>`; btnDahaFazla.classList.add("gizle"); return; }
-
-            let kompIstatistik = {};
-            filtrelenmisMaclar.forEach(grup => {
-                let sortedIsimler = grup.map(o => o.oyuncu).sort(); let ekipIsmi = sortedIsimler.join(" + ");
-                if(aktifSinerjiBoyutu === "alt_koridor") ekipIsmi = grup.map(o => `${o.oyuncu} (${rolCeviri[o.pozisyon]})`).sort().join(" + ");
-                
-               // DERİN VERİ HAFIZASI EKLENDİ (Nişancı CS Farkı Değişkeni Eklendi)
-                if(!kompIstatistik[ekipIsmi]) kompIstatistik[ekipIsmi] = { 
-                    mac: 0, zafer: 0, tk: 0, td: 0, ta: 0, t_hasar: 0, t_sifa: 0, t_cc: 0, t_gorus: 0, t_adc_cs_farki: 0,
-                    orjinal_isimler: sortedIsimler.join(" + "), formasyonlar: {}, ornekMac: grup 
-                };
-                
-                let s_formasyon = grup.map(o => `${o.oyuncu}_${o.pozisyon}`).sort().join("|");
-                if(!kompIstatistik[ekipIsmi].formasyonlar[s_formasyon]) kompIstatistik[ekipIsmi].formasyonlar[s_formasyon] = { mac: 0, zafer: 0, detay: grup.map(o => ({isim: o.oyuncu, rol: o.pozisyon})) };
-                
-                kompIstatistik[ekipIsmi].mac++; kompIstatistik[ekipIsmi].formasyonlar[s_formasyon].mac++;
-                if(grup[0].sonuc === "Zafer" || grup[0].sonuc === "Galibiyet") { kompIstatistik[ekipIsmi].zafer++; kompIstatistik[ekipIsmi].formasyonlar[s_formasyon].zafer++; }
-                
-                // TAKIMIN TÜM STATLARINI SÜPÜR
-                grup.forEach(p => {
-                    kompIstatistik[ekipIsmi].tk += p.oldurme || 0;
-                    kompIstatistik[ekipIsmi].td += p.olum || 0;
-                    kompIstatistik[ekipIsmi].ta += p.asist || 0;
-                    kompIstatistik[ekipIsmi].t_hasar += p.hasar_sampiyon || 0;
-                    kompIstatistik[ekipIsmi].t_sifa += (p.iyilesme_takim || 0) + (p.kalkan_takim || 0);
-                    kompIstatistik[ekipIsmi].t_cc += p.cc_suresi || 0;
-                    kompIstatistik[ekipIsmi].t_gorus += p.gorus_skoru || 0;
-                    
-                    // NİŞANCI CS FARKI TAKİBİ
-                    if (aktifSinerjiBoyutu === "alt_koridor" && p.pozisyon === "BOTTOM") {
-                        kompIstatistik[ekipIsmi].t_adc_cs_farki += (p.koridor_minyon_farki || 0);
-                    }
-                });
-            });
-
-            let siraliKomplar = Object.entries(kompIstatistik).map(k => {
-                let data = k[1];
-                let wrLaplace = (data.zafer + 1) / (data.mac + 2); 
-                let formasyonSayisi = Object.keys(data.formasyonlar).length;
-                let flexKatsayisi = aktifSinerjiBoyutu === "alt_koridor" ? 0 : (formasyonSayisi * 0.05); 
-                
-                // DERİN VERİ MADENCİLİĞİ MATEMATİĞİ (Tüm istatistikleri maça bölüyoruz)
-                let kda = data.td === 0 ? (data.tk + data.ta) : ((data.tk + data.ta) / data.td);
-                let ortHasar = data.t_hasar / data.mac;
-                let ortSifa = data.t_sifa / data.mac;
-                let ortGorus = data.t_gorus / data.mac;
-                let ortCc = data.t_cc / data.mac;
-
-                // 🌟 YENİ: NİŞANCI CS FARKI BONUSU (Alt koridor ikilisi sekmesi için özel)
-                let ortAdcCsFarki = data.t_adc_cs_farki / data.mac;
-                // Örn: İkili oynarken ADC ortalama 20 CS farkı atıyorsa takıma +8 SP kazandırır. Eksi yerse SP düşer!
-                let csFarkiBonusu = aktifSinerjiBoyutu === "alt_koridor" ? (ortAdcCsFarki * 0.4) : 0; 
-
-                // YENİ SP: Kazanma Oranı (Laplace) + Esneklik + KDA + Görüş + Hasar + Şifa + CC + Nişancı Dominasyonu
-                let sp = ((wrLaplace + flexKatsayisi) * 100) + (kda * 2) + (ortGorus * 0.1) + ((ortHasar / 1000) * 0.15) + ((ortSifa / 500) * 0.15) + (ortCc * 0.1) + csFarkiBonusu;
-
-                return { isim: k[0], mac: data.mac, zafer: data.zafer, sp: sp, orjinal_isimler: data.orjinal_isimler, formasyonlar: data.formasyonlar };
-            });
-            
-            siraliKomplar.sort((a, b) => b.sp - a.sp);
-
-            let tabloSatirlari = siraliKomplar.map((komp, index) => {
-                let wr = ((komp.zafer / komp.mac) * 100).toFixed(0); let spSkor = komp.sp.toFixed(0); let barRengi = wr >= 50 ? "#3fb950" : "#f85149";
-                let clickIsim = aktifSinerjiBoyutu === "alt_koridor" ? komp.isim : komp.orjinal_isimler;
-                let formasyonPaneliId = `formasyon_${index}`; let formasyonHtml = "";
-                if (aktifSinerjiBoyutu !== "alt_koridor") {
-                    let siraliFormasyonlar = Object.entries(komp.formasyonlar).sort((a,b) => b[1].mac - a[1].mac);
-                    siraliFormasyonlar.forEach(f => {
-                        let f_wr = ((f[1].zafer / f[1].mac) * 100).toFixed(0); let f_renk = f_wr >= 50 ? "#3fb950" : "#f85149";
-                        let rolEtiketleri = f[1].detay.sort((a, b) => (rolSiralamaGucu[a.rol] || 99) - (rolSiralamaGucu[b.rol] || 99)).map(p => { return `<span class="formasyon-rol-etiket"><span class="formasyon-isim">${p.isim}:</span> ${rolCeviri[p.rol] || 'Belirsiz'}</span>`; }).join(" ");
-                        let clickFormasyonAttr = `onclick="window.sinerjiFiltrele('${clickIsim}', '${f[0]}')" style="cursor:pointer;" data-tooltip="Sadece bu kadro yapısıyla atılan maçları göster"`;
-                        formasyonHtml += `<div class="formasyon-satir tiklanabilir-tr" ${clickFormasyonAttr}><div class="formasyon-detay">${rolEtiketleri}</div><div style="min-width: 120px; text-align: right;"><span style="color:#8b949e; font-size:0.9em; margin-right:10px;">${f[1].mac} Maç</span><span style="color:${f_renk}; font-weight:bold;">%${f_wr} WR</span></div></div>`;
-                    });
-                }
-                let formasyonKutuHtml = formasyonHtml ? `<tr id="${formasyonPaneliId}" class="gizle" style="background:#0d1117;"><td colspan="4" style="padding: 15px;"><div class="formasyon-kutusu"><div style="color:#8b949e; font-size:0.85em; text-transform:uppercase; font-weight:bold; margin-bottom:10px;">Kadro Formasyonları (Dizilişler)</div>${formasyonHtml}</div></td></tr>` : "";
-                let baslikTiklaAttr = `onclick="window.sinerjiFiltrele('${clickIsim}')" data-tooltip="Bu ekibin maçlarını listele"`;
-                if (aktifSinerjiBoyutu !== "alt_koridor") baslikTiklaAttr = `onclick="window.kutuAc('${formasyonPaneliId}', event)" data-tooltip="Kadro formasyonlarını görmek için tıkla"`;
-
-                return `
-                    <tr class="tiklanabilir-tr" ${baslikTiklaAttr}>
-                        <td style="color:#8b949e;">#${index+1}</td><td style="color:#c9d1d9;">${komp.isim}</td><td>${komp.mac} Maç</td>
-                        <td style="color: ${barRengi}; font-weight: bold; width: 28%;">%${wr} <span class="rozet-sp" style="margin-left:10px; padding:4px 8px; border-radius:6px; display:inline-block;" data-tooltip="Ağırlıklı Sinerji Puanı">SP:&nbsp;${spSkor}</span><div class="oran-bar-arkasi"><div class="oran-bar-ici" style="width: ${wr}%; background-color: ${barRengi};"></div></div></td>
-                    </tr>${formasyonKutuHtml}
-                `;
-            }).join("");
-
-            ozetAlani.innerHTML = `<div class="ozet-panosu" style="display:block;"><h3 style="color:#ffffff; margin-top:0;">${tabloBasligi}</h3><table class="komp-tablosu"><thead><tr><th>Sıra</th><th>Ekip Kadrosu</th><th>Oyun Sayısı</th><th>Kazanma Oranı <span style="font-weight:normal; color:#d2a8ff;">(Sinerji Puanı)</span></th></tr></thead><tbody>${tabloSatirlari}</tbody></table></div>`;
-
-            let gosterimHTML_Ek = "";
-            if (window.aktifSinerjiEkibi) {
-                filtrelenmisMaclar = filtrelenmisMaclar.filter(grup => {
-                    let isimUyumu = grup.map(o => o.oyuncu).sort().join(" + ") === window.aktifSinerjiEkibi;
-                    if(aktifSinerjiBoyutu === "alt_koridor") isimUyumu = grup.map(o => `${o.oyuncu} (${rolCeviri[o.pozisyon]})`).sort().join(" + ") === window.aktifSinerjiEkibi;
-                    if (isimUyumu && window.aktifFormasyonFiltresi) return grup.map(o => `${o.oyuncu}_${o.pozisyon}`).sort().join("|") === window.aktifFormasyonFiltresi;
-                    return isimUyumu;
-                });
-                let baslikEk = window.aktifFormasyonFiltresi ? "seçilen kadro formasyonuyla oynadığı" : "";
-                gosterimHTML_Ek = `<div style="background: rgba(88,166,255,0.1); border: 1px solid #58a6ff; padding: 6px 15px; border-radius: 6px; margin: 0 auto 15px auto; width: 100%; max-width: 900px; display:flex; justify-content:space-between; align-items:center; box-sizing: border-box;"><span style="color:#c9d1d9; font-size:0.95em;"><b style="color:#ffffff;">${window.aktifSinerjiEkibi}</b> ekibinin ${baslikEk} maçlar listeleniyor.</span><button onclick="window.sinerjiFiltrele(null, null)" class="mini-kapat">❌ Temizle</button></div>`;
-            }
-
-            filtrelenmisMaclar.sort((a, b) => window.gercekZamanSirala ? window.gercekZamanSirala(a,b) : b[0].tarih_ms - a[0].tarih_ms);
-            
-            const kesilmisListe = filtrelenmisMaclar.slice(0, gosterimLimiti); vitrin.innerHTML = gosterimHTML_Ek;
-
-            kesilmisListe.forEach(grup => {
-                const zaferMi = (grup[0].sonuc === "Zafer" || grup[0].sonuc === "Galibiyet");
-                const sonuc = zaferMi ? "Zafer" : "Bozgun"; const sinif = zaferMi ? "mac-galibiyet" : "mac-bozgun";
-                let oyuncularHtml = ""; let oyunSuresi_dk = (grup[0].sure_saniye || 60) / 60;
-
-                grup.sort((a, b) => (rolSiralamaGucu[a.pozisyon] || 99) - (rolSiralamaGucu[b.pozisyon] || 99)).forEach(oyuncu => {
-                    let durumDamgasi = window.rozetUret ? window.rozetUret(oyuncu) : "";
-                    let zekiEtiketler = window.etiketUret ? window.etiketUret(oyuncu) : "";
-                    let esyalarHtml = '<div class="s-esya-kutusu">';
-                    if(oyuncu.esyalar) {
-                        oyuncu.esyalar.forEach((itemId, index) => {
-                            if(itemId > 0) {
-                                let itemName = window.itemVeritabani && window.itemVeritabani[itemId] ? window.itemVeritabani[itemId].name : "Bilinmeyen Eşya";
-                                let rawDesc = window.itemVeritabani && window.itemVeritabani[itemId] ? (window.itemVeritabani[itemId].description || window.itemVeritabani[itemId].plaintext || "") : "";
-                                esyalarHtml += `
-                                    <div class="esya-kapsayici">
-                                        <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${itemId}.png" class="s-esya" onerror="this.src=''">
-                                        <div class="esya-detay-popup">
-                                            <div class="esya-isim">${itemName}</div>${rawDesc}
-                                        </div>
-                                    </div>`;
-                            } else {
-                                esyalarHtml += `<div class="s-bos-esya"></div>`;
-                            }
-                            if(index === 5) esyalarHtml += `<div style="width: 3px;"></div>`; 
-                        });
-                    }
-                    esyalarHtml += '</div>';
-                    let csMin = ((oyuncu.cs || 0) / oyunSuresi_dk).toFixed(1); let rolText = rolCeviri[oyuncu.pozisyon] || 'Belirsiz';
-                    let m_ikon = window.guncelIkonlar[oyuncu.oyuncu] || 29;
-
-                    // HATA BURADAYDI! 'veri' yerine 'oyuncu' değişkeni kullanılarak sistem çökmesi engellendi!
-                    let toplamDestek = (oyuncu.iyilesme_takim || 0) + (oyuncu.kalkan_takim || 0);
-                    let fDestek = (typeof formatK === "function") ? formatK(toplamDestek) : toplamDestek;
-                    let fHasar = (typeof formatK === "function") ? formatK(oyuncu.hasar_sampiyon) : oyuncu.hasar_sampiyon;
-                    let fTank = (typeof formatK === "function") ? formatK(oyuncu.hasar_sogurulan) : oyuncu.hasar_sogurulan;
-
-                   // 1. 10. Dakika CS'sini Destek (UTILITY) Rolünden Gizle
-let ilk10CsHTML = (oyuncu.ilk_10_dk_minyon && oyuncu.pozisyon !== "UTILITY") ? `<span style="color: #8b949e; font-size: 0.85em; margin-left: 5px; white-space: nowrap;">(10. Dk: ${oyuncu.ilk_10_dk_minyon} CS)</span>` : '';
-
-let partnerHTML = "";
-if ((oyuncu.pozisyon === "BOTTOM" || oyuncu.pozisyon === "UTILITY") && oyuncu.koridor_partneri && oyuncu.koridor_partneri !== "Yok") {
-    partnerHTML = `<div style="font-size: 0.8em; color: #d2a8ff; margin-top: 2px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">🤝 ${oyuncu.koridor_partneri}</div>`;
-}
-
-let rozetlerHTML = `<div class="mac-rozetleri" style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; width: 100%;">`;
-if (oyuncu.erken_oyun_ustunlugu === 1) {
-    rozetlerHTML += `<span style="background: rgba(255, 69, 58, 0.1); color: #ff453a; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; border: 1px solid rgba(255, 69, 58, 0.3); white-space: nowrap;">🔥 Dominant</span>`;
-}
-if (oyuncu.dakika_basi_altin >= 450) {
-    rozetlerHTML += `<span style="background: rgba(255, 214, 10, 0.1); color: #ffd60a; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; border: 1px solid rgba(255, 214, 10, 0.3); white-space: nowrap;">💰 ${Math.floor(oyuncu.dakika_basi_altin)} GPM</span>`;
-}
-
-// 2. CS Farkı Rozetini Destek (UTILITY) Rolünden Gizle
-if (oyuncu.koridor_minyon_farki >= 10 && oyuncu.pozisyon !== "UTILITY") {
-    let yuvarlanmisFark = Math.round(oyuncu.koridor_minyon_farki);
-    rozetlerHTML += `<span style="background: rgba(10, 132, 255, 0.15); color: #58a6ff; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; border: 1px solid rgba(10, 132, 255, 0.3);">⚔️ +${yuvarlanmisFark} CS Farkı</span>`;
-}
-rozetlerHTML += '</div>';
-
-                    // HTML ŞABLONU
-                    oyuncularHtml += `
-                        <div class="sinerji-satir" style="display: flex; align-items: center; padding: 10px 15px; margin-bottom: 4px; border-bottom: 1px solid #21262d; width: 100%; box-sizing: border-box;">
-                            
-                            <div class="s-sol-blok" style="width: 160px; display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
-                                <img src="${ikonUrlGetir(m_ikon)}" class="s-ikon" style="width:32px; height:32px; border-radius: 4px;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
-                                <div class="s-kimlik" style="display: flex; flex-direction: column; overflow: hidden;">
-                                    <span class="s-gercek" style="font-weight: bold; font-size: 0.9em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${oyuncu.riot_id}</span>
-                                    <span class="s-samp" style="font-size: 0.75em; color: #8b949e; white-space: nowrap;">
-                                        ${formatSampiyon(oyuncu.sampiyon)} ${rolText !== 'Belirsiz' ? `<span class="rol-etiket" style="font-size:0.8em; padding:0px 4px; background:#30363d; border-radius:3px;">${rolText}</span>` : ''}
-                                    </span>
-                                    ${partnerHTML}
-                                </div>
-                            </div>
-
-                            <div class="s-orta-blok" style="flex: 1; min-width: 0; padding: 0 15px;">
-                                ${esyalarHtml}
-<div class="s-vizyon-kutusu" style="display: flex; align-items: center; gap: 10px; font-size: 0.8em; color: #8b949e; margin-top: 4px;">
-    <span style="white-space: nowrap;">🗡️ <b style="color:#fff;">${oyuncu.cs || 0}</b> <span style="font-size:0.9em;">(${csMin}/dk)</span> ${ilk10CsHTML}</span>
-    <span style="white-space: nowrap;">👁️ ${oyuncu.gorus_skoru || 0}</span>
-    <span style="white-space: nowrap;">📍 ${oyuncu.normal_totem || 0}</span>
-    <span style="white-space: nowrap;" class="kontrol-vurgu">🛑 ${oyuncu.kontrol_totemi || 0}</span>
-</div>
-                                ${rozetlerHTML}
-                                
-                                <!-- EKSİK DERİN VERİ BLOĞU GELDİ -->
-                                <div class="s-derin-veri" style="margin-top:10px; width:100%;">
-                                    <div style="display:flex; justify-content:flex-start; gap:20px; font-size:0.75em; color:#8b949e; margin-bottom:4px;">
-                                        <span>💥 Hasar: <b style="color:#f85149;">${fHasar}</b></span>
-                                        <span>🛡️ Tank: <b style="color:#58a6ff;">${fTank}</b></span>
-                                        <span>💚 Destek: <b style="color:#3fb950;">${fDestek}</b></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="s-sag-blok" style="width: 100px; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0;">
-                                <div class="kda-deger" style="font-size: 1em; font-weight: bold; color: #58a6ff;">${oyuncu.kda}</div>
-                                <div class="rozetler-kutusu">${durumDamgasi}</div>
-                            </div>
-                        </div>
-                    `;
-                });
-                vitrin.innerHTML += `<div class="mac-karti"><div class="mac-ust-bilgi ${sinif}"><span>${zaferMi ? "🏆" : "💥"} Takım Sonucu: ${sonuc} <span style="color:#8b949e; font-size:0.85em; margin-left:10px;" data-tooltip="Tüm Takımın Toplam Skoru">(⚔️ Takım: <b style="color:#fff;">${grup[0].takim_skoru||'?'} / ${grup[0].takim_olumu||'?'} / ${grup[0].takim_asisti||'?'}</b>)</span></span><div style="text-align: right;"><span style="color:#ffffff; font-size:0.9em; margin-right: 15px;">⏱️ ${sureFormatla(grup[0].sure_saniye)}</span><span style="color:#8b949e; font-size:0.8em; margin-right: 15px;">📅 ${tarihFormatla(grup[0].tarih_ms)}</span><span class="sezon-etiket" style="margin-left:0; margin-right: 10px;">${grup[0].sezon || ''}</span></div></div><div>${oyuncularHtml}</div></div>`;
-            });
-
-            if (filtrelenmisMaclar.length > gosterimLimiti) btnDahaFazla.classList.remove("gizle"); else btnDahaFazla.classList.add("gizle");
+    if (aktifSinerjiBoyutu === "ruya_takim" || aktifSinerjiBoyutu === "haftanin_ruya_takimi") {
+        filtrePaneli.classList.add("gizle"); let veriHavuzu = temelVeriler; let baslikTxt = "🌟 Tüm Zamanların İstatistiksel Rüya Takımı";
+        if (aktifSinerjiBoyutu === "ruya_takim") {
+            if(bilgiKutusu) bilgiKutusu.innerHTML = `<div style="background: rgba(255, 215, 0, 0.08); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 8px; padding: 12px 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6; margin-bottom: 20px;"><b style="color: #ffd700;">🌟 Rüya Takım Algoritması:</b><br>Tüm zamanların istatistikleri harmanlanarak her rolün en iyi oyuncusu (Win Rate, KDA, Görüş, Hasar ve Sinerji Puanı üzerinden) seçilir. Eğer oyuncular Alt Koridorda ikili bir sinerji yakalamışsa sistem onları parçalamaz, takımın omurgası yapar.</div>`;
+        } else {
+            baslikTxt = "🔥 Haftanın En Formda Beşlisi";
+            if(bilgiKutusu) bilgiKutusu.innerHTML = `<div style="background: rgba(88, 166, 255, 0.08); border: 1px solid rgba(88, 166, 255, 0.3); border-radius: 8px; padding: 12px 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6; margin-bottom: 20px;"><b style="color: #58a6ff;">🔥 Haftanın 5'lisi Algoritması:</b><br>Sadece son 7 gün içinde atılan maçlar taranarak, o haftanın en formda oyuncuları rollerine göre belirlenir. Haftalık momentum ve istatistiksel zirve baz alınır.</div>`;
+            let simdiMs = new Date().getTime(); let birHaftaMilisaniye = 7 * 24 * 60 * 60 * 1000; let sinirTarih = simdiMs - birHaftaMilisaniye;
+            veriHavuzu = temelVeriler.filter(v => v.tarih_ms && v.tarih_ms >= sinirTarih);
         }
+
+        if(veriHavuzu.length === 0) { ozetAlani.innerHTML = `<div style="text-align:center; padding: 50px; font-size:1.2em; color:#f85149;">Bu zaman dilimi (Son 7 Gün) için yeterli veri bulunamadı. Lütfen "Tüm Zamanlar" sekmesine dönün.</div>`; btnDahaFazla.classList.add("gizle"); return; }
+        ozetAlani.innerHTML = hesaplaRuyaTakim(veriHavuzu, baslikTxt); btnDahaFazla.classList.add("gizle"); return;
+    }
+
+    const macGruplari = {}; temelVeriler.forEach(v => { if(!macGruplari[v.mac_id]) macGruplari[v.mac_id] = []; macGruplari[v.mac_id].push(v); });
+    let filtrelenmisMaclar = []; let tabloBasligi = "";
+
+    if (aktifSinerjiBoyutu === "alt_koridor") {
+        tabloBasligi = "🏹 En İyi Alt Koridor İkilileri (Nişancı + Destek)";
+        Object.values(macGruplari).forEach(grup => {
+            let bottomList = grup.filter(p => p.pozisyon === "BOTTOM"); let utilityList = grup.filter(p => p.pozisyon === "UTILITY");
+            if (bottomList.length > 0 && utilityList.length > 0) filtrelenmisMaclar.push([bottomList[0], utilityList[0]]);
+        });
+    } else {
+        let eklenti = {5: "'li", 4: "'lü", 3: "'lü", 2: "'li"}[aktifSinerjiBoyutu] || "'li";
+        let hedefBoyut = parseInt(aktifSinerjiBoyutu);
+        
+        if (hedefBoyut === 3) {
+            tabloBasligi = `🌟 Saf 3'lü Sinerji (Sadece 3 Ekip + 2 Yabancı) (${aktifSezonFiltresi})`;
+        } else {
+            tabloBasligi = `🌟 En Çok Birlikte Oynayan ${hedefBoyut}${eklenti} Ekipler (${aktifSezonFiltresi})`;
+        }
+        
+        Object.values(macGruplari).forEach(grup => {
+            if (grup.length === hedefBoyut) {
+                filtrelenmisMaclar.push(grup);
+            }
+        });
+    }
+
+    if (filtrelenmisMaclar.length === 0) { vitrin.innerHTML = `<p style="text-align: center; font-size: 1.2em; margin-top: 50px;">Bu kategoride henüz uygun bir analiz verisi bulunamadı.</p>`; btnDahaFazla.classList.add("gizle"); return; }
+
+    if (window.aktifSinerjiOyuncular && window.aktifSinerjiOyuncular.length > 0) {
+        filtrelenmisMaclar = filtrelenmisMaclar.filter(grup => { 
+            return window.aktifSinerjiOyuncular.every(secili => 
+                grup.some(p => p.oyuncu && p.oyuncu.trim().toLowerCase() === secili.trim().toLowerCase())
+            ); 
+        });
+        if (filtrelenmisMaclar.length === 0) { 
+            vitrin.innerHTML = `<div style="text-align:center; padding:50px; color:#f85149; font-weight:bold; border: 1px dashed #30363d; border-radius:12px; background:rgba(248,81,73,0.02);">Seçili kombinasyona ait sinerji kaydı bulunamadı.</div>`; 
+            return; 
+        }
+    }
+
+    let kompIstatistik = {};
+    filtrelenmisMaclar.forEach(grup => {
+        let sortedIsimler = grup.map(o => o.oyuncu).sort(); let ekipIsmi = sortedIsimler.join(" + ");
+        if(aktifSinerjiBoyutu === "alt_koridor") ekipIsmi = grup.map(o => `${o.oyuncu} (${rolCeviri[o.pozisyon]})`).sort().join(" + ");
+        
+        if(!kompIstatistik[ekipIsmi]) kompIstatistik[ekipIsmi] = { 
+            mac: 0, zafer: 0, tk: 0, td: 0, ta: 0, t_hasar: 0, t_sifa: 0, t_cc: 0, t_gorus: 0, t_adc_cs_farki: 0,
+            orjinal_isimler: sortedIsimler.join(" + "), formasyonlar: {}, ornekMac: grup 
+        };
+        
+        let s_formasyon = grup.map(o => `${o.oyuncu}_${o.pozisyon}`).sort().join("|");
+        if(!kompIstatistik[ekipIsmi].formasyonlar[s_formasyon]) kompIstatistik[ekipIsmi].formasyonlar[s_formasyon] = { mac: 0, zafer: 0, detay: grup.map(o => ({isim: o.oyuncu, rol: o.pozisyon})) };
+        
+        kompIstatistik[ekipIsmi].mac++; kompIstatistik[ekipIsmi].formasyonlar[s_formasyon].mac++;
+        if(grup[0].sonuc === "Zafer" || grup[0].sonuc === "Galibiyet") { kompIstatistik[ekipIsmi].zafer++; kompIstatistik[ekipIsmi].formasyonlar[s_formasyon].zafer++; }
+        
+        grup.forEach(p => {
+            kompIstatistik[ekipIsmi].tk += p.oldurme || 0;
+            kompIstatistik[ekipIsmi].td += p.olum || 0;
+            kompIstatistik[ekipIsmi].ta += p.asist || 0;
+            kompIstatistik[ekipIsmi].t_hasar += p.hasar_sampiyon || 0;
+            kompIstatistik[ekipIsmi].t_sifa += (p.iyilesme_takim || 0) + (p.kalkan_takim || 0);
+            kompIstatistik[ekipIsmi].t_cc += p.cc_suresi || 0;
+            kompIstatistik[ekipIsmi].t_gorus += p.gorus_skoru || 0;
+            
+            if (aktifSinerjiBoyutu === "alt_koridor" && p.pozisyon === "BOTTOM") {
+                kompIstatistik[ekipIsmi].t_adc_cs_farki += (p.koridor_minyon_farki || 0);
+            }
+        });
+    });
+
+    let siraliKomplar = Object.entries(kompIstatistik).map(k => {
+        let data = k[1];
+        let wrLaplace = (data.zafer + 1) / (data.mac + 2); 
+        let formasyonSayisi = Object.keys(data.formasyonlar).length;
+        let flexKatsayisi = aktifSinerjiBoyutu === "alt_koridor" ? 0 : (formasyonSayisi * 0.05); 
+        
+        let kda = data.td === 0 ? (data.tk + data.ta) : ((data.tk + data.ta) / data.td);
+        let ortHasar = data.t_hasar / data.mac;
+        let ortSifa = data.t_sifa / data.mac;
+        let ortGorus = data.t_gorus / data.mac;
+        let ortCc = data.t_cc / data.mac;
+
+        let ortAdcCsFarki = data.t_adc_cs_farki / data.mac;
+        let csFarkiBonusu = aktifSinerjiBoyutu === "alt_koridor" ? (ortAdcCsFarki * 0.4) : 0; 
+
+        let sp = ((wrLaplace + flexKatsayisi) * 100) + (kda * 2) + (ortGorus * 0.1) + ((ortHasar / 1000) * 0.15) + ((ortSifa / 500) * 0.15) + (ortCc * 0.1) + csFarkiBonusu;
+
+        return { isim: k[0], mac: data.mac, zafer: data.zafer, sp: sp, orjinal_isimler: data.orjinal_isimler, formasyonlar: data.formasyonlar };
+    });
+    
+    siraliKomplar.sort((a, b) => b.sp - a.sp);
+
+    let tabloSatirlari = siraliKomplar.map((komp, index) => {
+        let wr = ((komp.zafer / komp.mac) * 100).toFixed(0); let spSkor = komp.sp.toFixed(0); let barRengi = wr >= 50 ? "#3fb950" : "#f85149";
+        let clickIsim = aktifSinerjiBoyutu === "alt_koridor" ? komp.isim : komp.orjinal_isimler;
+        let formasyonPaneliId = `formasyon_${index}`; let formasyonHtml = "";
+        if (aktifSinerjiBoyutu !== "alt_koridor") {
+            let siraliFormasyonlar = Object.entries(komp.formasyonlar).sort((a,b) => b[1].mac - a[1].mac);
+            siraliFormasyonlar.forEach(f => {
+                let f_wr = ((f[1].zafer / f[1].mac) * 100).toFixed(0); let f_renk = f_wr >= 50 ? "#3fb950" : "#f85149";
+                let rolEtiketleri = f[1].detay.sort((a, b) => (rolSiralamaGucu[a.rol] || 99) - (rolSiralamaGucu[b.rol] || 99)).map(p => { return `<span class="formasyon-rol-etiket"><span class="formasyon-isim">${p.isim}:</span> ${rolCeviri[p.rol] || 'Belirsiz'}</span>`; }).join(" ");
+                let clickFormasyonAttr = `onclick="window.sinerjiFiltrele('${clickIsim}', '${f[0]}')" style="cursor:pointer;" data-tooltip="Sadece bu kadro yapısıyla atılan maçları göster"`;
+                formasyonHtml += `<div class="formasyon-satir tiklanabilir-tr" ${clickFormasyonAttr}><div class="formasyon-detay">${rolEtiketleri}</div><div style="min-width: 120px; text-align: right;"><span style="color:#8b949e; font-size:0.9em; margin-right:10px;">${f[1].mac} Maç</span><span style="color:${f_renk}; font-weight:bold;">%${f_wr} WR</span></div></div>`;
+            });
+        }
+        let formasyonKutuHtml = formasyonHtml ? `<tr id="${formasyonPaneliId}" class="gizle" style="background:#0d1117;"><td colspan="4" style="padding: 15px;"><div class="formasyon-kutusu"><div style="color:#8b949e; font-size:0.85em; text-transform:uppercase; font-weight:bold; margin-bottom:10px;">Kadro Formasyonları (Dizilişler)</div>${formasyonHtml}</div></td></tr>` : "";
+        let baslikTiklaAttr = `onclick="window.sinerjiFiltrele('${clickIsim}')" data-tooltip="Bu ekibin maçlarını listele"`;
+        if (aktifSinerjiBoyutu !== "alt_koridor") baslikTiklaAttr = `onclick="window.kutuAc('${formasyonPaneliId}', event)" data-tooltip="Kadro formasyonlarını görmek için tıkla"`;
+
+        return `
+            <tr class="tiklanabilir-tr" ${baslikTiklaAttr}>
+                <td style="color:#8b949e;">#${index+1}</td><td style="color:#c9d1d9;">${komp.isim}</td><td>${komp.mac} Maç</td>
+                <td style="color: ${barRengi}; font-weight: bold; width: 28%;">%${wr} <span class="rozet-sp" style="margin-left:10px; padding:4px 8px; border-radius:6px; display:inline-block;" data-tooltip="Ağırlıklı Sinerji Puanı">SP:&nbsp;${spSkor}</span><div class="oran-bar-arkasi"><div class="oran-bar-ici" style="width: ${wr}%; background-color: ${barRengi};"></div></div></td>
+            </tr>${formasyonKutuHtml}
+        `;
+    }).join("");
+
+    ozetAlani.innerHTML = `<div class="ozet-panosu" style="display:block;"><h3 style="color:#ffffff; margin-top:0;">${tabloBasligi}</h3><table class="komp-tablosu"><thead><tr><th>Sıra</th><th>Ekip Kadrosu</th><th>Oyun Sayısı</th><th>Kazanma Oranı <span style="font-weight:normal; color:#d2a8ff;">(Sinerji Puanı)</span></th></tr></thead><tbody>${tabloSatirlari}</tbody></table></div>`;
+
+    let gosterimHTML_Ek = "";
+    if (window.aktifSinerjiEkibi) {
+        filtrelenmisMaclar = filtrelenmisMaclar.filter(grup => {
+            let isimUyumu = grup.map(o => o.oyuncu).sort().join(" + ") === window.aktifSinerjiEkibi;
+            if(aktifSinerjiBoyutu === "alt_koridor") isimUyumu = grup.map(o => `${o.oyuncu} (${rolCeviri[o.pozisyon]})`).sort().join(" + ") === window.aktifSinerjiEkibi;
+            if (isimUyumu && window.aktifFormasyonFiltresi) return grup.map(o => `${o.oyuncu}_${o.pozisyon}`).sort().join("|") === window.aktifFormasyonFiltresi;
+            return isimUyumu;
+        });
+        let baslikEk = window.aktifFormasyonFiltresi ? "seçilen kadro formasyonuyla oynadığı" : "";
+        gosterimHTML_Ek = `<div style="background: rgba(88,166,255,0.1); border: 1px solid #58a6ff; padding: 6px 15px; border-radius: 6px; margin: 0 auto 15px auto; width: 100%; max-width: 900px; display:flex; justify-content:space-between; align-items:center; box-sizing: border-box;"><span style="color:#c9d1d9; font-size:0.95em;"><b style="color:#ffffff;">${window.aktifSinerjiEkibi}</b> ekibinin ${baslikEk} maçlar listeleniyor.</span><button onclick="window.sinerjiFiltrele(null, null)" class="mini-kapat">❌ Temizle</button></div>`;
+    }
+
+    filtrelenmisMaclar.sort((a, b) => window.gercekZamanSirala ? window.gercekZamanSirala(a,b) : b[0].tarih_ms - a[0].tarih_ms);
+    
+    const kesilmisListe = filtrelenmisMaclar.slice(0, gosterimLimiti); vitrin.innerHTML = gosterimHTML_Ek;
+
+    // 🎯 İŞTE ARIZALI DÖNGÜYÜ TAMAMEN UÇURUP KÜRESEL MOTORU (cizTakimKarti) BAĞLADIĞIMIZ NOKTA
+    kesilmisListe.forEach(grup => {
+        const zaferMi = (grup[0].sonuc === "Zafer" || grup[0].sonuc === "Galibiyet");
+        const sonuc = zaferMi ? "ZAFER" : "MAĞLUBİYET"; 
+        const sinif = zaferMi ? "mac-galibiyet" : "mac-bozgun";
+        
+        // Burası o `veri is not defined` çökmelerini silen, rün kutusunu ekleyen can damarı:
+        let oyuncularHtml = cizTakimKarti(grup);
+
+        vitrin.innerHTML += `
+            <div class="mac-karti">
+                <div class="mac-ust-bilgi ${sinif}">
+                    <span>${zaferMi ? "🏆" : "💥"} Takım Sonucu: ${sonuc} <span style="color:#8b949e; font-size:0.85em; margin-left:10px;" data-tooltip="Tüm Takımın Toplam Skoru">(⚔️ Takım: <b style="color:#fff;">${grup[0].takim_skoru||'?'} / ${grup[0].takim_olumu||'?'} / ${grup[0].takim_asisti||'?'}</b>)</span></span>
+                    <div style="text-align: right;">
+                        <span style="color:#ffffff; font-size:0.9em; margin-right: 15px;">⏱️ ${sureFormatla(grup[0].sure_saniye)}</span>
+                        <span style="color:#8b949e; font-size:0.8em; margin-right: 15px;">📅 ${tarihFormatla(grup[0].tarih_ms)}</span>
+                        <span class="sezon-etiket" style="margin-left:0; margin-right: 10px;">${grup[0].sezon || ''}</span>
+                    </div>
+                </div>
+                <div style="padding: 10px 0;">
+                    ${oyuncularHtml}
+                </div>
+            </div>`;
+    });
+
+    if (filtrelenmisMaclar.length > gosterimLimiti) btnDahaFazla.classList.remove("gizle"); else btnDahaFazla.classList.add("gizle");
+}
 
         function sampiyonBas() {
             let temelVeriler = [...tumVeriler];
