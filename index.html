@@ -383,7 +383,7 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.57.10</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.57.11</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
@@ -838,6 +838,15 @@
     <div id="arayuz-yama" class="gizle" style="max-width: 1000px; margin: 0 auto;">
     
     <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">YAZLIKDC.GG SÜRÜM GEÇMİŞİ (PATCH NOTES)</h2>
+
+   <div class="yama-karti">
+        <div class="yama-baslik">v5.57.11 - Adil Yargılama: Sabotaj (Troll) Motoru Revizyonu <span class="yama-tarih">Yeni</span></div>
+        <ul class="yama-liste">
+            <li><strong>Skor Katkısı (KP) Optimizasyonu:</strong> Utanç Listesi'ni belirleyen sabotaj (troll) tespit algoritmasındaki mantıksal hata kökünden kazındı. Oyuncunun katkısını hesaplarken takım asistlerini de hesaba katarak ortaya çıkan "hayalet asist beklentisi" ve matematiksel adaletsizlik tamamen iptal edildi.</li>
+            <li><strong>Yeni Sabotaj Kriteri:</strong> Sistem artık profesyonel e-spor standartlarındaki <b>Saf Skor Katkısı (Kill Participation)</b> matematiğini kullanıyor. Bir maçta 11'den fazla ölen ve takımın toplam öldürme (kill) sayısına <b>%40'tan daha az</b> katkı (kendi skoru + asisti) sağlayan oyuncular acımasızca Utanç Listesi'ne damgalanacak.</li>
+            <li><strong>Sıfıra Bölünme Zırhı (Divide by Zero):</strong> Takımın hiçbir skor üretemeden ezildiği (örneğin 0-15 biten) felaket senaryolarında, sistemin sıfıra bölünme hatası verip çökmesini veya "Infinity" değeri üretmesini engelleyen matematiksel bir kalkan algoritmaya eklendi.</li>
+        </ul>
+    </div>
 
    <div class="yama-karti">
         <div class="yama-baslik">v5.57.2 - v5.57.10 Sistem Devrimi ve Kusursuz Liderlik Motoru <span class="yama-tarih">Yeni</span></div>
@@ -2174,9 +2183,15 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
         };
 
         window.checkSabotaj = function(m) {
-            let t_skor = m.takim_skoru || 30; 
-            let t_asist = m.takim_asisti || 30; 
-            return m.olum > 11 && (m.oldurme + m.asist) < ((t_skor + t_asist) / 2);
+            // Takım skorunun veri eksikliğinden 0 gelme ihtimaline karşı "Divide by Zero" koruması
+            let t_skor = (m.takim_skoru && m.takim_skoru > 0) ? m.takim_skoru : 1; 
+            
+            // Gerçek E-Spor KP (Kill Participation) Formülü: (Kendi Skoru + Kendi Asisti) / Takım Skoru
+            let skorKatkisi = (m.oldurme + m.asist) / t_skor;
+
+            // KURAL: Eğer 11'den fazla ölmüşse VE takımın toplam skoruna katkısı %40'ın altındaysa sabotajcıdır.
+            // (0.40 oranını oyun grubunun agresifliğine göre 0.35 veya 0.45 yapabilirsin, %40 en adilidir.)
+            return m.olum > 11 && skorKatkisi < 0.40;
         }
 
         window.rozetUret = function(veri) {
