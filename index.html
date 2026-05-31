@@ -383,12 +383,13 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.56.0</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.57.10</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
     
     <div class="mod-secici">
+	<button id="btn-mod-sunucu" class="mod-btn">📊 Sunucu Özeti</button>
         <button id="btn-mod-bireysel" class="mod-btn aktif">👤 Bireysel Profil</button>
         <button id="btn-mod-sinerji" class="mod-btn">🤝 Takım Sinerjisi</button>
         <button id="btn-mod-sampiyon" class="mod-btn">🏆 Şampiyon Uzmanları</button>
@@ -839,7 +840,60 @@
     <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">YAZLIKDC.GG SÜRÜM GEÇMİŞİ (PATCH NOTES)</h2>
 
    <div class="yama-karti">
-        <div class="yama-baslik">v5.56.0 - Bireysel Performans Hiyerarşisi ve Rol Analiz Motoru <span class="yama-tarih">Yeni</span></div>
+        <div class="yama-baslik">v5.57.2 - v5.57.10 Sistem Devrimi ve Kusursuz Liderlik Motoru <span class="yama-tarih">Yeni</span></div>
+        <ul class="yama-liste">
+            <li><strong>[v5.57.2 - v5.57.4] E-Spor UI ve Veri Zırhı:</strong> Takım sinerjisi sekmesindeki maç kartları Şampiyon odaklı ve rozet sistemli profesyonel bir tasarıma geçirildi. Liderlik Motoru'nun sezon filtrelerini yok sayma ve 'ReferenceError' çökme sorunları kökten çözüldü. Tüm liderlik sekmeleri artık seçili sezona %100 sadık.</li>
+            <li><strong>[v5.57.5 - v5.57.6] Çakışma Önleyici Mühür (Return Kalkanı):</strong> Sinerji sekmesindeki gereksiz arka plan hesaplamaları tamamen durduruldu. Liderlik tabloları aktifken aşağıda alakasız maç kartlarının çizilip ekranı bozması (çift render hatası) araya örülen mutlak kod duvarı ile engellendi.</li>
+            <li><strong>[v5.57.7] İstikrar Motoru ve Çift Kollu Tasarım:</strong> Liderlik tablolarında tek maçlık tesadüfi balon rekorlar iptal edilerek, gerçek performansı yansıtan "Maç Başı Ortalama" sistemine geçildi. Arayüz ikiye bölündü; ana tablo solda akarken, <b>KDA Şampiyonları</b> tahtı her liderlik sekmesinde sağ kolonda sabit kalarak ekibe hükmetmeye başladı.</li>
+            <li><strong>[v5.57.8 - v5.57.10] Mutlak Oyun İçi İsim (Riot ID) Otomasyonu:</strong> Kaan <i>(DarkLegend97)</i>, Ercan <i>(MrOsleon)</i> ve Taner <i>(YazlıkDCFlex)</i> için çoklu hesap karmaşasını bitiren özel kimlik maskelemesi eklendi. Kalan tüm oyuncular için de gerçek isimler yerine doğrudan veritabanındaki oyun içi Riot ID'ler (örn: TuMu, ShenerShen) ekrana yansıtıldı. Arayüz metinleri "Ortalama" kelimelerinden arındırılıp daha net ve agresif hale getirildi.</li>
+        </ul>
+    </div>
+
+   <div class="yama-karti">
+        <div class="yama-baslik">v5.57.0 - v5.57.1 Makro Vizyon ve Bölge Kontrolü <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>[v5.57.0] Makro Analitik (Sunucu Özeti) Sekmesi:</strong> Bireysel istatistiklerin ötesine geçilerek Yazlık DC ekibinin tüm karakteristiğini tek ekranda toplayan ana vitrin inşa edildi. Otonom sekme motoru bu devasa arayüzü kayıpsız yükleyecek şekilde modifiye edildi.</li>
+            <li><strong>[v5.57.1] Bölge Kontrolü ve 5'li Rol Dağılımı:</strong> Tek bir genel grafik yerine, her bir koridor için 5 ayrı "Bölge Kontrolü" pasta grafiği (CSS conic-gradient) yaratıldı. Hangi Yazlık DC üyesinin hangi koridoru domine ettiği mikro düzeyde haritalandırıldı.</li>
+            <li><strong>[v5.57.1] Çoklu Hesap (Smurf) Takip Sistemi:</strong> Rol grafiklerindeki lejantlara oyuncuların Riot ID (Oyun İçi İsim) verileri bağlandı. Bir oyuncu farklı yan hesaplarıyla aynı role girdiyse, sistem bu hesapları tek bir isim altında toplayarak yüzdelik dilimi manipüle etmeden ekrana basacak.</li>
+        </ul>
+    </div>
+
+   <div class="yama-karti">
+        <div class="yama-baslik">v5.56.7 - v5.56.8 Safkan Skor ve Kalkan Güncellemesi <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>[v5.56.8] Kapsayıcı Veri Radarı (Wildcard Catch):</strong> Veritabanından gelebilecek her türlü değişken isimlendirme varyasyonunu (penta, pentaKills, beste_bes vb.) havada yakalayıp işleyebilen mutlak bir hata tolerans zırhı giydirildi. Bot arka planda ne gönderirse göndersin, arayüz artık çökmez ve gerçeği okur.</li>
+            <li><strong>[v5.56.7] Riot API Kümülatif Bug İptali (Saf İstatistikler):</strong> Riot'un 1 Penta atıldığında alt skorları da (Quadra, Triple) gizlice +1 artırarak arayüzü şişirmesi engellendi. Alt skorlar üst skorlardan matematiksel olarak çıkarılarak oyuncuların "Safkan Çoklu Skor" sayıları profil özetlerine yansıtıldı.</li>
+            <li><strong>[v5.56.7] Görsel Rozet Hiyerarşisi:</strong> Maç kartlarında en üst düzey skor rozeti (Örn: Beşte Beş) kazanıldığında, alt düzey skor rozetlerinin (İkide İki vb.) de ekranda belirip vizyonsuz bir görüntü kirliliği yaratmasını engelleyen katı <code>else if</code> kalkanı devreye alındı.</li>
+        </ul>
+    </div>
+
+   <div class="yama-karti">
+        <div class="yama-baslik">v5.56.6 - Vitrin Temizliği ve Gerçek Ustalık <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>En İyi Şampiyonlar Revizyonu:</strong> Bireysel profillerin üst panelinde bulunan "En İyi 3 Şampiyon" vitrini, sadece "En Çok Oynananlar" listesi olmaktan çıkarıldı. O vitrine de ağır matematik motoru (Wilson Skoru) ve 3 maç barajı entegre edilerek, düşük kazanma oranlı şampiyonlar vitrinden kovuldu.</li>
+        </ul>
+    </div>
+
+   <div class="yama-karti">
+        <div class="yama-baslik">v5.56.2 - v5.56.5 Mutlak Adalet ve Wilson Zırhı Güncellemesi <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>[v5.56.2 - v5.56.5] Wilson Güven Aralığı (Veri Bilimi Devrimi):</strong> Tüm sıralama motorlarındaki (Bireysel Roller, Takım Sinerjisi, Şampiyon Uzmanları) ilkel "Ham Kazanma Oranı" hesabı tamamen çöpe atıldı. Yerine küçük örneklemlerdeki şans faktörünü sıfırlayan ve alt sınır güvenilirliğini ölçen ağır matematik motoru (Wilson Skoru) entegre edildi.</li>
+            <li><strong>[v5.56.2 - v5.56.4] Mutlak Kalifikasyon Barajı (3 Maç Kuralı):</strong> Yüzlerce maçlık emeğin tesadüflere yenilmesini engellemek için sisteme kaba kuvvet zırhı eklendi. 3 maçtan az oynanan hiçbir sinerji veya şampiyon uzmanlığı, kazanma oranına bakılmaksızın 3 maçı geçen istikrarlı verilerin üstüne çıkamaz.</li>
+            <li><strong>[v5.56.5] Şeffaf Veri Adaleti:</strong> Az maç oynanan veya zayıf verileri sistemden silip kolaya kaçmak reddedildi. Eksik istatistikler listede tutuldu (gizlenmedi) ancak algoritmik olarak cezalandırılıp hak ettikleri en alt sıralara çivilendi.</li>
+        </ul>
+    </div>
+
+   <div class="yama-karti">
+        <div class="yama-baslik">v5.56.1 - Laplace Düzeltmesi (Şans Faktörü İptali) <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>Laplace Smoothing (Veri Bilimi Entegrasyonu):</strong> Rol performanslarını sıralayan algoritmadaki ilkel "Kazanma Oranı" hesabı çöpe atıldı. Yerine, küçük örneklemlerdeki (az maç oynanan rollerdeki) şans faktörünü cezalandıran Laplace Düzeltmesi <code>(Zafer + 1) / (Maç + 2)</code> motoru eklendi.</li>
+            <li><strong>Balon İstatistik İptali:</strong> Sadece 1 maç oynanıp 1 galibiyet alınarak %100 oranla en tepeye kurulan "tek maçlık harikalar" (illüzyon performanslar) algoritma tarafından ezildi.</li>
+            <li><strong>İstikrarın Ödüllendirilmesi:</strong> Ekranda ham %WR değerleri şeffafça görünmeye devam etse de, arka plandaki sıralama motoru artık 50 maçta %60 oran tutturan istikrarlı bir performansı, 1 maçta %100 yapan tesadüfi bir performanstan çok daha üstün tutuyor. Mutlak veri adaleti sağlandı.</li>
+        </ul>
+    </div>
+
+   <div class="yama-karti">
+        <div class="yama-baslik">v5.56.0 - Bireysel Performans Hiyerarşisi ve Rol Analiz Motoru <span class="yama-tarih"></span></div>
         <ul class="yama-liste">
             <li><strong>Rol Profilleri (Tier List) Modülü:</strong> Bireysel özet panosunun altına, oyuncunun esnek maçlardaki tüm rollerini analiz edip sıralayan interaktif bir açılır/kapanır (accordion) sekme entegre edildi.</li>
             <li><strong>Acımasız Algoritma (Gerçekle Yüzleşme):</strong> Riot'un atadığı göstermelik rolleri es geçip, tamamen ham veriye dayanan bir performans matrisi yazıldı. Roller, önce Kazanma Oranına (%WR), eşitlik durumunda ise KDA'ya göre en iyiden en kötüye doğru matematiksel olarak sıralanıyor.</li>
@@ -1718,6 +1772,7 @@
         <div class="yama-karti" style="border-color: #ffd700;">
             <div class="yama-baslik" style="color: #ffd700;">🤖 PYTHON BOT SÜRÜM GEÇMİŞİ</div>
             <ul class="yama-liste">
+		<li><strong>v3.2.1:</strong> "Büyük 'K' Operasyonu ve Re-Senkronizasyon". Riot API'nin CamelCase yapısındaki uyuşmazlık (pentakills yerine pentaKills) giderilip sistemin çoklu skorları "0" olarak okuması engellendi. Geçici bypass (pass) metoduyla veritabanı hafızası sıfırlandı, tüm eski maçlar taranarak kayıp Quadra ve Pentalar sisteme mühürlendi.</li>
                 <li><strong>v3.2.0:</strong> "Derin Rün Madenciliği". Riot API üzerinden <code>perks</code> objesi parçalanarak oyuncuların seçtiği <em>Ana Rün</em>, <em>Alt Rün Ağacı</em> ve maçta kullanılan tüm <em>alt rünlerin ID'leri</em> (array olarak) otonom şekilde çekilip Firebase'e aktarılmaya başlandı.</li>
                 <li><strong>v3.1.0 (Eski v23):</strong> "Volkanik Veri Takibi". Maç bazlı CS farkı verileri üzerinden 'Flame Horizon' (100+ fark) durumlarını anlık tespit eden ve veritabanında bayraklayan (flagging) mantıksal katman eklendi.</li>
                 <li><strong>v3.0.0 (Eski v22):</strong> "Kahin (Oracle) Motoru". Riot'un gizli 'Challenges' (Görevler) API'sine bağlantı kuruldu. Salt skor tablosu aşılarak; Dakika Başı Altın (GPM), 10. Dakika Minyonu, Koridor Minyon Farkı ve Erken Oyun Üstünlüğü gibi kompleks ekonomi metrikleri veri tabanına mühürlenmeye başlandı.</li>
@@ -1733,6 +1788,15 @@
                 <li><strong>v1.1.0 (Eski V9):</strong> Yalnızca son maçlar yerine eski sezonları kapsayan derin 300 maçlık tarama limitine çıkılması.</li>
                 <li><strong>v1.0.0 (Eski V8):</strong> Tüm ekip üyelerinin tanımlanarak 5 kişilik maçların 2 kişilik görünmesini çözen çoklu tarama sistemi.</li>
             </ul>
+        </div>
+    </div>
+
+    <div id="arayuz-sunucu" class="gizle">
+        <div style="max-width:1200px; margin:0 auto; padding:0 15px;">
+            <div style="background: rgba(13, 17, 23, 0.9); border: 1px solid #30363d; border-radius: 12px; padding: 25px; margin-bottom: 20px;">
+                <h2 style="color: #58a6ff; border-bottom: 1px solid #30363d; padding-bottom: 10px; margin-top: 0; text-transform: uppercase; letter-spacing: 1px;">📊 Yazlık DC Seçilen Roller Bazında Genel Sunucu Özeti</h2>
+                <div id="sunucu-rol-pastasi"></div>
+            </div>
         </div>
     </div>
 
@@ -1795,8 +1859,8 @@
         <div style="max-width:1200px; margin:0 auto 20px auto; padding:0 15px;">
             <div style="background: rgba(255, 0, 255, 0.08); border: 1px solid rgba(255, 0, 255, 0.3); border-radius: 8px; padding: 12px 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6;">
                 <b style="color: #ff00ff;">ℹ️ Uzmanlık Puanı (UP) Nedir?</b><br>
-                Sistem oyuncunun o şampiyonla kazanma oranını Laplace denklemiyle dengeler. Buna KDA, CS/min, takımına sağladığı şifa, şampiyonlara vurduğu hasar ve CC süreleri gibi derin veriler eklenir. Şampiyonu ne kadar derinlemesine oynadığınızı ölçen yegane puandır.
-            </div>
+Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilson Güven Aralığı</b> ve <b>3 Maç Kalifikasyon Barajı</b> ile dengeleyerek 1-2 maçlık tesadüfi başarıları tamamen ezer. Bu katı matematiksel temele; <b>KDA</b>, <b>Dakika Başına Minyon (CS/min)</b>, <b>Erken Oyun Dominasyonu</b> ve genel katkı gibi derin veriler eklenir. Şampiyonu şansa değil, ne kadar gerçek bir ustalıkla oynadığınızı ölçen mutlak puandır.
+</div>
         </div>
 
         <div class="sampiyon-secici-kutu">
@@ -2116,17 +2180,26 @@
         }
 
         window.rozetUret = function(veri) {
-            let html = '';
-            if (veri.penta && veri.penta > 0) html += `<div class="rozet rozet-penta" data-tooltip="Maç içinde bir defada 5 kişiyi katletmek">🔥 Beşte Beş</div>`;
-            else if (veri.quadra && veri.quadra > 0) html += `<div class="rozet rozet-quadra" data-tooltip="Maç içinde bir defada 4 kişiyi katletmek">💥 Dörtte Dört</div>`;
-            else if (veri.triple && veri.triple > 0) html += `<div class="rozet rozet-triple" data-tooltip="Maç içinde bir defada 3 kişiyi katletmek">⚡ Üçte Üç</div>`;
-            else if (veri.ikide_iki && veri.ikide_iki > 0) html += `<div class="rozet rozet-ikideiki" data-tooltip="Maç içinde bir defada 2 kişiyi katletmek">⚔️ İkide İki</div>`;
+            let html = "";
             
+            // 🛡️ V5.56.7 - Mutlak Çoklu Skor Hiyerarşisi (Riot Bug Kırıcı)
+            if (veri.penta && veri.penta > 0) {
+                html += `<div class="rozet rozet-penta" data-tooltip="Maç içinde bir defada 5 kişiyi katletmek">🔥 Beşte Beş</div>`;
+            } else if (veri.quadra && veri.quadra > 0) {
+                html += `<div class="rozet rozet-quadra" data-tooltip="Maç içinde bir defada 4 kişiyi katletmek">💥 Dörtte Dört</div>`;
+            } else if (veri.triple && veri.triple > 0) {
+                html += `<div class="rozet rozet-triple" data-tooltip="Maç içinde bir defada 3 kişiyi katletmek">⚡ Üçte Üç</div>`;
+            } else if (veri.ikide_iki && veri.ikide_iki > 0) {
+                html += `<div class="rozet rozet-ikideiki" data-tooltip="Maç içinde bir defada 2 kişiyi katletmek">⚔️ İkide İki</div>`;
+            }
+
+            // KDA ve Objektif Rozetleri Bağımsız Çalışır
             if (veri.olum === 0) html += `<div class="rozet rozet-perfect" data-tooltip="Maçı hiç ölmeden tamamlamak">🌟 Kusursuz Maç</div>`;
             else if (window.checkSabotaj(veri)) html += `<div class="rozet rozet-besleme" data-tooltip="11'den fazla ölmek ve takımın skor+asist toplamının yarısından azına katkıda bulunmak">☠️ Sabotaj</div>`;
             
             if (veri.calinan_objektif && veri.calinan_objektif > 0) html += `<div class="rozet rozet-calinti" data-tooltip="Rakip takımın başlattığı Baron veya Ejderhayı çalmak">🥷 Objektif Çaldı</div>`;
             if (veri.ilk_kan) html += `<div class="rozet rozet-ilkkan" data-tooltip="Maçtaki ilk katletmeyi (First Blood) almak">🩸 İlk Kan</div>`;
+            
             return html;
         }
 
@@ -2262,7 +2335,8 @@
         async function baslat(zorlaYenile = false) {
             document.getElementById("loader-ekrani").style.display = "flex";
             document.getElementById("loader-ekrani").style.opacity = "1";
-
+	
+	    let gosterilecekler = [];
             try {
                 const ddragonYamaYaniti = await fetch("https://ddragon.leagueoflegends.com/api/versions.json");
                 const yamalar = await ddragonYamaYaniti.json(); guncelYama = yamalar[0];
@@ -2568,8 +2642,9 @@
                 window.tumVeriler = tumVeriler; 
                 
                 sekmeOlustur(); ekraniGuncelle(true); 
+		window.sunucuOzetiniCiz(tumVeriler);
                 renderEsyaKutuphanesi();
-                modernLiderlikMotoru(window.tumVeriler);
+                modernLiderlikMotoru(gosterilecekler);
 
             } catch (hata) { 
                 console.error("Hata:", hata); alert("Veriler çekilirken bir hata oluştu.");
@@ -2685,7 +2760,7 @@
       }
   }
 
-            if (aktifMod === "yama" || aktifMod === "esya" || aktifMod === "run" || aktifMod === "sampiyon" || aktifMod === "komp" || aktifMod === "rotasyon") {
+            if (aktifMod === "yama" || aktifMod === "esya" || aktifMod === "run" || aktifMod === "sampiyon" || aktifMod === "komp" || aktifMod === "rotasyon" || aktifMod === "sunucu") {
                 if(document.getElementById("sezon-tabs")) document.getElementById("sezon-tabs").classList.add("gizle");
                 if(document.getElementById("genel-lejant")) document.getElementById("genel-lejant").classList.add("gizle");
             } else {
@@ -2693,7 +2768,36 @@
                 if(document.getElementById("genel-lejant")) document.getElementById("genel-lejant").classList.remove("gizle");
             }
 
-            if (aktifMod === "bireysel") bireyselBas();
+	    // 🛡️ V5.57.2 - SEZON FİLTRESİ ZIRHI (Liderlik Motoru Tetikleyici)
+            // Kullanıcı sezon seçtiğinde liderlik tablosunu o sezona göre yeniden filtrele
+            if (typeof modernLiderlikMotoru === "function") {
+                let filtreliVeri = [...window.tumVeriler];
+                if (aktifSezonFiltresi !== "Tümü") {
+                    filtreliVeri = filtreliVeri.filter(v => v.sezon === aktifSezonFiltresi);
+                }
+                modernLiderlikMotoru(filtreliVeri);
+            }
+
+            if (aktifMod === "bireysel") {
+                bireyselBas();
+                
+                // 🛡️ V5.57.5 - SADECE BİREYSEL SEKME İÇİN SEZON & OYUNCU LİDERLİK MOTORU
+                if (typeof modernLiderlikMotoru === "function") {
+                    let liderlikVerisi = [...window.tumVeriler];
+                    
+                    // Önce sezonu süz
+                    if (aktifSezonFiltresi !== "Tümü") {
+                        liderlikVerisi = liderlikVerisi.filter(v => v.sezon === aktifSezonFiltresi);
+                    }
+                    // Sonra oyuncu seçiliyse sadece onun maçlarını bırak
+                    if (aktifOyuncuFiltresi !== "Hepsi") {
+                        liderlikVerisi = liderlikVerisi.filter(v => v.oyuncu === aktifOyuncuFiltresi);
+                    }
+                    
+                    // Süzülmüş saf veriyi liderlik motoruna ateşle!
+                    modernLiderlikMotoru(liderlikVerisi);
+                }
+            }
             else if (aktifMod === "sinerji") sinerjiBas();
             else if (aktifMod === "sampiyon") sampiyonBas();
         }
@@ -2826,7 +2930,11 @@
                     <div class="sinerji-satir" style="${satirBg} display: flex; align-items: flex-start; padding: 12px 15px; margin-bottom:4px; border-bottom: 1px solid #21262d; width: 100%; box-sizing: border-box;">
                         
                         <div style="width: 190px; flex-shrink: 0; display: flex; align-items: center; gap: 10px;">
-                            <img src="${ikonUrlGetir(oyuncu.profil_ikonu || 29)}" style="width:38px; height:38px; border-radius: 6px;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
+                            
+                            <div style="position: relative; display: inline-block; flex-shrink: 0;">
+                                <img src="${resimUrlGetir(oyuncu.sampiyon)}" style="width:48px; height:48px; border-radius: 6px; border: 1px solid #30363d;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
+                                <img src="${ikonUrlGetir(oyuncu.profil_ikonu || 29)}" style="position: absolute; bottom: -4px; right: -4px; width: 22px; height: 22px; border-radius: 50%; border: 2px solid #161b22; object-fit: cover;" title="${oyuncu.oyuncu} (Sihirdar İkonu)" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
+                            </div>
                             
                             <div style="display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; align-items: center;">
                                 ${miniAnaRunHTML}
@@ -3062,6 +3170,9 @@
                         }
                     });
 
+		    if (typeof modernLiderlikMotoru === "function") {
+                        modernLiderlikMotoru(oyuncuTumMaclari);
+                    }
                     // ORTALAMA MATEMATİĞİ
                     let ortK = (toplamK / toplamMac).toFixed(1); let ortD = (toplamD / toplamMac).toFixed(1); let ortA = (toplamA / toplamMac).toFixed(1);
                     // 🎯 YENİ: Ortalama CS hesabında artık sadece koridordaki minyonları koridordaki zamana böler!
@@ -3073,10 +3184,38 @@
                     let ort_gpm = Math.round(t_gpm / toplamMac);
                     let ort_ilk10 = (t_ilk10cs / (gecerli_koridor_mac || 1)).toFixed(1);
 
-                    let siraliSampiyonlar = Object.entries(sampiyonSayaclari).sort((a, b) => b[1].mac - a[1].mac).slice(0, 3);
-                    let sampiyonHtml = siraliSampiyonlar.map(s => {
-                        let cWR = ((s[1].win / s[1].mac) * 100).toFixed(0); let renk = cWR >= 50 ? "#3fb950" : "#f85149";
-                        return `<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;"><img src="${resimUrlGetir(s[0])}" style="width:26px; height:26px; border-radius:50%; border: 1px solid #30363d;"><span>${formatSampiyon(s[0])} <span style="font-size:0.9em; color:#8b949e;">(${s[1].mac} Maç, <span style="color:${renk}; font-weight:bold;">%${cWR}</span>)</span></span></div>`;
+                    // 🛡️ V5.56.6 - En İyi 3 Şampiyon İçin Wilson Güven Aralığı ve Baraj
+                    let siraliSampiyonlar = Object.entries(sampiyonSayaclari).map(s => {
+                        let isim = s[0];
+                        let veri = s[1];
+                        let kdaSaf = veri.d === 0 ? (veri.k + veri.a) : ((veri.k + veri.a) / veri.d);
+                        
+                        // Wilson Motoru
+                        let n = veri.mac;
+                        let p = veri.win / n;
+                        let z = 1.96;
+                        let wilsonSkoru = (p + (z*z)/(2*n) - z * Math.sqrt((p*(1-p) + (z*z)/(4*n))/n)) / (1 + (z*z)/n);
+                        
+                        let sp = (wilsonSkoru * 100) + (Math.min(kdaSaf, 10) * 2);
+                        return { isim: isim, veri: veri, sp: sp, kda: kdaSaf };
+                    }).sort((a, b) => {
+                        // 1. KURAL: 3 Maç Barajı (1-2 maçlık tesadüfleri eler)
+                        let aGecti = a.veri.mac >= 3 ? 1 : 0;
+                        let bGecti = b.veri.mac >= 3 ? 1 : 0;
+                        
+                        if (bGecti !== aGecti) return bGecti - aGecti;
+                        
+                        // 2. KURAL: Wilson Uzmanlık Puanı
+                        if (Math.abs(b.sp - a.sp) > 0.01) return b.sp - a.sp;
+                        
+                        // Eşitlikte KDA konuşur
+                        return b.kda - a.kda;
+                    }).slice(0, 3);
+
+                    let sampiyonHtml = siraliSampiyonlar.map(s => { 
+                        let cWR = ((s.veri.win / s.veri.mac) * 100).toFixed(0); 
+                        let renk = cWR >= 50 ? "#3fb950" : "#f85149";
+                        return `<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;"><img src="${resimUrlGetir(s.isim)}" style="width:26px; height:26px; border-radius:50%; border: 1px solid #30363d;"><span>${formatSampiyon(s.isim)} <span style="font-size:0.9em; color:#8b949e;">(${s.veri.mac} Maç, <span style="color:${renk}; font-weight:bold;">%${cWR}</span>)</span></span></div>`;
                     }).join("");
 
                     let siraliRoller = Object.entries(rolSayaclari).sort((a, b) => b[1] - a[1]);
@@ -3156,7 +3295,16 @@
                         r.wr = Math.round((r.zafer / r.mac) * 100);
                         r.kda = r.d === 0 ? (r.k + r.a) : ((r.k + r.a) / r.d);
                         return r;
-                    }).sort((a, b) => b.wr !== a.wr ? b.wr - a.wr : b.kda - a.kda);
+                    }).sort((a, b) => {
+                        // 🛡️ V5.56.1 - Laplace Düzeltmesi (Şans Faktörü Cezası)
+                        let laplaceA = (a.zafer + 1) / (a.mac + 2);
+                        let laplaceB = (b.zafer + 1) / (b.mac + 2);
+                        
+                        // Laplace oranları eşit değilse, güvenli skora göre sırala
+                        if (laplaceB !== laplaceA) return laplaceB - laplaceA;
+                        // Laplace tamamen eşit çıkarsa KDA'ya göre cezayı kes
+                        return b.kda - a.kda;
+                    });
 
                     let rolSiralamasiHTML = "";
                     rolSiralamaDizisi.forEach((r, index) => {
@@ -3190,6 +3338,10 @@
                             </div>
                         `;
                     }
+		    // 🛡️ V5.57.2 - LİDERLİK TABLOSUNU EZEN MODERN MOTOR (Sezon Zırhlı)
+        if(window.modernLiderlikMotoru && gosterilecekler && gosterilecekler.length > 0) {
+            window.modernLiderlikMotoru(gosterilecekler);
+        }
                     ozetAlani.innerHTML = `
                         <div class="ozet-panosu">
                             <div class="ozet-kutu">
@@ -3226,7 +3378,7 @@
                                 <div class="ozet-liste" style="font-size: 0.95em;">
                                     <div style="display:flex; justify-content:space-between; align-items:center; width: 100%; border-bottom:1px solid #30363d; padding-bottom:4px;">
                                         <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;">Penta / Quadra / Triple / Double:</span>
-                                        <span style="color:#ffffff; font-weight:bold; white-space:nowrap;">${t_penta} / ${t_quadra} / ${t_triple} / ${t_double}</span>
+                                        <span style="color:#ffffff; font-weight:bold; white-space:nowrap;">${t_penta} / ${Math.max(0, t_quadra - t_penta)} / ${Math.max(0, t_triple - t_quadra)} / ${Math.max(0, t_double - t_triple)}</span>
                                     </div>
                                     <div style="display:flex; justify-content:space-between; align-items:center; width: 100%; border-bottom:1px solid #30363d; padding-bottom:4px;">
                                         <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;">🥷 Çalınan Objektif / 🩸 İlk Kan:</span>
@@ -3355,86 +3507,119 @@
                         sagKolon.innerHTML = sagKolonHtml;
                     }
                 } else { sagKolon.classList.add("gizle"); }
-            } 
-            else { 
-                filtreAlani.classList.remove("gizle"); sagKolon.classList.remove("gizle"); altFiltreKutusu.classList.add("gizle"); ozetAlani.innerHTML = ""; 
-                gosterilecekler.sort((a, b) => window.gercekZamanSirala(a, b));
+           } else { 
+                filtreAlani.classList.remove("gizle"); 
+                sagKolon.classList.remove("gizle"); 
+                altFiltreKutusu.classList.add("gizle"); 
+                ozetAlani.innerHTML = ""; 
 
-                let arrayVeri = []; let baslik = "🌟 KDA Şampiyonları"; 
+                // 🛡️ V5.57.10 - MUTLAK OYUN İÇİ İSİM (RIOT ID) MOTORU
+                const oyunIciIsim = (oyuncu, riot_id) => {
+                    // Özel atamalar
+                    if (oyuncu === "Kaan") return "DarkLegend97";
+                    if (oyuncu === "Taner") return "YazlıkDCFlex";
+                    if (oyuncu === "Ercan") return "MrOsleon";
+                    // Kalan herkes için veritabanındaki Riot ID (TuMu, ShenerShen vb.)
+                    return riot_id || oyuncu; 
+                };
 
-                if (aktifSiralaKriteri === "oldurme") { 
-                    baslik = "⚔️ En Yüksek Skorlar"; 
-                    arrayVeri = gosterilecekler.filter(m => m.oldurme > 0).map(m => ({ oyuncu: m.oyuncu, riot_id: m.riot_id, skor: m.oldurme, mac_id: m.mac_id, sezon: m.sezon }));
-                    arrayVeri.sort((a, b) => b.skor !== a.skor ? b.skor - a.skor : window.gercekZamanSirala(a,b));
-                }
-                else if (aktifSiralaKriteri === "olum") { 
-                    baslik = "☠️ Utanç Listesi"; 
-                    arrayVeri = gosterilecekler.filter(m => m.olum > 11).map(m => ({ oyuncu: m.oyuncu, riot_id: m.riot_id, skor: m.olum, mac_id: m.mac_id, sezon: m.sezon }));
-                    arrayVeri.sort((a, b) => b.skor !== a.skor ? b.skor - a.skor : window.gercekZamanSirala(a,b));
-                } 
-                else if (aktifSiralaKriteri === "asist") { 
-                    baslik = "🤝 En Çok Asist Yapılanlar"; 
-                    arrayVeri = gosterilecekler.filter(m => m.asist > 0).map(m => ({ oyuncu: m.oyuncu, riot_id: m.riot_id, skor: m.asist, mac_id: m.mac_id, sezon: m.sezon }));
-                    arrayVeri.sort((a, b) => b.skor !== a.skor ? b.skor - a.skor : window.gercekZamanSirala(a,b));
-                }
-                else if (aktifSiralaKriteri === "gorus") { 
-                    baslik = "👁️ En Yüksek Görüş Skorları"; 
-                    arrayVeri = gosterilecekler.filter(m => (m.gorus_skoru || 0) > 0).map(m => ({ oyuncu: m.oyuncu, riot_id: m.riot_id, skor: m.gorus_skoru, mac_id: m.mac_id, sezon: m.sezon }));
-                    arrayVeri.sort((a, b) => b.skor !== a.skor ? b.skor - a.skor : window.gercekZamanSirala(a,b));
-                }
-                else if (aktifSiralaKriteri === "csmin") { 
-                    baslik = "🗡️ Farm Liderleri (Destek Hariç)"; 
-                    let csmVeri = gosterilecekler.filter(m => m.pozisyon !== "UTILITY" && m.sure_saniye > 0);
-                    arrayVeri = csmVeri.map(m => ({ oyuncu: m.oyuncu, riot_id: m.riot_id, skor: (m.cs / (m.sure_saniye / 60)), mac_id: m.mac_id, sezon: m.sezon }));
-                    arrayVeri.sort((a, b) => b.skor !== a.skor ? b.skor - a.skor : window.gercekZamanSirala(a,b));
-                }
-                else {
-                    let tabloVerileri = {};
-                    gosterilecekler.forEach(m => {
-                        if(!tabloVerileri[m.oyuncu]) { tabloVerileri[m.oyuncu] = { oyuncu: m.oyuncu, riot_id: m.riot_id, kill: 0, death: 0, assist: 0, mac: 0, skor: 0 }; }
-                        tabloVerileri[m.oyuncu].kill += m.oldurme; tabloVerileri[m.oyuncu].death += m.olum; tabloVerileri[m.oyuncu].assist += m.asist; tabloVerileri[m.oyuncu].mac += 1;
-                    });
-                    arrayVeri = Object.values(tabloVerileri);
-                    arrayVeri.forEach(v => { v.skor = v.death === 0 ? (v.kill + v.assist) : ((v.kill + v.assist) / v.death); });
-                    arrayVeri.sort((a, b) => b.skor - a.skor);
-                }
+                // 1. OYUNCU BAZLI HAM VERİLERİ TOPLA (riot_id'yi de hafızaya çekiyoruz)
+                let pStats = {};
+                gosterilecekler.forEach(m => {
+                    if(!pStats[m.oyuncu]) { 
+                        pStats[m.oyuncu] = { 
+                            oyuncu: m.oyuncu, 
+                            riot_id: m.riot_id, // 🎯 İŞTE EKSİK OLAN KİLİT BURASIYDI
+                            mac: 0, kill: 0, death: 0, assist: 0, gorus: 0, cs: 0, sure: 0 
+                        }; 
+                    }
+                    pStats[m.oyuncu].mac++;
+                    pStats[m.oyuncu].kill += m.oldurme || 0;
+                    pStats[m.oyuncu].death += m.olum || 0;
+                    pStats[m.oyuncu].assist += m.asist || 0;
+                    pStats[m.oyuncu].gorus += m.gorus_skoru || 0;
+                    
+                    if (m.pozisyon !== "UTILITY") {
+                        pStats[m.oyuncu].cs += m.cs || 0;
+                        pStats[m.oyuncu].sure += m.sure_saniye || 0;
+                    }
+                });
 
-                if(window.aktifLiderlikOyuncu !== "Hepsi") arrayVeri = arrayVeri.filter(v => v.oyuncu === window.aktifLiderlikOyuncu);
+                let listData = Object.values(pStats).map(v => {
+                    v.kda = v.death === 0 ? (v.kill + v.assist) : ((v.kill + v.assist) / v.death);
+                    v.ortKill = v.kill / v.mac;
+                    v.ortDeath = v.death / v.mac;
+                    v.ortAssist = v.assist / v.mac;
+                    v.ortGorus = v.gorus / v.mac;
+                    v.csmin = v.sure > 0 ? (v.cs / (v.sure / 60)) : 0;
+                    
+                    if (aktifSiralaKriteri === "oldurme") { v.skor = v.ortKill; }
+                    else if (aktifSiralaKriteri === "olum") { v.skor = v.ortDeath; }
+                    else if (aktifSiralaKriteri === "asist") { v.skor = v.ortAssist; }
+                    else if (aktifSiralaKriteri === "gorus") { v.skor = v.ortGorus; }
+                    else if (aktifSiralaKriteri === "csmin") { v.skor = v.csmin; }
+                    else { v.skor = v.kda; }
+                    return v;
+                });
 
-                let listeHtml = arrayVeri.slice(0,15).map((v, index) => {
-                    let deger = aktifSiralaKriteri === "tarih" ? v.skor.toFixed(2) + " KDA" : 
-                                (aktifSiralaKriteri === "oldurme" ? v.skor + " Kill" : 
-                                (aktifSiralaKriteri === "olum" ? v.skor + " Ölüm" : 
-                                (aktifSiralaKriteri === "asist" ? v.skor + " Asist" : 
-                                (aktifSiralaKriteri === "gorus" ? v.skor + " Görüş" :
-                                v.skor.toFixed(1) + " CS/m"))));
-                                
-                    let altMetin = aktifSiralaKriteri === "tarih" ? `${v.mac} Maç` : `Detaylar için tıkla`;
-                    let clickAttr = aktifSiralaKriteri === "tarih" ? `onclick="window.profileGit('${v.oyuncu}')" class="liderlik-satir tiklanabilir-satir" data-tooltip="Oyuncu profiline git"` : `onclick="window.uygulaOzelFiltre('${aktifSiralaKriteri}', '${v.oyuncu}', '${v.mac_id || ''}')" class="liderlik-satir tiklanabilir-satir" data-tooltip="${v.oyuncu} oyuncusunun bu sabıka kaydını aç"`;
-                    let guncelId = guncelRiotID[v.oyuncu] || v.riot_id;
-                    let m_ikon = window.guncelIkonlar[v.oyuncu] || 29;
+                let kdaListe = [...listData].sort((a, b) => b.kda - a.kda);
+                let yama = typeof window.guncelYama !== 'undefined' ? window.guncelYama : "14.23.1";
 
-                    return `
-                        <div ${clickAttr}>
-                            <div class="l-sira">#${index+1}</div>
-                            <img src="${ikonUrlGetir(m_ikon)}" style="width:36px; height:36px; border-radius:50%; border:2px solid #30363d; margin:0 12px 0 5px;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
-                            <div class="l-kimlik">
-                                <div class="l-gercek">${v.oyuncu}</div>
-                                <div class="l-oyunici">${guncelId}</div>
-                            </div>
-                            <div class="l-deger">
-                                <div class="l-ana">${deger}</div>
-                                <div class="l-alt">${altMetin}</div>
-                            </div>
+                // 2. SAĞ KOLON (SABİT KDA ŞAMPİYONLARI)
+                let sagHtml = `<div class="liderlik-panosu" style="border-top-color: #d2a8ff; height: 100%;"><h3 style="color:#ffffff; margin-top:0; text-align:center;">👑 KDA Şampiyonları</h3><div style="display:flex; flex-direction:column; gap:10px;">`;
+                kdaListe.forEach((v, i) => {
+                    let ikonID = window.guncelIkonlar ? (window.guncelIkonlar[v.oyuncu] || 29) : 29;
+                    sagHtml += `
+                    <div class="liderlik-satir" onclick="window.liderlikFiltrele('${v.oyuncu}')" style="display:flex; align-items:center; padding:8px; background:rgba(0,0,0,0.3); border-radius:8px; cursor:pointer; border:1px solid transparent; transition:0.2s;" onmouseover="this.style.borderColor='#d2a8ff'" onmouseout="this.style.borderColor='transparent'">
+                        <div class="l-sira" style="color:#d2a8ff; font-weight:bold; width:25px;">#${i + 1}</div>
+                        <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/${ikonID}.png" style="width:36px; height:36px; border-radius:50%; margin-right:12px; border:2px solid #d2a8ff;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/29.png'">
+                        <div class="l-kimlik" style="flex:1;">
+                            <span class="l-gercek" style="display:block; font-weight:bold; color:#c9d1d9; font-size:1em;">${oyunIciIsim(v.oyuncu, v.riot_id)}</span>
                         </div>
-                    `;
-                }).join("");
+                        <div class="l-deger" style="text-align:right;">
+                            <div class="l-ana" style="color:#d2a8ff; font-weight:900; font-size:1.1em;">${v.kda.toFixed(2)}</div>
+                            <div class="l-alt" style="color:#8b949e; font-size:0.75em;">${v.mac} Maç Ort.</div>
+                        </div>
+                    </div>`;
+                });
+                sagHtml += `</div></div>`;
+                sagKolon.innerHTML = sagHtml; 
 
-                sagKolon.innerHTML = `<div class="liderlik-panosu"><h3 style="margin-top:0;">${baslik}</h3><div id="liste-${aktifSiralaKriteri}">${listeHtml || '<div style="text-align:center; padding: 20px; color:#8b949e;">Kayıt bulunamadı.</div>'}</div></div>`;
-                
-                // V5.31.0 LİDERLİK TABLOSUNU EZEN MODERN MOTOR BURADA ÇAĞRILIR
-                if(aktifSiralaKriteri !== "tarih" && window.tumVeriler) {
-                    modernLiderlikMotoru(window.tumVeriler);
+                // 3. SOL TABLO (VİTRİN) MANTIĞI
+                if (aktifSiralaKriteri === "tarih") {
+                    gosterilecekler.sort((a, b) => window.gercekZamanSirala ? window.gercekZamanSirala(a, b) : b.tarih_ms - a.tarih_ms);
+                } else {
+                    let solListe = [...listData].sort((a, b) => b.skor - a.skor);
+                    
+                    let solBaslik = "🌟 Ana Tablo";
+                    if(aktifSiralaKriteri === "oldurme") solBaslik = "⚔️ Kill Liderleri";
+                    else if(aktifSiralaKriteri === "olum") solBaslik = "☠️ Utanç Listesi (En Çok Ölenler)";
+                    else if(aktifSiralaKriteri === "asist") solBaslik = "🤝 Asist Kralları";
+                    else if(aktifSiralaKriteri === "gorus") solBaslik = "👁️ Görüş Liderleri";
+                    else if(aktifSiralaKriteri === "csmin") solBaslik = "🗡️ Farm Kralları (Sup Hariç)";
+
+                    let solHtml = `<div class="liderlik-panosu" style="border-top-color: #58a6ff;"><h3 style="color:#ffffff; margin-top:0; text-align:center;">${solBaslik}</h3><div style="display:flex; flex-direction:column; gap:10px;">`;
+                    solListe.forEach((v, i) => {
+                        let ikonID = window.guncelIkonlar ? (window.guncelIkonlar[v.oyuncu] || 29) : 29;
+                        solHtml += `
+                        <div class="liderlik-satir" onclick="window.liderlikFiltrele('${v.oyuncu}')" style="display:flex; align-items:center; padding:10px; background:rgba(0,0,0,0.3); border-radius:8px; cursor:pointer; border:1px solid transparent; transition:0.2s;" onmouseover="this.style.borderColor='#58a6ff'" onmouseout="this.style.borderColor='transparent'">
+                            <div class="l-sira" style="color:#58a6ff; font-weight:bold; width:30px; font-size:1.1em;">#${i + 1}</div>
+                            <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/${ikonID}.png" style="width:42px; height:42px; border-radius:50%; margin-right:15px; border:2px solid #30363d;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/29.png'">
+                            <div class="l-kimlik" style="flex:1;">
+                                <span class="l-gercek" style="display:block; font-weight:bold; color:#c9d1d9; font-size:1.1em;">${oyunIciIsim(v.oyuncu, v.riot_id)}</span>
+                            </div>
+                            <div class="l-deger" style="text-align:right;">
+                                <div class="l-ana" style="color:#ffffff; font-weight:900; font-size:1.2em;">${v.skor.toFixed(2)}</div>
+                                <div class="l-alt" style="color:#8b949e; font-size:0.8em;">${v.mac} Maç Ort.</div>
+                            </div>
+                        </div>`;
+                    });
+                    solHtml += `</div></div>`;
+
+                    vitrin.innerHTML = solHtml; 
+                    if (btnDahaFazla) btnDahaFazla.classList.add("gizle");
+                    
+                    return; 
                 }
             }
 
@@ -3630,8 +3815,8 @@ function sinerjiBas() {
     if (aktifSinerjiBoyutu === 5 || aktifSinerjiBoyutu === 3 || aktifSinerjiBoyutu === "alt_koridor" || aktifSinerjiBoyutu === 2) {
         if(bilgiKutusu) bilgiKutusu.innerHTML = `<div style="background: rgba(210, 168, 255, 0.08); border: 1px solid rgba(210, 168, 255, 0.3); border-radius: 8px; padding: 12px 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6; margin-bottom: 20px;">
         <b style="color: #d2a8ff;">ℹ️ Sinerji Puanı (SP) Nedir?</b><br>
-        Sistem, takımların kazanma oranlarına <b>Laplace Düzeltmesi</b> uygulayarak şans faktörünü (1 maçta %100 WR) eler. Buna ek olarak, bir ekip farklı rollerle (Formasyonlar) oynayıp yine de kazanabiliyorsa, sistem bu <b>Rol Esnekliğini</b> ödüllendirerek ekibin Sinerji Puanını yukarı çeker. Takım ne kadar esnekse, SP o kadar artar.
-    </div>`;
+Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matematiğini kullanarak küçük örneklemlerdeki şans faktörünü (1-2 maçlık balon performansları) tamamen eler ve ekibin güvenilir alt sınırını hesaplar. Buna <b>3 Maç Kalifikasyon Barajı</b> zorunluluğu eşlik eder. Ek olarak; bir ekip farklı rollerde (Formasyonlar) oynayıp başarıyı koruyabiliyorsa, sistem bu <b>Rol Esnekliğini</b> ekstra ödüllendirerek Sinerji Puanını (SP) yukarı çeker. Bu sıralamada tesadüflere yer yoktur; istikrar, esneklik ve mutlak veri adaleti konuşur.
+</div>`;
     }
 
     if (aktifSinerjiBoyutu === "ruya_takim" || aktifSinerjiBoyutu === "haftanin_ruya_takimi") {
@@ -3692,7 +3877,7 @@ function sinerjiBas() {
     let kompIstatistik = {};
     filtrelenmisMaclar.forEach(grup => {
         let sortedIsimler = grup.map(o => o.oyuncu).sort(); let ekipIsmi = sortedIsimler.join(" + ");
-        if(aktifSinerjiBoyutu === "alt_koridor") ekipIsmi = grup.map(o => `${o.oyuncu} (${rolCeviri[o.pozisyon]})`).sort().join(" + ");
+        if(aktifSinerjiBoyutu === "alt_koridor") ekipIsmi = grup.map(o => `${o.oyuncu} (${rolCeviri[o.pozisyon]})`).sort((a,b) => (rolSiralamaGucu[a.pozisyon] || 99) - (rolSiralamaGucu[b.pozisyon] || 99)).join(" + ");
         
         if(!kompIstatistik[ekipIsmi]) kompIstatistik[ekipIsmi] = { 
             mac: 0, zafer: 0, tk: 0, td: 0, ta: 0, t_hasar: 0, t_sifa: 0, t_cc: 0, t_gorus: 0, t_adc_cs_farki: 0,
@@ -3721,26 +3906,43 @@ function sinerjiBas() {
     });
 
     let siraliKomplar = Object.entries(kompIstatistik).map(k => {
-        let data = k[1];
-        let wrLaplace = (data.zafer + 1) / (data.mac + 2); 
-        let formasyonSayisi = Object.keys(data.formasyonlar).length;
-        let flexKatsayisi = aktifSinerjiBoyutu === "alt_koridor" ? 0 : (formasyonSayisi * 0.05); 
-        
-        let kda = data.td === 0 ? (data.tk + data.ta) : ((data.tk + data.ta) / data.td);
-        let ortHasar = data.t_hasar / data.mac;
-        let ortSifa = data.t_sifa / data.mac;
-        let ortGorus = data.t_gorus / data.mac;
-        let ortCc = data.t_cc / data.mac;
+                        let data = k[1];
+                        
+                        // 🛡️ V5.56.5 - Takım Sinerjisi İçin Wilson Güven Aralığı
+                        let n = data.mac;
+                        let p = data.zafer / n;
+                        let z = 1.96;
+                        let wilsonSkoru = (p + (z*z)/(2*n) - z * Math.sqrt((p*(1-p) + (z*z)/(4*n))/n)) / (1 + (z*z)/n);
 
-        let ortAdcCsFarki = data.t_adc_cs_farki / data.mac;
-        let csFarkiBonusu = aktifSinerjiBoyutu === "alt_koridor" ? (ortAdcCsFarki * 0.4) : 0; 
+                        let formasyonSayisi = Object.keys(data.formasyonlar).length;
+                        let flexKatsayisi = aktifSinerjiBoyutu === "alt_koridor" ? 0 : (formasyonSayisi * 0.05);
+                        let kda = data.td === 0 ? (data.tk + data.ta) : ((data.tk + data.ta) / data.td);
+                        let ortHasar = data.t_hasar / data.mac;
+                        let ortSifa = data.t_sifa / data.mac;
+                        let ortGorus = data.t_gorus / data.mac;
+                        let ortCc = data.t_cc / data.mac;
+                        let ortAdcCsFarki = data.t_adc_cs_farki / data.mac;
+                        let csFarkiBonusu = aktifSinerjiBoyutu === "alt_koridor" ? (ortAdcCsFarki * 0.4) : 0;
+                        
+                        // İlkel Laplace yerine Wilson Skorunu Sinerji Puanı (SP) hesabına zerk ediyoruz!
+                        let sp = ((wilsonSkoru + flexKatsayisi) * 100) + (kda * 2) + (ortGorus * 0.1) + ((ortHasar / 1000) * 0.15) + ((ortSifa / 500) * 0.15) + (ortCc * 0.1) + csFarkiBonusu;
+                        
+                        return { isim: k[0], mac: data.mac, zafer: data.zafer, sp: sp, kda: kda, orjinal_isimler: data.orjinal_isimler, formasyonlar: data.formasyonlar };
+                    });
 
-        let sp = ((wrLaplace + flexKatsayisi) * 100) + (kda * 2) + (ortGorus * 0.1) + ((ortHasar / 1000) * 0.15) + ((ortSifa / 500) * 0.15) + (ortCc * 0.1) + csFarkiBonusu;
-
-        return { isim: k[0], mac: data.mac, zafer: data.zafer, sp: sp, orjinal_isimler: data.orjinal_isimler, formasyonlar: data.formasyonlar };
-    });
-    
-    siraliKomplar.sort((a, b) => b.sp - a.sp);
+                    siraliKomplar.sort((a, b) => {
+                        // 🛡️ KABA KUVVET BARAJI: 3 maçı geçen 1 alır, geçemeyen 0 alır.
+                        let aGecti = a.mac >= 3 ? 1 : 0;
+                        let bGecti = b.mac >= 3 ? 1 : 0;
+                        
+                        // 1. KURAL: Barajı geçenler, geçemeyenleri gizlenmeden ezerek alta atar!
+                        if (bGecti !== aGecti) return bGecti - aGecti;
+                        
+                        // 2. KURAL: İkisi de barajı geçmişse, ağır SP puanları çarpışır
+                        if (Math.abs(b.sp - a.sp) > 0.01) return b.sp - a.sp;
+                        
+                        return b.kda - a.kda;
+                    });
 
     let tabloSatirlari = siraliKomplar.map((komp, index) => {
         let wr = ((komp.zafer / komp.mac) * 100).toFixed(0); let spSkor = komp.sp.toFixed(0); let barRengi = wr >= 50 ? "#3fb950" : "#f85149";
@@ -3773,7 +3975,7 @@ function sinerjiBas() {
     if (window.aktifSinerjiEkibi) {
         filtrelenmisMaclar = filtrelenmisMaclar.filter(grup => {
             let isimUyumu = grup.map(o => o.oyuncu).sort().join(" + ") === window.aktifSinerjiEkibi;
-            if(aktifSinerjiBoyutu === "alt_koridor") isimUyumu = grup.map(o => `${o.oyuncu} (${rolCeviri[o.pozisyon]})`).sort().join(" + ") === window.aktifSinerjiEkibi;
+            if(aktifSinerjiBoyutu === "alt_koridor") isimUyumu = grup.map(o => `${o.oyuncu} (${rolCeviri[o.pozisyon]})`).sort((a,b) => (rolSiralamaGucu[a.pozisyon] || 99) - (rolSiralamaGucu[b.pozisyon] || 99)).join(" + ") === window.aktifSinerjiEkibi;
             if (isimUyumu && window.aktifFormasyonFiltresi) return grup.map(o => `${o.oyuncu}_${o.pozisyon}`).sort().join("|") === window.aktifFormasyonFiltresi;
             return isimUyumu;
         });
@@ -3851,25 +4053,44 @@ function sinerjiBas() {
             });
 
             let siraliUzmanlar = Object.values(oyuncuRolIstatistikleri).map(veri => {
-                let sp = ((veri.zafer + 1) / (veri.mac + 2)) * 100;
-                let kdaSaf = veri.td === 0 ? (veri.tk + veri.ta) : ((veri.tk + veri.ta) / veri.td);
-                
-                let ort_ilk10cs = (veri.toplam_ilk10cs / veri.mac).toFixed(1);
-                let ort_cs_farki = Math.round(veri.toplam_cs_farki / veri.mac); 
-                let dominasyon_orani = ((veri.erken_ustunluk_sayisi / veri.mac) * 100).toFixed(0);
+                        let kdaSaf = veri.td === 0 ? (veri.tk + veri.ta) : ((veri.tk + veri.ta) / veri.td);
+                        
+                        // 🛡️ V5.56.5 - Uzmanlar İçin Wilson Güven Aralığı
+                        let n = veri.mac;
+                        let p = veri.zafer / n;
+                        let z = 1.96;
+                        let wilsonSkoru = (p + (z*z)/(2*n) - z * Math.sqrt((p*(1-p) + (z*z)/(4*n))/n)) / (1 + (z*z)/n);
 
-                // FAVORİ PARTNER BULUCU
-                let favPartner = "-";
-                if (Object.keys(veri.partnerler).length > 0) {
-                    favPartner = Object.keys(veri.partnerler).reduce((a,b) => veri.partnerler[a] > veri.partnerler[b] ? a : b);
-                }
+                        let ort_ilk10cs = (veri.toplam_ilk10cs / veri.mac).toFixed(1);
+                        let ort_cs_farki = Math.round(veri.toplam_cs_farki / veri.mac);
+                        let dominasyon_orani = (veri.erken_ustunluk_sayisi / veri.mac) * 5;
+                        
+                        let favPartner = "-";
+                        if (Object.keys(veri.partnerler).length > 0) {
+                            let partnerList = Object.entries(veri.partnerler).sort((a,b) => b[1] - a[1]);
+                            favPartner = partnerList[0][0]; 
+                        }
 
-                return { 
-                    isim: veri.isim, rol: veri.rol, veri: veri, sp: sp, kda: kdaSaf,
-                    ort_ilk10cs, ort_cs_farki, dominasyon_orani, favPartner
-                };
-            });
-            siraliUzmanlar.sort((a, b) => { if (Math.abs(b.sp - a.sp) < 0.01) return b.kda - a.kda; return b.sp - a.sp; });
+                        // Eski ilkel Laplace'ı çöpe attık, Uzmanlık Puanı (UP) artık Wilson motoruna bağlı!
+                        let csMin = (veri.cs / (veri.sure ? (veri.sure/60) : 1));
+                        let sp = (wilsonSkoru * 100) + (Math.min(kdaSaf, 10) * 2) + (csMin * 1.5) + dominasyon_orani;
+                        
+                        return { isim: veri.isim, rol: veri.rol, veri: veri, sp: sp, kda: kdaSaf, ort_ilk10cs: ort_ilk10cs, ort_cs_farki: ort_cs_farki, dominasyon_orani: dominasyon_orani, favPartner: favPartner };
+                    });
+
+                    siraliUzmanlar.sort((a, b) => {
+                        // 🛡️ KABA KUVVET BARAJI: 3 maçı geçen (1) alır, geçemeyen (0) alır.
+                        let aGecti = a.veri.mac >= 3 ? 1 : 0;
+                        let bGecti = b.veri.mac >= 3 ? 1 : 0;
+                        
+                        // 1. KURAL: Barajı geçenler, 1-2 maçlık balonları ezer!
+                        if (bGecti !== aGecti) return bGecti - aGecti;
+                        
+                        // 2. KURAL: SP Puanına göre kıyasıya rekabet
+                        if (Math.abs(b.sp - a.sp) > 0.01) return b.sp - a.sp;
+                        
+                        return b.kda - a.kda;
+                    });
 
             let roleGroups = {};
             siraliUzmanlar.forEach(u => { if(!roleGroups[u.rol]) roleGroups[u.rol] = []; roleGroups[u.rol].push(u); });
@@ -3934,14 +4155,15 @@ function sinerjiBas() {
 
         // V5.31.5 - MODERN VE OTOMATİK SEKME YÖNETİM MOTORU
         const modlar = [
+            { id: "sunucu", btn: "btn-mod-sunucu", arayuz: "arayuz-sunucu" },
             { id: "bireysel", btn: "btn-mod-bireysel", arayuz: "arayuz-bireysel" },
             { id: "sinerji", btn: "btn-mod-sinerji", arayuz: "arayuz-sinerji" },
             { id: "sampiyon", btn: "btn-mod-sampiyon", arayuz: "arayuz-sampiyon" },
-            { id: "yama", btn: "btn-mod-yama", arayuz: "arayuz-yama" },
             { id: "esya", btn: "btn-mod-esya", arayuz: "arayuz-esya" },
             { id: "run", btn: "btn-mod-run", arayuz: "arayuz-run" },
             { id: "komp", btn: "btn-mod-komp", arayuz: "arayuz-komp" },
-            { id: "rotasyon", btn: "btn-mod-rotasyon", arayuz: "arayuz-rotasyon" }
+            { id: "rotasyon", btn: "btn-mod-rotasyon", arayuz: "arayuz-rotasyon" },
+            { id: "yama", btn: "btn-mod-yama", arayuz: "arayuz-yama" }
         ];
 
         modlar.forEach(mod => {
@@ -4091,107 +4313,7 @@ function sinerjiBas() {
             listeyiCiz("liste-farm", [...ortalamaVeriler], "ortCs", "CS/Dk");
         }
 
-        document.addEventListener("click", function(e) {
-            let id = e.target.id;
-            let liderlikButonlari = ["btn-oldurme", "btn-olum", "btn-asist", "btn-gorus", "btn-csmin"];
-            
-            if (liderlikButonlari.includes(id)) {
-                e.stopPropagation(); e.preventDefault();
-                
-                document.querySelectorAll("#ana-filtreler .filtre-btn").forEach(b => b.classList.remove("aktif"));
-                e.target.classList.add("aktif");
-
-                let kaynakVeri = window.tumVeriler || window.filtrelenmisVeriler;
-                if (!kaynakVeri || kaynakVeri.length === 0) return;
-
-                let oyuncuIstatistikleri = {};
-
-                kaynakVeri.forEach(mac => {
-                    let isim = mac.oyuncu;
-                    if (!oyuncuIstatistikleri[isim]) {
-                        oyuncuIstatistikleri[isim] = {
-                            oyuncu: isim, ikon: window.guncelIkonlar ? window.guncelIkonlar[isim] || mac.profil_ikonu || 29 : mac.profil_ikonu || 29,
-                            macSayisi: 0, toplamSkor: 0, toplamOlum: 0, toplamAsist: 0, toplamGorus: 0,
-                            toplamCs: 0, csMacSayisi: 0 // 🎯 YENİ
-                        };
-                    }
-                    
-                    let oyunSuresiDk = (Number(mac.sure_saniye) || 60) / 60;
-                    let dakikadaMinyon = (Number(mac.cs) || 0) / oyunSuresiDk;
-
-                    oyuncuIstatistikleri[isim].toplamSkor += Number(mac.oldurme) || 0;
-                    oyuncuIstatistikleri[isim].toplamOlum += Number(mac.olum) || 0;
-                    oyuncuIstatistikleri[isim].toplamAsist += Number(mac.asist) || 0;
-                    oyuncuIstatistikleri[isim].toplamGorus += Number(mac.gorus_skoru) || 0;
-                    
-                    // 🛑 DESTEK ZIRHI
-                    if (mac.pozisyon !== "UTILITY") {
-                        oyuncuIstatistikleri[isim].toplamCs += dakikadaMinyon;
-                        oyuncuIstatistikleri[isim].csMacSayisi += 1;
-                    }
-
-                    oyuncuIstatistikleri[isim].macSayisi += 1;
-                });
-
-                let ortalamaVeriler = Object.values(oyuncuIstatistikleri).map(p => {
-                    return {
-                        oyuncu: p.oyuncu, ikon: p.ikon, macSayisi: p.macSayisi,
-                        ortSkor: p.macSayisi > 0 ? (p.toplamSkor / p.macSayisi) : 0, 
-                        ortOlum: p.macSayisi > 0 ? (p.toplamOlum / p.macSayisi) : 0,
-                        ortAsist: p.macSayisi > 0 ? (p.toplamAsist / p.macSayisi) : 0, 
-                        ortGorus: p.macSayisi > 0 ? (p.toplamGorus / p.macSayisi) : 0, 
-                        ortCs: p.csMacSayisi > 0 ? (p.toplamCs / p.csMacSayisi) : 0 // 🎯 Koridor maçı böleni
-                    };
-                });
-
-                let siralamaKriteri = "ortSkor"; let formatEki = "Ort. Kill";
-                if (id === "btn-olum") { siralamaKriteri = "ortOlum"; formatEki = "Ort. Ölüm"; }
-                else if (id === "btn-asist") { siralamaKriteri = "ortAsist"; formatEki = "Ort. Asist"; }
-                else if (id === "btn-gorus") { siralamaKriteri = "ortGorus"; formatEki = "Ort. Görüş"; }
-                else if (id === "btn-csmin") { siralamaKriteri = "ortCs"; formatEki = "CS/Dk"; }
-
-                ortalamaVeriler.sort((a, b) => b[siralamaKriteri] - a[siralamaKriteri]);
-                let top10 = ortalamaVeriler.slice(0, 10);
-
-                let kutu = document.getElementById("bireysel-veriler");
-                if (!kutu) return;
-                kutu.innerHTML = ""; 
-
-                let yama = window.guncelYama || (typeof guncelYama !== 'undefined' ? guncelYama : "14.23.1");
-
-                top10.forEach((kisi, index) => {
-                    let div = document.createElement("div");
-                    div.style.display = "flex"; div.style.justifyContent = "space-between"; div.style.alignItems = "center";
-                    div.style.padding = "15px"; div.style.marginBottom = "10px";
-                    div.style.backgroundColor = "rgba(22, 27, 34, 0.8)"; div.style.border = "1px solid #30363d"; div.style.borderRadius = "8px";
-
-                    let podyumRenk = "#c9d1d9"; let madalya = `${index + 1}.`; let podyumShadow = "none"; let madalyaBoyut = "1.2em";
-                    if (index === 0) { podyumRenk = "#ffd700"; madalya = "🥇"; podyumShadow = "0 0 10px rgba(255, 215, 0, 0.8)"; madalyaBoyut = "2.2em"; }
-                    else if (index === 1) { podyumRenk = "#c0c0c0"; madalya = "🥈"; podyumShadow = "0 0 8px rgba(192, 192, 192, 0.7)"; madalyaBoyut = "1.8em"; }
-                    else if (index === 2) { podyumRenk = "#cd7f32"; madalya = "🥉"; podyumShadow = "0 0 8px rgba(205, 127, 50, 0.6)"; madalyaBoyut = "1.5em"; }
-
-                    div.innerHTML = `
-                        <div style="display:flex; align-items:center; gap:15px; color:${podyumRenk}; text-shadow:${podyumShadow}; font-weight:bold;">
-                            <div style="width: 45px; display: flex; justify-content: center; align-items: center; font-size: ${madalyaBoyut}; flex-shrink: 0;">${madalya}</div>
-                            <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/${kisi.ikon}.png" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/29.png'" style="width:45px; height:45px; border-radius:50%; border:2px solid ${podyumRenk}; object-fit: cover; flex-shrink: 0;">
-                            <div style="display: flex; flex-direction: column; line-height: 1.2;">
-                                <span style="font-size: 1.05em; font-weight: bold; color: #ffffff; white-space: nowrap;">${guncelRiotID[kisi.oyuncu] || kisi.oyuncu}</span>
-                                <span style="font-size: 0.8em; color: #8b949e; font-style: italic;">${kisi.oyuncu}</span>
-                            </div>
-                        </div>
-                        <div style="text-align: right; line-height: 1.3;">
-                            <span style="color:#ffffff; font-weight:bold; font-size:1.4em;">${kisi[siralamaKriteri].toFixed(1)}</span> <span style="color:#a09b8c; font-size:0.9em;">${formatEki}</span><br>
-                            <span style="font-size:0.8em; color:#8b949e;">(${kisi.macSayisi} Maç)</span>
-                        </div>
-                    `;
-                    kutu.appendChild(div);
-                });
-
-                let btnDahaFazla = document.getElementById("btn-daha-fazla-bireysel");
-                if(btnDahaFazla) btnDahaFazla.classList.add("gizle");
-            }
-        }, true);
-
+        
 	// EŞYA HESAPLAMA MOTORU
         function oyuncuEsyaIstatistikleriniHesapla(esyaIdDizisi) {
             let toplamAltin = 0;
@@ -4389,6 +4511,101 @@ function sinerjiBas() {
             }
         }
         
+	// 🛡️ V5.57.1 - Makro Veri: Bölge Kontrolü ve Riot ID Entegreli Rol Pastası
+        window.sunucuOzetiniCiz = function(veriHavuzu) {
+            let roller = {
+                "TOP": { ad: "Üst Koridor", ikon: "🛡️", oyuncular: {}, toplam: 0 },
+                "JUNGLE": { ad: "Orman", ikon: "🌳", oyuncular: {}, toplam: 0 },
+                "MIDDLE": { ad: "Orta Koridor", ikon: "🔥", oyuncular: {}, toplam: 0 },
+                "BOTTOM": { ad: "Nişancı", ikon: "🏹", oyuncular: {}, toplam: 0 },
+                "UTILITY": { ad: "Destek", ikon: "✨", oyuncular: {}, toplam: 0 }
+            };
+
+            let oyuncuRenkleri = {};
+            const renkPaleti = ["#ff5722", "#4caf50", "#2196f3", "#e91e63", "#9c27b0", "#ff9800", "#00bcd4", "#8bc34a", "#f44336", "#3f51b5", "#cddc39", "#795548", "#009688", "#673ab7", "#ffc107", "#03a9f4", "#e64a19"];
+            let renkIndex = 0;
+
+            // Veritabanını tarayıp kimin hangi rolle, hangi hesaplarla oynadığını çekiyoruz
+            veriHavuzu.forEach(m => {
+                let p = m.pozisyon;
+                let oyuncu = m.oyuncu;
+                let riotId = m.riot_id || "Bilinmiyor";
+                
+                if(roller[p] && oyuncu) {
+                    if(!roller[p].oyuncular[oyuncu]) {
+                        roller[p].oyuncular[oyuncu] = { mac: 0, hesaplar: new Set() };
+                    }
+                    roller[p].oyuncular[oyuncu].mac++;
+                    roller[p].oyuncular[oyuncu].hesaplar.add(riotId);
+                    roller[p].toplam++;
+
+                    if(!oyuncuRenkleri[oyuncu]) {
+                        oyuncuRenkleri[oyuncu] = renkPaleti[renkIndex % renkPaleti.length];
+                        renkIndex++;
+                    }
+                }
+            });
+
+            let htmlIcerik = `<div style="display: flex; flex-wrap: wrap; gap: 25px; justify-content: center; margin-top: 15px;">`;
+
+            Object.keys(roller).forEach(rolKey => {
+                let rolData = roller[rolKey];
+                if(rolData.toplam === 0) return; 
+
+                // Maç sayısına göre büyükten küçüğe sırala
+                let siraliOyuncular = Object.entries(rolData.oyuncular).sort((a,b) => b[1].mac - a[1].mac);
+                
+                let conicString = "";
+                let baslangic = 0;
+                let legendHtml = "";
+
+                siraliOyuncular.forEach(o => {
+                    let isim = o[0];
+                    let mac = o[1].mac;
+                    let hesapListesi = Array.from(o[1].hesaplar).join(" / ");
+                    let yuzde = (mac / rolData.toplam) * 100;
+                    let bitis = baslangic + yuzde;
+                    let renk = oyuncuRenkleri[isim]; 
+                    
+                    conicString += `${renk} ${baslangic}% ${bitis}%, `;
+                    baslangic = bitis;
+
+                    legendHtml += `
+                        <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05); font-size:0.9em;">
+                            <div style="display:flex; flex-direction:column; gap:2px; color:#c9d1d9;">
+                                <div style="display:flex; align-items:center; gap:8px; font-weight:bold;">
+                                    <div style="width:12px; height:12px; background:${renk}; border-radius:3px; box-shadow: 0 0 5px ${renk}80;"></div> 
+                                    ${isim}
+                                </div>
+                                <div style="font-size:0.75em; color:#8b949e; margin-left:20px; font-style:italic;">${hesapListesi}</div>
+                            </div>
+                            <div style="font-weight:900; color:#fff; text-align:right;">
+                                %${yuzde.toFixed(1)} <br><span style="font-size:0.75em; color:#8b949e; font-weight:normal;">(${mac} Maç)</span>
+                            </div>
+                        </div>`;
+                });
+                conicString = conicString.slice(0, -2); 
+
+                htmlIcerik += `
+                    <div style="background: rgba(0, 0, 0, 0.3); padding: 25px; border-radius: 12px; border: 1px dashed #30363d; width: 320px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+                        <div style="font-size: 1.2em; font-weight: 900; color: #c9d1d9; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">${rolData.ikon} ${rolData.ad}</div>
+                        
+                        <div style="width: 180px; height: 180px; border-radius: 50%; background: conic-gradient(${conicString}); box-shadow: 0 0 25px rgba(0,0,0,0.5); border: 4px solid #21262d; margin-bottom: 25px; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"></div>
+                        
+                        <div style="width: 100%; display: flex; flex-direction: column; max-height: 240px; overflow-y: auto; padding-right: 5px;" class="custom-scrollbar">
+                            ${legendHtml}
+                        </div>
+                    </div>
+                `;
+            });
+
+            htmlIcerik += `</div>`;
+
+            let pastaKutusu = document.getElementById("sunucu-rol-pastasi");
+            if(pastaKutusu) {
+                pastaKutusu.innerHTML = htmlIcerik;
+            }
+        };
         // Sayfa yüklendiğinde motoru ateşle
         setTimeout(yamaOtomasyonunuAtesle, 100);
         setTimeout(mutlakRunMotorunuAtesle, 1000);
