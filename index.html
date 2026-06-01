@@ -383,7 +383,7 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.58.7</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.58.8</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
@@ -840,8 +840,25 @@
     <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">YAZLIKDC.GG SÜRÜM GEÇMİŞİ (PATCH NOTES)</h2>
    
     <div class="yama-karti">
-        <div class="yama-baslik">v5.58.5 - v5.58.7 - Kurumsal Kimlik ve Görsel Hiyerarşi Reformu <span
+        <div class="yama-baslik">v5.58.8 - Davranışsal Kalibrasyon: "Kaos Analiz Motoru" <span
                 class="yama-tarih">Güncel</span></div>
+        <ul class="yama-liste">
+            <li><strong>[v5.58.8] "Dengeli Taşıyıcı" İllüzyonu Kaldırıldı:</strong> Sabotaj (troll) oyunlarını yüksek asist
+                sayılarıyla gizleyip sistemimizi "Dengeli" etiketiyle kandıran oyuncular için <b>"Kaos Analiz Motoru"</b>
+                devreye alındı.</li>
+            <li><strong>[Davranışsal Filtreleme] Asist Kalkanı Aşımı:</strong> Motor artık asist sayılarını, toplam ölümler
+                ve skor katkısı ile kıyaslıyor. Yüksek asist ortalamasına rağmen ölüm sayısı
+                <code>Ölüm > (Kill + Asist/3)</code> eşiğini aşan oyuncular, "Dengeli Taşıyıcı" maskesinden çıkarılıp gerçek
+                davranışsal etiketlerine (örn: <i>Kaosun Efendisi</i>) yerleştiriliyor.</li>
+            <li><strong>[Veri Bilimi] Kümülatif Sabotaj Frekansı:</strong> Sadece genel ortalamaya değil, oyuncunun toplam
+                maç havuzundaki sabotaj frekansına (%12 ve üzeri) bakılarak, kümülatif başarısızlıklar istatistiksel
+                gürültüden (noise) arındırıldı.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.58.5 - v5.58.7 - Kurumsal Kimlik ve Görsel Hiyerarşi Reformu <span
+                class="yama-tarih"></span></div>
         <ul class="yama-liste">
             <li><strong>[v5.58.5] Web'in İnşaat Tabelası Söküldü:</strong> Tarayıcı sekmesinde görünen standart "gri dünya"
                 ikonu tarihe karıştı. <code>&lt;head&gt;</code> anatomisine yapılan müdahale ile proje resmi <b>Favicon</b>
@@ -2296,46 +2313,60 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
             return e.join("");
         }
 
-        function davranisHesapla(k, d, a, rol, vizyon, kontrol, cs_dk) {
-            let kdaSaf = d === 0 ? (k + a) : ((k + a) / d); 
-            let skorKatkisi = k + a;
+        function davranisHesapla(k, d, a, rol, vizyon, kontrol, cs_dk, sabotajOrani = 0) {
+                let kdaSaf = d === 0 ? (k + a) : ((k + a) / d);
+                let skorKatkisi = k + a;
 
-            if (rol === "UTILITY") {
-                if (cs_dk > 2.0) return "💸 Vergi Memuru (Minyon Çalan)";
-                if (vizyon < 20 && kontrol < 2) return "🤡 Vizyonsuz (Karanlıkta Kalan)";
-                if (k >= 6 && a <= 8) return "⚔️ Sahte Destek (Skor Avcısı)";
-                if (vizyon >= 50 && kontrol >= 5 && kdaSaf >= 3.0) return "👁️ Harita Hakimi";
-                if (d >= 8 && a >= 15) return "🛡️ Cefakar Koruyucu";
-                if (kdaSaf >= 4.0 && a >= 15) return "👼 Kusursuz Melek";
-                return "🤝 Standart Destek";
+                // YENİ: SABOTAJ İSTATİSTİĞİ (Umut Abi Filtresi)
+                // 1. ZIRH DELİCİ: Eğer oyuncu maçın %12'sinden fazlasında (31/258) Sabotaj etiketi yemişse 
+                // ve aynı zamanda ölüm ortalaması 7'nin üzerindeyse, asist kalkanı seni kurtaramaz.
+                if (sabotajOrani > 0.12 && d > 7.0) return "🤡 Kaosun Efendisi (Sabotajcı)";
+
+                // 2. YASUO SENDROMU GÜNCELLEMESİ: 
+                // Umut abi ölümlerini asistlerle gizliyor. Eğer Ölüm > Kill + (Asist/3) ise durum vahimdir.
+                if (d > (k + (a / 3))) return "⚠️ Pervasız (Kaosun Kölesi)";
+
+                // --- 0. KATMAN: SABOTAJ VE FELAKET KONTROLÜ (Tüm roller için geçerli) ---
+                // Eğer ölüm sayısı çok yüksekse ve skor katkısı çok düşükse, diğer hiçbir etikete bakma.
+                if (d >= 8 && kdaSaf < 1.0) return "📉 Sabotaj Uzmanı (Ağır Yük)";
+                if (d >= 10) return "🤡 Tam Bir Felaket";
+
+                // --- 1. KATMAN: UTILITY (DESTEK) ---
+                if (rol === "UTILITY") {
+                    if (cs_dk > 2.0) return "💸 Vergi Memuru (Minyon Çalan)";
+                    if (vizyon < 20 && kontrol < 2) return "🤡 Vizyonsuz (Karanlıkta Kalan)";
+                    if (kdaSaf >= 4.0 && a >= 15) return "👼 Kusursuz Melek";
+                    if (d >= 8 && a >= 15) return "🛡️ Cefakar Koruyucu";
+                    return "🤝 Standart Destek";
+                }
+
+                // --- 2. KATMAN: MIDDLE & BOTTOM ---
+                if (rol === "MIDDLE" || rol === "BOTTOM") {
+                    if (d >= 9 && kdaSaf < 1.5) return "☠️ Kara Delik (Ağır Yük)";
+                    if (cs_dk >= 8.0 && kdaSaf >= 3.0) return "💰 Kusursuz Makine";
+                    if (k >= 12 && kdaSaf >= 4.0) return "🌟 Hiper Taşıyıcı";
+                    if (d >= 8 && k < d) return "⚠️ Pervasız (Yasuo Sendromu)";
+                    return "⚖️ Dengeli Taşıyıcı";
+                }
+
+                // --- 3. KATMAN: JUNGLE ---
+                if (rol === "JUNGLE") {
+                    if (d >= 8 && kdaSaf < 1.5) return "⚠️ Ormanda Kayıp";
+                    if (cs_dk >= 7.0 && skorKatkisi < 5) return "💤 AFK Çiftçi (Sadece Orman)";
+                    if (k >= 8 && d <= 4) return "🐺 Kusursuz Avcı";
+                    return "🌲 Görev Adamı";
+                }
+
+                // --- 4. KATMAN: TOP ---
+                if (rol === "TOP") {
+                    if (d >= 8 && k < 4) return "⚠️ Üst Koridor Kurbanı";
+                    if (cs_dk >= 7.5 && skorKatkisi <= 6) return "🏰 Saf Ayrık İttirici";
+                    if (kdaSaf >= 3.0 && d <= 3) return "🛡️ Sarsılmaz Titanyum";
+                    return "🗿 Kaya Gibi (Standart)";
+                }
+
+                return "⚖️ Standart Oynanış";
             }
-            if (rol === "MIDDLE" || rol === "BOTTOM") {
-                if (cs_dk >= 8.0 && kdaSaf >= 3.0) return "💰 Kusursuz Makine";
-                if (k >= 12 && kdaSaf >= 4.0) return "🌟 Hiper Taşıyıcı";
-                if (k >= 10 && d >= 8) return "⚔️ Kanlı Gladyatör (Agresif)";
-                if (cs_dk < 5.0 && skorKatkisi < 5) return "👻 Hayalet (Oyunda Yok)";
-                if (d >= 9 && kdaSaf < 1.5) return "☠️ Kara Delik (Ağır Yük)";
-                if (d >= 8 && k < d) return "⚠️ Pervasız (Yasuo Sendromu)"; 
-                return "⚖️ Dengeli Taşıyıcı";
-            }
-            if (rol === "JUNGLE") {
-                if (cs_dk >= 7.0 && skorKatkisi < 5) return "💤 AFK Çiftçi (Sadece Orman)";
-                if (cs_dk < 4.5 && skorKatkisi >= 12) return "🥷 Durmak Bilmeyen Baskıncı";
-                if (k >= 8 && d <= 4) return "🐺 Kusursuz Avcı";
-                if (vizyon >= 35 && kontrol >= 4) return "🗺️ Taktiksel Deha";
-                if (d >= 8 && kdaSaf < 1.5) return "⚠️ Ormanda Kayıp";
-                return "🌲 Görev Adamı";
-            }
-            if (rol === "TOP") {
-                if (cs_dk >= 7.5 && skorKatkisi <= 6) return "🏰 Saf Ayrık İttirici (Split Pusher)";
-                if (kdaSaf >= 3.0 && d <= 3) return "🛡️ Sarsılmaz Titanyum";
-                if (k >= 8 && d >= 8) return "🥊 Boksör (Sürekli Takas)";
-                if (cs_dk < 5.0 && d >= 8) return "🏚️ İzole ve Yıkık";
-                if (d >= 8 && k < 4) return "⚠️ Üst Koridor Kurbanı";
-                return "🗿 Kaya Gibi (Standart)";
-            }
-            return "⚖️ Standart Oynanış";
-        }
 
 	// 🚀 V5.55.0 - AKILLI MUTLAK POP-UP MOTORU (Sarı Kutuları Kökten Engelleyen Zırh)
         window.gosterMutlakPopup = function(e, baslik, icerik, renk) {
@@ -3364,11 +3395,10 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                         let rOrtK = v.k / v.mac, rOrtD = v.d / v.mac, rOrtA = v.a / v.mac;
                         let rOrtVizyon = v.vizyon / v.mac, rOrtKontrol = v.kontrol / v.mac;
                         let rolIciCsDk = v.sure > 0 ? (v.cs / (v.sure / 60)) : 0;
-                        
-                        // Motoru sadece o rolün içindeki farm ve KDA ile çağırıyoruz!
-                        let rozet = davranisHesapla(rOrtK, rOrtD, rOrtA, rol, rOrtVizyon, rOrtKontrol, rolIciCsDk);
-                        let kisaRol = {"TOP": "ÜST KORİDOR", "JUNGLE": "ORMAN", "MIDDLE": "ORTA KORİDOR", "BOTTOM": "NİŞANCI", "UTILITY": "DESTEK"}[rol] || rol;
-                        
+                        let oAnkiSabotajOrani = (typeof utancSayisi !== 'undefined' && typeof toplamMac !== 'undefined' && toplamMac > 0) ? (utancSayisi / toplamMac) : 0;
+                        let rozet = davranisHesapla(rOrtK, rOrtD, rOrtA, rol, rOrtVizyon, rOrtKontrol, rolIciCsDk, oAnkiSabotajOrani);
+                        let kisaRol = { "TOP": "ÜST KORİDOR", "JUNGLE": "ORMAN", "MIDDLE": "ORTA KORİDOR", "BOTTOM": "NİŞANCI", "UTILITY": "DESTEK" }[rol] || rol;
+
                         oyunTarziHtml += `<span style="display:inline-block; background:rgba(88,166,255,0.1); border:1px solid #58a6ff; color:#58a6ff; padding:4px 10px; border-radius:8px; font-size:0.85em; font-weight:bold; margin-right:8px; margin-top:10px;">${kisaRol}: ${rozet}</span>`;
                     });
 
