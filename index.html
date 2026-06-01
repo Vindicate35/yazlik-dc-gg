@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ydc.gg - Yazlik DC Analysis Hub</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <style>
         body { font-family: 'Urbanist', 'Segoe UI', sans-serif; background-color: #0d1117; color: #c9d1d9; padding: 20px; margin: 0; }
         .ust-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 0 20px; }
@@ -353,14 +354,13 @@
         /* 3. Maç kartı başlıklarındaki (Sekme KAPALIYKEN) Anahtar Rünleri 30px yapma ve Altın Zırh enjeksiyonu */
         .mac-ust-bilgi img[src*="perk-images"], 
         .mac-ust-bilgi img[src*="perks"],
-        div[class*="ust"] img[src*="perk"],
         .mac-ust-bilgi .s-ikon + img {
-            width: 30px !important; /* Açık karttaki anahtar rün boyutuyla eşitlendi */
+            width: 30px !important;
             height: 30px !important;
-            border: 2px solid #ffd700 !important; /* Altın Çerçeve */
-            box-shadow: 0 0 8px rgba(255, 215, 0, 0.6) !important; /* Parlama Aurası */
+            border: 2px solid #c8aa6e !important; /* Cırtlak sarı yerine Asil Altın */
+            box-shadow: 0 0 8px rgba(200, 170, 110, 0.6) !important;
             border-radius: 50% !important;
-            background: #000 !important;
+            background: transparent !important; /* Siyah arkaplan İMHA EDİLDİ */
             vertical-align: middle;
             margin-right: 10px !important;
             margin-left: 5px !important;
@@ -383,7 +383,7 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.57.11</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.58.7</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
@@ -722,10 +722,10 @@
                 <h3 style="color:#ffd700; margin-top:0;">Döngüsel Sayaç Kuramı</h3>
                 <p style="color:#8b949e; line-height: 1.5; font-size: 0.95em;">League of Legends'ta kompozisyonlar dev bir taş-kağıt-makas oyunudur. İstisnalar olsa da altın kural şudur:</p>
                 <ul style="color:#c9d1d9; line-height: 1.8;">
-                    <li><b>Suikastçılar 🗡️</b> -> <i>Nişancıları ve Büyücüleri</i> tekler.</li>
-                    <li><b>Tanklar / Eziciler 🛡️</b> -> <i>Suikastçıların</i> hasarını soğurur ve onları ezer.</li>
-                    <li><b>Sürekli Hasar (DPS/Nişancı) 🏹</b> -> Uzun savaşlarda <i>Tankları</i> eritir.</li>
-                    <li><b>Dürtme (Poke) 🪄</b> -> Takım savaşından önce düşmanı yıpratır, ancak <i>Ağır Engage (Sert Giriş)</i> komplarına karşı erir.</li>
+                    <li><b>Suikastçılar 🗡️</b> &rarr; <i>Nişancıları ve Büyücüleri</i> tekler.</li>
+                    <li><b>Tanklar / Eziciler 🛡️</b> &rarr; <i>Suikastçıların</i> hasarını soğurur ve onları ezer.</li>
+                    <li><b>Sürekli Hasar (DPS/Nişancı) 🏹</b> &rarr; Uzun savaşlarda <i>Tankları</i> eritir.</li>
+                    <li><b>Dürtme (Poke) 🪄</b> &rarr; Takım savaşından önce düşmanı yıpratır, ancak <i>Ağır Engage (Sert Giriş)</i> komplarına karşı erir.</li>
                 </ul>
             </div>
 
@@ -838,9 +838,49 @@
     <div id="arayuz-yama" class="gizle" style="max-width: 1000px; margin: 0 auto;">
     
     <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">YAZLIKDC.GG SÜRÜM GEÇMİŞİ (PATCH NOTES)</h2>
+   
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.58.5 - v5.58.7 - Kurumsal Kimlik ve Görsel Hiyerarşi Reformu <span
+                class="yama-tarih">Güncel</span></div>
+        <ul class="yama-liste">
+            <li><strong>[v5.58.5] Web'in İnşaat Tabelası Söküldü:</strong> Tarayıcı sekmesinde görünen standart "gri dünya"
+                ikonu tarihe karıştı. <code>&lt;head&gt;</code> anatomisine yapılan müdahale ile proje resmi <b>Favicon</b>
+                desteğine kavuştu. Yazlık DC artık sekmelerde kurumsal kimliğiyle boy gösteriyor.</li>
+            <li><strong>[UI/UX] Rün Görselleştirme Motoru Yenilendi:</strong> Bireysel istatistikler ve ana kartlardaki rün
+                ikonları, Riot Games'in "E-Spor Premium Arayüz" standartlarına uyarlandı.</li>
+            <li><strong>[v5.58.6] Karanlık Çağ Kapandı:</strong> Rün ikonlarının arkasındaki hatalı siyah (background:#000)
+                katmanlar imha edildi. İkonlar artık tamamen şeffaf, derinlik algısı (drop-shadow) yüksek ve altın çerçeve
+                hiyerarşisiyle çok daha net bir görünüme sahip.</li>
+            <li><strong>[v5.58.7] CSS Sniper Temizliği:</strong> Tüm kartları istemsizce bozan "serseri mayın" (wildcard)
+                CSS seçicileri temizlendi. Özellikle <code>kart-ust</code> sınıfındaki kartların görsel hiyerarşisi, Sinerji
+                sekmeleriyle senkronize edildi. Artık "Bireysel" ve "Sinerji" sekmeleri arasında görsel tutarsızlık
+                bulunmuyor.</li>
+            <li><strong>[Optimizasyon] Görsel Yükü Azaltıldı:</strong> Rün çizim motorundaki redundant (gereksiz) stil
+                blokları ayıklandı, sayfa render süreci daha temiz ve hafif hale getirildi.</li>
+        </ul>
+    </div>
+    
+   <div class="yama-karti">
+        <div class="yama-baslik">v5.58.1 - v5.58.4 - Medeniyete Geçiş ve Yapay Zeka Hakemi <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>[v5.58.1] Kompakt E-Spor Düzeni & Flexbox Zırhı:</strong> Maç kartlarında havada uçuşan KDA (Örn: 19/7/7) ve rozet kargaşası bitti. Özel CSS Flexbox zırhı giydirilerek tüm istatistikler, Zafer/Bozgun yazısının hemen sağına, OP.GG standartlarında jilet gibi sabitlendi. Liderlik panolarındaki gereksiz genişlik budandı ve Şafak'ın ismi tüm sayfalarda "s2s" kısaltmasıyla e-spor kimliğine kavuşturuldu.</li>
+            <li><strong>[v5.58.2] IDE Göçü ve Motor Optimizasyonu:</strong> İlkel geliştirme ortamı terk edilip, anlık hata tespiti sağlayan VS Code ve Live Server altyapısına (Medeniyete) geçildi. Sistemi yoran ve arka planda boşuna dönen hayalet <code>listeyiCiz</code> kodları tamamen imha edilerek motor yükü hafifletildi.</li>
+            <li><strong>[v5.58.3] Sabotaj Radarı V2.0 (Makro Analiz):</strong> Eski kör algoritma parçalandı. "Büyük Kapı" kuralıyla 11 ve altı ölümü olanlara mutlak dokunulmazlık getirildi. Takım skorunun %50'sinden fazlasına katkı sağlayan taşıyıcılara <b>"Fedakar Savaşçı"</b> kalkanı entegre edildi. 0 Kill ve düşük asistli "Faydasız" profillerin ise gözünün yaşına bakılmayacak.</li>
+            <li><strong>[v5.58.4] Dinamik Tolerans ve Tempo Katilleri:</strong> Bir maçtaki kronik ölüm sınırı 15'e çekildi (Kalkanı olan fedakarlar için oyunun uzadığı varsayılarak sınır 17'ye esner). Takım ölümlerinin <b>%25'inden fazlasını</b> tek başına alan normal roller sabotajcı fişi yerken; takım için feda edilen Destek (Utility) rolündeki oyunculara özel bir izolasyon yapılarak bu oran <b>%33.3 (Üçte Bir)</b> sınırına çekildi.</li>
+        </ul>
+    </div>
 
    <div class="yama-karti">
-        <div class="yama-baslik">v5.57.11 - Adil Yargılama: Sabotaj (Troll) Motoru Revizyonu <span class="yama-tarih">Yeni</span></div>
+        <div class="yama-baslik">v5.57.12 - v5.57.13 Rol İzolasyonu ve Podyum Revizyonu <span class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>[v5.57.12] İstatistik İzolasyonu ve Çoklu Davranış Motoru:</strong> Destek (Sup) oyuncularının haksız yere "Vergi Memuru" damgası yemesine sebep olan genel farm (CS) hesabı parçalandı. Artık destek maçlarındaki minyon verileri, taşıyıcı rolündeki ortalamayı zehirlemiyor. Ayrıca tek tip rozet devri kapandı; oyuncunun en çok oynadığı 2 role özel, yan yana sergilenen bağımsız davranış etiketleri (Örn: [Sup: Cefakar Koruyucu] [Mid: Dengeli Taşıyıcı]) profillere entegre edildi.</li>
+            <li><strong>[v5.57.13] Çift Katmanlı Kimlik (E-Spor UI):</strong> Liderlik tablolarındaki ve KDA listelerindeki isim gösterimleri yenilendi. Kartlarda artık üstte kalın puntolarla oyuncunun <b>Gerçek İsmi</b>, hemen altında ise daha ince ve zarif bir gri tonla <b>Riot ID (Oyun İçi İsim)</b> yer alıyor.</li>
+            <li><strong>[v5.57.13] Podyum ve CSS İllüzyonu (Kafatası Madalyaları):</strong> Tüm sıralama tablolarındaki sıkıcı sayıların yerini ilk 3 sıraya özel büyütülmüş Altın (🥇), Gümüş (🥈) ve Bronz (🥉) madalyalar aldı. Sınırları zorlayıp <b>"Utanç Listesi"</b> için özel bir CSS katmanlandırması (Absolute Positioning) kullandık; madalyaların sayısını kapatmadan kurdele kısmına Kafatası (💀) zımbalandı.</li>
+        </ul>
+    </div>
+
+   <div class="yama-karti">
+        <div class="yama-baslik">v5.57.11 - Adil Yargılama: Sabotaj (Troll) Motoru Revizyonu <span class="yama-tarih"></span></div>
         <ul class="yama-liste">
             <li><strong>Skor Katkısı (KP) Optimizasyonu:</strong> Utanç Listesi'ni belirleyen sabotaj (troll) tespit algoritmasındaki mantıksal hata kökünden kazındı. Oyuncunun katkısını hesaplarken takım asistlerini de hesaba katarak ortaya çıkan "hayalet asist beklentisi" ve matematiksel adaletsizlik tamamen iptal edildi.</li>
             <li><strong>Yeni Sabotaj Kriteri:</strong> Sistem artık profesyonel e-spor standartlarındaki <b>Saf Skor Katkısı (Kill Participation)</b> matematiğini kullanıyor. Bir maçta 11'den fazla ölen ve takımın toplam öldürme (kill) sayısına <b>%40'tan daha az</b> katkı (kendi skoru + asisti) sağlayan oyuncular acımasızca Utanç Listesi'ne damgalanacak.</li>
@@ -849,7 +889,7 @@
     </div>
 
    <div class="yama-karti">
-        <div class="yama-baslik">v5.57.2 - v5.57.10 Sistem Devrimi ve Kusursuz Liderlik Motoru <span class="yama-tarih">Yeni</span></div>
+        <div class="yama-baslik">v5.57.2 - v5.57.10 Sistem Devrimi ve Kusursuz Liderlik Motoru <span class="yama-tarih"></span></div>
         <ul class="yama-liste">
             <li><strong>[v5.57.2 - v5.57.4] E-Spor UI ve Veri Zırhı:</strong> Takım sinerjisi sekmesindeki maç kartları Şampiyon odaklı ve rozet sistemli profesyonel bir tasarıma geçirildi. Liderlik Motoru'nun sezon filtrelerini yok sayma ve 'ReferenceError' çökme sorunları kökten çözüldü. Tüm liderlik sekmeleri artık seçili sezona %100 sadık.</li>
             <li><strong>[v5.57.5 - v5.57.6] Çakışma Önleyici Mühür (Return Kalkanı):</strong> Sinerji sekmesindeki gereksiz arka plan hesaplamaları tamamen durduruldu. Liderlik tabloları aktifken aşağıda alakasız maç kartlarının çizilip ekranı bozması (çift render hatası) araya örülen mutlak kod duvarı ile engellendi.</li>
@@ -1091,7 +1131,7 @@
         <ul class="yama-liste">
             <li><strong>runesReforged Bağlantısı:</strong> Oyundan kalkan rünleri barındıran hantal CommunityDragon veri tabanı söküldü. Rün motoru, canlı yama sürümünü kullanarak doğrudan resmi DataDragon'un güncel <code>runesReforged.json</code> dosyasına bağlandı.</li>
             <li><strong>Rol Hiyerarşisi (Görsel Dağılım):</strong> Şampiyon uzmanları sekmesindeki düz liste mimarisi yıkıldı. Şampiyon uzmanları rollere göre kategorize edilerek büyük başlıklar altında gruplandı.</li>
-            <li><strong>Riot Spagetti Kodu Filtresi (Fiddlesticks Fix):</strong> Sistemin kalbine entegre edilen <code>resimUrlGetir</code> fonksiyonu sayesinde Riot'un veritabanındaki saçma harf duyarlılıkları (FiddleSticks -> Fiddlesticks) filtrelendi ve görsel yükleme körlüğü giderildi.</li>
+            <li><strong>Riot Spagetti Kodu Filtresi (Fiddlesticks Fix):</strong> Sistemin kalbine entegre edilen <code>resimUrlGetir</code> fonksiyonu sayesinde Riot'un veritabanındaki saçma harf duyarlılıkları (FiddleSticks &rarr; Fiddlesticks) filtrelendi ve görsel yükleme körlüğü giderildi.</li>
         </ul>
     </div>
 
@@ -2013,7 +2053,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
             let statHtml = "";
             for(let key in statsMap) {
                 let val = statsMap[key];
-                let isPercent = key.includes("ihtimali") || key.includes("çalma") || key.includes("sömürü") || key.includes("hızı") || key.includes("delme") || key.includes("nüfuzu") || key.includes("sıvışma") || key.includes("yenilenmesi") || key.includes("iyileştirme") || key.includes("kalkan");
+                let isPercent = key.includes("ihtimali") || key.includes("çalma") || key.includes("sömürü") || key.includes("delme") || key.includes("nüfuzu") || key.includes("sıvışma") || key.includes("yenilenmesi") || key.includes("iyileştirme") || key.includes("kalkan") || key.includes("hızı") && !key.includes("yetenek hızı") && !key.includes("hareket hızı");
                 let displayVal = parseFloat(val.toFixed(2)) + (isPercent ? "%" : "");
                 
                 let r = "#a09b8c"; let i = "•"; 
@@ -2183,15 +2223,32 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
         };
 
         window.checkSabotaj = function(m) {
-            // Takım skorunun veri eksikliğinden 0 gelme ihtimaline karşı "Divide by Zero" koruması
-            let t_skor = (m.takim_skoru && m.takim_skoru > 0) ? m.takim_skoru : 1; 
-            
-            // Gerçek E-Spor KP (Kill Participation) Formülü: (Kendi Skoru + Kendi Asisti) / Takım Skoru
+            // 🛡️ BÜYÜK KAPI (GATEKEEPER): 10 ve altı ölümü olan ASLA sabotajcı sayılamaz.
+            if (m.olum <= 10) return false;
+    
+            let t_skor = m.takim_skoru || 1; 
+            let t_olum = m.takim_olumu || 1; 
             let skorKatkisi = (m.oldurme + m.asist) / t_skor;
+    
+            // Takımı Sırtlama Kalkanı (Skor katkısı %50 veya üzeri olanlar)
+            let fedakarSavasci = skorKatkisi >= 0.50;
 
-            // KURAL: Eğer 11'den fazla ölmüşse VE takımın toplam skoruna katkısı %40'ın altındaysa sabotajcıdır.
-            // (0.40 oranını oyun grubunun agresifliğine göre 0.35 veya 0.45 yapabilirsin, %40 en adilidir.)
-            return m.olum > 11 && skorKatkisi < 0.40;
+            // 1. KURAL: Skor katkısı düşükse (< %50) (Ağır Besleme)
+            let agirBesleme = (skorKatkisi < 0.50);
+
+            // 2. KURAL: 0 Kill ve asist katkısı takımın %40'ının altındaysa (Faydasız)
+            let faydasizSifirSkor = (m.oldurme === 0 && (m.asist / t_skor) < 0.40);
+
+            // 3. KURAL: Tempo Katili - Sınır 15. (Fedakarsa 17'ye kadar esner)
+            let kronikBesleme = fedakarSavasci ? (m.olum >= 17) : (m.olum >= 15); 
+
+            // 4. KURAL: Takım Yükü (Dinamik Sınır)
+            // Normal roller takım ölümünün %25'ini, Destek (UTILITY) ise %33.3'ünü geçerse fişlenir.
+            let olumOraniSiniri = (m.rol === "UTILITY") ? 0.333 : 0.25;
+            let takimYuku = (m.olum / t_olum > olumOraniSiniri) && !fedakarSavasci;
+
+            // FİNAL
+            return agirBesleme || faydasizSifirSkor || kronikBesleme || takimYuku;
         }
 
         window.rozetUret = function(veri) {
@@ -2240,43 +2297,42 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
         }
 
         function davranisHesapla(k, d, a, rol, vizyon, kontrol, cs_dk) {
-            let kdaSaf = d === 0 ? (k + a) : ((k + a) / d); let skorKatkisi = k + a;
+            let kdaSaf = d === 0 ? (k + a) : ((k + a) / d); 
+            let skorKatkisi = k + a;
+
             if (rol === "UTILITY") {
-                if (cs_dk > 2.0) return "💸 Vergi Memuru";
-                if (k >= 5 && a <= 8) return "⚔️ Sahte Destek";
-                if (vizyon >= 45 && kontrol >= 5 && kdaSaf >= 3.0) return "👁️ Kusursuz Vizyoner";
-                if (d >= 8 && a >= 12) return "🛡️ Fedakar";
-                if (d >= 7.5 && kdaSaf < 2.0) return "⚠️ Vizyonsuz / Besleme"; 
-                if (kdaSaf >= 3.5) return "👼 Kusursuz Kanat Önderi";
-                return "🤝 Görev Adamı (Destek)";
+                if (cs_dk > 2.0) return "💸 Vergi Memuru (Minyon Çalan)";
+                if (vizyon < 20 && kontrol < 2) return "🤡 Vizyonsuz (Karanlıkta Kalan)";
+                if (k >= 6 && a <= 8) return "⚔️ Sahte Destek (Skor Avcısı)";
+                if (vizyon >= 50 && kontrol >= 5 && kdaSaf >= 3.0) return "👁️ Harita Hakimi";
+                if (d >= 8 && a >= 15) return "🛡️ Cefakar Koruyucu";
+                if (kdaSaf >= 4.0 && a >= 15) return "👼 Kusursuz Melek";
+                return "🤝 Standart Destek";
             }
             if (rol === "MIDDLE" || rol === "BOTTOM") {
-                if (cs_dk >= 7.0 && kdaSaf >= 3.0) return "💰 Kusursuz Ekonomi";
-                if (cs_dk < 4.5 && d >= 7.5) return "📉 Ekonomisi Çökmüş";
-                if (d >= 9 && kdaSaf < 1.8) return "☠️ Kara Delik";
-                if (k >= 9 && d >= 7.5) return "🔥 Agresif Gladyatör (Risk Alan)";
-                if (d >= 7.5 && k < d + 2) return "⚠️ Pervasız / Yasuo Sendromu"; 
-                if (k >= 8 && d <= 4.5) return "🥷 Gölge Suikastçisi";
-                if (kdaSaf >= 3.5 && k >= 6) return "🌟 Hiper Taşıyıcı";
+                if (cs_dk >= 8.0 && kdaSaf >= 3.0) return "💰 Kusursuz Makine";
+                if (k >= 12 && kdaSaf >= 4.0) return "🌟 Hiper Taşıyıcı";
+                if (k >= 10 && d >= 8) return "⚔️ Kanlı Gladyatör (Agresif)";
+                if (cs_dk < 5.0 && skorKatkisi < 5) return "👻 Hayalet (Oyunda Yok)";
+                if (d >= 9 && kdaSaf < 1.5) return "☠️ Kara Delik (Ağır Yük)";
+                if (d >= 8 && k < d) return "⚠️ Pervasız (Yasuo Sendromu)"; 
                 return "⚖️ Dengeli Taşıyıcı";
             }
             if (rol === "JUNGLE") {
-                if (cs_dk >= 6.0) return "🐺 Orman Canavarı";
-                if (cs_dk < 4.0 && skorKatkisi < 10) return "📉 Kampları İhmal Eden";
-                if (k >= 7 && d <= 4.5) return "🐺 Yırtıcı Avcı";
-                if (a >= 15 && vizyon >= 30) return "🗺️ Taktiksel Beyin";
-                if (d >= 7.5 && kdaSaf < 2.0) return "⚠️ Ormanda Kayıp";
-                if (skorKatkisi >= 12 && d >= 7.5) return "🔥 Agresif Baskıncı";
-                return "🌲 Objektif Odaklı";
+                if (cs_dk >= 7.0 && skorKatkisi < 5) return "💤 AFK Çiftçi (Sadece Orman)";
+                if (cs_dk < 4.5 && skorKatkisi >= 12) return "🥷 Durmak Bilmeyen Baskıncı";
+                if (k >= 8 && d <= 4) return "🐺 Kusursuz Avcı";
+                if (vizyon >= 35 && kontrol >= 4) return "🗺️ Taktiksel Deha";
+                if (d >= 8 && kdaSaf < 1.5) return "⚠️ Ormanda Kayıp";
+                return "🌲 Görev Adamı";
             }
             if (rol === "TOP") {
-                if (cs_dk >= 6.5 && kdaSaf >= 2.5) return "🏰 Baskın Ayrık İttirici";
-                if (cs_dk < 5.0 && d >= 7.0) return "📉 Koridordan Düşmüş";
-                if (d >= 8.5 && skorKatkisi < 7) return "🏚️ Koridoru Dağılan";
-                if (d >= 8 && k < d) return "⚠️ Ayrık İttirme Kurbanı";
-                if (d >= 7.5 && skorKatkisi >= 10) return "⚔️ Gözü Kara Öncü";
-                if (k >= 6 && d <= 4) return "🏰 Yıkılmaz Kale";
-                return "🗿 Kaya Gibi";
+                if (cs_dk >= 7.5 && skorKatkisi <= 6) return "🏰 Saf Ayrık İttirici (Split Pusher)";
+                if (kdaSaf >= 3.0 && d <= 3) return "🛡️ Sarsılmaz Titanyum";
+                if (k >= 8 && d >= 8) return "🥊 Boksör (Sürekli Takas)";
+                if (cs_dk < 5.0 && d >= 8) return "🏚️ İzole ve Yıkık";
+                if (d >= 8 && k < 4) return "⚠️ Üst Koridor Kurbanı";
+                return "🗿 Kaya Gibi (Standart)";
             }
             return "⚖️ Standart Oynanış";
         }
@@ -2413,7 +2469,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                                 if(sNameLower.includes("büyü nüfuz")) { r = "#8e44ad"; i = "🌌"; sName="Büyü Nüfuzu"; }
                                 else if(sNameLower.includes("yetenek güc")) { r = "#9ea1f9"; i = "🔮"; sName="Yetenek Gücü"; }
                                 else if(sNameLower.includes("saldırı güc")) { r = "#ffb84d"; i = "⚔️"; sName="Saldırı Gücü"; }
-                                else if(sNameLower.includes("zırh delme")) { r = "#e65c00"; i = "🔽"; sName="Zırh Delme"; }
+                                else if(sNameLower.includes("zırh delme")) { r = "#e65c00"; i = "⛏️"; sName="Zırh Delme"; }
                                 else if(sNameLower.includes("zırh deşme")) { r = "#ff4500"; i = "🪓"; sName="Zırh Deşme"; }
                                 else if(sNameLower === "zırh" || (sNameLower.includes("zırh") && !sNameLower.includes("delme") && !sNameLower.includes("deşme"))) { r = "#ffd700"; i = "🛡️"; sName="Zırh"; }
                                 else if(sNameLower.includes("büyü direnc")) { r = "#87cefa"; i = "🧿"; sName="Büyü Direnci"; }
@@ -2425,7 +2481,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                                 else if(sNameLower.includes("mana yenilenmes")) { r = "#aee2ff"; i = "🌊"; sName="Mana Yenilenmesi"; }
                                 else if(sNameLower.includes("can çalm")) { r = "#da3633"; i = "🩸"; sName="Can Çalma"; }
                                 else if(sNameLower.includes("mutlak sömürü")) { r = "#da3633"; i = "🧛"; sName="Mutlak Sömürü"; }
-                                else if(sNameLower.includes("sıvışma")) { r = "#e0e0e0"; i = "🛡️"; sName="Sıvışma"; }
+                                else if(sNameLower.includes("sıvışma")) { r = "#e0e0e0"; i = "🏃🏻"; sName="Sıvışma"; }
 				else if(sNameLower.includes("iyileştirme") || sNameLower.includes("kalkan")) { r = "#3fb950"; i = "🌿"; sName="İyileştirme ve Kalkan Gücü"; }
                                 else if(sNameLower === "can" || (sNameLower.includes("can") && !sNameLower.includes("çal") && !sNameLower.includes("yenilenmes"))) { r = "#a1d586"; i = "❤️"; sName="Can"; }
                                 else if(sNameLower === "mana" || (sNameLower.includes("mana") && !sNameLower.includes("yenilenmes"))) { r = "#58a6ff"; i = "💧"; sName="Mana"; }
@@ -2897,32 +2953,37 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                 }
                 esyalarHtml += '</div>';
 
-                // 🌟 ZIRHLI RÜN DÖNGÜSÜ (ANAHTAR RÜN 30PX ALTIN ÇERÇEVELİ)
+                // 🌟 ZIRHLI RÜN DÖNGÜSÜ (ORTA KOLON - DETAYLI LİSTE)
                 let runlerDetayHtml = "";
                 if (oyuncu.runler && Array.isArray(oyuncu.runler) && oyuncu.runler.length > 0) {
                     oyuncu.runler.forEach((runId, index) => {
                         let rData = window.runeIdMap ? window.runeIdMap[runId] : null;
                         let srcUrl = rData ? `https://ddragon.leagueoflegends.com/cdn/img/${rData.icon}` : 'https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png';
-                        
-                        let ekstraStil = index === 0 
-                            ? 'width:30px; height:30px; border-radius:50%; border:2px solid #ffd700; box-shadow: 0 0 8px rgba(255,215,0,0.6); margin-right: 6px; transform: translateY(-2px);' 
-                            : 'width:22px; height:22px; border-radius:50%; border:1px solid #30363d; margin:0;';
-                            
-                        runlerDetayHtml += `<img src="${srcUrl}" style="${ekstraStil} background:#000; cursor:help;" onmousemove="window.popupRuneTetikle(event, ${runId || 0})" onmouseleave="window.gizleMutlakPopup()">`;
+
+                        // KURAL 1: Anahtar rün (index 0) 36px, Premium Altın Çerçeveli ve Parlamalı
+                        // KURAL 2: Alt rünler (index > 0) 24px, Çerçevesiz, Transparan ve Hafif Gölgeli
+                        let ekstraStil = index === 0
+                            ? 'width:36px; height:36px; border-radius:50%; border:2px solid #c8aa6e; box-shadow: 0 0 8px rgba(200,170,110,0.6); margin-right: 6px; transform: translateY(-2px); background:#000;'
+                            : 'width:24px; height:24px; border-radius:50%; border:none; margin:0 2px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7)); background:transparent;';
+
+                        runlerDetayHtml += `<img src="${srcUrl}" style="${ekstraStil} cursor:help;" onmousemove="window.popupRuneTetikle(event, ${runId || 0})" onmouseleave="window.gizleMutlakPopup()">`;
                     });
-                } else { 
-                    runlerDetayHtml += `<span style="font-size:0.75em; color:#8b949e; font-style:italic;">Veri Yok</span>`; 
+                } else {
+                    runlerDetayHtml += `<span style="font-size:0.75em; color:#8b949e; font-style:italic;">Veri Yok</span>`;
                 }
 
-                // SOLDAKİ MİNİ RÜNLER (PROXIMITY RADAR)
+                // 🛡️ SOLDAKİ MİNİ RÜNLER (KİMLİK ALANI - KÜÇÜK GÖSTERİM)
                 let mAnaRun = (window.runeIdMap && oyuncu.ana_run_id) ? window.runeIdMap[oyuncu.ana_run_id] : null;
                 let mAltRun = (window.runeIdMap && oyuncu.alt_run_agaci_id) ? window.runeIdMap[oyuncu.alt_run_agaci_id] : null;
 
                 let miniAnaSrc = mAnaRun ? `https://ddragon.leagueoflegends.com/cdn/img/${mAnaRun.icon}` : 'https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png';
                 let miniAltSrc = mAltRun ? `https://ddragon.leagueoflegends.com/cdn/img/${mAltRun.icon}` : 'https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png';
 
-                let miniAnaRunHTML = `<img src="${miniAnaSrc}" style="width:24px; height:24px; border-radius:50%; border: 1px solid #ffd700; background:#000; cursor:help;" onmousemove="window.popupRuneTetikle(event, ${oyuncu.ana_run_id || 0})" onmouseleave="window.gizleMutlakPopup()">`;
-                let miniAltRunHTML = `<img src="${miniAltSrc}" style="width:16px; height:16px; border-radius:50%; border: 1px solid #30363d; background:#000; cursor:help;" onmousemove="window.popupRuneTetikle(event, ${oyuncu.alt_run_agaci_id || 0})" onmouseleave="window.gizleMutlakPopup()">`;
+                // Profilin yanındaki Ana Rün (Premium Altın Çerçeveli - Siyah arkaplan imha edildi, gölge eklendi)
+                let miniAnaRunHTML = `<img src="${miniAnaSrc}" style="width:26px; height:26px; border-radius:50%; border: 2px solid #c8aa6e; background:transparent; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)); cursor:help;" onmousemove="window.popupRuneTetikle(event, ${oyuncu.ana_run_id || 0})" onmouseleave="window.gizleMutlakPopup()">`;
+
+                // Profilin yanındaki Alt Ağaç Rünü (Çerçevesiz, Gölgeli, Transparan ve Daha Küçük)
+                let miniAltRunHTML = `<img src="${miniAltSrc}" style="width:18px; height:18px; border-radius:50%; border: none; background:transparent; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7)); cursor:help; margin-top:2px;" onmousemove="window.popupRuneTetikle(event, ${oyuncu.alt_run_agaci_id || 0})" onmouseleave="window.gizleMutlakPopup()">`;
 
                 let ilk10CsHTML = (oyuncu.ilk_10_dk_minyon && oyuncu.pozisyon !== "UTILITY") ? `<span style="color: #8b949e; font-size: 0.85em; margin-left: 5px;">(10. Dk: ${oyuncu.ilk_10_dk_minyon} CS)</span>` : '';
 
@@ -2940,7 +3001,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                     partnerHTML = `<div style="font-size: 0.75em; color: #d2a8ff; font-weight: bold;">🤝 ${oyuncu.koridor_partneri}</div>`;
                 }
 
-                // 🎯 BURADAKİ TÜM ETİKETLER KUSURSUZ ŞEKİLDE KAPATILDI (MERDİVEN ETKİSİ YOK EDİLDİ)
+                // 🎯 KUSURSUZ KAPATILMIŞ SİNERJİ SATIRI
                 oyuncularHtml += `
                     <div class="sinerji-satir" style="${satirBg} display: flex; align-items: flex-start; padding: 12px 15px; margin-bottom:4px; border-bottom: 1px solid #21262d; width: 100%; box-sizing: border-box;">
                         
@@ -2977,7 +3038,10 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                                 <span>🛑 ${oyuncu.kontrol_totemi || 0}</span>
                             </div>
 
-                            ${rozetlerHTML}
+                            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px;">
+                                ${durumDamgasi}
+                                ${rozetlerHTML}
+                            </div>
 
                             <div style="margin-top:10px; width:100%;">
                                 <div style="display:flex; justify-content:flex-start; gap:20px; font-size:0.75em; color:#8b949e; margin-bottom:3px;">
@@ -2991,9 +3055,8 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                             </div>
                         </div>
 
-                        <div style="width: 80px; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
-                            <div style="font-size: 1.1em; font-weight: bold; color: #c9d1d9;">${oyuncu.kda}</div>
-                            <div style="transform: scale(0.85); transform-origin: right;">${durumDamgasi}</div>
+                        <div style="width: 80px; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; justify-content: center;">
+                            <div style="font-size: 1.25em; font-weight: bold; color: #c9d1d9;">${oyuncu.kda}</div>
                         </div>
 
                     </div>
@@ -3253,9 +3316,61 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                     }).join("");
                     if(favoriEsyaHtml === "") favoriEsyaHtml = "<span style='font-size:0.8em; color:#8b949e;'>Yeterli eşya verisi yok.</span>";
 
-                    let avgV = toplamGorus / toplamMac; let avgKntrl = totKontrol / toplamMac;
-                    let behavior = davranisHesapla(toplamK/toplamMac, toplamD/toplamMac, toplamA/toplamMac, anaRol_EN, avgV, avgKntrl, parseFloat(ortCS_dk));
-                    let oyunTarziHtml = `<div style="margin-top:10px; font-size:0.85em; font-weight:bold; color:#58a6ff; border: 1px solid rgba(88,166,255,0.4); background: rgba(88,166,255,0.1); padding: 4px 8px; border-radius: 6px; display:inline-flex; align-items:center; justify-content:center; text-align:center; white-space:nowrap; box-sizing:border-box;">${behavior}</div>`;
+                    // 🛡️ V5.57.12 - ROL İZOLASYONU VE ÇOKLU DAVRANIŞ MOTORU
+                    
+                    // 1. Destek Farmını Genel Farmdan İzole Etme
+                    let t_cs_tasiyici = 0, t_sure_tasiyici = 0;
+                    let t_cs_destek = 0, t_sure_destek = 0;
+                    
+                    oyuncuTumMaclari.forEach(m => {
+                        if (m.pozisyon === "UTILITY") {
+                            t_cs_destek += (m.cs || 0);
+                            t_sure_destek += (m.sure_saniye || 0);
+                        } else {
+                            t_cs_tasiyici += (m.cs || 0);
+                            t_sure_tasiyici += (m.sure_saniye || 0);
+                        }
+                    });
+                    
+                    // ANA CS/MİN KARARI: 1 tane bile taşıyıcı maçı varsa, sadece onun farmını hesapla!
+                    let izoleCsDk = t_sure_tasiyici > 0 
+                        ? (t_cs_tasiyici / (t_sure_tasiyici / 60)) 
+                        : (t_sure_destek > 0 ? (t_cs_destek / (t_sure_destek / 60)) : 0);
+                    
+                    // 2. Çoklu Rol Davranış Motoru (En çok oynanan 2 role özel etiket)
+                    let rolIstatistikleri = {};
+                    oyuncuTumMaclari.forEach(m => {
+                        let r = m.pozisyon || "BELIRSIZ";
+                        if (r === "BELIRSIZ" || r === "INVALID") return;
+                        if (!rolIstatistikleri[r]) rolIstatistikleri[r] = { mac: 0, k:0, d:0, a:0, vizyon:0, kontrol:0, cs:0, sure:0 };
+                        
+                        rolIstatistikleri[r].mac++;
+                        rolIstatistikleri[r].k += m.oldurme || 0;
+                        rolIstatistikleri[r].d += m.olum || 0;
+                        rolIstatistikleri[r].a += m.asist || 0;
+                        rolIstatistikleri[r].vizyon += m.gorus_skoru || 0;
+                        rolIstatistikleri[r].kontrol += m.kontrol_totemi || 0;
+                        rolIstatistikleri[r].cs += m.cs || 0;
+                        rolIstatistikleri[r].sure += m.sure_saniye || 0;
+                    });
+                    
+                    // En çok oynanan 2 rolü süz (İsim çakışmasını engellemek için top2Rol kullanıldı)
+                    let top2Rol = Object.entries(rolIstatistikleri).sort((a,b) => b[1].mac - a[1].mac).slice(0, 2);
+                    
+                    // Profil çiziminde sıkıntı olmasın diye değişken adını oyunTarziHtml olarak bıraktım
+                    let oyunTarziHtml = ""; 
+                    top2Rol.forEach(veri => {
+                        let rol = veri[0]; let v = veri[1];
+                        let rOrtK = v.k / v.mac, rOrtD = v.d / v.mac, rOrtA = v.a / v.mac;
+                        let rOrtVizyon = v.vizyon / v.mac, rOrtKontrol = v.kontrol / v.mac;
+                        let rolIciCsDk = v.sure > 0 ? (v.cs / (v.sure / 60)) : 0;
+                        
+                        // Motoru sadece o rolün içindeki farm ve KDA ile çağırıyoruz!
+                        let rozet = davranisHesapla(rOrtK, rOrtD, rOrtA, rol, rOrtVizyon, rOrtKontrol, rolIciCsDk);
+                        let kisaRol = {"TOP": "ÜST KORİDOR", "JUNGLE": "ORMAN", "MIDDLE": "ORTA KORİDOR", "BOTTOM": "NİŞANCI", "UTILITY": "DESTEK"}[rol] || rol;
+                        
+                        oyunTarziHtml += `<span style="display:inline-block; background:rgba(88,166,255,0.1); border:1px solid #58a6ff; color:#58a6ff; padding:4px 10px; border-radius:8px; font-size:0.85em; font-weight:bold; margin-right:8px; margin-top:10px;">${kisaRol}: ${rozet}</span>`;
+                    });
 
                     // ŞAMPİYON HAVUZU MATEMATİĞİ (Güvenlik için değişkenleri hemen HTML'in üstüne sabitliyoruz)
                     let oynananFarkliSampiyonSayisi = Object.keys(sampiyonSayaclari).length;
@@ -3368,7 +3483,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                                 <h3>Ortalama KDA</h3>
                                 <div class="deger vurgu">${ortK} / ${ortD} / ${ortA}</div>
                                 <div style="color:#8b949e; font-size:0.9em; margin-top:6px; white-space:nowrap; line-height:1.5;">
-                                    Ort. CS/min: <span style="color:#ffffff;">${ortCS_dk}</span> &nbsp;|&nbsp; GPM: <span style="color:#ffd60a;">${ort_gpm}</span><br>
+                                    Ort. CS/min: <span style="color:#ffffff;">${izoleCsDk.toFixed(1)}</span> &nbsp;|&nbsp; GPM: <span style="color:#ffd60a;">${ort_gpm}</span><br>
                                     ${anaRol_EN !== "UTILITY" ? `10.Dk CS: <span style="color:#ffffff;">${ort_ilk10}</span> &nbsp;|&nbsp; Fark: <span style="color:#58a6ff;">${ort_cs_farki > 0 ? '+' : ''}${ort_cs_farki}</span>` : ""}
                                 </div>
                                 <div style="margin-top:5px;">${oyunTarziHtml}</div>
@@ -3534,6 +3649,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                     if (oyuncu === "Kaan") return "DarkLegend97";
                     if (oyuncu === "Taner") return "YazlıkDCFlex";
                     if (oyuncu === "Ercan") return "MrOsleon";
+		            if (oyuncu === "Şafak") return "s2s";
                     // Kalan herkes için veritabanındaki Riot ID (TuMu, ShenerShen vb.)
                     return riot_id || oyuncu; 
                 };
@@ -3584,13 +3700,15 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                 let sagHtml = `<div class="liderlik-panosu" style="border-top-color: #d2a8ff; height: 100%;"><h3 style="color:#ffffff; margin-top:0; text-align:center;">👑 KDA Şampiyonları</h3><div style="display:flex; flex-direction:column; gap:10px;">`;
                 kdaListe.forEach((v, i) => {
                     let ikonID = window.guncelIkonlar ? (window.guncelIkonlar[v.oyuncu] || 29) : 29;
+		    let siraGorseli = (i === 0) ? "<span style='font-size:1.5em;'>🥇</span>" : (i === 1) ? "<span style='font-size:1.5em;'>🥈</span>" : (i === 2) ? "<span style='font-size:1.5em;'>🥉</span>" : `#${i + 1}`;
                     sagHtml += `
                     <div class="liderlik-satir" onclick="window.liderlikFiltrele('${v.oyuncu}')" style="display:flex; align-items:center; padding:8px; background:rgba(0,0,0,0.3); border-radius:8px; cursor:pointer; border:1px solid transparent; transition:0.2s;" onmouseover="this.style.borderColor='#d2a8ff'" onmouseout="this.style.borderColor='transparent'">
-                        <div class="l-sira" style="color:#d2a8ff; font-weight:bold; width:25px;">#${i + 1}</div>
+                        <div class="l-sira" style="color:#d2a8ff; font-weight:bold; width:25px;">${siraGorseli}</div>
                         <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/${ikonID}.png" style="width:36px; height:36px; border-radius:50%; margin-right:12px; border:2px solid #d2a8ff;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/29.png'">
                         <div class="l-kimlik" style="flex:1;">
-                            <span class="l-gercek" style="display:block; font-weight:bold; color:#c9d1d9; font-size:1em;">${oyunIciIsim(v.oyuncu, v.riot_id)}</span>
-                        </div>
+   			 <span class="l-gercek" style="display:block; font-weight:bold; color:#c9d1d9; font-size:1.1em;">${v.oyuncu}</span>
+   			 <span class="l-oyunici" style="display:block; font-size:0.85em; color:#8b949e;">${oyunIciIsim(v.oyuncu, v.riot_id)}</span>
+			</div>
                         <div class="l-deger" style="text-align:right;">
                             <div class="l-ana" style="color:#d2a8ff; font-weight:900; font-size:1.1em;">${v.kda.toFixed(2)}</div>
                             <div class="l-alt" style="color:#8b949e; font-size:0.75em;">${v.mac} Maç Ort.</div>
@@ -3613,16 +3731,28 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                     else if(aktifSiralaKriteri === "gorus") solBaslik = "👁️ Görüş Liderleri";
                     else if(aktifSiralaKriteri === "csmin") solBaslik = "🗡️ Farm Kralları (Sup Hariç)";
 
-                    let solHtml = `<div class="liderlik-panosu" style="border-top-color: #58a6ff;"><h3 style="color:#ffffff; margin-top:0; text-align:center;">${solBaslik}</h3><div style="display:flex; flex-direction:column; gap:10px;">`;
+                    let solHtml = `<div class="liderlik-panosu" style="border-top-color: #58a6ff; max-width: 450px; margin: 0 auto; width: 100%;"><h3 style="color:#ffffff; margin-top:0; text-align:center;">${solBaslik}</h3><div style="display:flex; flex-direction:column; gap:10px;">`;
                     solListe.forEach((v, i) => {
                         let ikonID = window.guncelIkonlar ? (window.guncelIkonlar[v.oyuncu] || 29) : 29;
+			            let temelMadalya = (i === 0) ? "🥇" : (i === 1) ? "🥈" : (i === 2) ? "🥉" : `#${i + 1}`;
+                        let siraGorseli = temelMadalya;
+			        if (i <= 2 && solBaslik.includes("Utanç Listesi")) {
+                        siraGorseli = `
+                        <div style="position:relative; display:inline-block; font-size:2em; line-height:1;">
+                            ${temelMadalya}
+                            <span style="position:absolute; top:15%; left:50%; transform:translate(-50%, -50%); font-size:0.6em; text-shadow: 0px 0px 3px rgba(0,0,0,0.8);">💀</span>
+                        </div>`;
+                    } else if (i <= 2) {
+                        siraGorseli = `<span style='font-size:2em;'>${temelMadalya}</span>`;
+                    }
                         solHtml += `
                         <div class="liderlik-satir" onclick="window.liderlikFiltrele('${v.oyuncu}')" style="display:flex; align-items:center; padding:10px; background:rgba(0,0,0,0.3); border-radius:8px; cursor:pointer; border:1px solid transparent; transition:0.2s;" onmouseover="this.style.borderColor='#58a6ff'" onmouseout="this.style.borderColor='transparent'">
-                            <div class="l-sira" style="color:#58a6ff; font-weight:bold; width:30px; font-size:1.1em;">#${i + 1}</div>
+                            <div class="l-sira" style="color:#58a6ff; font-weight:bold; width:30px; font-size:1.1em;">${siraGorseli}</div>
                             <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/${ikonID}.png" style="width:42px; height:42px; border-radius:50%; margin-right:15px; border:2px solid #30363d;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/29.png'">
                             <div class="l-kimlik" style="flex:1;">
-                                <span class="l-gercek" style="display:block; font-weight:bold; color:#c9d1d9; font-size:1.1em;">${oyunIciIsim(v.oyuncu, v.riot_id)}</span>
-                            </div>
+    				<span class="l-gercek" style="display:block; font-weight:bold; color:#c9d1d9; font-size:1.1em;">${v.oyuncu}</span>
+    				<span class="l-oyunici" style="display:block; font-size:0.85em; color:#8b949e;">${oyunIciIsim(v.oyuncu, v.riot_id)}</span>
+			 </div>
                             <div class="l-deger" style="text-align:right;">
                                 <div class="l-ana" style="color:#ffffff; font-weight:900; font-size:1.2em;">${v.skor.toFixed(2)}</div>
                                 <div class="l-alt" style="color:#8b949e; font-size:0.8em;">${v.mac} Maç Ort.</div>
@@ -3756,12 +3886,9 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
             <img src="${resimUrlGetir(veri.sampiyon)}" style="width: 100%; height: 100%; object-fit: cover; border: none; outline: none; transform: scale(1.03);" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
         </div>
                             
-                            <div style="display: flex; flex-direction: column; gap: 5px; margin-right: 15px; justify-content: center;">
-                                <img src="https://ddragon.leagueoflegends.com/cdn/img/${window.runeIdMap && window.runeIdMap[veri.ana_run_id] ? window.runeIdMap[veri.ana_run_id].icon : 'perk-images/Styles/RunesIcon.png'}" style="width:28px; height:28px; border-radius:50%; border: 1px solid #30363d; background:#000; cursor:help;" onmousemove="window.popupRuneTetikle(event, ${veri.ana_run_id})" onmouseleave="window.gizleMutlakPopup()">
-                                <img src="https://ddragon.leagueoflegends.com/cdn/img/${window.runeIdMap && window.runeIdMap[veri.alt_run_agaci_id] ? window.runeIdMap[veri.alt_run_agaci_id].icon : 'perk-images/Styles/RunesIcon.png'}" style="width:28px; height:28px; border-radius:50%; border: 1px solid #30363d; background:#000; cursor:help;" onmousemove="window.popupRuneTetikle(event, ${veri.alt_run_agaci_id})" onmouseleave="window.gizleMutlakPopup()">
-                            </div>
+                            <div style="display: flex; flex: 1; justify-content: space-between; align-items: center; min-width: 0;">
 
-                            <div class="kimlik">
+                            <div class="kimlik" style="display: flex; flex-direction: column; justify-content: center;">
                                 <div>
                                     <span class="oyun-id-ana">${veri.riot_id} - ${veri.oyuncu}</span>
                                     <span class="sezon-etiket">${veri.sezon || 'Sezon Belirsiz'}</span>
@@ -3770,15 +3897,17 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                                 <div style="margin-top:4px; margin-bottom:8px;">
                                     <span class="sonuc-yazi ${sonucYazisiClass}">${zaferMi ? "Zafer" : "Bozgun"}</span> 
                                     <span class="gercek-isim-alt"> • ${formatSampiyon(veri.sampiyon)}</span>
-                                    <span style="color:#8b949e; font-size:0.85em; margin-left:10px;" data-tooltip="Takımın Toplam K/D/A Skoru">
-                                        (⚔️ Takım: <b style="color:#fff;">${veri.takim_skoru||'?'} / ${veri.takim_olumu||'?'} / ${veri.takim_asisti||'?'}</b>)
+                                    <span style="color:#8b949e; font-size:0.85em; margin-left:10px;">
+                                        (⚔️ Takım: <b style="color:#fff;">${veri.takim_skoru || '?'} / ${veri.takim_olumu || '?'} / ${veri.takim_asisti || '?'}</b>)
                                     </span>
                                 </div>
                             </div>
-                            <div class="sag-istatistik-alani" style="justify-content:center;">
-                                <div class="rozetler-kutusu">${durumDamgasi}</div>
-                                <div class="kda-deger">${veri.kda}</div>
+
+                            <div class="sag-istatistik-alani" style="display: flex; flex-direction: column; align-items: flex-end; margin-left: auto; flex-shrink: 0; padding-left: 15px;">
+                                <div style="display: flex; gap: 5px; margin-bottom: 6px; justify-content: flex-end;">${durumDamgasi}</div>
+                                <div style="font-size: 1.6em; font-weight: bold; color: #58a6ff; line-height: 1;">${veri.kda}</div>
                             </div>
+
                         </div>
                         
                         <div class="kart-etiket-satiri">${zekiEtiketler}</div>
@@ -4282,50 +4411,6 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
                 };
             });
 
-            function listeyiCiz(listeId, data, siralamaKriteri, formatEki) {
-                let kutu = document.getElementById(listeId);
-                if (!kutu) return; 
-                kutu.innerHTML = ""; 
-                
-                data.sort((a, b) => b[siralamaKriteri] - a[siralamaKriteri]);
-                let top10 = data.slice(0, 10);
-
-                top10.forEach((kisi, index) => {
-                    let div = document.createElement("div");
-                    div.className = "liderlik-satir"; 
-                    div.style.display = "flex"; div.style.justifyContent = "space-between"; div.style.alignItems = "center";
-                    div.style.padding = "8px 0"; div.style.borderBottom = "1px solid rgba(200, 170, 110, 0.1)";
-
-                    let podyumRenk = "#c9d1d9"; let madalya = `${index + 1}.`; let podyumShadow = "none"; let madalyaBoyut = "1.2em";
-                    if (index === 0) { podyumRenk = "#ffd700"; madalya = "🥇"; podyumShadow = "0 0 10px rgba(255, 215, 0, 0.8)"; madalyaBoyut = "2.2em"; }
-                    else if (index === 1) { podyumRenk = "#c0c0c0"; madalya = "🥈"; podyumShadow = "0 0 8px rgba(192, 192, 192, 0.7)"; madalyaBoyut = "1.8em"; }
-                    else if (index === 2) { podyumRenk = "#cd7f32"; madalya = "🥉"; podyumShadow = "0 0 8px rgba(205, 127, 50, 0.6)"; madalyaBoyut = "1.5em"; }
-
-                    let yama = window.guncelYama || (typeof guncelYama !== 'undefined' ? guncelYama : "14.23.1");
-
-                    div.innerHTML = `
-                        <div style="display:flex; align-items:center; gap:15px; color:${podyumRenk}; text-shadow:${podyumShadow}; font-weight:bold;">
-                            <div style="width: 45px; display: flex; justify-content: center; align-items: center; font-size: ${madalyaBoyut}; flex-shrink: 0;">${madalya}</div>
-                            <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/${kisi.ikon}.png" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/29.png'" style="width:45px; height:45px; border-radius:50%; border:2px solid ${podyumRenk}; object-fit: cover; flex-shrink: 0;">
-                            <div style="display: flex; flex-direction: column; line-height: 1.2;">
-                                <span style="font-size: 1.05em; font-weight: bold; color: #ffffff; white-space: nowrap;">${guncelRiotID[kisi.oyuncu] || kisi.oyuncu}</span>
-                                <span style="font-size: 0.8em; color: #8b949e; font-style: italic;">${kisi.oyuncu}</span>
-                            </div>
-                        </div>
-                        <div style="text-align: right; line-height: 1.3;">
-                            <span style="color:#ffffff; font-weight:bold; font-size:1.4em;">${kisi[siralamaKriteri].toFixed(1)}</span> <span style="color:#a09b8c; font-size:0.9em;">${formatEki}</span><br>
-                            <span style="font-size:0.8em; color:#8b949e;">(${kisi.macSayisi} Maç)</span>
-                        </div>
-                    `;
-                    kutu.appendChild(div);
-                });
-            }
-
-            listeyiCiz("liste-skor", [...ortalamaVeriler], "ortSkor", "Ort.");
-            listeyiCiz("liste-olum", [...ortalamaVeriler], "ortOlum", "Ort.");
-            listeyiCiz("liste-asist", [...ortalamaVeriler], "ortAsist", "Ort.");
-            listeyiCiz("liste-gorus", [...ortalamaVeriler], "ortGorus", "Ort.");
-            listeyiCiz("liste-farm", [...ortalamaVeriler], "ortCs", "CS/Dk");
         }
 
         
