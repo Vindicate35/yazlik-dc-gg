@@ -109,7 +109,7 @@
         .tiklanabilir-tr { cursor: pointer; } .tiklanabilir-tr:hover { background: #1c2128; }
         
         /* ÖZEL İPUCU MOTORU VE EŞYA POP-UP */
-        [data-tooltip] { position: relative; cursor: help; }
+        [data-tooltip] { position: relative; cursor: pointer; }
         [data-tooltip]::after {
             content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
             background: #090c10; color: #c9d1d9; border: 1px solid #30363d; padding: 8px 12px; border-radius: 6px; font-size: 0.9em; font-weight: normal;
@@ -118,8 +118,8 @@
         }
         [data-tooltip]:hover::after { opacity: 1; transform: translateX(-50%) translateY(-2px); }
 
-        .esya-kapsayici { position: relative; display: inline-flex; flex-shrink: 0; cursor: help; }
-        .esya-kart { position: relative; cursor: help; background: #090c10; border: 1px solid #30363d; border-radius: 8px; padding: 8px; text-align: center; transition: all 0.2s; display: flex; align-items: center; justify-content: center;}
+        .esya-kapsayici { position: relative; display: inline-flex; flex-shrink: 0; cursor: pointer; }
+        .esya-kart { position: relative; cursor: pointer; background: #090c10; border: 1px solid #30363d; border-radius: 8px; padding: 8px; text-align: center; transition: all 0.2s; display: flex; align-items: center; justify-content: center;}
         .esya-kart:hover { border-color: #58a6ff; transform: translateY(-3px);}
         .esya-kart img { width: 40px; height: 40px; border-radius: 4px; }
         .esya-detay-popup {
@@ -383,7 +383,7 @@
 
     <div class="ust-bar">
         <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.58.8</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.58.9</span>
         </h1>
         <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
     </div>
@@ -838,10 +838,25 @@
     <div id="arayuz-yama" class="gizle" style="max-width: 1000px; margin: 0 auto;">
     
     <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">YAZLIKDC.GG SÜRÜM GEÇMİŞİ (PATCH NOTES)</h2>
-   
+    
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.58.9 - UI/UX İmleç (Cursor) Optimizasyonu <span class="yama-tarih">Güncel</span></div>
+        <ul class="yama-liste">
+            <li><strong>[v5.58.9] Soru İşareti İmhası:</strong> Eşya ve rünlerin üzerine gelindiğinde beliren "yardım (soru
+                işareti)" imleci, profesyonel arayüz standartlarına uymadığı için sistemden tamamen kazındı.</li>
+            <li><strong>[UX] Akıcı Tıklama Hissiyatı:</strong> Tüm arayüzdeki (CSS ve JavaScript katmanları dahil)
+                <code>cursor: help</code> komutları <code>cursor: pointer</code> ile değiştirildi. Artık
+                etkileşimli elemanların üzerinde doğrudan "el" simgesi belirerek, kullanıcılara çok daha doğal ve akıcı bir
+                etkileşim deneyimi (UX) sunuluyor.</li>
+            <li><strong>[JS Zırhı] Dinamik Kilit Kırıldı:</strong> JavaScript'in arka planda çalışan ve fare hareketlerine
+                müdahale edip imleci zorla soru işaretine çeviren inatçı dinleme motorları (Event Listeners) tespit edilip
+                ezildi. Sistem artık kullanıcı girdilerine mutlak itaat ediyor.</li>
+        </ul>
+    </div>
+
     <div class="yama-karti">
         <div class="yama-baslik">v5.58.8 - Davranışsal Kalibrasyon: "Kaos Analiz Motoru" <span
-                class="yama-tarih">Güncel</span></div>
+                class="yama-tarih"></span></div>
         <ul class="yama-liste">
             <li><strong>[v5.58.8] "Dengeli Taşıyıcı" İllüzyonu Kaldırıldı:</strong> Sabotaj (troll) oyunlarını yüksek asist
                 sayılarıyla gizleyip sistemimizi "Dengeli" etiketiyle kandıran oyuncular için <b>"Kaos Analiz Motoru"</b>
@@ -2408,7 +2423,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
             if(e.target && e.target.tagName === 'IMG' && e.target.src.includes('/item/')) {
                 let itemId = e.target.src.split('/').pop().split('.')[0];
                 if(itemId && !isNaN(itemId)) {
-                    e.target.style.cursor = "help";
+                    e.target.style.cursor = "pointer";
                     if (window.popupItemTetikle) window.popupItemTetikle(e, parseInt(itemId));
                 }
             }
@@ -2681,7 +2696,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                                 }
                             }
                             img.removeAttribute('data-tooltip');
-                            img.style.cursor = "help";
+                            img.style.cursor = "pointer";
                             img.onmousemove = (e) => window.gosterMutlakPopup(e, bIsim, bDesc, '#58a6ff');
                             img.onmouseleave = () => window.gizleMutlakPopup();
                             return;
@@ -2690,7 +2705,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                         let rId = window.dosyaAdiToRuneId[oLogName];
                         if (rId) {
                             img.removeAttribute('data-tooltip'); 
-                            img.style.cursor = "help";
+                            img.style.cursor = "pointer";
                             img.onmousemove = (e) => window.popupRuneTetikle(e, rId);
                             img.onmouseleave = () => window.gizleMutlakPopup();
                         }
