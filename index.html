@@ -4572,7 +4572,23 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
             const tamRolIsimleri = { "TOP": "Üst Koridor", "JUNGLE": "Orman", "MIDDLE": "Orta Koridor", "BOTTOM": "Nişancı", "UTILITY": "Destek", "BELIRSIZ": "Belirsiz" };
             let sortedRoles = Object.keys(roleGroups).sort((a,b) => (rolSiralamaGucu[a] || 99) - (rolSiralamaGucu[b] || 99));
             
-            let htmlIcerik = `<div style="text-align:center; margin-bottom:30px;"><img src="${resimUrlGetir(aktifSampiyonFiltresi)}" style="width:70px; height:70px; border-radius:50%; border:3px solid var(--accent-color); box-shadow: 0 0 15px rgba(88,166,255,0.4);"><h2 style="color:#ffffff; margin:15px 0 0 0; font-size:1.8em; text-transform:uppercase;">${formatSampiyon(aktifSampiyonFiltresi)} <span style="color:#8b949e; font-size:0.5em; letter-spacing:2px; vertical-align:middle;">UZMANLARI</span></h2></div><div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start; width: 100%; margin-top: 20px;">`;
+            /* 🛡️ V6.0.1 - ŞAMPİYON UZMANLIK (MASTERY) İKONU MODERNİZASYONU */
+            let htmlIcerik = `
+            <div style="text-align:center; margin-bottom:30px;">
+                <img src="${resimUrlGetir(aktifSampiyonFiltresi)}" 
+                    style="width:70px; height:70px; 
+                            border-radius:4px !important; 
+                            border:2px solid var(--gold-accent) !important; 
+                            box-shadow: 0 0 8px rgba(200, 170, 110, 0.4) !important; 
+                            padding: 1px !important; 
+                            object-fit: cover !important; 
+                            background-color: #000 !important;">
+                <h2 style="color:#ffffff; margin:15px 0 0 0; font-size:1.8em; text-transform:uppercase;">
+                    ${formatSampiyon(aktifSampiyonFiltresi)} 
+                    <span style="color:#8b949e; font-size:0.5em; letter-spacing:2px; vertical-align:middle;">UZMANLARI</span>
+                </h2>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start; width: 100%; margin-top: 20px;">`;
 
             sortedRoles.forEach(rol => {
                 let rolText = tamRolIsimleri[rol] || "Belirsiz";
