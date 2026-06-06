@@ -6,21 +6,129 @@
     <title>ydc.gg - Yazlik DC Analysis Hub</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
-        body { font-family: 'Urbanist', 'Segoe UI', sans-serif; background-color: #0d1117; color: #c9d1d9; padding: 20px; margin: 0; }
+        /* 1. ADIM: HEXTECH FONTLARI EKLENDİ */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Karla:wght@400;700;800&display=swap');
+        
+        /* 2. ADIM: SİSTEMİ İLERİSİ İÇİN MODÜLER YAPALIM (Kök Renkler ve İmleçler) */
+        :root {
+            /* Renk Paleti */
+            --bg-color: #010a13;         
+            --card-bg: #091428;          
+            --text-color: #a09b8c;       
+            --border-color: #1e282d;     
+            --accent-color: #0ac8b9;     
+            --gold-accent: #c8aa6e;      
+            
+            /* İmleç Motoru */
+            --imlec-ana: url('cursors/imlec-yeni.png') 16 16, auto;
+            --imlec-el: url('cursors/imlec-yeni-el.png') 16 16, pointer;
+        }
+        /* İmleç Değişim Sınıfı */
+        body.eski-eldiven {
+            --imlec-ana: url('cursors/imlec-eski.png') 16 16, auto;
+            --imlec-el: url('cursors/imlec-eski-el.png') 16 16, pointer;
+        }
+        /* --- HEXTECH İMLEÇ ZORLAMA (Tüm katmanları kilitle) --- */
+        
+        /* 1. Sayfanın en temelinden en ucuna kadar her şeyi tek imlece zorla */
+        body, body *, body *::before, body *::after {
+            cursor: var(--imlec-ana) !important;
+        }
+
+        /* 2. Tıklanabilir ne varsa, hepsine el imlecini zorla */
+        a, button, button *, button * *, select, input, .mod-btn, .tab-btn, .chip-btn, .sampiyon-dropdown, .mini-kapat, [style*="cursor: pointer"], [style*="cursor:pointer"], [style*="cursor: pointer"] *, [style*="cursor:pointer"] * {
+            cursor: var(--imlec-el) !important;
+        }
+        /* VÜCUT VE YAZI TİPLERİ (Hextech Laciverti ve Karla Fontu) */
+        body { font-family: 'Karla', 'Segoe UI', sans-serif; background-color: var(--bg-color); color: var(--text-color); padding: 20px; margin: 0; }
         .ust-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 0 20px; }
         
-        h1 { margin: 0; color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8); } 
-        h1 span { color: #58a6ff; -webkit-text-stroke: 1px #1f6feb; text-shadow: 0 0 15px rgba(88, 166, 255, 0.6); }
-        .versiyon-etiket { font-size: 0.35em; color: #8b949e; vertical-align: middle; margin-left: 10px; font-weight: bold; -webkit-text-stroke: 0; text-shadow: none; letter-spacing: 0; }
+        /* BAŞLIK: HEXTECH STİLİ (Zırh Delici ve Net) */
+        h1 { 
+            font-family: 'Cinzel', serif !important; 
+            margin: 0 !important; 
+            color: var(--gold-accent) !important; 
+            letter-spacing: 2px !important; 
+            font-weight: 700 !important; 
+            -webkit-text-stroke: 0 !important; /* Çerçeveyi zorla yok ediyoruz */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9) !important; 
+            text-transform: uppercase !important;
+            display: flex !important;
+            align-items: baseline !important; /* Yazıların alt kısımlarını tek bir çizgiye oturtur */
+            gap: 8px !important; /* margin-left yerine, modern ve net bir boşluk */ 
+        } 
+        /* BAŞLIKTAKİ MAVİ VURGU */
+        h1 span { 
+            color: var(--accent-color) !important; 
+            -webkit-text-stroke: 0 !important; 
+            text-shadow: 0 0 10px rgba(10, 200, 185, 0.5), 2px 2px 4px rgba(0, 0, 0, 0.8) !important; 
+        }
+        .versiyon-etiket { 
+            font-family: 'Karla', sans-serif;
+            font-size: 0.45em !important; /* Boyut büyütüldü */
+            margin-left: 0 !important; /* Boşluğu flex gap devraldığı için sıfırladık */
+            color: var(--accent-color) !important; /* Çok soluk kalmaması için vurgu rengi */
+            text-shadow: 0 0 10px rgba(10, 200, 185, 0.4) !important;
+            transform: translateY(-2px); /* İnce optik hizalama */
+        } 
+        /* --- HEXTECH İMLEÇ MOTORU --- */
+        :root {
+            /* Varsayılan olarak Yeni Hextech imleçleri */
+            --imlec-ana: url('cursors/imlec-yeni.png') 2 2, auto;
+            --imlec-el: url('cursors/imlec-yeni-el.png') 6 2, pointer;
+        }
         
-        /* Temizle/Kapat butonlarını standart ve küçük boyuta sabitledik */
-/* 1. ANA BUTON RESTORASYONU (Eski İhtişamlı Yeşil Hali) */
-        .yenile-btn { background: #238636; color: white; border: 1px solid #2ea043; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1em; display: flex; align-items: center; gap: 8px; box-shadow: 0 0 10px rgba(35, 134, 54, 0.2); transition: all 0.2s; }
-        .yenile-btn:hover { background: #2ea043; box-shadow: 0 0 15px rgba(35, 134, 54, 0.4); }
+        body.eski-eldiven {
+            /* Butona basıldığında devreye girecek Nostalji imleçleri */
+            --imlec-ana: url('cursors/imlec-eski.png') 2 2, auto;
+            --imlec-el: url('cursors/imlec-eski-el.png') 6 2, pointer;
+        }
 
-        /* 2. SADECE FİLTRE KAPATMA BUTONLARINA ÖZEL YENİ SINIF */
-        .mini-kapat { background: #f85149; color: white; border: 1px solid #f85149; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85em; display: inline-flex; align-items: center; justify-content: center; box-shadow: none; transition: background 0.2s; white-space: nowrap !important; flex-shrink: 0 !important; height: fit-content !important; }
-        .mini-kapat:hover { background: #da3633; border-color: #da3633; }
+        body, html {
+            cursor: var(--imlec-ana) !important;
+        }
+
+        /* Sitedeki TÜM tıklanabilir elemanlar (JavaScript dahil) bu kurala biat edecek */
+        a, button, select, input, .mod-btn, .tab-btn, .chip-btn, .sampiyon-dropdown, .mini-kapat, [style*="cursor: pointer"], [style*="cursor:pointer"] {
+            cursor: var(--imlec-el) !important;
+        }
+
+        /* 1. ANA BUTON RESTORASYONU (Yeşilden Hextech Büyü Mavisine Geçiş) */
+        .yenile-btn { 
+            background: var(--accent-color); 
+            color: #010a13; 
+            border: 1px solid #0cd4c4; 
+            padding: 10px 20px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-family: 'Cinzel', serif; 
+            font-size: 1em; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            box-shadow: 0 0 10px rgba(10, 200, 185, 0.2); 
+            transition: all 0.2s; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+        
+        .yenile-btn:hover { 
+            background: #0cd4c4; 
+            box-shadow: 0 0 15px rgba(10, 200, 185, 0.6); 
+        }
+
+        /* 🛡️ İKONU KORUMA ZIRHI (Yenile ikonunun yumurta gibi ezilmesini engeller) */
+        .yenile-btn img, .yenile-btn svg, .yenile-btn i {
+            width: 22px !important;
+            height: 22px !important;
+            flex-shrink: 0 !important; /* Hayat kurtaran kod: Sıkışmayı kesin olarak reddeder */
+            object-fit: contain !important;
+        }
+
+        /* 2. FİLTRE KAPATMA BUTONLARI (Daha Tok Bir Kırmızı) */
+        .mini-kapat { background: #a12b2b; color: #f0e6d2; border: 1px solid #a12b2b; padding: 4px 10px; border-radius: 2px; cursor: pointer; font-weight: bold; font-family: 'Karla', sans-serif; font-size: 0.85em; display: inline-flex; align-items: center; justify-content: center; box-shadow: none; transition: background 0.2s; white-space: nowrap !important; flex-shrink: 0 !important; height: fit-content !important; }
+        .mini-kapat:hover { background: #c23333; border-color: #c23333; }
 
         /* 3. ANAHTAR RÜNLER İÇİN NOKTA ATIŞI (İri Kıyım) */
         .r-isabet-1, .r-haki-1, .r-buyu-1, .r-azim-1, .r-ilham-1 {
@@ -30,40 +138,58 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
         #loader-ekrani { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(13, 17, 23, 0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
-        .spinner { width: 60px; height: 60px; border: 6px solid #30363d; border-top: 6px solid #58a6ff; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        .spinner { width: 60px; height: 60px; border: 6px solid var(--border-color); border-top: 6px solid var(--accent-color); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loader-metin { font-size: 1.5em; font-weight: bold; color: #58a6ff; animation: pulse 1.5s infinite; }
+        .loader-metin { font-size: 1.5em; font-weight: bold; color: var(--accent-color); animation: pulse 1.5s infinite; }
 
-        .mod-secici { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; border-bottom: 1px solid #30363d; padding-bottom: 20px; flex-wrap: wrap; }
-        .mod-btn { background: transparent; color: #8b949e; border: 2px solid #30363d; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-size: 1.05em; font-weight: bold; transition: all 0.2s;}
-        .mod-btn:hover { background: #161b22; }
-        .mod-btn.aktif { background: #58a6ff; color: #0d1117; border-color: #58a6ff; }
+        /* --- İSTEMCİ BUTONLARI HEXTECH GÜNCELLEMESİ --- */
+        .mod-secici { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; flex-wrap: wrap; }
         
+        /* Ana Sekme Butonları (Keskin Hatlar ve Cinzel Fontu) */
+        .mod-btn { background: transparent; color: var(--text-color); border: 2px solid var(--border-color); padding: 10px 20px; border-radius: 4px; cursor: pointer; font-family: 'Cinzel', serif; font-size: 1.05em; font-weight: bold; transition: all 0.2s; letter-spacing: 1px;}
+        .mod-btn:hover { background: rgba(10, 200, 185, 0.1); border-color: var(--accent-color); color: var(--text-light); }
+        .mod-btn.aktif { background: var(--accent-color); color: var(--bg-color); border-color: var(--accent-color); box-shadow: 0 0 10px rgba(10, 200, 185, 0.4); }
+        
+        /* Alt Oyuncu Sekmeleri (Yeşil Yerine Hextech Altını) */
         .tab-konteynir { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
-        .tab-btn { background: #161b22; color: #8b949e; border: 1px solid #30363d; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .tab-btn.aktif { background: #238636; color: white; border-color: #2ea043; }
+        .tab-btn { background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 10px 18px; border-radius: 4px; cursor: pointer; font-weight: bold; font-family: 'Karla', sans-serif;}
+        .tab-btn:hover { border-color: var(--gold-accent); color: var(--hextech-gold-hover); }
+        .tab-btn.aktif { background: var(--gold-accent); color: var(--bg-color); border-color: var(--gold-accent); box-shadow: 0 0 10px rgba(200, 170, 110, 0.4); }
         
+        /* Sezon Sekmeleri (Altın Çizgili İstemci Stili) */
         #sezon-tabs .tab-btn { background: transparent; border-color: transparent; border-bottom: 2px solid transparent; border-radius: 0; padding: 8px 15px; }
-        #sezon-tabs .tab-btn.aktif { background: #161b22; color: #58a6ff; border-bottom: 2px solid #58a6ff; }
+        #sezon-tabs .tab-btn.aktif { background: var(--card-bg); color: var(--gold-accent); border-bottom: 2px solid var(--gold-accent); box-shadow: none;}
 
-        .filtre-kutusu, .alt-filtre-kutusu { background: #161b22; padding: 15px; border-radius: 12px; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; gap: 10px; border: 1px solid #30363d; flex-wrap: wrap; }
-        .filtre-btn { background: transparent; color: #c9d1d9; border: 1px solid transparent; padding: 0 15px; height: 34px; border-radius: 6px; cursor: pointer; font-weight: bold; display: flex; align-items: center; transition: all 0.2s; }
-        .filtre-btn:hover { border-color: #30363d; background: #21262d; }
-        .filtre-btn.aktif { background: #58a6ff; color: #0d1117; border-color: #58a6ff; }
-        .alt-filtre-kutusu { background: rgba(22, 27, 34, 0.5); border: 1px dashed #30363d; max-width: 1100px; margin: -15px auto 30px auto; }
+        /* Liderlik Filtreleri (Keskin ve Büyü Mavisi) */
+        .filtre-kutusu, .alt-filtre-kutusu { background: var(--card-bg); padding: 15px; border-radius: 4px; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; gap: 10px; border: 1px solid var(--border-color); flex-wrap: wrap; }
+        .filtre-btn { background: transparent; color: var(--text-color); border: 1px solid transparent; padding: 0 15px; height: 34px; border-radius: 4px; cursor: pointer; font-weight: bold; display: flex; align-items: center; transition: all 0.2s; }
+        .filtre-btn:hover { border-color: var(--border-color); background: rgba(255,255,255,0.05); }
+        .filtre-btn.aktif { background: var(--accent-color); color: var(--bg-color); border-color: var(--accent-color); box-shadow: 0 0 10px rgba(10, 200, 185, 0.3);}
+        .alt-filtre-kutusu { background: rgba(9, 20, 40, 0.5); border: 1px dashed var(--border-color); max-width: 1100px; margin: -15px auto 30px auto; }
         
-        .alt-sampiyon-dropdown, .sampiyon-dropdown { background: #0d1117; color: #c9d1d9; border: 1px solid #30363d; padding: 0 12px; height: 34px; border-radius: 6px; outline: none; cursor: pointer; font-family: 'Urbanist', sans-serif; font-weight: bold; box-sizing: border-box; }
+        /* Şampiyon Dropdown Menüleri (Ortalanmış Hextech Stili) */
+        .alt-sampiyon-dropdown, .sampiyon-dropdown { background: var(--bg-color); color: var(--text-light); border: 1px solid var(--border-color); padding: 0 12px; height: 34px; border-radius: 4px; outline: none; cursor: pointer; font-family: 'Karla', sans-serif; font-weight: bold; box-sizing: border-box; }
         
-        .sampiyon-secici-kutu { display: flex; justify-content: center; width: 100%; margin-bottom: 30px; }
-        .sampiyon-dropdown { background: #161b22; color: #ffffff; border: 2px solid #58a6ff; padding: 0 20px; height: 45px; border-radius: 8px; font-size: 1.1em; text-align: center; min-width: 250px; }
+        .sampiyon-dropdown { 
+            display: block; 
+            margin: 0 auto 20px auto; /* Kutuyu zorla ortaya çeker ve altından boşluk bırakır */
+            border: 2px solid var(--accent-color); 
+            height: 45px; 
+            border-radius: 4px; 
+            font-size: 1.1em; 
+            text-align: center; 
+            min-width: 250px; 
+            background: var(--card-bg); 
+        }
         
-        .chip-btn { background: #0d1117; color: #8b949e; border: 1px solid #30363d; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 6px; }
-        .chip-btn.aktif { background: #58a6ff; color: #0d1117; border-color: #58a6ff; }
+        /* Sinerji Çoklu Seçim Çipleri */
+        .chip-btn { background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 6px; }
+        .chip-btn.aktif { background: var(--gold-accent); color: var(--bg-color); border-color: var(--gold-accent); }
         
         /* ÖZET PANOSU KATI IZGARA (SIFIR TAŞMA) */
         .ozet-panosu { 
-            background: linear-gradient(135deg, #161b22, #0d1117); 
-            border: 1px solid #58a6ff; border-radius: 12px; padding: 25px 30px; 
+            background: linear-gradient(135deg, var(--card-bg), var(--bg-color)); 
+            border: 1px solid var(--accent-color); border-radius: 12px; padding: 25px 30px; 
             margin: 0 auto 30px auto; max-width: 100%; 
             display: grid; 
             grid-template-columns: 1fr 1.2fr 1.5fr 1.8fr 2.8fr; 
@@ -71,23 +197,23 @@
         }
         .ozet-kutu { 
             display: flex; flex-direction: column; justify-content: flex-start; align-items: center; 
-            text-align: center; border-right: 1px solid #30363d; padding-right: 15px; 
+            text-align: center; border-right: 1px solid var(--border-color); padding-right: 15px; 
             min-width: 0; 
         }
         .ozet-kutu:last-child { border-right: none; padding-right: 0; }
         .ozet-kutu-sol { align-items: flex-start; text-align: left; padding-left: 15px; } 
         .ozet-kutu h3 { margin: 0 0 15px 0; color: #8b949e; font-size: 0.9em; text-transform: uppercase; letter-spacing: 0.5px; width: 100%; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
         .ozet-kutu .deger { font-size: 1.8em; font-weight: bold; color: #ffffff; }
-        .ozet-kutu .vurgu { color: #58a6ff; }
-        .ozet-liste { font-size: 0.95em; color: #c9d1d9; display: flex; flex-direction: column; gap: 8px; font-weight: bold; width: 100%; min-width:0; }
+        .ozet-kutu .vurgu { color: var(--accent-color); }
+        .ozet-liste { font-size: 0.95em; color: var(--text-color); display: flex; flex-direction: column; gap: 8px; font-weight: bold; width: 100%; min-width:0; }
         
         .ana-duzen { display: flex; gap: 30px; max-width: 1200px; margin: 0 auto; flex-wrap: wrap; justify-content: center; align-items: flex-start; }
         .sol-kolon { flex: 1; min-width: 320px; width: 100%; max-width: 800px; }
         .sag-kolon-liderlik { width: 400px; flex-shrink: 0; position: sticky; top: 20px; box-sizing: border-box; } 
         
-        .liderlik-panosu { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .liderlik-panosu { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .liderlik-satir { display: flex; align-items: center; padding: 12px 10px; border-bottom: 1px solid #21262d; border-radius: 6px; cursor: pointer; }
-        .liderlik-satir:hover { background: #21262d; border-left: 3px solid #58a6ff; }
+        .liderlik-satir:hover { background: #21262d; border-left: 3px solid var(--accent-color); }
         .l-sira { font-size: 1.5em; font-weight: bold; color: #8b949e; min-width: 50px; text-align: center; }
         
         .liderlik-satir:nth-child(1) .l-sira { color: #ffd700; text-shadow: 0 0 8px rgba(255, 215, 0, 0.4); } 
@@ -98,13 +224,13 @@
         .l-gercek { font-weight: bold; color: #ffffff; font-size: 1.05em; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
         .l-oyunici { font-size: 0.8em; color: #8b949e; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
         .l-deger { text-align: right; min-width: 90px; }
-        .l-ana { font-weight: bold; color: #58a6ff; font-size: 1.1em; }
+        .l-ana { font-weight: bold; color: var(--accent-color); font-size: 1.1em; }
         .l-alt { font-size: 0.75em; color: #8b949e; }
         
-        @media (max-width: 1000px) { .sag-kolon-liderlik { width: 100%; position: static; max-width: 800px; margin: 0 auto; } .ozet-panosu { grid-template-columns: 1fr; } .ozet-kutu, .ozet-kutu-sol { flex: 1 1 100% !important; border-right: none !important; padding-right: 0 !important; border-left: none !important; padding-left: 0 !important; border-bottom: 1px solid #30363d; padding-bottom: 15px; margin-bottom: 15px; align-items:center !important; text-align:center !important; } .ozet-kutu:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; } }
+        @media (max-width: 1000px) { .sag-kolon-liderlik { width: 100%; position: static; max-width: 800px; margin: 0 auto; } .ozet-panosu { grid-template-columns: 1fr; } .ozet-kutu, .ozet-kutu-sol { flex: 1 1 100% !important; border-right: none !important; padding-right: 0 !important; border-left: none !important; padding-left: 0 !important; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px; align-items:center !important; text-align:center !important; } .ozet-kutu:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; } }
         
         .komp-tablosu { width: 100%; border-collapse: collapse; margin-top: 15px; text-align: left; font-size: 0.9em; }
-        .komp-tablosu th { background: #21262d; padding: 10px; color: #8b949e; border-bottom: 2px solid #30363d; }
+        .komp-tablosu th { background: #21262d; padding: 10px; color: #8b949e; border-bottom: 2px solid var(--border-color); }
         .komp-tablosu td { padding: 10px; border-bottom: 1px solid #21262d; font-weight: bold; }
         .tiklanabilir-tr { cursor: pointer; } .tiklanabilir-tr:hover { background: #1c2128; }
         
@@ -112,19 +238,19 @@
         [data-tooltip] { position: relative; cursor: pointer; }
         [data-tooltip]::after {
             content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
-            background: #090c10; color: #c9d1d9; border: 1px solid #30363d; padding: 8px 12px; border-radius: 6px; font-size: 0.9em; font-weight: normal;
+            background: #090c10; color: var(--text-color); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 6px; font-size: 0.9em; font-weight: normal;
             white-space: normal; width: max-content; max-width: 250px; text-align: center; line-height: 1.4;
             opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; z-index: 999999; box-shadow: 0 4px 15px rgba(0,0,0,0.8); margin-bottom: 8px; font-family: 'Urbanist', sans-serif;
         }
         [data-tooltip]:hover::after { opacity: 1; transform: translateX(-50%) translateY(-2px); }
 
         .esya-kapsayici { position: relative; display: inline-flex; flex-shrink: 0; cursor: pointer; }
-        .esya-kart { position: relative; cursor: pointer; background: #090c10; border: 1px solid #30363d; border-radius: 8px; padding: 8px; text-align: center; transition: all 0.2s; display: flex; align-items: center; justify-content: center;}
-        .esya-kart:hover { border-color: #58a6ff; transform: translateY(-3px);}
+        .esya-kart { position: relative; cursor: pointer; background: #090c10; border: 1px solid var(--border-color); border-radius: 8px; padding: 8px; text-align: center; transition: all 0.2s; display: flex; align-items: center; justify-content: center;}
+        .esya-kart:hover { border-color: var(--accent-color); transform: translateY(-3px);}
         .esya-kart img { width: 40px; height: 40px; border-radius: 4px; }
         .esya-detay-popup {
             display: none; position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%);
-            background: #010a13; border: 1px solid #30363d;
+            background: #010a13; border: 1px solid var(--border-color);
             padding: 0 !important;
             border-radius: 6px; z-index: 999999;
             width: max-content; min-width: 260px; max-width: 380px; text-align: left;
@@ -146,7 +272,7 @@
         .modern-stats-box { margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px; }
         .modern-stat-line { display: flex; align-items: center; font-size: 1.05em; white-space: nowrap; }
         
-        .oran-bar-arkasi { background: #30363d; border-radius: 4px; height: 6px; width: 100%; margin-top: 6px; overflow: hidden; }
+        .oran-bar-arkasi { background: var(--border-color); border-radius: 4px; height: 6px; width: 100%; margin-top: 6px; overflow: hidden; }
         .oran-bar-ici { height: 100%; border-radius: 4px; transition: width 0.5s ease-in-out; }
         
         .m-tooltip-body passive { color: #f0e6d2; font-weight: bold; display: inline; }
@@ -172,83 +298,83 @@
         .perf-yesil { background: #238636; color: #ffffff; border: 1px solid #2ea043; }
         .perf-kirmizi { background: #da3633; color: #ffffff; border: 1px solid #f85149; }
 
-        .oyuncu-karti { background: #161b22; margin: 0 auto 15px auto; padding: 20px; border-radius: 12px; border: 1px solid #30363d; width: 100%; display: flex; flex-direction: column; cursor: pointer; box-sizing: border-box; transition: border-color 0.2s; }
-        .oyuncu-karti:hover { border-color: #58a6ff; }
+        .oyuncu-karti { background: var(--card-bg); margin: 0 auto 15px auto; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); width: 100%; display: flex; flex-direction: column; cursor: pointer; box-sizing: border-box; transition: border-color 0.2s; }
+        .oyuncu-karti:hover { border-color: var(--accent-color); }
         .kart-zafer { border-left: 6px solid #238636; } 
         .kart-bozgun { border-left: 6px solid #da3633; } 
         .kart-sirali { border-left: 6px solid #ffd700; } 
         .uzman-karti { max-width: 750px !important; cursor: default !important; }
         
-        .kart-ust { display: flex; align-items: center; border-bottom: 1px solid #30363d; padding-bottom: 15px; margin-bottom: 10px; flex-wrap: wrap;}
-        .sampiyon-ikon { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #30363d; margin-right: 20px; flex-shrink: 0; object-fit: cover !important; overflow: hidden !important; background: #000; }
+        .kart-ust { display: flex; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 10px; flex-wrap: wrap;}
+        .sampiyon-ikon { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--border-color); margin-right: 20px; flex-shrink: 0; object-fit: cover !important; overflow: hidden !important; background: #000; }
         .kimlik { display: flex; flex-direction: column; flex-grow: 1; min-width: 0;}
         .oyun-id-ana { font-size: 1.4em; font-weight: bold; color: #ffffff; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;}
         .gercek-isim-alt { font-size: 0.9em; color: #8b949e; font-style: italic; margin-top: 4px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;}
-        .sezon-etiket { font-size: 0.8em; background: #30363d; padding: 3px 8px; border-radius: 4px; color: #c9d1d9; margin-left: 10px; white-space:nowrap;}
+        .sezon-etiket { font-size: 0.8em; background: var(--border-color); padding: 3px 8px; border-radius: 4px; color: var(--text-color); margin-left: 10px; white-space:nowrap;}
         .rol-etiket { font-size: 0.8em; background: #1f2428; padding: 3px 8px; border-radius: 4px; color: #ffd700; margin-left: 5px; font-weight: bold; border: 1px solid #b8860b; white-space: nowrap; display: inline-block; }
         .sonuc-yazi { font-weight: bold; } .yazi-zafer { color: #3fb950; } .yazi-bozgun { color: #f85149; }
         
         .sag-istatistik-alani { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; min-width: 100px;}
         .rozetler-kutusu { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; max-width: 300px; }
-        .kda-deger { font-size: 1.5em; font-weight: bold; color: #58a6ff; text-align: right; }
+        .kda-deger { font-size: 1.5em; font-weight: bold; color: var(--accent-color); text-align: right; }
 
         .kart-alt { display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap; gap: 10px; }
         .esya-kutusu { display: flex; gap: 5px; flex-wrap: nowrap; flex-shrink: 0; } 
-        .esya, .bos-esya { width: 35px; height: 35px; border-radius: 5px; border: 1px solid #30363d; flex-shrink:0; } 
-        .bos-esya { background-color: #0d1117; border-style: dashed; }
+        .esya, .bos-esya { width: 35px; height: 35px; border-radius: 5px; border: 1px solid var(--border-color); flex-shrink:0; } 
+        .bos-esya { background-color: var(--bg-color); border-style: dashed; }
         .vizyon-kutusu { display: flex; gap: 12px; font-size: 0.9em; color: #8b949e; flex-wrap: nowrap; white-space: nowrap; align-items: center; } 
-        .v-deger { font-weight: bold; color: #c9d1d9; } 
+        .v-deger { font-weight: bold; color: var(--text-color); } 
         .kontrol-vurgu { color: #f85149; }
         
         .kart-etiket-satiri { width: 100%; display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; margin-bottom: 10px; }
 
-        .mac-karti { background: #0d1117; border: 1px solid #30363d; border-radius: 12px; width: 100%; max-width: 900px; margin: 0 auto 20px auto; overflow: visible !important; }
+        .mac-karti { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 12px; width: 100%; max-width: 900px; margin: 0 auto 20px auto; overflow: visible !important; }
         .mac-ust-bilgi { padding: 15px 20px; display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2em; border-top-left-radius: 11px; border-top-right-radius: 11px; }
         .mac-galibiyet { background: #23863622; border-bottom: 2px solid #238636; color: #3fb950; } 
         .mac-bozgun { background: #f8514922; border-bottom: 2px solid #f85149; color: #f85149; }
-        .sinerji-satir { display: flex; align-items: flex-start; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #21262d; background: #161b22; overflow: visible !important;}
+        .sinerji-satir { display: flex; align-items: flex-start; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #21262d; background: var(--card-bg); overflow: visible !important;}
         .s-sol-blok { display: flex; align-items: center; width: 32%; flex-shrink:0; min-width:0;} 
-        .s-ikon { width: 45px; height: 45px; border-radius: 50%; margin-right: 15px; border: 2px solid #30363d; flex-shrink:0;}
+        .s-ikon { width: 45px; height: 45px; border-radius: 50%; margin-right: 15px; border: 2px solid var(--border-color); flex-shrink:0;}
         .s-kimlik { display: flex; flex-direction: column; overflow:hidden; min-width:0;} 
         .s-gercek { font-weight: bold; color: #ffffff; font-size: 1.05em; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;} 
         .s-samp { color: #8b949e; font-size: 0.85em; white-space: nowrap; text-overflow:ellipsis; overflow:hidden;}
         .s-orta-blok { display: flex; flex-direction: column; align-items: flex-start; flex-grow: 1; justify-content:center; min-width:0; margin-left:10px; margin-right:10px; overflow: visible !important;}
         .s-esya-kutusu { display: flex; gap: 3px; margin-bottom: 4px; flex-wrap: nowrap; overflow: visible !important;} 
-        .s-esya, .s-bos-esya { width: 28px; height: 28px; border-radius: 4px; border: 1px solid #30363d; flex-shrink: 0; } 
-        .s-bos-esya { background-color: #0d1117; border-style: dashed; }
+        .s-esya, .s-bos-esya { width: 28px; height: 28px; border-radius: 4px; border: 1px solid var(--border-color); flex-shrink: 0; } 
+        .s-bos-esya { background-color: var(--bg-color); border-style: dashed; }
         .s-sag-blok { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; width: 25%; gap: 5px; flex-shrink:0; min-width: 120px;} 
-        .s-kda { font-weight: bold; font-size: 1.1em; color: #58a6ff; text-align: right; white-space:nowrap;}
+        .s-kda { font-weight: bold; font-size: 1.1em; color: var(--accent-color); text-align: right; white-space:nowrap;}
         
         .sira-badge { font-size: 1.5em; font-weight: bold; color: #ffd700; margin-right: 20px; min-width: 30px; text-align: center; flex-shrink:0;}
-        .daha-fazla-btn { background: #1f2428; color: #58a6ff; border: 1px solid #30363d; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-size: 1.1em; font-weight: bold; margin: 20px auto; display: block; }
+        .daha-fazla-btn { background: #1f2428; color: var(--accent-color); border: 1px solid var(--border-color); padding: 12px 30px; border-radius: 25px; cursor: pointer; font-size: 1.1em; font-weight: bold; margin: 20px auto; display: block; }
         .gizle { display: none !important; }
         
-        .ruya-kutu { background: #0d1117; border: 1px solid #30363d; border-radius: 12px; padding: 20px; text-align: center; width: 200px; position: relative; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center;}
+        .ruya-kutu { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; text-align: center; width: 200px; position: relative; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center;}
         .r-rol { font-size: 0.85em; color: #ffd700; text-transform: uppercase; font-weight: bold; margin-bottom: 10px; white-space: nowrap; }
-        .r-ikon { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #30363d; margin: 0 auto 10px auto; object-fit: cover;}
+        .r-ikon { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--border-color); margin: 0 auto 10px auto; object-fit: cover;}
         .r-isim { font-size: 1.2em; font-weight: bold; color: #ffffff; margin-bottom: 5px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .r-istatistik { font-size: 0.9em; color: #8b949e; line-height: 1.5; width: 100%; }
         
         .zaman-etiketi { color: #8b949e; font-size: 0.85em; white-space: nowrap; display: flex; gap: 10px; justify-content: flex-end; width: 100%; margin-top: -5px; margin-bottom: 10px;}
 
-        .formasyon-kutusu { background: #090c10; border: 1px dashed #30363d; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+        .formasyon-kutusu { background: #090c10; border: 1px dashed var(--border-color); border-radius: 8px; padding: 15px; margin-bottom: 20px; }
         .formasyon-satir { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #21262d; padding: 8px 0; }
         .formasyon-satir:last-child { border-bottom: none; padding-bottom: 0; }
         .formasyon-detay { flex-grow: 1; display: flex; gap: 10px; flex-wrap: wrap; }
-        .formasyon-rol-etiket { font-size: 0.85em; background: #161b22; border: 1px solid #30363d; color: #c9d1d9; padding: 4px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); margin-right: 5px; margin-bottom:5px; white-space:nowrap;}
-        .formasyon-isim { color: #58a6ff; font-weight: bold; }
+        .formasyon-rol-etiket { font-size: 0.85em; background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 4px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); margin-right: 5px; margin-bottom:5px; white-space:nowrap;}
+        .formasyon-isim { color: var(--accent-color); font-weight: bold; }
         
-        .bilgi-karti { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 25px; margin-bottom: 20px; display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap;}
-        .bilgi-karti img { width: 45px; height: 45px; border-radius: 6px; border: 2px solid #58a6ff; }
+        .bilgi-karti { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 25px; margin-bottom: 20px; display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap;}
+        .bilgi-karti img { width: 45px; height: 45px; border-radius: 6px; border: 2px solid var(--accent-color); }
         .bilgi-icerik h3 { margin: 0 0 10px 0; color: #ffffff; font-size: 1.3em; }
         .bilgi-icerik p { color: #8b949e; line-height: 1.6; margin: 0 0 10px 0; }
-        .bilgi-icerik b { color: #c9d1d9; }
+        .bilgi-icerik b { color: var(--text-color); }
         
-        .run-agaci { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 20px; text-align: center; flex: 1; min-width: 250px;}
-        .run-baslik { font-weight: bold; color: #58a6ff; font-size: 1.2em; margin-bottom: 15px; border-bottom: 1px dashed #30363d; padding-bottom: 10px; text-transform: uppercase; display:flex; justify-content:center; align-items:center; gap:10px;}
+        .run-agaci { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; text-align: center; flex: 1; min-width: 250px;}
+        .run-baslik { font-weight: bold; color: var(--accent-color); font-size: 1.2em; margin-bottom: 15px; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px; text-transform: uppercase; display:flex; justify-content:center; align-items:center; gap:10px;}
         /* SEÇİLMEYEN RÜNLER: Gri, Soluk ve Arkada Bekler */
         .run-ikon { 
-            width: 40px; height: 40px; border-radius: 50%; border: 2px solid #30363d; 
+            width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--border-color); 
             cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             filter: grayscale(100%) brightness(0.5); /* Renkleri tamamen emer */
             background: #000;
@@ -264,22 +390,52 @@
             z-index: 2; position: relative;
         }
         
-        .yama-karti { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 25px; margin-bottom: 20px; text-align: left; }
-        .yama-baslik { color: #58a6ff; font-size: 1.4em; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #30363d; padding-bottom: 10px; }
-        .yama-liste { color: #c9d1d9; font-size: 1.05em; line-height: 1.6; padding-left: 20px; margin-top: 10px; }
-        .yama-liste li { margin-bottom: 8px; }
+        /* YAMA NOTU KARTI - HEXTECH OKUNABİLİRLİK OPTİMİZASYONU */
+        .yama-karti { 
+            background: linear-gradient(to bottom right, #091428, #050b14); /* Yazıların patlaması için zemin kontrastı artırıldı */
+            border: 1px solid var(--border-color); 
+            border-radius: 12px; 
+            padding: 30px; /* İç boşluk ferahlatıldı */
+            margin-bottom: 25px; 
+            text-align: left; 
+        }
+        
+        .yama-baslik { 
+            color: var(--accent-color); 
+            font-family: 'Cinzel', serif; /* Başlığa resmi istemci ağırlığı verildi */
+            font-size: 1.5em; /* Başlık biraz büyütüldü */
+            font-weight: bold; 
+            margin-bottom: 15px; 
+            border-bottom: 1px solid var(--border-color); 
+            padding-bottom: 12px; 
+            letter-spacing: 1px;
+        }
+        
+        .yama-liste { 
+            color: #f0e6d2; /* Soluk renk yerine parlak ve okunaklı krem/beyaz kullanıldı */
+            font-size: 1.15em; /* Font bir tık büyütüldü */
+            line-height: 1.8; /* Satır aralıkları açıldı, gözü yorması kesin olarak engellendi */
+            padding-left: 20px; 
+            margin-top: 15px; 
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+        
+        .yama-liste li { 
+            margin-bottom: 14px; /* Maddelerin birbirine girip blok gibi görünmesi engellendi */
+        }
         .yama-tarih { font-size: 0.8em; color: #8b949e; margin-left: 10px; font-weight: normal; }
         
         /* EŞYA KATEGORİ BAŞLIKLARI VE GRID */
         .kategori-baslik {
             color: #ffffff; font-size: 1.3em; font-weight: bold; margin-top: 40px; margin-bottom: 15px;
-            padding: 10px 15px; border-left: 5px solid #58a6ff; background: rgba(88, 166, 255, 0.1); 
+            padding: 10px 15px; border-left: 5px solid var(--accent-color); background: rgba(88, 166, 255, 0.1); 
             border-radius: 0 8px 8px 0; text-transform: uppercase; letter-spacing: 1px;
             display: flex; align-items: center; gap: 10px;
         }
         .esya-kutuphanesi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 10px; margin-top: 10px;}
 	/* 🛠️ EŞYA SİMÜLATÖRÜ CSS */
-        .sim-slot { width: 45px; height: 45px; border-radius: 6px; border: 2px dashed #30363d; background: #090c10; cursor: pointer; display: flex; align-items: center; justify-content: center; overflow: hidden; transition: all 0.2s;}
+        .sim-slot { width: 45px; height: 45px; border-radius: 6px; border: 2px dashed var(--border-color); background: #090c10; cursor: pointer; display: flex; align-items: center; justify-content: center; overflow: hidden; transition: all 0.2s;}
         .sim-slot:hover { border-color: #f85149; background: rgba(248, 81, 73, 0.1); }
         .sim-slot img { width: 100%; height: 100%; object-fit: cover; }
         .sim-stat-satir { display: flex; justify-content: space-between; align-items: center; background: rgba(22, 27, 34, 0.8); padding: 6px 12px; border-radius: 6px; border: 1px solid #21262d; font-size: 0.95em; }
@@ -297,9 +453,9 @@
             left: 50%;
             transform: translateX(-50%);
             background-color: rgba(22, 27, 34, 0.98);
-            color: #c9d1d9;
+            color: var(--text-color);
             padding: 8px 12px;
-            border: 1px solid #58a6ff;
+            border: 1px solid var(--accent-color);
             border-radius: 6px;
             font-size: 13px;
             font-family: inherit;
@@ -366,26 +522,103 @@
             margin-left: 5px !important;
             transform: translateY(-2px);
         }
-	/* 🎯 v5.55.6 - İKON SIKIŞMASINI (OVALLEŞMEYİ) ENGELLEYEN MUTLAK ZIRH */
+	/* 🛡️ V6.0.0 - BİRLEŞTİRİLMİŞ İKON ZIRHI */
         .sampiyon-ikon, .s-ikon, .r-ikon {
-            border-radius: 50% !important;
+            /* Boyutlandırma (Eski kuralları koruyoruz) */
+            width: 80px;  /* Eğer ikonlar küçülürse burayı 80px yap */
+            height: 80px;
+            flex-shrink: 0 !important;
             object-fit: cover !important;
-            flex-shrink: 0 !important; /* 🛡️ HAYAT KURTARAN KOD: İkonların yanlardan preslenip yumurta gibi olmasını engeller! */
-            border: none !important; /* Sızdıran çerçeveyi attık */
-            padding: 0 !important; /* Sıkıştıran boşluğu sildik */
-            box-shadow: 0 0 0 2px #30363d !important; /* Kanama yapmayan sahte dış çerçeve */
+            
+            /* Kare/Köşeli Hextech Formu */
+            border-radius: 4px !important; 
+            
+            /* Asil Altın Çerçeve */
+            border: 2px solid var(--gold-accent) !important; 
+            padding: 1px !important;
+            box-shadow: 0 0 8px rgba(200, 170, 110, 0.4) !important;
+            
+            /* Temizlik */
             background-color: #000 !important;
+            filter: none !important;
         }
+        /* --- HEXTECH ZIRH OPERASYONU (Tüm Kartlar İçin) --- */
+        .oyuncu-karti, .mac-karti, .liderlik-panosu, .yama-karti, .bilgi-karti, .ruya-kutu, .formasyon-kutusu, .ozet-panosu {
+            clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+            cursor: pointer;
+            border: none !important;
+            /* transition tek bir satırda toplandı */
+            transition: all 0.3s ease !important;
+            box-shadow: inset 0 0 0 1px var(--border-color), 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .oyuncu-karti:hover, .mac-karti:hover, .liderlik-panosu:hover {
+            transform: translateY(-5px);
+            box-shadow: inset 0 0 0 1px var(--accent-color), 0 15px 40px rgba(10, 200, 185, 0.3);
+        }
+
+        /* Kenarlık çakışmasını engellemek için sol kenarı biraz daha içeriden başlatıyoruz */
+        .kart-zafer { border-left: 6px solid #238636 !important; padding-left: 14px !important; }
+        .kart-bozgun { border-left: 6px solid #da3633 !important; padding-left: 14px !important; }
+
+        /* 1. İSTATİSTİK RAKAMLARI İÇİN "HEXTECH" FONTU */
+        .deger, .kda-deger, .l-deger, .l-ana {
+            font-family: 'Cinzel', serif !important; /* Başlık fontunu rakamlara da veriyoruz */
+            letter-spacing: 0.5px;
+            color: #ffffff; /* Rakamların saf beyaz parlaması */
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+        }
+
+        /* 2. VURGU (ACCENT) RENGİYLE "ENERJİ" AKIŞI */
+        /* Aktif olan her şeyin border'ını ve shadow'unu biraz daha parlatıyoruz */
+        .aktif, .mod-btn.aktif, .tab-btn.aktif, .filtre-btn.aktif {
+            border-color: var(--accent-color) !important;
+            box-shadow: 0 0 15px rgba(10, 200, 185, 0.5) !important;
+        }
+        /* Tabloları "yüzer" panele çevirme */
+        .komp-tablosu {
+            background: #090c10;
+            border-collapse: separate;
+            border-spacing: 0 5px; /* Satırlar arası boşluk */
+        }
+        .komp-tablosu td {
+            background: rgba(9, 20, 40, 0.6);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .komp-tablosu td:first-child { border-left: 1px solid var(--border-color); border-radius: 4px 0 0 4px; }
+        .komp-tablosu td:last-child { border-right: 1px solid var(--border-color); border-radius: 0 4px 4px 0; }
     </style>
 </head>
 <body>
     <div id="loader-ekrani"><div class="spinner"></div><div class="loader-metin">Arşiv Taranıyor...</div></div>
 
     <div class="ust-bar">
-        <h1 style="color: #c9d1d9; letter-spacing: -1px; font-weight: 800; -webkit-text-stroke: 1.5px #000000; text-shadow: 4px 4px 10px rgba(0,0,0,0.8);">
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v5.58.9</span>
+        <!-- Senin az önce Hextech stiline çevirdiğimiz h1 başlığın burada durmaya devam edecek -->
+        <h1>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v6.0.1</span>
         </h1>
-        <button id="btn-veri-yenile" class="yenile-btn"><span>🔄</span> Verileri Yenile</button>
+    
+        <!-- Butonları yan yana düzenli tutan yeni Hextech kapsayıcısı -->
+        <div style="display: flex; gap: 15px; align-items: center;">
+    
+            <!-- 1. Yeni İmleç Şalteri -->
+            <button id="imlec-degistir-btn" class="mod-btn"
+                style="padding: 10px 15px; font-size: 0.9em; display: flex; align-items: center; gap: 8px;">
+                <span id="imlec-ikon">✨</span> <span id="imlec-metin">İmleç: Hextech</span>
+            </button>
+    
+            <!-- 2. Senin Orijinal Yenile Butonun (Veri tabanı bağlantısı kopmasın diye ID korundu, sadece ikonu jilet gibi yapıldı) -->
+            <button id="btn-veri-yenile" class="yenile-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
+                Verileri Yenile
+            </button>
+    
+        </div>
     </div>
     
     <div class="mod-secici">
@@ -405,7 +638,7 @@
     </div>
 
     <!-- Liderlik & Sinerji Sekmesi İçin Lejant -->
-    <div id="genel-lejant" style="display: flex; flex-direction: column; align-items: center; padding: 20px; background: #161b22; border: 1px solid #30363d; border-radius: 12px; margin: 0 auto 30px auto; max-width: 1400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+    <div id="genel-lejant" style="display: flex; flex-direction: column; align-items: center; padding: 20px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; margin: 0 auto 30px auto; max-width: 1400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
         
         <!-- ÜST SIRA: Prestij Rozetleri -->
         <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; width: 100%; margin-bottom: 15px;">
@@ -420,18 +653,18 @@
             <div class="rozet rozet-up" data-tooltip="Ağırlıklı Şampiyon Uzmanlık Puanı (KDA + Hasar + Şifa + Vizyon)">UP: Uzmanlık Puanı</div>
         </div>
         
-        <div style="width: 90%; border-top: 1px dashed #30363d; margin: 5px auto 20px auto;"></div>
+        <div style="width: 90%; border-top: 1px dashed var(--border-color); margin: 5px auto 20px auto;"></div>
         
         <!-- ALT SIRA: Derin İstatistik Rozetleri (Çıplak metinler kutuya çevrildi) -->
         <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; width: 100%;">
-            <div class="rozet" style="background: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); color: #c9d1d9; font-size: 0.85em;" data-tooltip="Şampiyonlara Verilen Toplam Hasar">💥 Şampiyonlara Verilen Hasar</div>
-            <div class="rozet" style="background: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); color: #c9d1d9; font-size: 0.85em;" data-tooltip="Tanklanan ve Soğurulan Toplam Hasar">🛡️ Tanklanan/Alınan Hasar</div>
-            <div class="rozet" style="background: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); color: #c9d1d9; font-size: 0.85em;" data-tooltip="Takıma Sağlanan Şifa ve Kalkan Miktarı">💚 Takıma Sağlanan Şifa/Kalkan</div>
-            <div class="rozet" style="background: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); color: #c9d1d9; font-size: 0.85em;" data-tooltip="Uygulanan Kitle Kontrol (CC) Skoru (Saniye)">❄️ Uygulanan Kitle Kontrol</div>
-            <div class="rozet" style="background: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); color: #c9d1d9; font-size: 0.85em;" data-tooltip="Maç Boyunca Sağlanan Toplam Görüş Skoru">👁️ Görüş Skoru</div>
-            <div class="rozet" style="background: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); color: #c9d1d9; font-size: 0.85em;" data-tooltip="Yerleştirilen Görüş Totemi (Sarı/Mavi Totemler)">📍 Normal Totem</div>
-            <div class="rozet" style="background: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); color: #c9d1d9; font-size: 0.85em;" data-tooltip="Yerleştirilen Kontrol Totemi (Pembe Totemler)">🛑 Kontrol Totemi</div>
-            <div class="rozet" style="background: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); color: #c9d1d9; font-size: 0.85em;" data-tooltip="Dakika Başına Düşen Minyon Katletme Sayısı">🗡️ CS/min</div>
+            <div class="rozet" style="background: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); color: var(--text-color); font-size: 0.85em;" data-tooltip="Şampiyonlara Verilen Toplam Hasar">💥 Şampiyonlara Verilen Hasar</div>
+            <div class="rozet" style="background: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); color: var(--text-color); font-size: 0.85em;" data-tooltip="Tanklanan ve Soğurulan Toplam Hasar">🛡️ Tanklanan/Alınan Hasar</div>
+            <div class="rozet" style="background: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); color: var(--text-color); font-size: 0.85em;" data-tooltip="Takıma Sağlanan Şifa ve Kalkan Miktarı">💚 Takıma Sağlanan Şifa/Kalkan</div>
+            <div class="rozet" style="background: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); color: var(--text-color); font-size: 0.85em;" data-tooltip="Uygulanan Kitle Kontrol (CC) Skoru (Saniye)">❄️ Uygulanan Kitle Kontrol</div>
+            <div class="rozet" style="background: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); color: var(--text-color); font-size: 0.85em;" data-tooltip="Maç Boyunca Sağlanan Toplam Görüş Skoru">👁️ Görüş Skoru</div>
+            <div class="rozet" style="background: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); color: var(--text-color); font-size: 0.85em;" data-tooltip="Yerleştirilen Görüş Totemi (Sarı/Mavi Totemler)">📍 Normal Totem</div>
+            <div class="rozet" style="background: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); color: var(--text-color); font-size: 0.85em;" data-tooltip="Yerleştirilen Kontrol Totemi (Pembe Totemler)">🛑 Kontrol Totemi</div>
+            <div class="rozet" style="background: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); color: var(--text-color); font-size: 0.85em;" data-tooltip="Dakika Başına Düşen Minyon Katletme Sayısı">🗡️ CS/min</div>
         </div>
     </div>
 
@@ -448,13 +681,13 @@
         <div id="esya-sekme-simulator">
             
             <!-- 🛠️ İNTERAKTİF EŞYA SİMÜLATÖRÜ (TEORİK DİZİLİM) -->
-            <div class="esya-similator-kapsayici" style="background: #0d1117; border: 1px solid #58a6ff; border-radius: 12px; padding: 25px; margin: 30px auto; box-shadow: 0 0 30px rgba(88, 166, 255, 0.15);">
+            <div class="esya-similator-kapsayici" style="background: var(--bg-color); border: 1px solid var(--accent-color); border-radius: 12px; padding: 25px; margin: 30px auto; box-shadow: 0 0 30px rgba(88, 166, 255, 0.15);">
                 <h3 style="color: #ffffff; text-align: center; margin-top: 0; margin-bottom: 20px; font-size: 1.4em;">🛠️ İnteraktif Eşya Simülatörü</h3>
                 <p style="text-align: center; color: #8b949e; margin-bottom: 25px; font-size: 0.9em;">Aşağıdaki kütüphaneden eşyalara tıklayarak envanterinize ekleyin. Çıkarmak için slota tıklayın.</p>
                 
                 <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start;">
                     <!-- Sol Kısım: 6 Slotluk Envanter -->
-                    <div style="background: #161b22; padding: 20px; border-radius: 10px; border: 1px dashed #30363d; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div style="background: var(--card-bg); padding: 20px; border-radius: 10px; border: 1px dashed var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center;">
                         <div style="color: #8b949e; font-size: 0.85em; text-transform: uppercase; margin-bottom: 15px; font-weight: bold;">Envanter</div>
                         <div id="sim-envanter" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; transition: border 0.3s;">
                             <div class="sim-slot" onclick="window.simEsyaCikar(0)"></div>
@@ -468,17 +701,17 @@
                     </div>
                     
                     <!-- Sağ Kısım: Hesaplanmış Toplam İstatistikler -->
-                    <div style="flex: 1; min-width: 300px; background: #161b22; padding: 20px; border-radius: 10px; border: 1px solid #30363d;">
-                        <div style="color: #58a6ff; font-size: 0.9em; text-transform: uppercase; margin-bottom: 15px; text-align: center; font-weight: bold;">Kazanılan Toplam İstatistikler</div>
+                    <div style="flex: 1; min-width: 300px; background: var(--card-bg); padding: 20px; border-radius: 10px; border: 1px solid var(--border-color);">
+                        <div style="color: var(--accent-color); font-size: 0.9em; text-transform: uppercase; margin-bottom: 15px; text-align: center; font-weight: bold;">Kazanılan Toplam İstatistikler</div>
                         <div id="sim-statlar" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                             <div style="color:#8b949e; grid-column: 1 / -1; text-align:center; margin: 20px 0;">Kütüphaneden eşya seçerek dizilime başlayın.</div>
                         </div>
-                        <div id="sim-altin" style="margin-top: 20px; text-align: center; color: #ffd700; font-weight: bold; font-size: 1.3em; border-top: 1px dashed #30363d; padding-top: 15px;">Toplam Maliyet: 0 🪙</div>
+                        <div id="sim-altin" style="margin-top: 20px; text-align: center; color: #ffd700; font-weight: bold; font-size: 1.3em; border-top: 1px dashed var(--border-color); padding-top: 15px;">Toplam Maliyet: 0 🪙</div>
                     </div>
                 </div>
             </div>
                 
-            <h3 style="color: #58a6ff; text-align: center; margin-top: 50px; margin-bottom: 10px; border-bottom: 1px dashed #30363d; padding-bottom: 10px;">Tüm Aktif Efsanevi Eşya Kütüphanesi</h3>
+            <h3 style="color: var(--accent-color); text-align: center; margin-top: 50px; margin-bottom: 10px; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">Tüm Aktif Efsanevi Eşya Kütüphanesi</h3>
             <p style="text-align: center; color: #8b949e; margin-bottom: 30px;">Kütüphaneden eşyalara tıklayarak yukarıdaki simülatöre ekleyebilirsiniz.</p>
             
             <div class="kategori-baslik">⚔️ Dövüşçü & Suikastçı</div>
@@ -513,19 +746,19 @@
                     <h3>Yasuo & Yone (Kritik / Dövüşçü Yolu)</h3>
                     <p>Her şampiyonun kendi doğasına ve o anki metaya uygun şekilde 3 tane çekirdek eşyası (core item) olduğundan diğer işlevsel tipli eşyaları (Cıva Yatağan, tank eşyaları, 2. seviye bot) almadan önce bu çekirdek eşyalarının bitirilmesi gerekir.</p>
                     <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-                        <div class="esya-kapsayici" data-item-id="6672"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/6672.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div> <span style="color:#8b949e; font-size:1.5em;">/</span>
-                        <div class="esya-kapsayici" data-item-id="3153"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3153.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div>
-                        <span style="color:#c9d1d9;"><b>1. Eşya:</b> Bir isabet etkili dövüşçü eşyası. Karşıda kırılganlar varsa <b>Kraken Katili</b>, tanklar varsa <b>Mahvolmuş Kralın Kılıcı</b>.</span>
+                        <div class="esya-kapsayici" data-item-id="6672"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/6672.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div> <span style="color:#8b949e; font-size:1.5em;">/</span>
+                        <div class="esya-kapsayici" data-item-id="3153"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3153.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                        <span style="color:var(--text-color);"><b>1. Eşya:</b> Bir isabet etkili dövüşçü eşyası. Karşıda kırılganlar varsa <b>Kraken Katili</b>, tanklar varsa <b>Mahvolmuş Kralın Kılıcı</b>.</span>
                     </div>
                     <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-                        <div class="esya-kapsayici" data-item-id="6673"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/6673.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div>
-                        <span style="color:#c9d1d9;"><b>2. Eşya:</b> Ani patlatma hasarlarından korunmak ve hayatta kalmak için <b>Ölümsüz Kalkanyay</b> vazgeçilmezdir.</span>
+                        <div class="esya-kapsayici" data-item-id="6673"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/6673.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                        <span style="color:var(--text-color);"><b>2. Eşya:</b> Ani patlatma hasarlarından korunmak ve hayatta kalmak için <b>Ölümsüz Kalkanyay</b> vazgeçilmezdir.</span>
                     </div>
                     <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-                        <div class="esya-kapsayici" data-item-id="3036"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3036.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div> <span style="color:#8b949e; font-size:1.5em;">/</span>
-                        <div class="esya-kapsayici" data-item-id="3033"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3033.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div> <span style="color:#8b949e; font-size:1.5em;">/</span>
-                        <div class="esya-kapsayici" data-item-id="3031"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3031.png" style="width:35px; height:35px; border-radius:4px; border:1px solid #30363d;"></div>
-                        <span style="color:#c9d1d9;"><b>3. Eşya:</b> Zırh delme kritik eşyası (<b>Dominik Efendinin Hürmetleri</b> veya <b>Fani Hatıratı</b>) veya saf hasar için <b>Ebedi Kılıç</b>.</span>
+                        <div class="esya-kapsayici" data-item-id="3036"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3036.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div> <span style="color:#8b949e; font-size:1.5em;">/</span>
+                        <div class="esya-kapsayici" data-item-id="3033"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3033.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div> <span style="color:#8b949e; font-size:1.5em;">/</span>
+                        <div class="esya-kapsayici" data-item-id="3031"><img src="https://ddragon.leagueoflegends.com/cdn/14.9.1/img/item/3031.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                        <span style="color:var(--text-color);"><b>3. Eşya:</b> Zırh delme kritik eşyası (<b>Dominik Efendinin Hürmetleri</b> veya <b>Fani Hatıratı</b>) veya saf hasar için <b>Ebedi Kılıç</b>.</span>
                     </div>
                 </div>
             </div>
@@ -665,7 +898,7 @@
             </div>
             
             <!-- Ufak Rünler (Stat Shards) -->
-            <div class="run-agaci" style="min-width: 150px; background:#161b22; border-color:#58a6ff;">
+            <div class="run-agaci" style="min-width: 150px; background:var(--card-bg); border-color:var(--accent-color);">
                 <div class="run-baslik" style="color:#ffffff;">İstatistikler</div>
                 <div class="run-satir" style="margin-top:30px;">
                     <div class="esya-kapsayici" style="margin:4px;">
@@ -678,7 +911,7 @@
                     </div>
                     <div class="esya-kapsayici" style="margin:4px;">
                         <img src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodscdrscalingicon.png" class="run-ikon u-1" style="width:30px; height:30px;" onclick="window.toggleRun(event, 'u-1')">
-                        <div class="esya-detay-popup"><div class="esya-isim">Yetenek Hızı</div><div class="m-tooltip-body"><b style="color:#c9d1d9;">+8 Yetenek Hızı</b></div></div>
+                        <div class="esya-detay-popup"><div class="esya-isim">Yetenek Hızı</div><div class="m-tooltip-body"><b style="color:var(--text-color);">+8 Yetenek Hızı</b></div></div>
                     </div>
                 </div>
                 <div class="run-satir">
@@ -714,14 +947,14 @@
     </div>
 <div id="arayuz-komp" class="gizle ana-duzen">
     <div class="kutu-kapsayici">
-        <h2 style="color:#58a6ff; border-bottom: 2px solid #30363d; padding-bottom: 10px;">🛡️ Kompozisyon Zekası ve Kontra Seçim (Counter Pick) Mantığı</h2>
+        <h2 style="color:var(--accent-color); border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">🛡️ Kompozisyon Zekası ve Kontra Seçim (Counter Pick) Mantığı</h2>
         
         <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
             <!-- Temel Taş Kağıt Makas Mantığı -->
-            <div style="flex: 1; min-width: 300px; background: rgba(22,27,34,0.8); border: 1px solid #30363d; border-radius: 8px; padding: 15px;">
+            <div style="flex: 1; min-width: 300px; background: rgba(22,27,34,0.8); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px;">
                 <h3 style="color:#ffd700; margin-top:0;">Döngüsel Sayaç Kuramı</h3>
                 <p style="color:#8b949e; line-height: 1.5; font-size: 0.95em;">League of Legends'ta kompozisyonlar dev bir taş-kağıt-makas oyunudur. İstisnalar olsa da altın kural şudur:</p>
-                <ul style="color:#c9d1d9; line-height: 1.8;">
+                <ul style="color:var(--text-color); line-height: 1.8;">
                     <li><b>Suikastçılar 🗡️</b> &rarr; <i>Nişancıları ve Büyücüleri</i> tekler.</li>
                     <li><b>Tanklar / Eziciler 🛡️</b> &rarr; <i>Suikastçıların</i> hasarını soğurur ve onları ezer.</li>
                     <li><b>Sürekli Hasar (DPS/Nişancı) 🏹</b> &rarr; Uzun savaşlarda <i>Tankları</i> eritir.</li>
@@ -730,9 +963,9 @@
             </div>
 
             <!-- Rol Dağılımı ve Görevler -->
-            <div style="flex: 1; min-width: 300px; background: rgba(22,27,34,0.8); border: 1px solid #30363d; border-radius: 8px; padding: 15px;">
+            <div style="flex: 1; min-width: 300px; background: rgba(22,27,34,0.8); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px;">
                 <h3 style="color:#a1d586; margin-top:0;">Modern Rol Sinerjileri</h3>
-                <ul style="color:#c9d1d9; line-height: 1.8;">
+                <ul style="color:var(--text-color); line-height: 1.8;">
                     <li><b>Zayıf Taraf (Weakside) Üst Koridor:</b> Ormancının hiç yardıma gelmeyeceğini kabullenip, az kaynakla hayatta kalarak takıma CC/Tanklık sağlayan oyuncudur (Örn: Ornn, Sion).</li>
                     <li><b>Güçlü Taraf (Strongside):</b> Tüm orman ve orta koridor baskınlarının odaklandığı, maçı taşıması beklenen koridordur. Bu koridor düşerse maç genellikle biter.</li>
                     <li><b>Wombo Combo:</b> Alan etkili (AoE) kitle kontrol yeteneklerinin art arda kullanılmasıdır (Örn: Malphite Ultisi + Yasuo Ultisi + Orianna Ultisi). Rakibe tepki süresi tanımaz.</li>
@@ -743,13 +976,13 @@
 </div>
 <div id="arayuz-rotasyon" class="gizle ana-duzen">
     <div class="kutu-kapsayici">
-        <h2 style="color:#ff9800; border-bottom: 2px solid #30363d; padding-bottom: 10px;">🗺️ Makro Oyun: Zaman Çizelgesi ve Harita Rotasyonları</h2>
+        <h2 style="color:#ff9800; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">🗺️ Makro Oyun: Zaman Çizelgesi ve Harita Rotasyonları</h2>
         
         <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
             <!-- Erken Oyun -->
             <div style="background: rgba(22,27,34,0.8); border-left: 5px solid #a1d586; border-radius: 8px; padding: 15px;">
                 <h3 style="color:#a1d586; margin-top:0;">Aşama 1: Erken Oyun (Early Game) (0 - 15. Dakika)</h3>
-                <p style="color:#c9d1d9; line-height: 1.6;">Bu evre <b>Koridor Aşaması (Laning Phase)</b> olarak bilinir. Odak noktası altın ve tecrübe kazanmak, kule barikatlarını (tower plates) almaktır. Kompozisyona göre değişse de genellikle erken oyunda koridorda üstünlük almak (öldürme skoru, minyon skoru) önemlidir.</p>
+                <p style="color:var(--text-color); line-height: 1.6;">Bu evre <b>Koridor Aşaması (Laning Phase)</b> olarak bilinir. Odak noktası altın ve tecrübe kazanmak, kule barikatlarını (tower plates) almaktır. Kompozisyona göre değişse de genellikle erken oyunda koridorda üstünlük almak (öldürme skoru, minyon skoru) önemlidir.</p>
                 <div style="color:#8b949e; font-size: 0.9em; margin-top: 10px;">
                     <b>Anahtar Rotasyonlar:</b><br>
                     • <b>Hiçlik Kurtçukları (Grubs):</b> 8. dakikada doğar. Üst ve Orta koridorun önceliği (priority/prio) varsa ormancıya yardım etmelidir. Takıma kalıcı kule itme gücü verir.<br>
@@ -758,9 +991,9 @@
             </div>
 
             <!-- Orta Oyun -->
-            <div style="background: rgba(22,27,34,0.8); border-left: 5px solid #58a6ff; border-radius: 8px; padding: 15px;">
-                <h3 style="color:#58a6ff; margin-top:0;">Aşama 2: Orta Oyun (Mid Game) (15 - 25. Dakika)</h3>
-                <p style="color:#c9d1d9; line-height: 1.6;">Kuleler yıkılmaya başladığında harita açılır. Klasik "ARAM" oynamak yerine altın akışını optimize etmek gerekir.</p>
+            <div style="background: rgba(22,27,34,0.8); border-left: 5px solid var(--accent-color); border-radius: 8px; padding: 15px;">
+                <h3 style="color:var(--accent-color); margin-top:0;">Aşama 2: Orta Oyun (Mid Game) (15 - 25. Dakika)</h3>
+                <p style="color:var(--text-color); line-height: 1.6;">Kuleler yıkılmaya başladığında harita açılır. Klasik "ARAM" oynamak yerine altın akışını optimize etmek gerekir.</p>
                 <div style="color:#8b949e; font-size: 0.9em; margin-top: 10px;">
                     <b>Altın Kural (Mid-Game Swap):</b> İlk alt kule yıkıldıktan sonra Nişancı ve Destek <b>Orta Koridora</b> geçer. Orta koridor oyuncusu (Büyücü/Suikastçı) veya Üst koridor oyuncusu yan koridorlara (Side Lanes) giderek minyon dalgalarını iter (Split Push). Nişancı haritanın merkezinde olmalı ki objektiflere (Ejder/Vadi Alameti) hızlı dönebilsin.
                 </div>
@@ -769,7 +1002,7 @@
             <!-- Geç Oyun -->
             <div style="background: rgba(22,27,34,0.8); border-left: 5px solid #f85149; border-radius: 8px; padding: 15px;">
                 <h3 style="color:#f85149; margin-top:0;">Aşama 3: Geç Oyun (Late Game) (25+ Dakika)</h3>
-                <p style="color:#c9d1d9; line-height: 1.6;">Dirilme süreleri çok uzundur. Tek bir hata, maçın bitmesine neden olur. Gözlem (Vision) her şeydir.</p>
+                <p style="color:var(--text-color); line-height: 1.6;">Dirilme süreleri çok uzundur. Tek bir hata, maçın bitmesine neden olur. Gözlem (Vision) her şeydir.</p>
                 <div style="color:#8b949e; font-size: 0.9em; margin-top: 10px;">
                     • <b>Baron Dansı:</b> Işınlan (Teleport) büyüsü olan oyuncu, Baron'a uzak olan koridoru (aşağı) iter. Takımın geri kalanı Baron çevresinde görüş temizler.<br>
                     • <b>Bait (Yemleme):</b> Rakibin görüşünü temizledikten sonra Baron'a vuruyormuş gibi yapıp, kontrole gelen rakibi pusuya düşürmek en klasik ve ölümcül geç oyun taktiğidir.<br>
@@ -779,7 +1012,7 @@
 		<!-- Süper Geç Oyun -->
             <div style="background: rgba(22,27,34,0.8); border-left: 5px solid #A020F0; border-radius: 8px; padding: 15px;">
                 <h3 style="color:#A020F0; margin-top:0;">Aşama 4: Süper Geç Oyun (Super Late Game) (35+ Dakika)</h3>
-                <p style="color:#c9d1d9; line-height: 1.6;">Dirilme süreleri çok daha uzundur. Tek bir hata, maçın bitmesine neden olur. Görüş (Vision), iyi bir savaş başlangıcı, rakibi terste tek yakalamak, iyi ayrık ittirme gibi unsurlar maçı kazanmak için kritiktir. Oyuncuların 6 eşya (bot dahil tüm eşya slotlarının tam eşyalar ile dolu olması durumu, not: Destekler her zaman tam eşya olamayabilir, Nişancılar da görev sayesinde 7 eşyaya ulaşabilir) olduğu evredir.</p>
+                <p style="color:var(--text-color); line-height: 1.6;">Dirilme süreleri çok daha uzundur. Tek bir hata, maçın bitmesine neden olur. Görüş (Vision), iyi bir savaş başlangıcı, rakibi terste tek yakalamak, iyi ayrık ittirme gibi unsurlar maçı kazanmak için kritiktir. Oyuncuların 6 eşya (bot dahil tüm eşya slotlarının tam eşyalar ile dolu olması durumu, not: Destekler her zaman tam eşya olamayabilir, Nişancılar da görev sayesinde 7 eşyaya ulaşabilir) olduğu evredir.</p>
                 <div style="color:#8b949e; font-size: 0.9em; margin-top: 10px;">
                     •  <b>Kadim Ejder:</b> Kadim Ejder'i almak çoğu zaman Baron Nashor'u katletmekten daha önemlidir çünkü savaşta ezici bir üstünlük sağlar.<br>
                     • <b>Bait (Yemleme):</b> Farklı yemleme türleri kazanmak için oluşturulur.
@@ -790,10 +1023,10 @@
 <!-- V5.42.0 TAKTİK TAHTASI VE HARİTA ROTASYONLARI -->
         <style>
             .taktik-sekmeler { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
-            .taktik-btn { background: #21262d; border: 1px solid #30363d; color: #8b949e; padding: 10px 20px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; font-size: 1em; }
-            .taktik-btn:hover { background: #30363d; color: #c9d1d9; }
-            .taktik-btn.aktif { background: #1f6feb; color: #ffffff; border-color: #58a6ff; font-weight: bold; box-shadow: 0 0 10px rgba(88, 166, 255, 0.4); }
-            .harita-kapsayici { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 15px; text-align: center; position: relative; }
+            .taktik-btn { background: #21262d; border: 1px solid var(--border-color); color: #8b949e; padding: 10px 20px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; font-size: 1em; }
+            .taktik-btn:hover { background: var(--border-color); color: var(--text-color); }
+            .taktik-btn.aktif { background: #1f6feb; color: #ffffff; border-color: var(--accent-color); font-weight: bold; box-shadow: 0 0 10px rgba(88, 166, 255, 0.4); }
+            .harita-kapsayici { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; text-align: center; position: relative; }
             .harita-kapsayici img { max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.6); transition: opacity 0.3s ease; }
         </style>
 
@@ -840,7 +1073,60 @@
     <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">YAZLIKDC.GG SÜRÜM GEÇMİŞİ (PATCH NOTES)</h2>
     
     <div class="yama-karti">
-        <div class="yama-baslik">v5.58.9 - UI/UX İmleç (Cursor) Optimizasyonu <span class="yama-tarih">Güncel</span></div>
+        <div class="yama-baslik">v6.0.1 - İstemci Hotfix & Optik Kalibrasyon <span class="yama-tarih">Güncel</span></div>
+        <ul class="yama-liste">
+            <li><strong>[UX] Yenileme İkonu Restorasyonu:</strong> Kafa karışıklığı yaratan ve çift yönlü dönen eski SVG oku
+                imha edildi. Yerine, RYO istemci standartlarına mutlak uyum sağlayan, saat yönünde dönen tek yönlü keskin
+                Hextech oku (Single-Path SVG) sisteme mühürlendi.</li>
+            <li><strong>[UI] İkon Ezilme Kalkanı:</strong> Ekran daraldığında "Verileri Yenile" butonundaki ikonun
+                preslenerek deforme olması (yumurtalaşması) <code>flex-shrink: 0</code> komutu ile kesin olarak engellendi.
+                İkon artık her koşulda geometrik bütünlüğünü koruyor.</li>
+            <li><strong>[Tipografi] Mutlak Optik Hizalama (Baseline Lock):</strong> Sitenin ana başlığı (h1) ile versiyon
+                etiketi arasındaki uyuşmazlık çözüldü. <code>align-items: baseline</code> teknolojisiyle başlık ve etiket
+                tek bir kusursuz optik çizgiye kilitlendi. Versiyon fontu 0.45em değerine çekilerek hiyerarşik denge
+                sağlandı.</li>
+            <li><strong>[UI] Okunabilirlik ve Kontrast Güçlendirmesi:</strong> Yama notu kartlarının zeminine derinlik katan
+                karanlık bir gradient (linear-gradient) eklendi. Göz yoran soluk metinler parlak Hextech Kremine
+                (<code>#f0e6d2</code>) güncellendi. Satır aralıkları (1.8) ve madde boşlukları (14px) açılarak, yoğun veri
+                akışının zihni yormadan okunması garanti altına alındı.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v6.0.0 - Hextech Çekirdek Revizyonu ve Mutlak İstemci Modernizasyonu <span
+                class="yama-tarih"></span></div>
+        <ul class="yama-liste">
+            <li><strong>[v6.0.0] Clip-Path Geometrisi ve Zırhlanma:</strong> Eski nesil sıkıcı dikdörtgen yapılar tarihe
+                gömüldü. Arayüzdeki tüm ana kartlar, liderlik panoları ve maç özetleri sağ üst ve sol alt köşelerden
+                15px'lik kesimlerle (Hextech Cuts) traşlandı. Sınır çakışmalarını önlemek için <code>inset box-shadow</code>
+                ile kusursuz bir iç çerçeve hilesi uygulandı.</li>
+            <li><strong>[v6.0.0] Mutlak İmleç Motoru (Cursor Override):</strong> Tarayıcıların yerel sunucularda (127.0.0.1)
+                çıkardığı 404 yol hataları tespit edilip kökünden kazındı. Yollar mutlak kök dizine
+                (<code>/cursors/...</code>) bağlandı ve tüm tıklanabilir elementler 32x32 piksellik özel Hextech
+                eldivenlerine biat etmeye zorlandı (<code>!important</code> zırhı ile).</li>
+            <li><strong>[UX] İkonografi Restorasyonu ve Altın Standart:</strong> Yuvarlak sınırların ikonları yanlardan
+                presleyip yumurta şekline sokması engellendi. Şampiyon, eşya ve rün görselleri
+                <code>border-radius: 4px</code> ile kare forma çekildi, dışlarına sızmayan
+                <code>2px var(--gold-accent)</code> asil altın çerçeve ve hafif parıltı (glow) eklendi. Orijinal renkleri
+                bozan filtreler sistemden silindi.</li>
+            <li><strong>[UI] Reaktif Enerji ve Dinamik Hover:</strong> Kartlar artık kullanıcının varlığını hissediyor.
+                İmleç ile etkileşime geçilen her kart z-ekseninde <code>translateY(-5px)</code> yükselerek, sınırlarından
+                dışarıya Hextech Mavisi (<code>rgba(10, 200, 185, 0.3)</code>) bir enerji parıltısı saçıyor.</li>
+            <li><strong>[UI] Modüler Tablo Panelleri:</strong> Sıkıcı web tabloları parçalandı. Satırlar birbirinden ayrılıp
+                (<code>border-spacing: 0 5px</code>) bağımsız, yüzer veri panelleri haline getirildi. Böylece her bir komp
+                ve istatistik satırı kendi başına bir oyun içi bildirim kartı hissi veriyor.</li>
+            <li><strong>[JS/CSS] Kusursuz Hiyerarşi ve Veri Taşması Koruması:</strong> Şampiyon ve oyuncu isimlerinin
+                sığmayıp üç nokta (...) ile kesilmesi sorunu çözüldü. Künye alanları esnetildi ve isimlerin arayüzü
+                patlatmadan, tam okunabilirlikle (<code>white-space: nowrap</code> ve <code>overflow: visible</code>) kendi
+                alanlarında özgürce sergilenmesi sağlandı.</li>
+            <li><strong>[Tipografi] Cinzel Enjeksiyonu:</strong> Rakamsal verilerin, KDA oranlarının ve oyuncu sıralarının
+                görsel ağırlığını artırmak için bu değerlere özel 'Cinzel' font ataması yapıldı, rakamlar saf beyaz
+                gölgelerle aydınlatıldı.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v5.58.9 - UI/UX İmleç (Cursor) Optimizasyonu <span class="yama-tarih"></span></div>
         <ul class="yama-liste">
             <li><strong>[v5.58.9] Soru İşareti İmhası:</strong> Eşya ve rünlerin üzerine gelindiğinde beliren "yardım (soru
                 işareti)" imleci, profesyonel arayüz standartlarına uymadığı için sistemden tamamen kazındı.</li>
@@ -863,7 +1149,7 @@
                 devreye alındı.</li>
             <li><strong>[Davranışsal Filtreleme] Asist Kalkanı Aşımı:</strong> Motor artık asist sayılarını, toplam ölümler
                 ve skor katkısı ile kıyaslıyor. Yüksek asist ortalamasına rağmen ölüm sayısı
-                <code>Ölüm > (Kill + Asist/3)</code> eşiğini aşan oyuncular, "Dengeli Taşıyıcı" maskesinden çıkarılıp gerçek
+                <code>Ölüm &gt; (Kill + Asist/3)</code> eşiğini aşan oyuncular, "Dengeli Taşıyıcı" maskesinden çıkarılıp gerçek
                 davranışsal etiketlerine (örn: <i>Kaosun Efendisi</i>) yerleştiriliyor.</li>
             <li><strong>[Veri Bilimi] Kümülatif Sabotaj Frekansı:</strong> Sadece genel ortalamaya değil, oyuncunun toplam
                 maç havuzundaki sabotaj frekansına (%12 ve üzeri) bakılarak, kümülatif başarısızlıklar istatistiksel
@@ -1029,7 +1315,7 @@
             <li><strong>Evrensel Mutlak Konumlandırma (Global DOM):</strong> Popup araç ipucu yapıları maç kartlarının içinden sökülerek doğrudan <code>document.body</code> köküne bağlandı. Sitedeki tüm yerel çerçeve kısıtlamaları (overflow/z-index) tamamen bypass edildi.</li>
             <li><strong>Sinerji Sabit Ekran Restorasyonu:</strong> Takım Sinerjisi sekmesindeki maç kartlarının akordeon kilitlenme sorunları, filtre seçildiğinde doğrudan açık ve listelenmiş gelen kararlı statik düzene dönülerek çözüldü.</li>
             <li><strong>Otonom Simülatör Hizalaması:</strong> Ekip Rün Simülatöründeki ikonlar yeni mutlak araç ipucu motoruna entegre edilerek simülatörün sayfa düzenini kaydıran HTML çakışmaları tamamen temizlendi.</li>
-            <li><strong>Renk Hiyerarşisi Standardı:</strong> Küresel pop-up pencerelerinde eşya başlıkları keskin saf beyaz (<code>#ffffff</code>), rünler ise karakteristik auralı mavi (<code>#58a6ff</code>) yapılarak görsel disiplin sağlandı.</li>
+            <li><strong>Renk Hiyerarşisi Standardı:</strong> Küresel pop-up pencerelerinde eşya başlıkları keskin saf beyaz (<code>#ffffff</code>), rünler ise karakteristik auralı mavi (<code>var(--accent-color)</code>) yapılarak görsel disiplin sağlandı.</li>
             <li><strong>Kapalı Kart Desteği:</strong> Maç kartları henüz açılmamışken mini rünlerin ve eşyaların üzerine gelindiğinde pop-up motorunun otonom tetiklenmesi sağlandı.</li>
         </ul>
     </div>
@@ -1467,77 +1753,77 @@
 
     <div id="eski-yamalar-kapsayici" class="gizle" style="opacity: 1.0 !important;">
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.17.0 - Smurf Zekası ve Derin Madencilik Gelişmeleri <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>Smurf Zekası (v5.17.0):</strong> Oyuncuların farklı yan hesaplarla oynadığı maçları analiz edip tek bir ana kimlik altında birleştiren altyapı kuruldu. Tablolardaki bölünmeler engellendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.16.0 - Kütüphane & Kozmetik Evrimi <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>Yeni Sekme - Eşya Bilgisi ve Rün Düzeni:</strong> Navigasyona spesifik şampiyonlar için durumsal eşya dizilimlerini anlatan kritik meta rehberi ve İnteraktif Rün Tahtası arayüzü kuruldu. Custom CSS Tooltip motoru yazılarak yerel beyaz açıklamalar iptal edildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.15.0 - Analitik Şeffaflık & Takım Zekası <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>Gelişmiş Sabotaj (V2):</strong> Bir oyuncunun sabotajcı sayılması için artık sadece "Takım Kills" değil, "Takım Toplam Skoru ve Asisti" baz alıyor. Kartların sağ üstüne Takım KDA Paneli entegre edildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.14.0 - Porofessor Etiketleri & Derin Madencilik <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>Performans Rozetleri:</strong> Maç kartlarının içine oyuncunun davranışını okuyan rozetler eklendi. Uzmanlık ve Sinerji puanı hesaplamalarına şampiyon hasarı, takım kalkanı/şifası, tanklanan hasar ve CC süreleri katıldı.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.13.2 - Sezon Filtre Yapılandırması <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>Hafıza Yönetimi:</strong> Sürüm geçmişi sekmesi açıldığında, filtre butonlarının DOM yükünü hafifleten geçici bellek boşaltması yapıldı ve render süreleri optimize edildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.13.1 - UI Odaklanması <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Sürüm Geçmişi sekmesi açıldığında, gereksiz kalabalık yapan "Sezon Filtreleri" ve "Lejant" kutuları gizlenerek tam odaklı bir okuma deneyimi sağlandı.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.13.0 - Anayasa Güncellemesi <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Sürüm geçmişi doğrudan arayüze entegre edilerek ayrı bir sekme olarak eklendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.12.0 - Kusursuz Simetri <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>CSS Flexbox hataları nedeniyle özet panosunda yaşanan alt satıra kayma ve formasyon bozulmaları nowrap zırhıyla engellendi. Profil özetindeki 5 kutu askeri nizama sokuldu.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.11.0 - Geniş Açılı Tasarım & Güncel Kimlik <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Özet panosu genişliği 1400px'e çıkarıldı. Sistem tüm arşivi taranarak oyuncunun en son kullandığı Sihirdar İkonunu tespit eden ve bunu tüm tablolara yansıtan akıllı hafıza sistemine kavuştu.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.10.1 - Formasyon UI Yaması <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Takım Sinerjisi bölümünde kaybolan Kadro Formasyonları CSS etiketleri ve boşluk düzenlemeleri onarıldı.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.10.0 - Zirve Analizi & Sabotaj Revizyonu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>Kusursuz Rüya Takımı:</strong> Tüm zamanların verisi taranarak her pozisyonun istatistiksel olarak en kusursuz oyuncusunu bulup bir araya getiren Laplace destekli zeka eklendi. Son 7 günün momentumunu ölçen "Haftanın 5'lisi" algoritması yazıldı.</li>
@@ -1546,105 +1832,105 @@
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.9.1 - UI Kalibrasyonu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Penta/Quadra/Triple yazılarındaki CSS kayma hatası düzeltildi. Kariyer & Vurgunlar başlığı standart kurumsal formatata çekildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.9.0 - Hizalı ve Dinamik Arayüz <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Quadra ve Penta verilerinin yanına Triple Kill istatistiği entegre edildi. Alt filtrelere Quadra, Triple ve İlk Kan filtre düğmeleri eklendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.8.0 - Kozmetik ve İkonik Navigasyon <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Riot API'sinden çekilen Sihirdar Profil İkonları arayüze entegre edildi. Tablolar oyuncuların kendi simgeleriyle kişiselleştirildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.7.0 - Dinamik Keskin Nişancı Filtresi <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Bireysel profillerde sağ taraftaki rol kartlarına tıklandığında sol taraftaki maç listesinin anında o role göre süzülmesi sağlandı.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.6.0 - Dinamik Kimlik Çözümleme (Smurf Entegrasyonu) <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Yan hesapların ve eski isimlerin ana kimlikle birleştirildiği altyapı kuruldu. Maç kartlarında o günkü nostaljik isim mühürlü kalıyor.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.5.1 - Kapsamlı Profil Özeti <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Bireysel profil özet panosu 4 kutudan 5 kutuya çıkarılarak, "Rol & Donanım" istatistikleri ile yeni eklenen "Vurgunlar & Başarılar" verileri kusursuz bir yatay simetriyle birleştirildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.5.0 - Prestij ve Kozmetik Avcısı <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Pentakill, Quadrakill, Çalınan Objektif og İlk Kan verileri entegre edildi. Vurgunlar & Başarılar paneli ve maç kartlarına parlayan rozetler eklendi. Sabotaj tespit sistemi ve Utanç Listesi aktif edildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.4.4 - Sinerji Bağlantı Yaması <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Alt Koridor listesindeki ikililere tıklandığında maçların listelenmesini engelleyen İsim Eşleştirme hatası giderildi, özel isim çözümleyici yazıldı.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.4.3 - Kusursuz Rüya Takımı Revizyonu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>"Tüm Zamanların Rüya Takımı" ve "Haftanın 5'lisi" panolarına, algoritmadaki CS/min istatistikleri görsel olarak çivilendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.4.2 - Kompakt Kanban Dizilimi <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Şampiyon uzmanları sekmesinde ekran daraldığında ortaya çıkan tasarım hatası giderildi. İstatistiklerin ismin altına kaymasını engelleyen dizilim getirildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.4.1 - Grid Hücre Stabilizasyonu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>Responsive Hücre Hizalaması:</strong> Şampiyon kartlarındaki metin ve ikonların ekran daraldığında taşmasını önleyen esnek flexbox sınırları tahkim edildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.4.0 - Şampiyon Rol Hiyerarşisi (Kaan'ın Vizyonu) <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>Rol Hiyerarşisi (Görsel Dağılım):</strong> Şampiyon uzmanları sekmesindeki düz liste mimarisi yıkıldı. Şampiyon uzmanları rollere göre kategorize edilerek büyük başlıklar altında gruplandı.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.3.0 - Kompakt Şablon Çekirdek Entegrasyonu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>Arka Plan Düzen İskeleti:</strong> Sinerji ve takım kompozisyonu verilerini işlemek üzere arka planda çalışacak ilk şablon katmanı iskelete dahil edildi, veri transfer hızı optimize edildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.2.0 - Şampiyon Raporu Rol Ayrımı <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>Şampiyon Raporu Rol Ayrımı (Role Isolation):</strong> Destek rolü ile koridor rollerinin minyon verilerinin aynı havuzda eriyerek cezalandırılması engellendi. Sağ taraftaki Şampiyon Raporu tekil yapıdan çıkarıldı; sistem her rol için ayrı bir rapor kartı basıyor.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.1.0 - Kadro Formasyonları & Rol Esnekliği <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>"Kadro Formasyonları" Alt Tablosu:</strong> Sinerji tablosundaki herhangi bir ekibe tıklandığında açılan detay panelinde, o ekibin hangi Rol Dağılımıyla (Formasyonla) kaç maç oynadığı ve bu dizilişin net galibiyet oranları listelenmeye başladı.</li>
@@ -1652,7 +1938,7 @@
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v5.0.0 (Eski V55) - Hasat Zamanı & Ekonomi Devrimi <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>SemVer Standardizasyonu:</strong> Versiyonlama mantığı Semantic Versioning standardına (v5.0.0) çekildi.</li>
@@ -1660,189 +1946,189 @@
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v4.9.4 (Eski V54) - Sabotaj Harekâtı <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Bireysel profillerdeki "11+ Ölüm" ifadesi doğrudan kırmızı "SABOTAJ" etiketiyle değiştirilerek dürüst bir forma dönüştürüldü.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v4.9.3 (Eski V52-V53) - Kusursuz Simetri ve Akıllı Navigasyon <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Filtreleme ve arama kutularının sola yaslanma sorunu çözüldü, tüm kutular ekran merkezine hizalandı. Liderlik tablolarındaki ilk 3 sıraya Altın, Gümüş ve Bronz podyum parlamaları getirildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v4.9.2 (Eski V51) - Büyük Uyanış <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Destek profillerinin yüklenmesi sırasında arayüzü çökerten (k is not defined) ortalama skor/asist matematiği hatası tamamen çözüldü.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v4.9.1 (Eski V50) - Kimlik Operasyonu & Nihai Temizlik <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Metinlerin alt satıra düşmesini engelleyen CSS korumaları uygulandı. TR sunucusundan taşınan hesapların ve "lilliana" gibi eski isimlerin eşleştirilmesini sağlayan kimlik çözümleyici sisteme entegre edildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v4.9.0 (Eski V49) - Null Koruması Ön Hazırlık Katmanı <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li><strong>Hata Yakalama Altyapısı:</strong> API'den gelen bozuk eski Riot verilerinin ve kayıp rün ID'lerinin arayüzü kilitlemesini engellemek amacıyla ilk Null durumları için yakalama blokları iskelete dahil edildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v4.8.0 (Eski V48) - Saf Kan Ekip & Çelik Zırh <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Fiyatı veya veritabanı kaydı olmayan bozuk eski Riot eşyalarının arayüzü çökerterek "Fatal Error" verdirmesi engellendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v4.7.0 (Eski V47) - Özgür Profiller <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Lejant ve eşya barlarındaki CSS sıkışmaları ile solo maç filtresinin neden olduğu profillerin silinmesi hatası çözüldü.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v4.6.0 (Eski V44-V46) - Yalnız Kurt Silici & Zaman Senkronizasyonu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Ekip içinden en az 2 kişi olmayan solo Esnek maçları sistemden çöpe atan "Saf Kan Ekip" filtresi eklendi. Maç bilgisindeki tarih ve süre eksikliğini kopyalayarak çözen "Zaman Senkronizasyonu" oluşturuldu.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v4.5.0 (Eski V43) - Okunabilirlik ve Sabit Kadro <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Görseldeki metin boyutları büyütüldü (1.8em). Sisteme 15 kişilik kadro kodla sabitlendi, böylece Esnek maç atmayan kişilerin de profillerinde yer alması sağlandı.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v4.4.0 (Eski V41-V42) - UI Restorasyonu ve Zaman Damgaları <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>HTML profilleri restore edildi, zaman ve maç süresi etiketleri profillere yerleştirildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v4.3.0 (Eski V38-V40) - Rüya Takımı ve Haftanın Beşlisi <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Maç zamanlarının analize katılmasıyla "Haftanın 5'lisi" ve rol bazlı "Tüm Zamanların Rüya Takımı" sekmeleri eklendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v4.2.0 (Eski V36-V37) - Davranış Kalibrasyonu ve Uzmanlık Puanı <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Sinerji Skoru (SP) ile Şampiyon Uzmanlık Puanı (UP) terimleri görsel ve ismen ayrıldı. Mükerrer maç silici eklendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v4.1.0 (Eski V34-V35) - Şampiyon Makyajı ve Alfabetik Sıralama <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Riot API'den dönen hatalı kod isimlerinin arayüzde doğru gözükmesi için makyaj sözlüğü eklendi. Alfabetik sıralama Türkçe'ye uygun hale getirildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v4.0.1 (Eski V33) - KDA Eşitlik Bozucu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Şampiyon uzmanları tablosunda galibiyet oranları eşit olduğunda "KDA" değerinin eşitlik bozucu olarak kullanılması sağlandı.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v4.0.0 (Eski V31-V32) - Markalaşma ve Çoklu Sinerji Seçimi <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Sitenin HTML başlığı ve logosu "YazlıkDC.GG" olarak markalaştırıldı. Takım Sinerjisi kısmına çoklu seçim yapılabilen Filtre Çipleri entegre edildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v3.3.1 (Eski V30) - Zaman Çizgisi Yaması <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>ABW geçişi sonrası EUW maçlarının TR maçlarının altında kalmasına neden olan alfabetik hata çözüldü.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v3.3.0 (Eski V28-V29) - Role-Aware AI ve Pervasız Sendromu <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Oyuncuların fazla ölüp az skor çıkardığı maçları tespit eden "Yasuo Sendromu (Pervasız)" filtresi yazıldı. Davranış algoritması rollere özel hale getirildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v3.2.0 (Eski V27) - Ultimate Player Analytics <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Oyunculara birden fazla oyun tarzı rozeti verilebilmesini sağlayan çoklu-etiket sistemi getirildi. Sağ sütuna detaylı "Şampiyon Raporu" paneli eklendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v3.1.1 (Eski V26) - Kişisel Filtreler ve UI Şeffaflığı <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Bireysel profile "Perfect KDA", "11+ Ölüm" ve şampiyon filtreleme özellikleri eklendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v3.1.0 (Eski V25) - Yapay Zeka Sinerjisi ve Rol Esnekliği <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Sinerji puanına, takımların farklı dizilimlerle oynayabilme başarısını ölçen "Rol Esnekliği" katsayısı eklendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v3.0.0 (Eski V24) - OP.GG Ultimate <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Sürüm Geçmişi arayüzü bağımsız bir sekme olarak anayasaya dönüştürüldü. Açılır pencereler profil içi akordeon düzene geçirildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v2.2.0 (Eski V23) - Gerçek Eşya Filtresi ve Maç Otopsi Ekranı <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Eşya filtresine Riot API entegrasyonu sağlandı ve sadece bitmiş eşyalar gösterilmeye başlandı. Takım istatistiklerini OP.GG tarzında açan sistem geliştirildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v2.1.0 (Eski V22) - Ultimate Scouting <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Liderlik tabloları filtre butonlarına dönüştürüldü. Otomatik oyun tarzı rozetleri atayan sistem, favori eşyalar paneli ve şampiyon ikonları eklendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v2.0.0 (Eski V21) - Veri Bilimi Zekası <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Bireysel liderlik tabloları Tek Maç Rekorlarına göre sıralanmaya başladı. Takım Sinerjisi kazanma oranlarına Laplace Yumuşatması algoritması entegre edildi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v1.2.0 (Eski V20) - Final UX <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>En çok ölenler sekmesi "☠️ Utanç Listesi" olarak adlandırıldı. Ortalama ibareleri eklendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v1.1.0 (Eski V18-V19) - Genişletilmiş Lejant ve İkonlar <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Sitedeki ikonların ne anlama geldiğini açıklayan çok kapsayıcı bir "Rozet Bilgisi (Lejant)" çubuğu eklendi.</li>
             </ul>
         </div>
 
-        <div class="yama-karti" style="border-color: #58a6ff;">
+        <div class="yama-karti" style="border-color: var(--accent-color);">
             <div class="yama-baslik">v1.0.0 (Eski V1-V17) - Temel İnşa Dönemi <span class="yama-tarih"></span></div>
             <ul class="yama-liste">
                 <li>Sistemin temelleri atıldı. Temel Firebase bağlantısı sağlandı ve saf maç verileri (Kazanma, Kaybetme, KDA) arayüze yansıtıldı.</li>
@@ -1874,8 +2160,8 @@
 
     <div id="arayuz-sunucu" class="gizle">
         <div style="max-width:1200px; margin:0 auto; padding:0 15px;">
-            <div style="background: rgba(13, 17, 23, 0.9); border: 1px solid #30363d; border-radius: 12px; padding: 25px; margin-bottom: 20px;">
-                <h2 style="color: #58a6ff; border-bottom: 1px solid #30363d; padding-bottom: 10px; margin-top: 0; text-transform: uppercase; letter-spacing: 1px;">📊 Yazlık DC Seçilen Roller Bazında Genel Sunucu Özeti</h2>
+            <div style="background: rgba(13, 17, 23, 0.9); border: 1px solid var(--border-color); border-radius: 12px; padding: 25px; margin-bottom: 20px;">
+                <h2 style="color: var(--accent-color); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-top: 0; text-transform: uppercase; letter-spacing: 1px;">📊 Yazlık DC Seçilen Roller Bazında Genel Sunucu Özeti</h2>
                 <div id="sunucu-rol-pastasi"></div>
             </div>
         </div>
@@ -1921,7 +2207,7 @@
             <button class="tab-btn" data-sinerji="3">🗡️ 3'lü Sinerji</button>
             <button class="tab-btn" data-sinerji="alt_koridor">🏹 Alt Koridor İkilisi</button>
             <button class="tab-btn" data-sinerji="ruya_takim" style="border-color: #ffd700; color: #ffd700;">🌟 Tüm Zamanların Rüya Takımı</button>
-            <button class="tab-btn" data-sinerji="haftanin_ruya_takimi" style="border-color: #58a6ff; color: #58a6ff;">🔥 Haftanın 5'lisi</button>
+            <button class="tab-btn" data-sinerji="haftanin_ruya_takimi" style="border-color: var(--accent-color); color: var(--accent-color);">🔥 Haftanın 5'lisi</button>
         </div>
         
         <div id="sinerji-filtre-paneli" style="text-align: center; margin-bottom: 25px; max-width: 900px; margin-left: auto; margin-right: auto;">
@@ -2043,11 +2329,11 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                 if(itemId) {
                     slotlar[idx].innerHTML = `<img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/${itemId}.png" onerror="this.onerror=null; this.src='https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/${itemId}.png';">`;
                     slotlar[idx].style.borderStyle = "solid";
-                    slotlar[idx].style.borderColor = "#58a6ff";
+                    slotlar[idx].style.borderColor = "var(--accent-color)";
                 } else {
                     slotlar[idx].innerHTML = ``;
                     slotlar[idx].style.borderStyle = "dashed";
-                    slotlar[idx].style.borderColor = "#30363d";
+                    slotlar[idx].style.borderColor = "var(--border-color)";
                 }
             });
 
@@ -2110,8 +2396,8 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                 else if (key.includes("sıvışma")) { r = "#e0e0e0"; i = "🛡️"; }
                 else if (key.includes("iyileştirme") || key.includes("kalkan")) { r = "#3fb950"; i = "🌿"; } 
                 else if (key.includes("can") && !key.includes("çal") && !key.includes("sömürü") && !key.includes("yenilenmes")) { r = "#a1d586"; i = "❤️"; }
-                else if (key.includes("mana") && !key.includes("yenilenmes")) { r = "#58a6ff"; i = "💧"; }
-                else { r = "#c9d1d9"; i = "✨"; } 
+                else if (key.includes("mana") && !key.includes("yenilenmes")) { r = "var(--accent-color)"; i = "💧"; }
+                else { r = "var(--text-color)"; i = "✨"; } 
 
                 statHtml += `<div class="sim-stat-satir"><span>${i} <span style="color:${r}">${displayName}</span></span><b style="color:#ffffff">+${displayVal}</b></div>`;
             }
@@ -2396,11 +2682,11 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
             let tt = document.getElementById("mutlak-tooltip");
             if (!tt) {
                 tt = document.createElement("div"); tt.id = "mutlak-tooltip";
-                tt.style.cssText = "position:absolute; z-index:9999999; background:rgba(10,15,22,0.95); border:1px solid #000; border-radius:8px; padding:10px; box-shadow:0 0 20px rgba(0,0,0,0.9); pointer-events:none; display:none; min-width:250px; max-width:320px; color:#c9d1d9;";
+                tt.style.cssText = "position:absolute; z-index:9999999; background:rgba(10,15,22,0.95); border:1px solid #000; border-radius:8px; padding:10px; box-shadow:0 0 20px rgba(0,0,0,0.9); pointer-events:none; display:none; min-width:250px; max-width:320px; color:var(--text-color);";
                 document.body.appendChild(tt);
             }
             tt.style.borderColor = renk;
-            tt.innerHTML = `<div style="color:${renk}; font-weight:bold; font-size:1.1em; border-bottom:1px solid #30363d; padding-bottom:5px; margin-bottom:5px;">${baslik}</div><div style="font-size:0.85em; line-height:1.4;">${icerik.replace(/ \| /g, "<br><br>")}</div>`;
+            tt.innerHTML = `<div style="color:${renk}; font-weight:bold; font-size:1.1em; border-bottom:1px solid var(--border-color); padding-bottom:5px; margin-bottom:5px;">${baslik}</div><div style="font-size:0.85em; line-height:1.4;">${icerik.replace(/ \| /g, "<br><br>")}</div>`;
             tt.style.display = "block";
             let x = e.pageX + 15; let y = e.pageY + 15;
             if (x + 320 > window.innerWidth) x = e.pageX - 335;
@@ -2436,15 +2722,15 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
 
         window.popupRuneTetikle = function(e, runeId) {
             if(!runeId || runeId === 0) {
-                window.gosterMutlakPopup(e, "Eksik Veri", "Bu oyuncunun rün bilgisi maç veritabanında eksik.", '#58a6ff');
+                window.gosterMutlakPopup(e, "Eksik Veri", "Bu oyuncunun rün bilgisi maç veritabanında eksik.", 'var(--accent-color)');
                 return;
             }
             let data = window.runeIdMap ? window.runeIdMap[runeId] : null;
             if(data) {
-                window.gosterMutlakPopup(e, data.name, data.desc, '#58a6ff');
+                window.gosterMutlakPopup(e, data.name, data.desc, 'var(--accent-color)');
             } else {
                 // 🛡️ Yamadan silinen rünler için koruma kalkanı
-                window.gosterMutlakPopup(e, "Kaldırılmış Rün (ID: " + runeId + ")", "Bu rün eski bir sezona ait olduğu için Riot API güncel sürümünden tamamen silinmiş. Görsel o yüzden yüklenemedi.", '#58a6ff');
+                window.gosterMutlakPopup(e, "Kaldırılmış Rün (ID: " + runeId + ")", "Bu rün eski bir sezona ait olduğu için Riot API güncel sürümünden tamamen silinmiş. Görsel o yüzden yüklenemedi.", 'var(--accent-color)');
             }
         };
 
@@ -2530,7 +2816,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                                 else if(sNameLower.includes("sıvışma")) { r = "#e0e0e0"; i = "🏃🏻"; sName="Sıvışma"; }
 				else if(sNameLower.includes("iyileştirme") || sNameLower.includes("kalkan")) { r = "#3fb950"; i = "🌿"; sName="İyileştirme ve Kalkan Gücü"; }
                                 else if(sNameLower === "can" || (sNameLower.includes("can") && !sNameLower.includes("çal") && !sNameLower.includes("yenilenmes"))) { r = "#a1d586"; i = "❤️"; sName="Can"; }
-                                else if(sNameLower === "mana" || (sNameLower.includes("mana") && !sNameLower.includes("yenilenmes"))) { r = "#58a6ff"; i = "💧"; sName="Mana"; }
+                                else if(sNameLower === "mana" || (sNameLower.includes("mana") && !sNameLower.includes("yenilenmes"))) { r = "var(--accent-color)"; i = "💧"; sName="Mana"; }
                                 else if(sNameLower.includes("delme") || sNameLower.includes("deşme") || sNameLower.includes("nüfuz")) { r = "#e88245"; i = "🔪"; } 
                                 
                                 if (val) {
@@ -2545,7 +2831,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
 
                         // PASİFLERİN İÇİNDEKİ BOYAMALAR
                         parsed = parsed.replace(/<passive>(.*?)<\/passive>/gi, '<b style="color:#f85149;">$1</b>');
-                        parsed = parsed.replace(/<active>(.*?)<\/active>/gi, '<b style="color:#58a6ff;">$1</b>');
+                        parsed = parsed.replace(/<active>(.*?)<\/active>/gi, '<b style="color:var(--accent-color);">$1</b>');
                         parsed = parsed.replace(/<rules>(.*?)<\/rules>\s*(?:<br\s*\/?>\s*)*/gi, '<div style="margin-top:6px; font-size:0.85em; color:#8b949e; font-style:italic; line-height:1.3;">$1</div>');
                         parsed = parsed.replace(/<attention>(.*?)<\/attention>/gi, '<b style="color:#ffffff;">$1</b>');
 
@@ -2583,7 +2869,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                         parsed = parsed.replace(/@@LIFESTEAL@@/g, '<span style="color:#da3633; font-weight:bold;">🩸 Can Çalma</span>');
                         parsed = parsed.replace(/@@ARMOR@@/g, '<span style="color:#ffd700; font-weight:bold;">🛡️ Zırh</span>');
                         parsed = parsed.replace(/@@HP@@/g, '<span style="color:#a1d586; font-weight:bold;">❤️ Can</span>');
-                        parsed = parsed.replace(/@@MP@@/g, '<span style="color:#58a6ff; font-weight:bold;">💧 Mana</span>');
+                        parsed = parsed.replace(/@@MP@@/g, '<span style="color:var(--accent-color); font-weight:bold;">💧 Mana</span>');
 
                         parsed = parsed.replace(/^(?:<br\s*\/?>)+|(?:<br\s*\/?>)+$/gi, '');
                         parsed = parsed.replace(/(?:<br\s*\/?>){2,}/gi, '<br>');
@@ -2697,7 +2983,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                             }
                             img.removeAttribute('data-tooltip');
                             img.style.cursor = "pointer";
-                            img.onmousemove = (e) => window.gosterMutlakPopup(e, bIsim, bDesc, '#58a6ff');
+                            img.onmousemove = (e) => window.gosterMutlakPopup(e, bIsim, bDesc, 'var(--accent-color)');
                             img.onmouseleave = () => window.gizleMutlakPopup();
                             return;
                         }
@@ -2975,7 +3261,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
             grup.forEach(oyuncu => {
                 let durumDamgasi = window.rozetUret ? window.rozetUret(oyuncu) : "";
                 let isTarget = (oyuncu.oyuncu === vurguOyuncu);
-                let satirBg = isTarget ? "background: rgba(88, 166, 255, 0.05); border-left: 4px solid #58a6ff;" : "background: rgba(13, 17, 23, 0.6);";
+                let satirBg = isTarget ? "background: rgba(88, 166, 255, 0.05); border-left: 4px solid var(--accent-color);" : "background: rgba(13, 17, 23, 0.6);";
 
                 const fK = (val) => { if (typeof formatK === "function") return formatK(val); return val >= 1000 ? (val / 1000).toFixed(1) + 'k' : (val || 0); };
 
@@ -2990,7 +3276,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                 if(oyuncu.esyalar) {
                     oyuncu.esyalar.forEach((itemId, index) => {
                         if(itemId > 0) {
-                            esyalarHtml += `<div class="esya-kapsayici" style="margin:0;"><img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${itemId}.png" style="width:26px; height:26px; border-radius:4px; cursor:help;" onerror="this.onerror=null; this.src='https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/${itemId}.png';" onmousemove="window.popupItemTetikle(event, ${itemId || 0})" onmouseleave="window.gizleMutlakPopup()"></div>`;
+                            esyalarHtml += `<div class="esya-kapsayici" style="margin:0;"><img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${itemId}.png" style="width:26px; height:26px; border-radius:4px; cursor:pointer;" onerror="this.onerror=null; this.src='https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/${itemId}.png';" onmousemove="window.popupItemTetikle(event, ${itemId || 0})" onmouseleave="window.gizleMutlakPopup()"></div>`;
                         } else {
                             esyalarHtml += `<div style="width:26px; height:26px; background: rgba(0,0,0,0.2); border-radius:4px;"></div>`;
                         }
@@ -3012,7 +3298,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                             ? 'width:36px; height:36px; border-radius:50%; border:2px solid #c8aa6e; box-shadow: 0 0 8px rgba(200,170,110,0.6); margin-right: 6px; transform: translateY(-2px); background:#000;'
                             : 'width:24px; height:24px; border-radius:50%; border:none; margin:0 2px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7)); background:transparent;';
 
-                        runlerDetayHtml += `<img src="${srcUrl}" style="${ekstraStil} cursor:help;" onmousemove="window.popupRuneTetikle(event, ${runId || 0})" onmouseleave="window.gizleMutlakPopup()">`;
+                        runlerDetayHtml += `<img src="${srcUrl}" style="${ekstraStil} cursor:pointer;" onmousemove="window.popupRuneTetikle(event, ${runId || 0})" onmouseleave="window.gizleMutlakPopup()">`;
                     });
                 } else {
                     runlerDetayHtml += `<span style="font-size:0.75em; color:#8b949e; font-style:italic;">Veri Yok</span>`;
@@ -3026,10 +3312,10 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                 let miniAltSrc = mAltRun ? `https://ddragon.leagueoflegends.com/cdn/img/${mAltRun.icon}` : 'https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png';
 
                 // Profilin yanındaki Ana Rün (Premium Altın Çerçeveli - Siyah arkaplan imha edildi, gölge eklendi)
-                let miniAnaRunHTML = `<img src="${miniAnaSrc}" style="width:26px; height:26px; border-radius:50%; border: 2px solid #c8aa6e; background:transparent; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)); cursor:help;" onmousemove="window.popupRuneTetikle(event, ${oyuncu.ana_run_id || 0})" onmouseleave="window.gizleMutlakPopup()">`;
+                let miniAnaRunHTML = `<img src="${miniAnaSrc}" style="width:26px; height:26px; border-radius:50%; border: 2px solid #c8aa6e; background:transparent; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)); cursor:pointer;" onmousemove="window.popupRuneTetikle(event, ${oyuncu.ana_run_id || 0})" onmouseleave="window.gizleMutlakPopup()">`;
 
                 // Profilin yanındaki Alt Ağaç Rünü (Çerçevesiz, Gölgeli, Transparan ve Daha Küçük)
-                let miniAltRunHTML = `<img src="${miniAltSrc}" style="width:18px; height:18px; border-radius:50%; border: none; background:transparent; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7)); cursor:help; margin-top:2px;" onmousemove="window.popupRuneTetikle(event, ${oyuncu.alt_run_agaci_id || 0})" onmouseleave="window.gizleMutlakPopup()">`;
+                let miniAltRunHTML = `<img src="${miniAltSrc}" style="width:18px; height:18px; border-radius:50%; border: none; background:transparent; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7)); cursor:pointer; margin-top:2px;" onmousemove="window.popupRuneTetikle(event, ${oyuncu.alt_run_agaci_id || 0})" onmouseleave="window.gizleMutlakPopup()">`;
 
                 let ilk10CsHTML = (oyuncu.ilk_10_dk_minyon && oyuncu.pozisyon !== "UTILITY") ? `<span style="color: #8b949e; font-size: 0.85em; margin-left: 5px;">(10. Dk: ${oyuncu.ilk_10_dk_minyon} CS)</span>` : '';
 
@@ -3037,7 +3323,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                 if (oyuncu.erken_oyun_ustunlugu === 1) { rozetlerHTML += `<span style="background: rgba(255, 69, 58, 0.15); color: #ff453a; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; border: 1px solid rgba(255, 69, 58, 0.3);">🔥 Dominant</span>`; }
                 if (oyuncu.pozisyon !== "UTILITY") {
                     if (yuvCsFark >= 100) rozetlerHTML += `<span style="background: rgba(255, 87, 34, 0.15); color: #ff5722; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; border: 1px solid rgba(255, 87, 34, 0.5); font-weight: bold;">🌋 FLAME HORIZON (+${yuvCsFark} CS)</span>`;
-                    else if (yuvCsFark >= 10) rozetlerHTML += `<span style="background: rgba(10, 132, 255, 0.15); color: #58a6ff; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; border: 1px solid rgba(10, 132, 255, 0.3);">⚔️ +${yuvCsFark} CS Farkı</span>`;
+                    else if (yuvCsFark >= 10) rozetlerHTML += `<span style="background: rgba(10, 132, 255, 0.15); color: var(--accent-color); padding: 2px 6px; border-radius: 4px; font-size: 0.7em; border: 1px solid rgba(10, 132, 255, 0.3);">⚔️ +${yuvCsFark} CS Farkı</span>`;
                 }
                 if (yuvGpm >= 400) { rozetlerHTML += `<span style="background: rgba(255, 214, 10, 0.15); color: #ffd60a; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; border: 1px solid rgba(255, 214, 10, 0.3);">💰 ${yuvGpm} GPM</span>`; }
                 rozetlerHTML += '</div>';
@@ -3054,8 +3340,8 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                         <div style="width: 190px; flex-shrink: 0; display: flex; align-items: center; gap: 10px;">
                             
                             <div style="position: relative; display: inline-block; flex-shrink: 0;">
-                                <img src="${resimUrlGetir(oyuncu.sampiyon)}" style="width:48px; height:48px; border-radius: 6px; border: 1px solid #30363d;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
-                                <img src="${ikonUrlGetir(oyuncu.profil_ikonu || 29)}" style="position: absolute; bottom: -4px; right: -4px; width: 22px; height: 22px; border-radius: 50%; border: 2px solid #161b22; object-fit: cover;" title="${oyuncu.oyuncu} (Sihirdar İkonu)" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
+                                <img src="${resimUrlGetir(oyuncu.sampiyon)}" style="width:48px; height:48px; border-radius: 6px; border: 1px solid var(--border-color);" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
+                                <img src="${ikonUrlGetir(oyuncu.profil_ikonu || 29)}" style="position: absolute; bottom: -4px; right: -4px; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--card-bg); object-fit: cover;" title="${oyuncu.oyuncu} (Sihirdar İkonu)" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
                             </div>
                             
                             <div style="display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; align-items: center;">
@@ -3064,7 +3350,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                             </div>
 
                             <div style="overflow: hidden;">
-                                <div style="font-weight: bold; font-size: 0.9em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #c9d1d9;">${guncelRiotID[oyuncu.oyuncu] || oyuncu.riot_id || oyuncu.oyuncu}</div>
+                                <div style="font-weight: bold; font-size: 0.9em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-color);">${guncelRiotID[oyuncu.oyuncu] || oyuncu.riot_id || oyuncu.oyuncu}</div>
                                 <div style="font-size: 0.75em; color: #8b949e;">${oyuncu.sampiyon}</div>
                                 ${partnerHTML}
                             </div>
@@ -3074,7 +3360,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                             ${esyalarHtml}
                             
                             <div class="s-run-sayfasi-kutusu" style="display:flex; gap:5px; align-items:center; background: rgba(0, 0, 0, 0.4); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(88,166,255,0.15); margin-bottom: 8px; width: fit-content; flex-wrap: wrap;">
-                                <span style="font-size: 0.7em; color: #58a6ff; font-weight: bold; margin-right: 5px;">RÜNLER:</span>
+                                <span style="font-size: 0.7em; color: var(--accent-color); font-weight: bold; margin-right: 5px;">RÜNLER:</span>
                                 ${runlerDetayHtml}
                             </div>
                             
@@ -3092,17 +3378,17 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                             <div style="margin-top:10px; width:100%;">
                                 <div style="display:flex; justify-content:flex-start; gap:20px; font-size:0.75em; color:#8b949e; margin-bottom:3px;">
                                     <span>💥 Hasar: <b style="color:#f85149;">${fK(oyuncu.hasar_sampiyon)}</b></span>
-                                    <span>🛡️ Tank: <b style="color:#58a6ff;">${fK(oyuncu.hasar_sogurulan)}</b></span>
+                                    <span>🛡️ Tank: <b style="color:var(--accent-color);">${fK(oyuncu.hasar_sogurulan)}</b></span>
                                     <span>💚 Destek: <b style="color:#3fb950;">${fK(toplamDestek)}</b></span>
                                 </div>
-                                <div style="height:4px; background:#30363d; border-radius:2px; width:100%;">
+                                <div style="height:4px; background:var(--border-color); border-radius:2px; width:100%;">
                                     <div style="height:100%; border-radius:2px; background:#da3633; width:${hasarYuzde}%;"></div>
                                 </div>
                             </div>
                         </div>
 
                         <div style="width: 80px; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; justify-content: center;">
-                            <div style="font-size: 1.25em; font-weight: bold; color: #c9d1d9;">${oyuncu.kda}</div>
+                            <div style="font-size: 1.25em; font-weight: bold; color: var(--text-color);">${oyuncu.kda}</div>
                         </div>
 
                     </div>
@@ -3191,11 +3477,11 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                             <span style="font-size:0.95em; font-weight:bold; color:#ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${gercekOyunIciId}</span>
                             <span style="font-size:0.75em; color:#8b949e; font-style:italic;">${elit.isim}</span>
                         </div>
-                        <div class="r-istatistik"><span style="color:#ffffff; font-weight:bold;">%${wr} WR</span> (${elit.mac} Maç)<br><span style="color:#58a6ff;">${kdaText}</span>${csText}</div>
+                        <div class="r-istatistik"><span style="color:#ffffff; font-weight:bold;">%${wr} WR</span> (${elit.mac} Maç)<br><span style="color:var(--accent-color);">${kdaText}</span>${csText}</div>
                     </div>`;
                 } else {
                     yetersizVeriVarMi = true;
-                    htmlKutu += `<div class="ruya-kutu" style="border-top-color: #30363d; opacity:0.5;"><div class="r-rol" style="color: #8b949e;">${r.ad}</div><div style="width:80px; height:80px; border-radius:50%; background:#161b22; border: 3px dashed #30363d; margin:0 auto 10px auto; display:flex; align-items:center; justify-content:center; font-size:2em;">?</div><div class="r-isim" style="color:#8b949e;">Veri Yok</div><div class="r-istatistik">Yetersiz veri.</div></div>`;
+                    htmlKutu += `<div class="ruya-kutu" style="border-top-color: var(--border-color); opacity:0.5;"><div class="r-rol" style="color: #8b949e;">${r.ad}</div><div style="width:80px; height:80px; border-radius:50%; background:var(--card-bg); border: 3px dashed var(--border-color); margin:0 auto 10px auto; display:flex; align-items:center; justify-content:center; font-size:2em;">?</div><div class="r-isim" style="color:#8b949e;">Veri Yok</div><div class="r-istatistik">Yetersiz veri.</div></div>`;
                 }
             });
 
@@ -3339,7 +3625,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                     let sampiyonHtml = siraliSampiyonlar.map(s => { 
                         let cWR = ((s.veri.win / s.veri.mac) * 100).toFixed(0); 
                         let renk = cWR >= 50 ? "#3fb950" : "#f85149";
-                        return `<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;"><img src="${resimUrlGetir(s.isim)}" style="width:26px; height:26px; border-radius:50%; border: 1px solid #30363d;"><span>${formatSampiyon(s.isim)} <span style="font-size:0.9em; color:#8b949e;">(${s.veri.mac} Maç, <span style="color:${renk}; font-weight:bold;">%${cWR}</span>)</span></span></div>`;
+                        return `<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;"><img src="${resimUrlGetir(s.isim)}" style="width:26px; height:26px; border-radius:50%; border: 1px solid var(--border-color);"><span>${formatSampiyon(s.isim)} <span style="font-size:0.9em; color:#8b949e;">(${s.veri.mac} Maç, <span style="color:${renk}; font-weight:bold;">%${cWR}</span>)</span></span></div>`;
                     }).join("");
 
                     let siraliRoller = Object.entries(rolSayaclari).sort((a, b) => b[1] - a[1]);
@@ -3353,7 +3639,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                         let rawDesc = window.itemVeritabani && window.itemVeritabani[e[0]] ? (window.itemVeritabani[e[0]].description || window.itemVeritabani[e[0]].plaintext || "") : "";
                         return `
                             <div class="esya-kapsayici">
-                                <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${e[0]}.png" style="width: 32px; height: 32px; border-radius: 4px; border: 1px solid #30363d; flex-shrink: 0;">
+                                <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${e[0]}.png" style="width: 32px; height: 32px; border-radius: 4px; border: 1px solid var(--border-color); flex-shrink: 0;">
                                 <div class="esya-detay-popup">
                                     <div class="esya-isim">${itemName} <span style="font-size:0.8em; color:#8b949e;">(${e[1]} Kere Alındı)</span></div>
                                     ${rawDesc}
@@ -3414,7 +3700,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                         let rozet = davranisHesapla(rOrtK, rOrtD, rOrtA, rol, rOrtVizyon, rOrtKontrol, rolIciCsDk, oAnkiSabotajOrani);
                         let kisaRol = { "TOP": "ÜST KORİDOR", "JUNGLE": "ORMAN", "MIDDLE": "ORTA KORİDOR", "BOTTOM": "NİŞANCI", "UTILITY": "DESTEK" }[rol] || rol;
 
-                        oyunTarziHtml += `<span style="display:inline-block; background:rgba(88,166,255,0.1); border:1px solid #58a6ff; color:#58a6ff; padding:4px 10px; border-radius:8px; font-size:0.85em; font-weight:bold; margin-right:8px; margin-top:10px;">${kisaRol}: ${rozet}</span>`;
+                        oyunTarziHtml += `<span style="display:inline-block; background:rgba(88,166,255,0.1); border:1px solid var(--accent-color); color:var(--accent-color); padding:4px 10px; border-radius:8px; font-size:0.85em; font-weight:bold; margin-right:8px; margin-top:10px;">${kisaRol}: ${rozet}</span>`;
                     });
 
                     // ŞAMPİYON HAVUZU MATEMATİĞİ (Güvenlik için değişkenleri hemen HTML'in üstüne sabitliyoruz)
@@ -3487,9 +3773,9 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                         let rwRenk = r.wr >= 50 ? "#3fb950" : "#f85149";
                         
                         rolSiralamasiHTML += `
-                            <div style="background: rgba(13, 17, 23, 0.9); border: 1px solid #30363d; border-radius: 8px; padding: 12px; flex: 1; min-width: 140px; text-align: center; border-top: 3px solid ${r.renk}; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                            <div style="background: rgba(13, 17, 23, 0.9); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; flex: 1; min-width: 140px; text-align: center; border-top: 3px solid ${r.renk}; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
                                 <div style="font-size: 0.7em; color: #8b949e; font-weight: 800; margin-bottom: 6px; letter-spacing: 0.5px;">${siraRozeti}</div>
-                                <div style="font-size: 1.1em; color: #c9d1d9; font-weight: 900;">${r.ad}</div>
+                                <div style="font-size: 1.1em; color: var(--text-color); font-weight: 900;">${r.ad}</div>
                                 <div style="font-size: 1.4em; color: ${rwRenk}; font-weight: 900; margin: 8px 0; text-shadow: 0 0 8px ${rwRenk}40;">%${r.wr}</div>
                                 <div style="display: flex; justify-content: space-between; font-size: 0.8em; color: #8b949e; background: #000; padding: 4px 8px; border-radius: 4px;">
                                     <span>${r.mac} Maç</span>
@@ -3503,11 +3789,11 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                     if(rolSiralamaDizisi.length > 0) {
                         rolSekmesiHTML = `
                             <div style="margin: 15px 0; width: 100%;">
-                                <button onclick="let rp = document.getElementById('${ozelKimlik}'); rp.style.display = rp.style.display === 'none' ? 'flex' : 'none';" style="background: #21262d; border: 1px solid #30363d; color: #c9d1d9; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; transition: 0.2s; display: flex; align-items: center; gap: 8px; width: 100%; justify-content: center;">
+                                <button onclick="let rp = document.getElementById('${ozelKimlik}'); rp.style.display = rp.style.display === 'none' ? 'flex' : 'none';" style="background: #21262d; border: 1px solid var(--border-color); color: var(--text-color); padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; transition: 0.2s; display: flex; align-items: center; gap: 8px; width: 100%; justify-content: center;">
                                     <span>🎭</span> Rol Profilleri (Esnek Performans Sıralaması) <span>▼</span>
                                 </button>
                                 
-                                <div id="${ozelKimlik}" style="display: none; gap: 12px; flex-wrap: wrap; margin-top: 10px; width: 100%; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px; border: 1px dashed #30363d; box-sizing: border-box;">
+                                <div id="${ozelKimlik}" style="display: none; gap: 12px; flex-wrap: wrap; margin-top: 10px; width: 100%; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px; border: 1px dashed var(--border-color); box-sizing: border-box;">
                                     ${rolSiralamasiHTML}
                                 </div>
                             </div>
@@ -3529,7 +3815,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                                 <div class="deger vurgu">${ortK} / ${ortD} / ${ortA}</div>
                                 <div style="color:#8b949e; font-size:0.9em; margin-top:6px; white-space:nowrap; line-height:1.5;">
                                     Ort. CS/min: <span style="color:#ffffff;">${izoleCsDk.toFixed(1)}</span> &nbsp;|&nbsp; GPM: <span style="color:#ffd60a;">${ort_gpm}</span><br>
-                                    ${anaRol_EN !== "UTILITY" ? `10.Dk CS: <span style="color:#ffffff;">${ort_ilk10}</span> &nbsp;|&nbsp; Fark: <span style="color:#58a6ff;">${ort_cs_farki > 0 ? '+' : ''}${ort_cs_farki}</span>` : ""}
+                                    ${anaRol_EN !== "UTILITY" ? `10.Dk CS: <span style="color:#ffffff;">${ort_ilk10}</span> &nbsp;|&nbsp; Fark: <span style="color:var(--accent-color);">${ort_cs_farki > 0 ? '+' : ''}${ort_cs_farki}</span>` : ""}
                                 </div>
                                 <div style="margin-top:5px;">${oyunTarziHtml}</div>
                             </div>
@@ -3551,28 +3837,28 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                             <div class="ozet-kutu ozet-kutu-sol">
                                 <h3>Kariyer & Vurgunlar</h3>
                                 <div class="ozet-liste" style="font-size: 0.95em;">
-                                    <div style="display:flex; justify-content:space-between; align-items:center; width: 100%; border-bottom:1px solid #30363d; padding-bottom:4px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; width: 100%; border-bottom:1px solid var(--border-color); padding-bottom:4px;">
                                         <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;">Penta / Quadra / Triple / Double:</span>
                                         <span style="color:#ffffff; font-weight:bold; white-space:nowrap;">${t_penta} / ${Math.max(0, t_quadra - t_penta)} / ${Math.max(0, t_triple - t_quadra)} / ${Math.max(0, t_double - t_triple)}</span>
                                     </div>
-                                    <div style="display:flex; justify-content:space-between; align-items:center; width: 100%; border-bottom:1px solid #30363d; padding-bottom:4px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; width: 100%; border-bottom:1px solid var(--border-color); padding-bottom:4px;">
                                         <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;">🥷 Çalınan Objektif / 🩸 İlk Kan:</span>
                                         <span style="color:#ffffff; font-weight:bold;">${t_calinan} / ${t_ilkKan}</span>
                                     </div>
-                                    <div style="display:flex; justify-content:space-between; align-items:center; width: 100%; border-bottom:1px solid #30363d; padding-bottom:4px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; width: 100%; border-bottom:1px solid var(--border-color); padding-bottom:4px;">
                                         <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;">🌟 Kusursuz / ☠️ Sabotaj:</span>
                                         <span style="color:#ffffff; font-weight:bold;">${perfSayisi} / ${utancSayisi}</span>
                                     </div>
-                                    <div style="display:flex; justify-content:space-between; align-items:center; width: 100%; border-bottom:1px solid #30363d; padding-bottom:4px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; width: 100%; border-bottom:1px solid var(--border-color); padding-bottom:4px;">
                                         <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;">🌋 Flame Horizon (+100 CS):</span>
                                         <span style="color:#ff5722; font-weight:bold; text-shadow: 0 0 5px rgba(255,87,34,0.4);">${t_flame_horizon || 0} Kere</span>
                                     </div>
-                                    <div style="display:flex; justify-content:space-between; align-items:center; width: 100%; border-bottom:1px solid #30363d; padding-bottom:4px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; width: 100%; border-bottom:1px solid var(--border-color); padding-bottom:4px;">
                                         <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;">🎭 Şampiyon Havuzu:</span>
-                                        <span style="color:#58a6ff; font-weight:bold;">${oynananFarkliSampiyonSayisi} <span style="color:#8b949e; font-size:0.85em;">/ ${toplamLolSampiyonu}</span></span>
+                                        <span style="color:var(--accent-color); font-weight:bold;">${oynananFarkliSampiyonSayisi} <span style="color:#8b949e; font-size:0.85em;">/ ${toplamLolSampiyonu}</span></span>
                                     </div>
                                     <!-- EFEKTİF ŞAMPİYON HAVUZU -->
-                                    <div style="display:flex; justify-content:space-between; align-items:center; width: 100%; border-bottom:1px solid #30363d; padding-bottom:4px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; width: 100%; border-bottom:1px solid var(--border-color); padding-bottom:4px;">
                                         <span style="display:flex; align-items:center; gap:5px; white-space:nowrap;" data-tooltip="En az 3 maç oynanmış, %50+ Kazanma Oranı ve yüksek katkı (KDA/Hasar/Şifa/CS) sağlanan şampiyonlar.">🎯 Efektif Havuz:</span>
                                         <span style="color:#a1d586; font-weight:bold;">${efektifSampiyonSayisi} <span style="color:#8b949e; font-size:0.85em;">/ ${oynananFarkliSampiyonSayisi}</span></span>
                                     </div>
@@ -3650,7 +3936,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                                 let rawDesc = window.itemVeritabani && window.itemVeritabani[e[0]] ? (window.itemVeritabani[e[0]].description || window.itemVeritabani[e[0]].plaintext || "") : "";
                                 return `
                                     <div class="esya-kapsayici">
-                                        <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${e[0]}.png" style="width:28px; border-radius:4px; border:1px solid #30363d;">
+                                        <img src="https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/item/${e[0]}.png" style="width:28px; border-radius:4px; border:1px solid var(--border-color);">
                                         <div class="esya-detay-popup">
                                             <div class="esya-isim">${itemName}</div>
                                             ${rawDesc}
@@ -3661,21 +3947,21 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                             let behavior = davranisHesapla(c_k/r_mac, c_d/r_mac, c_a/r_mac, safRol, c_gorus/r_mac, c_kontrol/r_mac, parseFloat(c_ortCS_dk));
 
                             let isSelected = (window.aktifBireyselRol === safRol);
-                            let cardBorder = isSelected ? '#58a6ff' : '#30363d';
+                            let cardBorder = isSelected ? 'var(--accent-color)' : 'var(--border-color)';
                             let cardShadow = isSelected ? 'box-shadow: 0 0 15px rgba(88,166,255,0.25);' : '';
-                            let clickAttr = `onclick="window.altFiltreUygula('rol', '${safRol}')" style="margin-bottom: 20px; cursor: pointer; border-color: ${cardBorder}; ${cardShadow} transition: all 0.2s;" onmouseover="this.style.borderColor='#58a6ff'" onmouseout="this.style.borderColor='${cardBorder}'" data-tooltip="Sadece bu roldeki maçları görmek için tıklayın"`;
+                            let clickAttr = `onclick="window.altFiltreUygula('rol', '${safRol}')" style="margin-bottom: 20px; cursor: pointer; border-color: ${cardBorder}; ${cardShadow} transition: all 0.2s;" onmouseover="this.style.borderColor='var(--accent-color)'" onmouseout="this.style.borderColor='${cardBorder}'" data-tooltip="Sadece bu roldeki maçları görmek için tıklayın"`;
 
                             sagKolonHtml += `
                                 <div class="liderlik-panosu" ${clickAttr}>
-                                    <div style="text-align:center; margin-bottom:15px; border-bottom:1px solid #30363d; padding-bottom:15px;">
-                                        <img src="${resimUrlGetir(window.aktifBireyselSampiyon)}" style="width:50px; height:50px; border-radius:50%; border:2px solid #58a6ff;">
+                                    <div style="text-align:center; margin-bottom:15px; border-bottom:1px solid var(--border-color); padding-bottom:15px;">
+                                        <img src="${resimUrlGetir(window.aktifBireyselSampiyon)}" style="width:50px; height:50px; border-radius:50%; border:2px solid var(--accent-color);">
                                         <h3 style="margin:10px 0 0 0; border:none; padding:0; font-size:1.1em;">${formatSampiyon(window.aktifBireyselSampiyon)} <span style="color:#ffd700;">(${c_anaRolTxt})</span></h3>
                                     </div>
                                     <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.9em;"><span style="color:#8b949e">Kazanma Oranı</span><span style="color:${c_wrRenk}; font-weight:bold">%${c_wr} <span style="font-size:0.8em; font-weight:normal; color:#8b949e;">(${r_mac} Maç)</span></span></div>
-                                    <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.9em;"><span style="color:#8b949e">Ortalama KDA</span><span style="font-weight:bold; color:#58a6ff;">${c_ortK} / ${c_ortD} / ${c_ortA}</span></div>
+                                    <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.9em;"><span style="color:#8b949e">Ortalama KDA</span><span style="font-weight:bold; color:var(--accent-color);">${c_ortK} / ${c_ortD} / ${c_ortA}</span></div>
                                     <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.9em;"><span style="color:#8b949e">Ortalama CS/min</span><span style="font-weight:bold; color:#ffffff;">${c_ortCS_dk}</span></div>
-                                    <div style="margin-top:15px; border-top:1px solid #30363d; padding-top:10px;"><div style="color:#8b949e; font-size:0.8em; margin-bottom:5px; text-transform:uppercase; font-weight:bold;">Oyun Tarzı</div><div style="color:#ffffff; font-weight:bold; font-size:1em; white-space:nowrap;">${behavior}</div></div>
-                                    <div style="margin-top:15px; border-top:1px solid #30363d; padding-top:10px;"><div style="color:#8b949e; font-size:0.8em; margin-bottom:5px; text-transform:uppercase; font-weight:bold;">Favori Eşyalar</div><div style="display:flex; gap:4px; flex-wrap:wrap;">${c_favEsyalar || '-'}</div></div>
+                                    <div style="margin-top:15px; border-top:1px solid var(--border-color); padding-top:10px;"><div style="color:#8b949e; font-size:0.8em; margin-bottom:5px; text-transform:uppercase; font-weight:bold;">Oyun Tarzı</div><div style="color:#ffffff; font-weight:bold; font-size:1em; white-space:nowrap;">${behavior}</div></div>
+                                    <div style="margin-top:15px; border-top:1px solid var(--border-color); padding-top:10px;"><div style="color:#8b949e; font-size:0.8em; margin-bottom:5px; text-transform:uppercase; font-weight:bold;">Favori Eşyalar</div><div style="display:flex; gap:4px; flex-wrap:wrap;">${c_favEsyalar || '-'}</div></div>
                                 </div>
                             `;
                         });
@@ -3751,7 +4037,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                         <div class="l-sira" style="color:#d2a8ff; font-weight:bold; width:25px;">${siraGorseli}</div>
                         <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/${ikonID}.png" style="width:36px; height:36px; border-radius:50%; margin-right:12px; border:2px solid #d2a8ff;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/29.png'">
                         <div class="l-kimlik" style="flex:1;">
-   			 <span class="l-gercek" style="display:block; font-weight:bold; color:#c9d1d9; font-size:1.1em;">${v.oyuncu}</span>
+   			 <span class="l-gercek" style="display:block; font-weight:bold; color:var(--text-color); font-size:1.1em;">${v.oyuncu}</span>
    			 <span class="l-oyunici" style="display:block; font-size:0.85em; color:#8b949e;">${oyunIciIsim(v.oyuncu, v.riot_id)}</span>
 			</div>
                         <div class="l-deger" style="text-align:right;">
@@ -3776,7 +4062,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                     else if(aktifSiralaKriteri === "gorus") solBaslik = "👁️ Görüş Liderleri";
                     else if(aktifSiralaKriteri === "csmin") solBaslik = "🗡️ Farm Kralları (Sup Hariç)";
 
-                    let solHtml = `<div class="liderlik-panosu" style="border-top-color: #58a6ff; max-width: 450px; margin: 0 auto; width: 100%;"><h3 style="color:#ffffff; margin-top:0; text-align:center;">${solBaslik}</h3><div style="display:flex; flex-direction:column; gap:10px;">`;
+                    let solHtml = `<div class="liderlik-panosu" style="border-top-color: var(--accent-color); max-width: 450px; margin: 0 auto; width: 100%;"><h3 style="color:#ffffff; margin-top:0; text-align:center;">${solBaslik}</h3><div style="display:flex; flex-direction:column; gap:10px;">`;
                     solListe.forEach((v, i) => {
                         let ikonID = window.guncelIkonlar ? (window.guncelIkonlar[v.oyuncu] || 29) : 29;
 			            let temelMadalya = (i === 0) ? "🥇" : (i === 1) ? "🥈" : (i === 2) ? "🥉" : `#${i + 1}`;
@@ -3791,11 +4077,11 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                         siraGorseli = `<span style='font-size:2em;'>${temelMadalya}</span>`;
                     }
                         solHtml += `
-                        <div class="liderlik-satir" onclick="window.liderlikFiltrele('${v.oyuncu}')" style="display:flex; align-items:center; padding:10px; background:rgba(0,0,0,0.3); border-radius:8px; cursor:pointer; border:1px solid transparent; transition:0.2s;" onmouseover="this.style.borderColor='#58a6ff'" onmouseout="this.style.borderColor='transparent'">
-                            <div class="l-sira" style="color:#58a6ff; font-weight:bold; width:30px; font-size:1.1em;">${siraGorseli}</div>
-                            <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/${ikonID}.png" style="width:42px; height:42px; border-radius:50%; margin-right:15px; border:2px solid #30363d;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/29.png'">
+                        <div class="liderlik-satir" onclick="window.liderlikFiltrele('${v.oyuncu}')" style="display:flex; align-items:center; padding:10px; background:rgba(0,0,0,0.3); border-radius:8px; cursor:pointer; border:1px solid transparent; transition:0.2s;" onmouseover="this.style.borderColor='var(--accent-color)'" onmouseout="this.style.borderColor='transparent'">
+                            <div class="l-sira" style="color:var(--accent-color); font-weight:bold; width:30px; font-size:1.1em;">${siraGorseli}</div>
+                            <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/${ikonID}.png" style="width:42px; height:42px; border-radius:50%; margin-right:15px; border:2px solid var(--border-color);" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${yama}/img/profileicon/29.png'">
                             <div class="l-kimlik" style="flex:1;">
-    				<span class="l-gercek" style="display:block; font-weight:bold; color:#c9d1d9; font-size:1.1em;">${v.oyuncu}</span>
+    				<span class="l-gercek" style="display:block; font-weight:bold; color:var(--text-color); font-size:1.1em;">${v.oyuncu}</span>
     				<span class="l-oyunici" style="display:block; font-size:0.85em; color:#8b949e;">${oyunIciIsim(v.oyuncu, v.riot_id)}</span>
 			 </div>
                             <div class="l-deger" style="text-align:right;">
@@ -3822,7 +4108,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
             if (window.ozelFiltre) {
                 if (window.ozelFiltre.kriter === 'oldurme' || window.ozelFiltre.kriter === 'asist' || window.ozelFiltre.kriter === 'olum' || window.ozelFiltre.kriter === 'gorus' || window.ozelFiltre.kriter === 'csmin') { solKolonListesi = solKolonListesi.filter(m => m.mac_id === window.ozelFiltre.macId && m.oyuncu === window.ozelFiltre.oyuncu); } 
                 else { solKolonListesi = solKolonListesi.filter(m => m.oyuncu === window.ozelFiltre.oyuncu); solKolonListesi.sort((a,b) => window.gercekZamanSirala(a,b)); }
-                gosterimHTML_Ek = `<div style="background: rgba(88,166,255,0.1); border: 1px solid #58a6ff; padding: 6px 15px; border-radius: 6px; margin: 0 auto 15px auto; width: 100%; max-width: 900px; display:flex; justify-content:space-between; align-items:center; box-sizing: border-box;"><span style="color:#c9d1d9; font-size:0.95em;"><b style="color:#ffffff;">${window.ozelFiltre.oyuncu}</b> oyuncusunun seçilen rekor maçı listeleniyor.</span><button onclick="window.ozelFiltre=null; window.ekraniGuncelle(false);" class="mini-kapat">❌ Kapat</button></div>`;
+                gosterimHTML_Ek = `<div style="background: rgba(88,166,255,0.1); border: 1px solid var(--accent-color); padding: 6px 15px; border-radius: 6px; margin: 0 auto 15px auto; width: 100%; max-width: 900px; display:flex; justify-content:space-between; align-items:center; box-sizing: border-box;"><span style="color:var(--text-color); font-size:0.95em;"><b style="color:#ffffff;">${window.ozelFiltre.oyuncu}</b> oyuncusunun seçilen rekor maçı listeleniyor.</span><button onclick="window.ozelFiltre=null; window.ekraniGuncelle(false);" class="mini-kapat">❌ Kapat</button></div>`;
             } else {
                 if (aktifSiralaKriteri === "tarih") solKolonListesi.sort((a, b) => window.gercekZamanSirala(a, b));
                 else solKolonListesi.sort((a, b) => b[aktifSiralaKriteri] !== a[aktifSiralaKriteri] ? b[aktifSiralaKriteri] - a[aktifSiralaKriteri] : window.gercekZamanSirala(a, b));
@@ -3830,7 +4116,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
             
             if (window.aktifBireyselSampiyon !== 'Hepsi' && window.aktifBireyselRol !== 'Hepsi') {
                 let rolTxt = rolCeviri[window.aktifBireyselRol] || "Belirsiz";
-                gosterimHTML_Ek += `<div style="background: rgba(255,215,0,0.1); border: 1px solid #ffd700; padding: 6px 15px; border-radius: 6px; margin: 0 auto 15px auto; width: 100%; max-width: 900px; display:flex; justify-content:space-between; align-items:center; box-sizing: border-box;"><span style="color:#c9d1d9; font-size:0.95em;">Sadece <b style="color:#ffd700;">${rolTxt}</b> rolünde oynanan maçlar listeleniyor.</span><button onclick="window.altFiltreUygula('rol', '${window.aktifBireyselRol}')" class="mini-kapat">❌ Temizle</button></div>`;
+                gosterimHTML_Ek += `<div style="background: rgba(255,215,0,0.1); border: 1px solid #ffd700; padding: 6px 15px; border-radius: 6px; margin: 0 auto 15px auto; width: 100%; max-width: 900px; display:flex; justify-content:space-between; align-items:center; box-sizing: border-box;"><span style="color:var(--text-color); font-size:0.95em;">Sadece <b style="color:#ffd700;">${rolTxt}</b> rolünde oynanan maçlar listeleniyor.</span><button onclick="window.altFiltreUygula('rol', '${window.aktifBireyselRol}')" class="mini-kapat">❌ Temizle</button></div>`;
             }
 		// 🎯 EFEKTİF HAVUZ: MAÇLARI DURDUR, ŞAMPİYON KARTLARINI ÇİZ!
             if (window.aktifBireyselAltFiltre === 'efektif') {
@@ -3841,11 +4127,11 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                         let s = samp.veri;
                         let s_wr = ((s.win / s.mac) * 100).toFixed(0);
                         let s_kda = s.d === 0 ? (s.k + s.a).toFixed(1) : ((s.k + s.a) / s.d).toFixed(1);
-                        let kdaRenk = s_kda >= 3 ? "#58a6ff" : (s_kda >= 2 ? "#3fb950" : "#c9d1d9");
+                        let kdaRenk = s_kda >= 3 ? "var(--accent-color)" : (s_kda >= 2 ? "#3fb950" : "var(--text-color)");
                         let s_ort_cs_farki = s.cs_farki / s.mac;
                         
                         efektifHtml += `
-                        <div class="oyuncu-karti" style="width:220px; flex-shrink:0; padding:20px; margin:0; text-align:center; border: 1px solid #30363d; border-top: 3px solid #a1d586; background: rgba(22, 27, 34, 0.8); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='none'">
+                        <div class="oyuncu-karti" style="width:220px; flex-shrink:0; padding:20px; margin:0; text-align:center; border: 1px solid var(--border-color); border-top: 3px solid #a1d586; background: rgba(22, 27, 34, 0.8); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='none'">
                             <img src="${resimUrlGetir(samp.isim)}" style="width:70px; height:70px; border-radius:50%; border:2px solid #a1d586; margin-bottom:12px; box-shadow: 0 0 10px rgba(161, 213, 134, 0.4);">
                             <div style="font-size:1.3em; font-weight:bold; color:#ffffff;">${formatSampiyon(samp.isim)}</div>
                             <div style="color:#a1d586; font-weight:bold; font-size:0.9em; margin-bottom:15px;">%${s_wr} WR <span style="color:#8b949e; font-weight:normal;">(${s.mac} Maç)</span></div>
@@ -3860,7 +4146,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                             </div>
                             <div style="display:flex; justify-content:space-between; width:100%; font-size:0.9em; margin-bottom:8px; border-bottom: 1px solid #21262d; padding-bottom:6px;">
                                 <span style="color:#8b949e;">CS Farkı:</span>
-                                <span style="color:#58a6ff; font-weight:bold;">${s_ort_cs_farki > 0 ? '+' : ''}${Math.round(s_ort_cs_farki)}</span>
+                                <span style="color:var(--accent-color); font-weight:bold;">${s_ort_cs_farki > 0 ? '+' : ''}${Math.round(s_ort_cs_farki)}</span>
                             </div>
                             <div style="display:flex; justify-content:space-between; width:100%; font-size:0.9em;">
                                 <span style="color:#8b949e;">🌋 Horizon:</span>
@@ -3950,7 +4236,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
 
                             <div class="sag-istatistik-alani" style="display: flex; flex-direction: column; align-items: flex-end; margin-left: auto; flex-shrink: 0; padding-left: 15px;">
                                 <div style="display: flex; gap: 5px; margin-bottom: 6px; justify-content: flex-end;">${durumDamgasi}</div>
-                                <div style="font-size: 1.6em; font-weight: bold; color: #58a6ff; line-height: 1;">${veri.kda}</div>
+                                <div style="font-size: 1.6em; font-weight: bold; color: var(--accent-color); line-height: 1;">${veri.kda}</div>
                             </div>
 
                         </div>
@@ -3967,10 +4253,10 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                                     <span data-tooltip="Yerleştirilen Kontrol Totemi" class="kontrol-vurgu">🛑 <span class="v-deger">${veri.kontrol_totemi || 0}</span></span>
                                 </div>
                                 <!-- DERİN VERİ BLOĞU BURADA! -->
-                                <div class="derin-istatistik" style="margin-top:10px; width:100%; border-top: 1px solid #30363d; padding-top: 8px;">
+                                <div class="derin-istatistik" style="margin-top:10px; width:100%; border-top: 1px solid var(--border-color); padding-top: 8px;">
                                     <div style="display:flex; justify-content:space-between; font-size:0.75em; color:#8b949e; margin-bottom:4px;">
                                         <span>💥 Hasar: <b style="color:#f85149;">${fHasar}</b></span>
-                                        <span>🛡️ Tank: <b style="color:#58a6ff;">${fTank}</b></span>
+                                        <span>🛡️ Tank: <b style="color:var(--accent-color);">${fTank}</b></span>
                                         <span>💚 Destek: <b style="color:#3fb950;">${fDestek}</b></span>
                                     </div>
                                 </div>
@@ -4014,7 +4300,7 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
             if(bilgiKutusu) bilgiKutusu.innerHTML = `<div style="background: rgba(255, 215, 0, 0.08); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 8px; padding: 12px 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6; margin-bottom: 20px;"><b style="color: #ffd700;">🌟 Rüya Takım Algoritması:</b><br>Tüm zamanların istatistikleri harmanlanarak her rolün en iyi oyuncusu (Win Rate, KDA, Görüş, Hasar ve Sinerji Puanı üzerinden) seçilir. Eğer oyuncular Alt Koridorda ikili bir sinerji yakalamışsa sistem onları parçalamaz, takımın omurgası yapar.</div>`;
         } else {
             baslikTxt = "🔥 Haftanın En Formda Beşlisi";
-            if(bilgiKutusu) bilgiKutusu.innerHTML = `<div style="background: rgba(88, 166, 255, 0.08); border: 1px solid rgba(88, 166, 255, 0.3); border-radius: 8px; padding: 12px 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6; margin-bottom: 20px;"><b style="color: #58a6ff;">🔥 Haftanın 5'lisi Algoritması:</b><br>Sadece son 7 gün içinde atılan maçlar taranarak, o haftanın en formda oyuncuları rollerine göre belirlenir. Haftalık momentum ve istatistiksel zirve baz alınır.</div>`;
+            if(bilgiKutusu) bilgiKutusu.innerHTML = `<div style="background: rgba(88, 166, 255, 0.08); border: 1px solid rgba(88, 166, 255, 0.3); border-radius: 8px; padding: 12px 20px; font-size: 0.9em; color: #8b949e; text-align: left; line-height: 1.6; margin-bottom: 20px;"><b style="color: var(--accent-color);">🔥 Haftanın 5'lisi Algoritması:</b><br>Sadece son 7 gün içinde atılan maçlar taranarak, o haftanın en formda oyuncuları rollerine göre belirlenir. Haftalık momentum ve istatistiksel zirve baz alınır.</div>`;
             let simdiMs = new Date().getTime(); let birHaftaMilisaniye = 7 * 24 * 60 * 60 * 1000; let sinirTarih = simdiMs - birHaftaMilisaniye;
             veriHavuzu = temelVeriler.filter(v => v.tarih_ms && v.tarih_ms >= sinirTarih);
         }
@@ -4058,7 +4344,7 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
             ); 
         });
         if (filtrelenmisMaclar.length === 0) { 
-            vitrin.innerHTML = `<div style="text-align:center; padding:50px; color:#f85149; font-weight:bold; border: 1px dashed #30363d; border-radius:12px; background:rgba(248,81,73,0.02);">Seçili kombinasyona ait sinerji kaydı bulunamadı.</div>`; 
+            vitrin.innerHTML = `<div style="text-align:center; padding:50px; color:#f85149; font-weight:bold; border: 1px dashed var(--border-color); border-radius:12px; background:rgba(248,81,73,0.02);">Seçili kombinasyona ait sinerji kaydı bulunamadı.</div>`; 
             return; 
         }
     }
@@ -4146,13 +4432,13 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
                 formasyonHtml += `<div class="formasyon-satir tiklanabilir-tr" ${clickFormasyonAttr}><div class="formasyon-detay">${rolEtiketleri}</div><div style="min-width: 120px; text-align: right;"><span style="color:#8b949e; font-size:0.9em; margin-right:10px;">${f[1].mac} Maç</span><span style="color:${f_renk}; font-weight:bold;">%${f_wr} WR</span></div></div>`;
             });
         }
-        let formasyonKutuHtml = formasyonHtml ? `<tr id="${formasyonPaneliId}" class="gizle" style="background:#0d1117;"><td colspan="4" style="padding: 15px;"><div class="formasyon-kutusu"><div style="color:#8b949e; font-size:0.85em; text-transform:uppercase; font-weight:bold; margin-bottom:10px;">Kadro Formasyonları (Dizilişler)</div>${formasyonHtml}</div></td></tr>` : "";
+        let formasyonKutuHtml = formasyonHtml ? `<tr id="${formasyonPaneliId}" class="gizle" style="background:var(--bg-color);"><td colspan="4" style="padding: 15px;"><div class="formasyon-kutusu"><div style="color:#8b949e; font-size:0.85em; text-transform:uppercase; font-weight:bold; margin-bottom:10px;">Kadro Formasyonları (Dizilişler)</div>${formasyonHtml}</div></td></tr>` : "";
         let baslikTiklaAttr = `onclick="window.sinerjiFiltrele('${clickIsim}')" data-tooltip="Bu ekibin maçlarını listele"`;
         if (aktifSinerjiBoyutu !== "alt_koridor") baslikTiklaAttr = `onclick="window.kutuAc('${formasyonPaneliId}', event)" data-tooltip="Kadro formasyonlarını görmek için tıkla"`;
 
         return `
             <tr class="tiklanabilir-tr" ${baslikTiklaAttr}>
-                <td style="color:#8b949e;">#${index+1}</td><td style="color:#c9d1d9;">${komp.isim}</td><td>${komp.mac} Maç</td>
+                <td style="color:#8b949e;">#${index+1}</td><td style="color:var(--text-color);">${komp.isim}</td><td>${komp.mac} Maç</td>
                 <td style="color: ${barRengi}; font-weight: bold; width: 28%;">%${wr} <span class="rozet-sp" style="margin-left:10px; padding:4px 8px; border-radius:6px; display:inline-block;" data-tooltip="Ağırlıklı Sinerji Puanı">SP:&nbsp;${spSkor}</span><div class="oran-bar-arkasi"><div class="oran-bar-ici" style="width: ${wr}%; background-color: ${barRengi};"></div></div></td>
             </tr>${formasyonKutuHtml}
         `;
@@ -4169,7 +4455,7 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
             return isimUyumu;
         });
         let baslikEk = window.aktifFormasyonFiltresi ? "seçilen kadro formasyonuyla oynadığı" : "";
-        gosterimHTML_Ek = `<div style="background: rgba(88,166,255,0.1); border: 1px solid #58a6ff; padding: 6px 15px; border-radius: 6px; margin: 0 auto 15px auto; width: 100%; max-width: 900px; display:flex; justify-content:space-between; align-items:center; box-sizing: border-box;"><span style="color:#c9d1d9; font-size:0.95em;"><b style="color:#ffffff;">${window.aktifSinerjiEkibi}</b> ekibinin ${baslikEk} maçlar listeleniyor.</span><button onclick="window.sinerjiFiltrele(null, null)" class="mini-kapat">❌ Temizle</button></div>`;
+        gosterimHTML_Ek = `<div style="background: rgba(88,166,255,0.1); border: 1px solid var(--accent-color); padding: 6px 15px; border-radius: 6px; margin: 0 auto 15px auto; width: 100%; max-width: 900px; display:flex; justify-content:space-between; align-items:center; box-sizing: border-box;"><span style="color:var(--text-color); font-size:0.95em;"><b style="color:#ffffff;">${window.aktifSinerjiEkibi}</b> ekibinin ${baslikEk} maçlar listeleniyor.</span><button onclick="window.sinerjiFiltrele(null, null)" class="mini-kapat">❌ Temizle</button></div>`;
     }
 
     filtrelenmisMaclar.sort((a, b) => window.gercekZamanSirala ? window.gercekZamanSirala(a,b) : b[0].tarih_ms - a[0].tarih_ms);
@@ -4286,11 +4572,11 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
             const tamRolIsimleri = { "TOP": "Üst Koridor", "JUNGLE": "Orman", "MIDDLE": "Orta Koridor", "BOTTOM": "Nişancı", "UTILITY": "Destek", "BELIRSIZ": "Belirsiz" };
             let sortedRoles = Object.keys(roleGroups).sort((a,b) => (rolSiralamaGucu[a] || 99) - (rolSiralamaGucu[b] || 99));
             
-            let htmlIcerik = `<div style="text-align:center; margin-bottom:30px;"><img src="${resimUrlGetir(aktifSampiyonFiltresi)}" style="width:70px; height:70px; border-radius:50%; border:3px solid #58a6ff; box-shadow: 0 0 15px rgba(88,166,255,0.4);"><h2 style="color:#ffffff; margin:15px 0 0 0; font-size:1.8em; text-transform:uppercase;">${formatSampiyon(aktifSampiyonFiltresi)} <span style="color:#8b949e; font-size:0.5em; letter-spacing:2px; vertical-align:middle;">UZMANLARI</span></h2></div><div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start; width: 100%; margin-top: 20px;">`;
+            let htmlIcerik = `<div style="text-align:center; margin-bottom:30px;"><img src="${resimUrlGetir(aktifSampiyonFiltresi)}" style="width:70px; height:70px; border-radius:50%; border:3px solid var(--accent-color); box-shadow: 0 0 15px rgba(88,166,255,0.4);"><h2 style="color:#ffffff; margin:15px 0 0 0; font-size:1.8em; text-transform:uppercase;">${formatSampiyon(aktifSampiyonFiltresi)} <span style="color:#8b949e; font-size:0.5em; letter-spacing:2px; vertical-align:middle;">UZMANLARI</span></h2></div><div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start; width: 100%; margin-top: 20px;">`;
 
             sortedRoles.forEach(rol => {
                 let rolText = tamRolIsimleri[rol] || "Belirsiz";
-                htmlIcerik += `<div style="flex: 1; min-width: 350px; max-width: 500px; background: #090c10; border-radius: 12px; padding: 15px; border: 1px solid #30363d; box-shadow: 0 8px 24px rgba(0,0,0,0.4);"><div style="border-bottom: 2px solid #58a6ff; margin-bottom: 12px; padding-bottom: 8px;"><h3 style="color: #ffffff; margin: 0; font-size: 1.05em; text-transform: uppercase; display:flex; align-items:center; justify-content: space-between;"><span>${rolText}</span><span style="font-size:0.75em; color:#0d1117; background:#58a6ff; padding:3px 10px; border-radius:12px; font-weight:bold;">${roleGroups[rol].length} Oyuncu</span></h3></div><div style="display: flex; flex-direction: column; gap: 10px;">`;
+                htmlIcerik += `<div style="flex: 1; min-width: 350px; max-width: 500px; background: #090c10; border-radius: 12px; padding: 15px; border: 1px solid var(--border-color); box-shadow: 0 8px 24px rgba(0,0,0,0.4);"><div style="border-bottom: 2px solid var(--accent-color); margin-bottom: 12px; padding-bottom: 8px;"><h3 style="color: #ffffff; margin: 0; font-size: 1.05em; text-transform: uppercase; display:flex; align-items:center; justify-content: space-between;"><span>${rolText}</span><span style="font-size:0.75em; color:var(--bg-color); background:var(--accent-color); padding:3px 10px; border-radius:12px; font-weight:bold;">${roleGroups[rol].length} Oyuncu</span></h3></div><div style="display: flex; flex-direction: column; gap: 10px;">`;
 
                 roleGroups[rol].forEach((uzman, index) => {
                     let isim = uzman.isim; let veri = uzman.veri;
@@ -4310,7 +4596,7 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
                             <div style="display: flex; justify-content: space-between; align-items: center; gap: 5px;">
                                 <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 1; overflow: hidden;">
                                     <div class="sira-badge" style="width: 35px; font-size: 1.1em; margin: 0; text-align: center; flex-shrink: 0;">${siraEtiketi}</div>
-                                    <img src="${ikonUrlGetir(m_ikon)}" style="width:45px; height:45px; border-radius:50%; border:2px solid #30363d; flex-shrink: 0;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
+                                    <img src="${ikonUrlGetir(m_ikon)}" style="width:45px; height:45px; border-radius:50%; border:2px solid var(--border-color); flex-shrink: 0;" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${guncelYama}/img/profileicon/29.png'">
                                     <div style="display: flex; flex-direction: column; line-height: 1.2; overflow: hidden;">
                                         <span style="font-size:1em; font-weight:bold; color:#ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${guncelId}</span>
                                         <span style="font-size:0.8em; color:#8b949e; font-style:italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${isim}</span>
@@ -4323,12 +4609,12 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
                                         <span class="rozet-up" style="margin-left: 10px; padding: 4px 8px; border-radius: 6px; display:inline-block;" data-tooltip="Uzmanlık Puanı">UP:&nbsp;${spSkor}</span>
                                     </div>
                                     <div style="color:#8b949e; font-size: 0.75em; margin-top:4px;">
-                                        <div>${veri.mac} Maç | KDA: <span style="color:#58a6ff; font-weight:bold;">${kdaText}</span></div>
+                                        <div>${veri.mac} Maç | KDA: <span style="color:var(--accent-color); font-weight:bold;">${kdaText}</span></div>
                                         <div style="margin-top:2px; display:flex; gap:8px; justify-content: flex-end;">
                                             <span>CS/min: <b style="color:#fff;">${csMin}</b></span>
                                             ${uzman.rol !== "UTILITY" ? `
                                             <span>10.Dk: <b style="color:#fff;">${uzman.ort_ilk10cs}</b></span>
-                                            <span style="color:#58a6ff; font-weight:bold;">⚔️ ${uzman.ort_cs_farki > 0 ? '+' : ''}${uzman.ort_cs_farki} Fark</span>
+                                            <span style="color:var(--accent-color); font-weight:bold;">⚔️ ${uzman.ort_cs_farki > 0 ? '+' : ''}${uzman.ort_cs_farki} Fark</span>
                                             ` : ""}
                                         </div>
                                     </div>
@@ -4522,7 +4808,7 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
                             aciklama = aciklama.replace(/<scaleAP>(.*?)<\/scaleAP>/gi, '<b style="color:#9ea1f9;">$1</b>');
                             aciklama = aciklama.replace(/<scaleHealth>(.*?)<\/scaleHealth>/gi, '<b style="color:#a1d586;">$1</b>');
                             aciklama = aciklama.replace(/<scaleArmor>(.*?)<\/scaleArmor>/gi, '<b style="color:#f2a65a;">$1</b>');
-                            aciklama = aciklama.replace(/<scaleMR>(.*?)<\/scaleMR>/gi, '<b style="color:#58a6ff;">$1</b>');
+                            aciklama = aciklama.replace(/<scaleMR>(.*?)<\/scaleMR>/gi, '<b style="color:var(--accent-color);">$1</b>');
                             aciklama = aciklama.replace(/<stat>(.*?)<\/stat>/gi, '<b style="color:#ffffff;">$1</b>');
                             aciklama = aciklama.replace(/<attention>(.*?)<\/attention>/gi, '<b style="color:#ffffff;">$1</b>');
                             aciklama = aciklama.replace(/<magicDamage>(.*?)<\/magicDamage>/gi, '<b style="color:#9ea1f9;">$1</b>');
@@ -4614,15 +4900,15 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
                     yamaArayuzu.insertBefore(kart, arsivButonu); 
                 } else if (index > 0 && index < 5) {
                     // NORMAL YAMALAR (Neon Mavi Parlama)
-                    kart.style.borderColor = "#58a6ff";
+                    kart.style.borderColor = "var(--accent-color)";
                     kart.style.boxShadow = "0 0 15px rgba(88, 166, 255, 0.15)";
-                    if(baslik) baslik.style.color = "#58a6ff";
+                    if(baslik) baslik.style.color = "var(--accent-color)";
                     yamaArayuzu.insertBefore(kart, arsivButonu);
                 } else {
                     // 6. VE SONRASI (Arşive Göm ve Işıklarını Söndür)
-                    kart.style.borderColor = "#30363d";
+                    kart.style.borderColor = "var(--border-color)";
                     kart.style.boxShadow = "none";
-                    if(baslik) baslik.style.color = "#58a6ff"; 
+                    if(baslik) baslik.style.color = "var(--accent-color)"; 
                     arsivKapsayici.appendChild(kart);
                 }
             });
@@ -4638,8 +4924,8 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
                     botKarti.innerHTML = `
                         <div class="yama-baslik" style="color: #ffd700;">🤖 PYTHON BOT SÜRÜM GEÇMİŞİ</div>
                         <ul class="yama-liste vitrin-bot-liste"></ul>
-                        <button onclick="document.getElementById('bot-arsiv-liste').classList.toggle('gizle'); this.innerText = this.innerText.includes('Aç') ? '⬆️ Eski Bot Sürümlerini Gizle' : '⬇️ Eski Bot Sürümlerini Aç';" class="daha-fazla-btn" style="padding: 10px 20px; font-size: 0.9em; margin: 10px auto; background: #161b22; display: block; border-color: #ffd700; color: #ffd700;">⬇️ Eski Bot Sürümlerini Aç</button>
-                        <ul id="bot-arsiv-liste" class="yama-liste gizle" style="margin-top: 20px; border-top: 1px dashed #30363d; padding-top: 15px;"></ul>
+                        <button onclick="document.getElementById('bot-arsiv-liste').classList.toggle('gizle'); this.innerText = this.innerText.includes('Aç') ? '⬆️ Eski Bot Sürümlerini Gizle' : '⬇️ Eski Bot Sürümlerini Aç';" class="daha-fazla-btn" style="padding: 10px 20px; font-size: 0.9em; margin: 10px auto; background: var(--card-bg); display: block; border-color: #ffd700; color: #ffd700;">⬇️ Eski Bot Sürümlerini Aç</button>
+                        <ul id="bot-arsiv-liste" class="yama-liste gizle" style="margin-top: 20px; border-top: 1px dashed var(--border-color); padding-top: 15px;"></ul>
                     `;
                     vitrinListe = botKarti.querySelector('.vitrin-bot-liste');
                     arsivListe = document.getElementById('bot-arsiv-liste');
@@ -4717,7 +5003,7 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
 
                     legendHtml += `
                         <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05); font-size:0.9em;">
-                            <div style="display:flex; flex-direction:column; gap:2px; color:#c9d1d9;">
+                            <div style="display:flex; flex-direction:column; gap:2px; color:var(--text-color);">
                                 <div style="display:flex; align-items:center; gap:8px; font-weight:bold;">
                                     <div style="width:12px; height:12px; background:${renk}; border-radius:3px; box-shadow: 0 0 5px ${renk}80;"></div> 
                                     ${isim}
@@ -4732,8 +5018,8 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
                 conicString = conicString.slice(0, -2); 
 
                 htmlIcerik += `
-                    <div style="background: rgba(0, 0, 0, 0.3); padding: 25px; border-radius: 12px; border: 1px dashed #30363d; width: 320px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
-                        <div style="font-size: 1.2em; font-weight: 900; color: #c9d1d9; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">${rolData.ikon} ${rolData.ad}</div>
+                    <div style="background: rgba(0, 0, 0, 0.3); padding: 25px; border-radius: 12px; border: 1px dashed var(--border-color); width: 320px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+                        <div style="font-size: 1.2em; font-weight: 900; color: var(--text-color); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">${rolData.ikon} ${rolData.ad}</div>
                         
                         <div style="width: 180px; height: 180px; border-radius: 50%; background: conic-gradient(${conicString}); box-shadow: 0 0 25px rgba(0,0,0,0.5); border: 4px solid #21262d; margin-bottom: 25px; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"></div>
                         
@@ -4754,12 +5040,46 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
         // Sayfa yüklendiğinde motoru ateşle
         setTimeout(yamaOtomasyonunuAtesle, 100);
         setTimeout(mutlakRunMotorunuAtesle, 1000);
+        // --- HEXTECH İMLEÇ HAFIZA MOTORU ---
+            const imlecBtn = document.getElementById('imlec-degistir-btn');
+            const imlecMetin = document.getElementById('imlec-metin');
+            const imlecIkon = document.getElementById('imlec-ikon');
+
+            // Kullanıcının son tercihini kontrol et, yoksa 'yeni' olarak başlat
+            let aktifImlec = localStorage.getItem('seciliImlec') || 'yeni';
+
+            function imlecUygula(tip) {
+                if (tip === 'eski') {
+                    document.body.classList.add('eski-eldiven');
+                    imlecMetin.innerText = 'İmleç: Nostalji';
+                    imlecIkon.innerText = '🧤';
+                } else {
+                    document.body.classList.remove('eski-eldiven');
+                    imlecMetin.innerText = 'İmleç: Hextech';
+                    imlecIkon.innerText = '✨';
+                }
+                localStorage.setItem('seciliImlec', tip);
+            }
+
+            // Sayfa ilk yüklendiğinde motoru ateşle
+            imlecUygula(aktifImlec);
+
+            // Şaltere basıldığında imleci ve hafızayı güncelle
+            if (imlecBtn) {
+                imlecBtn.addEventListener('click', () => {
+                    aktifImlec = (aktifImlec === 'yeni') ? 'eski' : 'yeni';
+                    imlecUygula(aktifImlec);
+                });
+            }
     </script>
+    
 <!-- V5.43.0 - YASAL KALKAN (FOOTER) -->
-        <footer style="margin-top: 50px; padding: 20px; text-align: center; border-top: 1px solid #30363d; background-color: #0d1117; color: #8b949e; font-size: 0.85em; line-height: 1.6;">
+        <footer style="margin-top: 50px; padding: 20px; text-align: center; border-top: 1px solid var(--border-color); background-color: var(--bg-color); color: #8b949e; font-size: 0.85em; line-height: 1.6;">
             <strong>Yazlık DC İstatistik ve Taktik Arayüzü</strong>, Riot Games'in "Topluluk Projeleri Kullanım Politikası" kapsamında oluşturulmuştur.<br>
             Bu proje bağımsız bir girişim olup Riot Games, Inc. tarafından desteklenmemekte, onaylanmamakta veya Riot Games'in görüşlerini yansıtmamaktadır.<br>
             League of Legends ve ilgili tüm grafik varlıklar ile telif hakları Riot Games, Inc.'e aittir. © Riot Games, Inc.
         </footer>
 </body>
+    <!-- Auto-fix: ensure any unclosed CSS block is closed -->
+    <style>/* closing stray block */</style>
 </html>
