@@ -588,6 +588,26 @@
         }
         .komp-tablosu td:first-child { border-left: 1px solid var(--border-color); border-radius: 4px 0 0 4px; }
         .komp-tablosu td:last-child { border-right: 1px solid var(--border-color); border-radius: 0 4px 4px 0; }
+        /* V6.0.2 - KLİP PANELİ MODERNİZASYONU */
+        .video-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+            gap: 25px !important;
+            width: 100% !important;
+            min-height: 300px !important; /* Panel boş kalmasın diye minimum yükseklik */
+        }
+
+        .video-grid iframe {
+            width: 100% !important;
+            height: 300px !important;
+            display: block !important;
+            visibility: visible !important;
+        }
+
+        .video-grid iframe:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px var(--accent-color);
+        }
     </style>
 </head>
 <body>
@@ -596,7 +616,7 @@
     <div class="ust-bar">
         <!-- Senin az önce Hextech stiline çevirdiğimiz h1 başlığın burada durmaya devam edecek -->
         <h1>
-            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v6.0.1</span>
+            YazlıkDC<span>.GG</span> <span class="versiyon-etiket">v6.0.2</span>
         </h1>
     
         <!-- Butonları yan yana düzenli tutan yeni Hextech kapsayıcısı -->
@@ -630,6 +650,7 @@
         <button id="btn-mod-run" class="mod-btn">🔮 Rün Dizilimi</button>
         <button id="btn-mod-komp" class="mod-btn">🛡️ Şampiyonlar & Kompozisyonlar</button>
         <button id="btn-mod-rotasyon" class="mod-btn">🗺️ Harita Rotasyonları</button>
+        <button id="btn-mod-videoklip" class="mod-btn">🎬 Videolar & Klipler</button>
         <button id="btn-mod-yama" class="mod-btn">📜 Sürüm Geçmişi</button>
     </div>
 
@@ -1066,14 +1087,71 @@
             }
         </script>
     </div>
-
+    <div id="arayuz-videoklipler" class="gizle" style="max-width: 900px; margin: 0 auto; padding: 20px;">
+        <div style="background: var(--card-bg); border: 1px solid var(--accent-color); border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+    
+            <div style="background: rgba(10, 200, 185, 0.1); padding: 15px; text-align: center; border-bottom: 1px solid var(--accent-color);">
+                <h3 style="margin: 0; color: #ffffff; font-family: 'Cinzel'; letter-spacing: 1px;">MSI Cup | Clash | League
+                    of Legends</h3>
+            </div>
+    
+            <div style="position: relative; width: 100%; background: #000;">
+                <img src="https://img.youtube.com/vi/gc2XMieX3_Y/maxresdefault.jpg"
+                    style="width: 100%; height: auto; display: block; object-fit: contain;">
+    
+                <a href="https://www.youtube.com/watch?v=gc2XMieX3_Y" target="_blank" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+                          background: var(--accent-color); color: #010a13; padding: 12px 25px; 
+                          text-decoration: none; font-weight: bold; font-family: 'Cinzel'; border-radius: 4px; 
+                          box-shadow: 0 0 20px rgba(0,0,0,0.5); border: 1px solid #fff; font-size: 1.1em;">
+                    ▶ YOUTUBE'DA İZLE
+                </a>
+            </div>
+        </div>
+        <div style="background: var(--card-bg); border: 1px solid var(--accent-color); border-radius: 12px; overflow: hidden; margin-top: 20px;">
+        
+            <div
+                style="background: rgba(10, 200, 185, 0.1); padding: 15px; text-align: center; border-bottom: 1px solid var(--accent-color);">
+                <h3 style="margin: 0; color: #ffffff; font-family: 'Cinzel';">MSI Cup - Behınd the scenes | Clash | League of Legends</h3>
+            </div>
+        
+            <div style="position: relative; width: 100%; background: #000;">
+                <img src="https://img.youtube.com/vi/ajWmvK5aIvc/maxresdefault.jpg"
+                    style="width: 100%; height: auto; display: block; object-fit: contain;">
+        
+                <a href="https://www.youtube.com/watch?v=ajWmvK5aIvc" target="_blank" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+                          background: var(--accent-color); color: #010a13; padding: 12px 25px; 
+                          text-decoration: none; font-weight: bold; font-family: 'Cinzel'; border-radius: 4px; 
+                          box-shadow: 0 0 20px rgba(0,0,0,0.5); border: 1px solid #fff; font-size: 1.1em;">
+                    ▶ YOUTUBE'DA İZLE
+                </a>
+            </div>
+        </div>
+    </div>
     <!-- SÜRÜM GEÇMİŞİ ANAYASASI -->
     <div id="arayuz-yama" class="gizle" style="max-width: 1000px; margin: 0 auto;">
     
     <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">YAZLIKDC.GG SÜRÜM GEÇMİŞİ (PATCH NOTES)</h2>
     
     <div class="yama-karti">
-        <div class="yama-baslik">v6.0.1 - İstemci Hotfix & Optik Kalibrasyon <span class="yama-tarih">Güncel</span></div>
+        <div class="yama-baslik">v6.0.2 - Videolar & Klipler Modülü ve Medya Zırhı <span class="yama-tarih">Güncel</span>
+        </div>
+        <ul class="yama-liste">
+            <li><strong>[v6.0.2] Videolar & Klipler Modülü:</strong> Arayüze tam entegre, otonom yönetim motoruyla çalışan
+                <code>videoklipler</code> sekmesi sisteme eklendi.</li>
+            <li><strong>[UI] Hextech Medya Kartı:</strong> YouTube gömme (embed) kısıtlamalarına karşı "Kapak Görseli +
+                YouTube'da İzle" butonu yapısı geliştirildi. <code>object-fit: contain</code> zırhı ile thumbnail'ların
+                kırpılmadan tam görünmesi sağlandı.</li>
+            <li><strong>[Kritik] Video Hata Giderme:</strong> Telif hakkı nedeniyle gömülmesi engellenen içeriklerin
+                yarattığı "Video kullanılamıyor" hatası, overlay (kapak) yöntemiyle tamamen imha edildi.</li>
+            <li><strong>[Optimizasyon] Kod Standardizasyonu:</strong> Modül isimlendirmeleri (btn, id, arayuz)
+                <code>videoklipler</code> çatısı altında standardize edilerek sistemin esnekliği artırıldı.</li>
+            <li><strong>[Görsel] Tipografi:</strong> Medya kartlarına Hextech stiline uygun başlık alanları eklendi,
+                butonlar merkezi pozisyona çekilerek profesyonel e-spor görünümü sağlandı.</li>
+        </ul>
+    </div>
+
+    <div class="yama-karti">
+        <div class="yama-baslik">v6.0.1 - İstemci Hotfix & Optik Kalibrasyon <span class="yama-tarih"></span></div>
         <ul class="yama-liste">
             <li><strong>[UX] Yenileme İkonu Restorasyonu:</strong> Kafa karışıklığı yaratan ve çift yönlü dönen eski SVG oku
                 imha edildi. Yerine, RYO istemci standartlarına mutlak uyum sağlayan, saat yönünde dönen tek yönlü keskin
@@ -4654,6 +4732,7 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
             { id: "run", btn: "btn-mod-run", arayuz: "arayuz-run" },
             { id: "komp", btn: "btn-mod-komp", arayuz: "arayuz-komp" },
             { id: "rotasyon", btn: "btn-mod-rotasyon", arayuz: "arayuz-rotasyon" },
+            { id: "videoklipler", btn: "btn-mod-videoklip", arayuz: "arayuz-videoklipler" },
             { id: "yama", btn: "btn-mod-yama", arayuz: "arayuz-yama" }
         ];
 
@@ -4683,6 +4762,13 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
             }
         });
 
+      // Videolar & Klipler sekmesini açınca display: block zorlaması
+        document.getElementById('btn-mod-videoklip').addEventListener('click', function () {
+            let videovideoklipPanel = document.getElementById('arayuz-videoklipler');
+            if (videoklipPanel) {
+                videoklipPanel.style.display = "block";
+            }
+        });  
 	// V5.30.5 - ESKİ YAMALARI GÖSTER/GİZLE BUTON İŞLEVİ
         document.getElementById("btn-eski-yamalar").addEventListener("click", function() {
             let kapsayici = document.getElementById("eski-yamalar-kapsayici");
@@ -4695,7 +4781,6 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
             }
         });
 
-        
         document.querySelectorAll('#sinerji-tabs .tab-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('#sinerji-tabs .tab-btn').forEach(b => b.classList.remove('aktif')); e.target.classList.add('aktif'); 
@@ -4711,7 +4796,9 @@ Sistem, ilkel kazanma oranları yerine <b>Wilson Güven Aralığı</b> matemati�
             });
         });
 
-        baslat(false);
+        window.addEventListener('DOMContentLoaded', (event) => {
+                baslat(false);
+            });
 	// V5.49.0 - MUTLAK LİDERLİK VE ORTALAMALAR MOTORU (DESTEK CS HARİÇ)
         function modernLiderlikMotoru(veriDizisi) {
             if (!veriDizisi || veriDizisi.length === 0) return;
