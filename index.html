@@ -1136,21 +1136,24 @@
         <div class="yama-baslik">v6.0.3 - Mağaza Sınırlandırmaları ve Arayüz Piksel Restorasyonu <span
                 class="yama-tarih">Güncel</span></div>
         <ul class="yama-liste">
-            <li><strong>[v6.0.3] Tiamat / Hidra Ambargosu:</strong> Resmi dükkan kuralları enjekte edildi. Envanterinde
-                Vahşi Hidra, Haşmetli Hidra veya İtikatsız Hidra olan oyuncuların, ikinci bir AoE Cleave (Alan Etkili) hidra
-                eşyası alması tamamen engellendi.</li>
-            <li><strong>[v6.0.3] Gözyaşı ve Çizme Kilitleri:</strong> Muramana/Seraph/Fimbul sahiplerinin alt gözyaşı
-                eşyalarını mükerrer çekmesi engellendi. Dynamic Boots filter mimarisiyle, aşaması ne olursa olsun envantere
-                birden fazla çizme girme açığı kapatıldı.</li>
-            <li><strong>[v6.0.3] Büyülükılıç ve Döngü Kilitleri:</strong> Aynı anda alınması mekanikleri bozan Pırıltı
-                serisi (Üçlü Kuvvet / Lich Boğan / Canbiçen) ve Gece/Gündüz temalı çakışan pasifli eşyalar birbirine
-                kilitlendi.</li>
-            <li><strong>[Bugfix] Künye ve İstatistik Hizalaması:</strong> Uzmanlar sekmesinde uzun isimlerin sağdaki kazanma
-                oranı verilerini ezme hatası, istatistik kolon genişliğinin 110px değerine kalibre edilmesi ve sol isme
-                maksimum alan açılmasıyla tamamen çözüldü.</li>
-            <li><strong>[Stat] Core Parser ve Meta Dengelemesi:</strong> Tooltip üzerindeki çoklu etiket ayrıştırıcısı
-                re-kalibre edilerek efsanevi eşyaların tüm statları geri kazanıldı. Fimbul Kışı can değeri güncel verilere
-                göre 550 Can olarak güncellendi.</li>
+            <li><strong>[v6.0.3] Veri Senkronizasyonu:</strong> Yun Tal Vahşi Okları verileri v14.10+ yamasına göre %100
+                güncellendi. Taban değerler <code>+60 AD</code> ve <code>+40% AS</code> olarak sabitlendi.</li>
+            <li><strong>[v6.0.3] Tam Lokalizasyon:</strong> Eşyanın pasif mekanikleri (Pratik Mükemmelleştirir ve Sağanak) tamamen
+                Türkçe oyun içi terminolojiye çevrildi.</li>
+            <li><strong>[v6.0.3] Stat Motoru Kalibrasyonu:</strong> Eşyanın biriktirdiği <code>+25% Kritik İhtimali</code> simülatör
+                hesaplamalarına doğrudan "Kalıcı Pasif" olarak işlendi.</li>
+            <li><strong>[v6.0.3] Gözyaşı ve Hidra Ambargoları:</strong> Muramana/Seraph/Fimbul sahiplerinin ham gözyaşı
+                eşyalarını mükerrer alması engellendi. Aynı anda birden fazla AoE Cleave (Vahşi/Haşmetli/İtikatsız Hidra)
+                veya Tiamat bileşeni kuşanılması tamamen kapatıldı.</li>
+            <li><strong>[v6.0.3] Çizme ve Döngü Kilitleri:</strong> Dynamic Boots filter mimarisiyle envantere birden fazla
+                çizme girme açığı engellendi. Pırıltı serisi (Üçlü/Lich/Canbiçen) ve Gece/Gündüz temalı çakışan pasifli
+                eşyalar birbirine kilitlendi.</li>
+            <li><strong>[Bugfix] Künye ve İstatistik Hizalaması:</strong> Uzmanlar sekmesinde uzun isimlerin (örn:
+                YEAHRUMONBASHI) sağdaki kazanma oranı verilerini ezme hatası, istatistik kolon genişliğinin 110px değerine
+                kalibre edilmesi ve sol isme maksimum alan açılmasıyla tamamen çözüldü.</li>
+            <li><strong>[Stat] Core Parser ve Tipografi:</strong> Tooltip üzerindeki çoklu etiket ayrıştırıcısı re-kalibre
+                edilerek efsanevi eşyaların tüm statları geri kazanıldı. Yük biriktiren tüm eşyaların
+                (Manaveren/Fimbul/Seraph) açıklamaları geniş paragraflara bölünerek okuma ferahlığı sağlandı.</li>
         </ul>
     </div>
 
@@ -2536,6 +2539,11 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                 let bonusAP = toplamMana * 0.02; // Azami Mananın %2'si kadar AP
                 statsMap["yetenek gücü"] = (statsMap["yetenek gücü"] || 0) + bonusAP;
             }
+            if (window.simEnvanter.includes("3032")) {
+                statsMap["saldırı gücü"] = (statsMap["saldırı gücü"] || 0) + 60; // Güncel 60 AD
+                statsMap["saldırı hızı"] = (statsMap["saldırı hızı"] || 0) + 40; // Güncel %40 AS
+                statsMap["kritik vuruş ihtimali"] = (statsMap["kritik vuruş ihtimali"] || 0) + 25; // Tam Yük %25 Kritik
+            }
 
             let statHtml = "";
             for(let key in statsMap) {
@@ -2572,6 +2580,16 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
             }
 
             if(statHtml === "") statHtml = `<div style="color:#8b949e; grid-column: 1 / -1; text-align:center; margin: 20px 0;">Kütüphaneden eşya seçerek dizilime başlayın.</div>`;
+            // 🎯 V6.0.3 - KRİTİK ŞANS TAŞMASI (OVERCAP) UYARI MOTORU
+            let toplamKritik = statsMap["kritik vuruş ihtimali"] || 0;
+            if (toplamKritik > 100) {
+                // Pop-up yapmıyoruz, doğrudan istatistiklerin altına şık bir uyarı paneli ekliyoruz
+                statHtml += `
+                <div style="margin-top: 15px; padding: 12px; background: rgba(218, 54, 51, 0.15); border: 1px solid #da3633; border-radius: 8px; text-align: center; box-shadow: 0 0 10px rgba(218, 54, 51, 0.2);">
+                    <div style="color: #ffb84d; font-weight: bold; font-size: 1.1em; margin-bottom: 4px;">⚠️ KRİTİK KAPASİTE AŞILDI</div>
+                    <div style="color: #e0e0e0; font-size: 0.9em; line-height: 1.4;">Son eşya eklemeleriyle kritik şansınız <b>%100'ü geçti (Şu an: %${toplamKritik})</b>. Bizce eşya dizilimini değiştirin, sınırın üzerindeki oran israftır.</div>
+                </div>`;
+            }
             document.getElementById("sim-statlar").innerHTML = statHtml;
             document.getElementById("sim-altin").innerText = "Toplam Maliyet: " + t_altin + " 🪙";
         };
@@ -2931,18 +2949,23 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                             tags: ["Boots", "AttackSpeed", "LifeSteal"]
                         };
                     }
-                    // 💎 V6.0.3 - MANUEL DATA GÜNCELLEMESİ (FIMBULWINTER HOTFIX) [1]
+                    // 💎 V6.0.3 - YÜK BİRİKTİREN VE EVRİMLEŞEN EŞYALAR VERİ TABANI [1]
                     const ozelEsyalar = {
-                        "3042": { altin: 2900, ekAd: "Muramana (Tam Yük)", desc: "<mainText><stats><attention>⚡ +35</attention> Saldırı Gücü<br><attention>💧 +1000</attention> Mana<br><attention>⏳ +15</attention> Yetenek Hızı</stats><br><br><div style='margin-bottom: 8px;'><b>Pasif - Hayranlık:</b> Azami Mananın %2.5'i kadar azami Saldırı Gücü kazandırır.</div><div><b>Pasif - Şok:</b> Şampiyonlara yönelik yetenek ve saldırılar fazladan hasar verir.</div></mainText>" },
-                        "3004": { altin: 2900, ekAd: "Manaveren", desc: "<mainText><stats><attention>⚡ +35</attention> Saldırı Gücü<br><attention>💧 +500</attention> Mana<br><attention>⏳ +15</attention> Yetenek Hızı</stats><br><br><div style='margin-bottom: 8px;'><b>Pasif - Hayranlık:</b> Azami Mananın %2'si kadar azami Saldırı Gücü kazandırır.</div></mainText>" },
-                        "3040": { altin: 2900, ekAd: "Seraph'ın Şefkati (Tam Yük)", desc: "<mainText><stats><attention>🔮 +80</attention> Yetenek Gücü<br><attention>💧 +1000</attention> Mana<br><attention>⏳ +20</attention> Yetenek Hızı</stats><br><br><div style='margin-bottom: 8px;'><b>Pasif - Hayranlık:</b> Azami Mananın %2'si kadar Yetenek Gücü kazandırır.</div><div><b>Pasif - Cankurtaran:</b> Canını kritik seviyeye getiren hasar aldığında sana devasa bir kalkan sağlar.</div></mainText>" },
-                        "3121": { altin: 2600, ekAd: "Fimbul Kışı (Tam Yük)", desc: "<mainText><stats><attention>❤️ +550</attention> Can<br><attention>💧 +860</attention> Mana<br><attention>⏳ +15</attention> Yetenek Hızı</stats><br><br><div><b>Pasif - Sonsuz Kış:</b> Bir rakibi hareketsiz bıraktığında veya yavaşlattığında can kalkanı kazandırır.</div></mainText>" },
-                        "3869": { altin: 400, ekAd: "Göksel Muhalefet (Görev)", desc: "<mainText><stats><attention>❤️ +200</attention> Can<br><attention>💖 +75%</attention> Taban Can Yenilenmesi<br><attention>🌊 +75%</attention> Taban Mana Yenilenmesi</stats><br><br><div><b>Pasif - İlahi Koruma:</b> Alınan hasarı azaltır ve düşmanları yavaşlatan bir dalga yayar.</div></mainText>" },
-                        "3870": { altin: 400, ekAd: "Rüya Yapan (Görev)", desc: "<mainText><stats><attention>❤️ +200</attention> Can<br><attention>💖 +75%</attention> Taban Can Yenilenmesi<br><attention>🌊 +75%</attention> Taban Mana Yenilenmesi</stats><br><br><div><b>Pasif - Hayalperest:</b> Takım arkadaşlarına hasar azaltıcı ve güçlendirici balonlar balonlar fırlatır.</div></mainText>" },
-                        "3871": { altin: 400, ekAd: "Zaz'Zak'ın Dikenleri (Görev)", desc: "<mainText><stats><attention>❤️ +200</attention> Can<br><attention>💖 +75%</attention> Taban Can Yenilenmesi<br><attention>🌊 +75%</attention> Taban Mana Yenilenmesi</stats><br><br><div><b>Pasif - Havai Fişek Patlaması:</b> Yeteneklerin hedefin canına göre ilave patlama hasarı verir.</div></mainText>" },
-                        "3876": { altin: 400, ekAd: "Gündönümü Kızağı (Görev)", desc: "<mainText><stats><attention>❤️ +200</attention> Can<br><attention>💖 +75%</attention> Taban Can Yenilenmesi<br><attention>🌊 +75%</attention> Taban Mana Yenilenmesi</stats><br><br><div><b>Pasif - Kızak Sürüşü:</b> Rakipleri yavaşlatmak veya hareketsiz bırakmak takım arkadaşına hareket hızı ve can verir.</div></mainText>" },
-                        "3877": { altin: 400, ekAd: "Kan Şarkısı (Görev)", desc: "<mainText><stats><attention>❤️ +200</attention> Can<br><attention>💖 +75%</attention> Taban Can Yenilenmesi<br><attention>🌊 +75%</attention> Taban Mana Yenilenmesi</stats><br><br><div><b>Pasif - Büyülükılıç:</b> Saldırıdan sonraki ilk vuruşu güçlendirir ve hedefi zayıflatarak aldığı hasarı artırır.</div></mainText>" }
-                    };
+                        "3032": {
+                            altin: 3200,
+                            ekAd: "Yun Tal Vahşi Okları",
+                            desc: "<mainText><stats><attention>⚔️ +60</attention> Saldırı Gücü<br><attention>🗡️ +40%</attention> Saldırı Hızı</stats><br><br><div style='margin-bottom: 8px;'><b>Pasif - Pratik Mükemmelleştirir:</b> Temel saldırılar isabet ettiğinde kalıcı olarak <attention>🎯 +0.4%</attention> (Saldırı Gücü ile) veya <attention>🎯 +0.2%</attention> (Saldırı Hızı ile) Kritik Vuruş İhtimali kazandırır. Bu etki <attention>🎯 +25% Kritik Vuruş İhtimali</attention> değerine kadar birikir.</div><div><b>Pasif - Sağanak:</b> Bir rakip şampiyona temel saldırı yapmak 6 saniyeliğine <attention>🗡️ +30% İlave Saldırı Hızı</attention> kazandırır. (30 saniye bekleme süresi; isabet halinde 1 saniye, kritik vuruşta 2 saniye azalır).</div></mainText>"
+                        },
+                        "3042": { altin: 2900, ekAd: "Muramana (Tam Yük)", desc: "<mainText><stats><attention>⚔️ +35</attention> Saldırı Gücü<br><attention>💧 +1000</attention> Mana<br><attention>⏳ +15</attention> Yetenek Hızı</stats><br><br><div style='margin-bottom: 8px;'><b>Pasif - Hayranlık:</b> Azami Mananın %2.5'i kadar azami Saldırı Gücü kazandırır. Yükler doldurulup Manaveren bu forma ulaştığında taban hasar çarpanları tavan yapar.</div><div><b>Pasif - Şok:</b> Şampiyonlara yönelik tek hedefli yetenekler ve temel saldırılar fazladan fiziksel hasar patlaması yaratır.</div></mainText>" },
+                        "3004": { altin: 2900, ekAd: "Manaveren (0/360 Yük)", desc: "<mainText><stats><attention>⚔️ +35</attention> Saldırı Gücü<br><attention>💧 +500</attention> Mana<br><attention>⏳ +15</attention> Yetenek Hızı</stats><br><br><div style='margin-bottom: 8px;'><b>Pasif - Hayranlık:</b> Azami Mananın %2'si kadar azami Saldırı Gücü kazandırır.</div><div><b>Pasif - Gözyaşı Akışı:</b> İsabet eden saldırılar veya harcanan her mana başına +5 Azami Mana biriktirir. 360 Mana yükü tamamlandığında otomatik olarak <b>Muramana</b> formuna dönüşür.</div></mainText>" },
+                        "3040": { altin: 2900, ekAd: "Seraph'ın Şefkati (Tam Yük)", desc: "<mainText><stats><attention>🔮 +80</attention> Yetenek Gücü<br><attention>💧 +1000</attention> Mana<br><attention>⏳ +20</attention> Yetenek Hızı</stats><br><br><div style='margin-bottom: 8px;'><b>Pasif - Hayranlık:</b> Azami Mananın %2'si kadar Yetenek Gücü kazandırır.</div><div><b>Pasif - Cankurtaran:</b> Canını %30'un altına düşürecek bir hasar aldığında, mevcut mananın %20'sine eşdeğer devasa bir can kalkanı patlatır.</div></mainText>" },
+                        "3121": { altin: 2600, ekAd: "Fimbul Kışı (Tam Yük)", desc: "<mainText><stats><attention>❤️ +550</attention> Can<br><attention>💧 +860</attention> Mana<br><attention>⏳ +15</attention> Yetenek Hızı</stats><br><br><div style='margin-bottom: 8px;'><b>Pasif - Hayranlık:</b> Azami Mananın %15'ine eşdeğer ilave Can kazandırır.</div><div><b>Pasif - Sonsuz Kış:</b> Bir rakip şampiyonu hareketsiz bıraktığında veya yavaşlattığında yakınlardaki düşman sayısına göre büyüyen bir şok kalkanı üretir.</div></mainText>" },
+                        "3869": { altin: 400, ekAd: "Göksel Muhalefet (Görev)", desc: "<mainText><stats><attention>❤️ +200</attention> Can<br><attention>💖 +75%</attention> Taban Can Yenilenmesi<br><attention>🌊 +75%</attention> Taban Mana Yenilenmesi</stats><br><br><div><b>Pasif - İlahi Koruma:</b> Altın görevi tamamlandığında açılır. Alınan şampiyon hasarını %35 azaltır ve kırıldığında rakipleri yavaşlatan bir şok dalgası yayar.</div></mainText>" },
+                        "3870": { altin: 400, ekAd: "Rüya Yapan (Görev)", desc: "<mainText><stats><attention>❤️ +200</attention> Can<br><attention>💖 +75%</attention> Taban Can Yenilenmesi<br><attention>🌊 +75%</attention> Taban Mana Yenilenmesi</stats><br><br><div><b>Pasif - Hayalperest:</b> Her 8 saniyede bir korunan takım arkadaşına hasar azaltıcı Mavi Balon veya hasar artırıcı Pembe Balon fırlatır.</div></mainText>" },
+                        "3871": { altin: 400, ekAd: "Zaz'Zak'ın Dikenleri (Görev)", desc: "<mainText><stats><attention>❤️ +200</attention> Can<br><attention>💖 +75%</attention> Taban Can Yenilenmesi<br><attention>🌊 +75%</attention> Taban Mana Yenilenmesi</stats><br><br><div><b>Pasif - Havai Fişek Patlaması:</b> Yetenek hasarı vermek, hedefin konumunda azami cana göre büyü büyüsü hasarı veren kozmik bir patlama tetikler.</div></mainText>" },
+                        "3876": { altin: 400, ekAd: "Gündönümü Kızağı (Görev)", desc: "<mainText><stats><attention>❤️ +200</attention> Can<br><attention>💖 +75%</attention> Taban Can Yenilenmesi<br><attention>🌊 +75%</attention> Taban Mana Yenilenmesi</stats><br><br><div><b>Pasif - Kızak Sürüşü:</b> Bir rakibi hareketsiz bırakmak, sana ve en düşük canlı takım arkadaşına 4 saniyeliğine ilave hareket hızı ve can yenilemesi sağlar.</div></mainText>" },
+                        "3877": { altin: 400, ekAd: "Kan Şarkısı (Görev)", desc: "<mainText><stats><attention>❤️ +200</attention> Can<br><attention>💖 +75%</attention> Taban Can Yenilenmesi<br><attention>🌊 +75%</attention> Taban Mana Yenilenmesi</stats><br><br><div><b>Pasif - Büyülükılıç:</b> Bir yetenek kullandıktan sonraki ilk temel saldırı hedefi zayıflatarak 6 saniye boyunca tüm kaynaklardan %8 daha fazla hasar almasını sağlar.</div></mainText>" }
+                        };
 
                     for (let key in ozelEsyalar) {
                         if (itemData.data[key]) {
@@ -3018,6 +3041,7 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                                 else if (sNameLower.includes("yetenek hız") || sNameLower.includes("ulti") || sNameLower.includes("nihai")) { r = "#ffffff"; i = "⏳"; sName = "Yetenek Hızı"; }
                                 else if (sNameLower.includes("saldırı hız")) { r = "#ffeb3b"; i = "🗡️"; sName = "Saldırı Hızı"; }
                                 else if (sNameLower.includes("hareket hız")) { r = "#aee2ff"; i = "👟"; sName = "Hareket Hızı"; }
+                                else if (sNameLower.includes("kritik") && sNameLower.includes("hasar")) { r = "#ff8c00"; i = "💥"; sName = "Kritik Vuruş Hasarı"; }
                                 else if (sNameLower.includes("kritik")) { r = "#f35b5a"; i = "🎯"; sName = "Kritik Vuruş İhtimali"; }
                                 else if (sNameLower.includes("can yenilenmes")) { r = "#a1d586"; i = "💖"; sName = "Can Yenilenmesi"; }
                                 else if (sNameLower.includes("mana yenilenmes")) { r = "#aee2ff"; i = "🌊"; sName = "Mana Yenilenmesi"; }
