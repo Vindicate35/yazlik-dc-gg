@@ -2381,75 +2381,76 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
         window.simEnvanter = [null, null, null, null, null, null];
 
         window.simEsyaEkle = function (itemId) {
-                // 🛑 V6.0.3 - MAĞAZA ENGELLİ GİRİŞ PROTOKOLÜ (MUTLAK GÜVENLİK ZIRHI)
+                // 1. Veri Hazırlığı: Her şeyi String formatına zorlayarak "tip hatası"nı öldürüyoruz
                 let envanterdekiEsyalar = window.simEnvanter.filter(id => id !== null).map(String);
                 let guncelItemId = String(itemId);
 
-                // Mükerrer Eşya Engeli
+                // 2. Mükerrer Eşya Engeli
                 if (envanterdekiEsyalar.includes(guncelItemId)) {
                     alert("Bu eşya envanterinizde zaten mevcut! Aynı eşyayı birden fazla kez ekleyemezsiniz.");
                     return;
                 }
 
-                // 👟 MUTLAK BOT KISITLAMASI
-                let botListesi = window.allBootsList || ["1001", "3006", "3009", "3020", "3047", "3111", "3117", "3158", "3124", "3005", "3172"];
-                if (botListesi.includes(guncelItemId) && envanterdekiEsyalar.some(id => botListesi.includes(id))) {
-                    alert("Riot Kısıtlaması: Envanterinizde aynı anda sadece 1 adet Çizme (Bot) barındırabilirsiniz! Sıradan ayakkabı, 2. seviye veya 3. seviye fark etmeksizin başka bir bot alamazsınız.");
-                    return;
-                }
+                // 3. Eşya Grubu Tanımlamaları (String ID'ler)
+                const botlarGrubu = window.allBootsList || ["1001", "3006", "3009", "3020", "3047", "3111", "3117", "3158", "3124", "3005", "3172"];
+                const gozyasiHatları = [["3004", "3042"], ["3003", "3040"], ["3119", "3121"]];
+                const buyuNufuzuGrubu = ["3135", "3137", "8010"];
+                const zirhDelmeGrubu = ["3036", "3033", "6694", "3071"];
+                const destekGorevGrubu = ["3869", "3870", "3871", "3876", "3877"];
+                const piriltiGrubu = ["3078", "3100", "3508"];
+                const geceGunduzGrubu = ["3068", "3193", "3156", "6692"];
+                const hidraGrubu = ["3074", "3748", "6698"];
 
-                // 💧 GÖZYASI EVRİM HATTI KİLİDİ
-                const gozyasiHatları = [
-                    ["3004", "3042"], // Manaveren - Muramana
-                    ["3003", "3040"], // Başmelek Asası - Seraph'ın Şefkati
-                    ["3119", "3121"]  // Kışın Yaklaşımı - Fimbul Kışı
-                ];
+            // 4. KONTROLLER (Hata payı sıfır: Hepsi String eşleşmesiyle çalışır)
 
-                for (let hat of gozyasiHatları) {
-                    if (hat.includes(guncelItemId) && envanterdekiEsyalar.some(id => hat.includes(id))) {
-                        alert("Riot Kısıtlaması: Geliştirilmiş (Evolved) versiyonuna veya ham haline sahip olduğunuz bir Gözyaşı serisinin diğer sürümünü aynı anda alamazsınız!");
-                        return;
-                    }
-                }
+            // Çizme Kontrolü
+            if (botlarGrubu.includes(guncelItemId) && envanterdekiEsyalar.some(id => botlarGrubu.includes(id))) {
+                alert("Riot Kısıtlaması: Sadece 1 adet Çizme (Bot) alabilirsiniz!");
+                return;
+            }
+                // Gözyaşı Kontrolü
+            for (let hat of gozyasiHatları) {
+            if (hat.includes(guncelItemId) && envanterdekiEsyalar.some(id => hat.includes(id))) {
+                alert("Riot Kısıtlaması: Gözyaşı serisinin diğer sürümünü aynı anda alamazsınız!");
+                return;
+            }
+            }
+            if (buyuNufuzuGrubu.includes(guncelItemId) && envanterdekiEsyalar.some(id => buyuNufuzuGrubu.includes(id))) {
+                alert("Riot Kısıtlaması: Aynı anda birden fazla Büyü Nüfuzu eşyası alamazsınız!");
+                return;
+            }
+            if (zirhDelmeGrubu.includes(guncelItemId) && envanterdekiEsyalar.some(id => zirhDelmeGrubu.includes(id))) {
+                alert("Riot Kısıtlaması: Aynı anda birden fazla Zırh Delme eşyası alamazsınız!");
+                return;
+            }
+            if (destekGorevGrubu.includes(guncelItemId) && envanterdekiEsyalar.some(id => destekGorevGrubu.includes(id))) {
+                alert("Riot Kısıtlaması: Envanterinizde sadece 1 adet Gelişmiş Destek Görev Eşyası bulunabilir!");
+                return;
+            }
+            if (piriltiGrubu.includes(guncelItemId) && envanterdekiEsyalar.some(id => piriltiGrubu.includes(id))) {
+                alert("Riot Kısıtlaması: Pırıltı kaynaklı eşyaları aynı anda alamazsınız!");
+                return;
+            }
+            if (geceGunduzGrubu.includes(guncelItemId) && envanterdekiEsyalar.some(id => geceGunduzGrubu.includes(id))) {
+                alert("Meta Kısıtlaması: Gece ve Gündüz döngüsüne ait eşyaları aynı anda kuşanamazsınız!");
+                return;
+            }
+            if (hidraGrubu.includes(guncelItemId) && envanterdekiEsyalar.some(id => hidraGrubu.includes(id))) {
+                alert("Riot Kısıtlaması: Birden fazla Tiamat/Hidra serisi eşya alamazsınız!");
+                return;
+            }
 
-                // 🐉 GRUP KISITLAMALARI VE YENİ HİDRA KİLİDİ [1]
-                const zirhDelmeGrubu = ["3036", "3033", "6694", "3071"]; // Dominik, Fani Hatıratı, Şerilda, Kara Balta
-                const destekGorevGrubu = ["3869", "3870", "3871", "3876", "3877"]; // Gelişmiş Destek Eşyaları
-                const piriltiGrubu = ["3078", "3100", "3508"]; // Üçlü Kuvvet, Lich Boğan, Canbiçen
-                const geceGunduzGrubu = ["3068", "3193", "3156", "6692"]; // Günateşi, Ateşsaçan, Gece Kenarı, Aykararması
-                const hidraGrubu = ["3074", "3748", "6698"]; // Vahşi Hidra, Haşmetli Hidra, İtikatsız Hidra
-
-                if (zirhDelmeGrubu.includes(guncelItemId) && envanterdekiEsyalar.some(id => zirhDelmeGrubu.includes(id))) {
-                    alert("Riot Kısıtlaması: Aynı anda birden fazla Ağır Zırh Delme veya Deşme (Kara Balta / Son Fısıldama Serisi) eşyası alamazsınız!");
-                    return;
-                }
-                if (destekGorevGrubu.includes(guncelItemId) && envanterdekiEsyalar.some(id => destekGorevGrubu.includes(id))) {
-                    alert("Riot Kısıtlaması: Envanterinizde sadece 1 adet Gelişmiş Destek Görev Eşyası bulunabilir!");
-                    return;
-                }
-                if (piriltiGrubu.includes(guncelItemId) && envanterdekiEsyalar.some(id => piriltiGrubu.includes(id))) {
-                    alert("Riot Kısıtlaması: Aynı anda birden fazla Pırıltı (Büyülükılıç) kaynaklı eşya (Üçlü Kuvvet / Lich Boğan / Canbiçen) alamazsınız!");
-                    return;
-                }
-                if (geceGunduzGrubu.includes(guncelItemId) && envanterdekiEsyalar.some(id => geceGunduzGrubu.includes(id))) {
-                    alert("Meta Kısıtlaması: Gece ve Gündüz döngüsüne ait çakışan pasifli eşyaları aynı anda kuşanamazsınız!");
-                    return;
-                }
-                if (hidraGrubu.includes(guncelItemId) && envanterdekiEsyalar.some(id => hidraGrubu.includes(id))) {
-                    alert("Riot Kısıtlaması: Aynı anda birden fazla Tiamat / Hidra serisi eşya (Vahşi Hidra / Haşmetli Hidra / İtikatsız Hidra) kuşanamazsınız!");
-                    return;
-                }
-
-                let bosIndex = window.simEnvanter.indexOf(null);
-                if (bosIndex !== -1) {
-                    window.simEnvanter[bosIndex] = itemId;
-                    window.simGuncelle();
-                } else {
-                    let slotKutu = document.getElementById("sim-envanter");
-                    slotKutu.style.border = "2px solid #f85149";
-                    setTimeout(() => { slotKutu.style.border = "none"; }, 300);
-                }
-            };
+            // 5. İşlem Başarılı
+            let bosIndex = window.simEnvanter.indexOf(null);
+            if (bosIndex !== -1) {
+                window.simEnvanter[bosIndex] = itemId;
+                window.simGuncelle();
+            } else {
+                let slotKutu = document.getElementById("sim-envanter");
+                slotKutu.style.border = "2px solid #f85149";
+                setTimeout(() => { slotKutu.style.border = "none"; }, 300);
+            }
+        };
 
         window.simEsyaCikar = function(index) {
             if(window.simEnvanter[index] !== null) {
@@ -2957,7 +2958,6 @@ Sistem, oyuncunun o şampiyonla kazanma oranını ilkel hesaplar yerine <b>Wilso
                             desc: "<mainText><stats><attention>⚔️ +60</attention> Saldırı Gücü<br><attention>🗡️ +40%</attention> Saldırı Hızı</stats><br><br><div style='margin-bottom: 8px;'><b>Pasif - Pratik Mükemmelleştirir:</b> Temel saldırılar isabet ettiğinde kalıcı olarak <attention>🎯 +0.4%</attention> (Saldırı Gücü ile) veya <attention>🎯 +0.2%</attention> (Saldırı Hızı ile) Kritik Vuruş İhtimali kazandırır. Bu etki <attention>🎯 +25% Kritik Vuruş İhtimali</attention> değerine kadar birikir.</div><div><b>Pasif - Sağanak:</b> Bir rakip şampiyona temel saldırı yapmak 6 saniyeliğine <attention>🗡️ +30% İlave Saldırı Hızı</attention> kazandırır. (30 saniye bekleme süresi; isabet halinde 1 saniye, kritik vuruşta 2 saniye azalır).</div></mainText>"
                         },
                         "3042": { altin: 2900, ekAd: "Muramana (Tam Yük)", desc: "<mainText><stats><attention>⚔️ +35</attention> Saldırı Gücü<br><attention>💧 +1000</attention> Mana<br><attention>⏳ +15</attention> Yetenek Hızı</stats><br><br><div style='margin-bottom: 8px;'><b>Pasif - Hayranlık:</b> Azami Mananın %2.5'i kadar azami Saldırı Gücü kazandırır. Yükler doldurulup Manaveren bu forma ulaştığında taban hasar çarpanları tavan yapar.</div><div><b>Pasif - Şok:</b> Şampiyonlara yönelik tek hedefli yetenekler ve temel saldırılar fazladan fiziksel hasar patlaması yaratır.</div></mainText>" },
-                        "3004": { altin: 2900, ekAd: "Manaveren (0/360 Yük)", desc: "<mainText><stats><attention>⚔️ +35</attention> Saldırı Gücü<br><attention>💧 +500</attention> Mana<br><attention>⏳ +15</attention> Yetenek Hızı</stats><br><br><div style='margin-bottom: 8px;'><b>Pasif - Hayranlık:</b> Azami Mananın %2'si kadar azami Saldırı Gücü kazandırır.</div><div><b>Pasif - Gözyaşı Akışı:</b> İsabet eden saldırılar veya harcanan her mana başına +5 Azami Mana biriktirir. 360 Mana yükü tamamlandığında otomatik olarak <b>Muramana</b> formuna dönüşür.</div></mainText>" },
                         "3040": { altin: 2900, ekAd: "Seraph'ın Şefkati (Tam Yük)", desc: "<mainText><stats><attention>🔮 +80</attention> Yetenek Gücü<br><attention>💧 +1000</attention> Mana<br><attention>⏳ +20</attention> Yetenek Hızı</stats><br><br><div style='margin-bottom: 8px;'><b>Pasif - Hayranlık:</b> Azami Mananın %2'si kadar Yetenek Gücü kazandırır.</div><div><b>Pasif - Cankurtaran:</b> Canını %30'un altına düşürecek bir hasar aldığında, mevcut mananın %20'sine eşdeğer devasa bir can kalkanı patlatır.</div></mainText>" },
                         "3121": { altin: 2600, ekAd: "Fimbul Kışı (Tam Yük)", desc: "<mainText><stats><attention>❤️ +550</attention> Can<br><attention>💧 +860</attention> Mana<br><attention>⏳ +15</attention> Yetenek Hızı</stats><br><br><div style='margin-bottom: 8px;'><b>Pasif - Hayranlık:</b> Azami Mananın %15'ine eşdeğer ilave Can kazandırır.</div><div><b>Pasif - Sonsuz Kış:</b> Bir rakip şampiyonu hareketsiz bıraktığında veya yavaşlattığında yakınlardaki düşman sayısına göre büyüyen bir şok kalkanı üretir.</div></mainText>" },
                         "3869": { altin: 400, ekAd: "Göksel Muhalefet (Görev)", desc: "<mainText><stats><attention>❤️ +200</attention> Can<br><attention>💖 +75%</attention> Taban Can Yenilenmesi<br><attention>🌊 +75%</attention> Taban Mana Yenilenmesi</stats><br><br><div><b>Pasif - İlahi Koruma:</b> Altın görevi tamamlandığında açılır. Alınan şampiyon hasarını %35 azaltır ve kırıldığında rakipleri yavaşlatan bir şok dalgası yayar.</div></mainText>" },
