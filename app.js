@@ -1057,7 +1057,7 @@ const Sayfalar = {
                     <div style="display: flex; flex-direction: column; gap: 15px; font-size: 1.05em; color: var(--text-light);">
                         <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Altın (GPM):</span> <b style="color:#ffd60a;">${ortGpm}</b></div>
                         <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>10.Dk CS:</span> <b style="color:#fff;">${ortIlk10}</b></div>
-                        <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Koridor Farkı:</span> <b style="color:var(--accent-color);">${ortCsFark > 0 ? '+' + ortCsFark : ortCsFark}</b></div>
+                        <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Koridor Minyon Farkı:</span> <b style="color:var(--accent-color);">${ortCsFark > 0 ? '+' + ortCsFark : ortCsFark}</b></div>
                         <div style="display:flex; justify-content:space-between;"><span>Görüş Skoru:</span> <b style="color:#fff;">${(t_gorus / oyuncuMaclari.length).toFixed(1)}</b></div>
                     </div>
                 </div>
