@@ -1787,28 +1787,147 @@ const Sayfalar = {
                         <img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/champion/Yone.png" alt="Yone" style="width:60px; height:60px; border-radius: 4px; border: 1px solid var(--hextech-gold);">
                     </div>
                     <div class="bilgi-icerik" style="flex:1;">
-                        <h3 style="color: var(--accent-color); margin-top: 0;">Yasuo & Yone (Kritik / Dövüşçü Yolu)</h3>
-                        <p style="color: var(--text-main); line-height: 1.5; margin-bottom: 20px;">Her şampiyonun kendi doğasına ve o anki metaya uygun şekilde 3 tane çekirdek eşyası (core item) olduğundan diğer işlevsel tipli eşyaları (Cıva Yatağan, tank eşyaları, 2. seviye bot) almadan önce bu çekirdek eşyalarının bitirilmesi gerekir.</p>
+                        <h3 style="color: var(--accent-color); margin-top: 0; font-size:1.4em;">Yasuo & Yone</h3>
+                        <p style="color: var(--text-main); line-height: 1.5; margin-bottom: 20px;">Her şampiyonun kendi doğasına ve o anki metaya uygun şekilde 3 tane çekirdek eşyası (core item) olduğundan diğer işlevsel tipli eşyaları (Cıva Yatağan, Koruyucu Melek, Banshee'nin Duvağı, tank eşyaları, vs) almadan önce bu çekirdek eşyalarının bitirilmesi gerekir.</p>
                         
-                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-                            <div class="esya-kapsayici esya-kart" data-item-id="6672"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/6672.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div> 
-                            <span style="color:#8b949e; font-size:1.5em;">/</span>
-                            <div class="esya-kapsayici esya-kart" data-item-id="3153"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3153.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
-                            <span style="color:var(--text-light); font-size: 0.9em;"><b>1. Eşya:</b> Bir isabet etkili dövüşçü eşyası. Karşıda kırılganlar varsa <b style="color:var(--hextech-gold);">Kraken Katili</b>, tanklar varsa <b style="color:var(--hextech-gold);">Mahvolmuş Kralın Kılıcı</b>.</span>
+                        <p style="color: var(--text-light); font-weight: bold; margin-bottom: 15px;">Yasuo ve Yone için şu anda bilinen 4 tane eşya dizilimi bulunur.</p>
+
+                        <h4 style="color: #ffd700; margin-bottom: 10px;">Genel Stabil Dizilim: Dövüşçü + Kritik Aktarmalı Eşya Dizilimi</h4>
+                        <ul style="color: var(--text-light); line-height: 1.6; margin-bottom: 20px;">
+                            <li><b style="color:var(--hextech-gold);">1. Eşya:</b> Bir isabet etkili dövüşçü eşyası. Karşıda kırılganlar varsa <b>Kraken Katili</b>, tanklar varsa <b>Mahvolmuş Kralın Kılıcı</b>.</li>
+                            <li><b style="color:var(--hextech-gold);">2. Eşya:</b> Ani patlatma hasarlarından korunmak ve hayatta kalmak için <b>Ölümsüz Kalkanyay</b> vazgeçilmezdir.</li>
+                            <li><b style="color:var(--hextech-gold);">3. Eşya:</b> Zırh delme kritik eşyası (<b>Dominik Efendinin Hürmetleri</b> veya <b>Fani Hatıratı</b>) veya saf hasar için <b>Ebedi Kılıç</b>.</li>
+                        </ul>
+
+                        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 1px dashed var(--border-color); margin-bottom: 25px;">
+                            <p style="color: var(--text-light); font-weight: bold; margin-top: 0;">İlk iki dizilimin örnek tam halleri şu şekildedir:</p>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <div style="color: #0ac8b9; font-weight: bold; font-size: 0.9em; margin-bottom: 5px;">Karşısı Kırılgan Ağırlıklıysa</div>
+                                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                                    <div class="esya-kapsayici esya-kart" data-item-id="6672"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/6672.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div class="esya-kapsayici esya-kart" data-item-id="6673"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/6673.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div class="esya-kapsayici esya-kart" data-item-id="3031"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3031.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div class="esya-kapsayici esya-kart" data-item-id="6333"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/6333.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div style="display:flex; align-items:center; gap:2px; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:6px;">
+                                        <div class="esya-kapsayici esya-kart" data-item-id="2517"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/2517.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3026"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3026.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3139"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3139.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    </div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div style="display:flex; align-items:center; gap:2px; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:6px;">
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3006"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3006.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3172"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3172.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div style="color: #0ac8b9; font-weight: bold; font-size: 0.9em; margin-bottom: 5px;">Karşısı Tank Ağırlıklıysa</div>
+                                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                                    <div class="esya-kapsayici esya-kart" data-item-id="3153"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3153.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div class="esya-kapsayici esya-kart" data-item-id="6673"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/6673.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div style="display:flex; align-items:center; gap:2px; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:6px;">
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3036"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3036.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3031"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3031.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    </div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div class="esya-kapsayici esya-kart" data-item-id="6333"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/6333.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div style="display:flex; align-items:center; gap:2px; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:6px;">
+                                        <div class="esya-kapsayici esya-kart" data-item-id="2517"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/2517.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3026"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3026.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3139"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3139.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    </div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div style="display:flex; align-items:center; gap:2px; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:6px;">
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3006"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3006.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3172"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3172.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-                            <div class="esya-kapsayici esya-kart" data-item-id="6673"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/6673.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
-                            <span style="color:var(--text-light); font-size: 0.9em;"><b>2. Eşya:</b> Ani patlatma hasarlarından korunmak ve hayatta kalmak için <b style="color:var(--hextech-gold);">Ölümsüz Kalkanyay</b> vazgeçilmezdir.</span>
+                        <h4 style="color: #f85149; margin-bottom: 10px;">Yüksek Risk Yüksek Taşıma Potansiyeli Dizilimleri: 2 Eşya Kritik + Hemen Defansife Geçen Eşya Dizilimi</h4>
+                        <ul style="color: var(--text-light); line-height: 1.6; margin-bottom: 20px;">
+                            <li><b style="color:var(--hextech-gold);">1. Eşya:</b> 1300 Altın ile üsse dönülürse direkt olarak AMK kılıcı alınıp <b>Yun Tal Yabanoklarına</b> gitmek hem iyi bir saldırı hızı hem de 2. eşyada kritik şansını %100 yapmaya yarar.</li>
+                            <li><b style="color:var(--hextech-gold);">2. Eşya:</b> %90 oranında <b>Ebedi Kılıç</b> alınıp kritik şansı %100 yapılmalıdır. Özel durumlarda bir zırh delme kritik eşyası (Dominik Efendinin Hürmetleri veya Fani Hatıratı) alınabilir.</li>
+                            <li><b style="color:var(--hextech-gold);">3. Eşya:</b> Bu dizilimlerin avantajı 3. eşyadan itibaren defansif eşyaya geçişi sağlamasıdır.</li>
+                        </ul>
+
+                        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 1px dashed var(--border-color); margin-bottom: 25px;">
+                            <p style="color: var(--text-light); font-weight: bold; margin-top: 0;">Kalan iki dizilimin örnek tam halleri şu şekildedir:</p>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <div style="color: #ff9800; font-weight: bold; font-size: 0.9em; margin-bottom: 5px;">1300 Altın İle Üsse Dönülebilirse</div>
+                                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                                    <div class="esya-kapsayici esya-kart" data-item-id="3032"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3032.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div style="display:flex; align-items:center; gap:2px; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:6px;">
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3031"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3031.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3036"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3036.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    </div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div class="esya-kapsayici esya-kart" data-item-id="6333"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/6333.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div style="display:flex; align-items:center; gap:2px; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:6px;">
+                                        <div class="esya-kapsayici esya-kart" data-item-id="2517"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/2517.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3026"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3026.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3139"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3139.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3053"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3053.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="6673"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/6673.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    </div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div style="display:flex; align-items:center; gap:2px; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:6px;">
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3006"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3006.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3172"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3172.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div style="color: #ff9800; font-weight: bold; font-size: 0.9em; margin-bottom: 5px;">Karşıda Kırılgan Karakterler Varsa ve 1300 Altın İle Üsse Dönülemezse</div>
+                                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                                    <div class="esya-kapsayici esya-kart" data-item-id="3046"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3046.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div style="display:flex; align-items:center; gap:2px; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:6px;">
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3031"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3031.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3036"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3036.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    </div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div class="esya-kapsayici esya-kart" data-item-id="6333"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/6333.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div style="display:flex; align-items:center; gap:2px; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:6px;">
+                                        <div class="esya-kapsayici esya-kart" data-item-id="2517"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/2517.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3026"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3026.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3139"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3139.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3053"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3053.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="6673"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/6673.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    </div>
+                                    <span style="color:#8b949e;">➔</span>
+                                    <div style="display:flex; align-items:center; gap:2px; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:6px;">
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3047"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3047.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3111"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3111.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3174"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3174.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div><span style="color:#8b949e;">/</span>
+                                        <div class="esya-kapsayici esya-kart" data-item-id="3173"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3173.png" style="width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color);"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-                            <div class="esya-kapsayici esya-kart" data-item-id="3036"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3036.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div> 
-                            <span style="color:#8b949e; font-size:1.5em;">/</span>
-                            <div class="esya-kapsayici esya-kart" data-item-id="3033"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3033.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div> 
-                            <span style="color:#8b949e; font-size:1.5em;">/</span>
-                            <div class="esya-kapsayici esya-kart" data-item-id="3031"><img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/item/3031.png" style="width:35px; height:35px; border-radius:4px; border:1px solid var(--border-color);"></div>
-                            <span style="color:var(--text-light); font-size: 0.9em;"><b>3. Eşya:</b> Zırh delme kritik eşyası (<b style="color:var(--hextech-gold);">Dominik Efendinin Hürmetleri</b> veya <b style="color:var(--hextech-gold);">Fani Hatıratı</b>) veya saf hasar için <b style="color:var(--hextech-gold);">Ebedi Kılıç</b>.</span>
+                        <div style="display: flex; align-items: center; gap: 15px; margin-top: 20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border-left: 4px solid var(--hextech-blue);">
+                            <div style="color: var(--text-light); font-size: 0.9em; flex: 1; line-height: 1.5;">
+                                İlk iki eşya dizilimi için önerilen anahtar rün &nbsp <b style="color: #ffd700;">Ölümcül Tempo</b> 
+                                <div class="esya-kapsayici" style="display:inline-block; vertical-align:middle; margin:0 5px;"><img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Precision/LethalTempo/LethalTempoTemp.png" class="tetikleyici-run" data-run-id="8008" style="width:24px !important; height:24px !important; border-radius:50%; box-shadow:none !important; filter:none !important; background:transparent !important; object-fit:contain;"></div>
+                                olmakla beraber kalan iki dizilim için önerilen anahtar rün <b style="color: #ffd700;">Yenilmez</b>
+                                <div class="esya-kapsayici" style="display:inline-block; vertical-align:middle; margin:0 5px;"><img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Precision/Conqueror/Conqueror.png" class="tetikleyici-run" data-run-id="8010" style="width:24px !important; height:24px !important; border-radius:50%; box-shadow:none !important; filter:none !important; background:transparent !important; object-fit:contain;"></div>'dir.
+                            </div>
                         </div>
                     </div>
                 </div>
