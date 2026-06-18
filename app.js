@@ -450,11 +450,11 @@ const Sayfalar = {
         };
 
         const roller = {
-            "TOP": { ad: "🛡️ ÜST KORİDOR", veri: {}, toplam: 0 },
-            "JUNGLE": { ad: "🌳 ORMAN", veri: {}, toplam: 0 },
-            "MIDDLE": { ad: "🔥 ORTA KORİDOR", veri: {}, toplam: 0 },
-            "BOTTOM": { ad: "🏹 NİŞANCI", veri: {}, toplam: 0 },
-            "UTILITY": { ad: "✨ DESTEK", veri: {}, toplam: 0 }
+            "TOP": { ad: "🛡️ TOP", veri: {}, toplam: 0 },
+            "JUNGLE": { ad: "🌳 JNG", veri: {}, toplam: 0 },
+            "MIDDLE": { ad: "🔮 MID", veri: {}, toplam: 0 },
+            "BOTTOM": { ad: "🏹 BOT", veri: {}, toplam: 0 },
+            "UTILITY": { ad: "🌿 SUP", veri: {}, toplam: 0 }
         };
 
         let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler);
@@ -1488,11 +1488,15 @@ const Sayfalar = {
             }
 
             if (!kompIstatistik[ekipIsmi]) kompIstatistik[ekipIsmi] = {
-                mac: 0, zafer: 0, tk: 0, td: 0, ta: 0, t_hasar: 0, t_sifa: 0, t_cc: 0, t_gorus: 0, t_adc_cs_farki: 0, orjinal_isimler: ekipIsmi
+                mac: 0, zafer: 0, tk: 0, td: 0, ta: 0, t_hasar: 0, t_sifa: 0, t_cc: 0, t_gorus: 0, t_adc_cs_farki: 0, orjinal_isimler: ekipIsmi, formasyonlar: new Set()
             };
 
             kompIstatistik[ekipIsmi].mac++;
             if (grup[0].sonuc === "Zafer" || grup[0].sonuc === "Galibiyet") kompIstatistik[ekipIsmi].zafer++;
+
+            // 🎯 FORMASYON İMZASI ÇIKARICI: Hangi dizilimle oynadıklarını kaydeder
+            let fImza = grup.map(p => `${p.oyuncu}:${p.pozisyon}`).sort().join("|");
+            kompIstatistik[ekipIsmi].formasyonlar.add(fImza);
 
             grup.forEach(p => {
                 kompIstatistik[ekipIsmi].tk += p.oldurme || 0;
@@ -1508,6 +1512,8 @@ const Sayfalar = {
             let n = data.mac;
             let p = data.zafer / n;
             let z = 1.96;
+            
+            // Mutlak Kazanma Güvenilirliği (Wilson Aralığı)
             let wilsonSkoru = (p + (z * z) / (2 * n) - z * Math.sqrt((p * (1 - p) + (z * z) / (4 * n)) / n)) / (1 + (z * z) / n);
 
             let kda = data.td === 0 ? (data.tk + data.ta) : ((data.tk + data.ta) / data.td);
@@ -1515,7 +1521,19 @@ const Sayfalar = {
             let ortAdcCsFarki = data.t_adc_cs_farki / data.mac;
             let csFarkiBonusu = window.aktifSinerjiBoyutu === "alt_koridor" ? (ortAdcCsFarki * 0.4) : 0;
 
-            let sp = (wilsonSkoru * 100) + (kda * 2) + (ortGorus * 0.1) + csFarkiBonusu;
+            // 🎯 ROL ESNEKLİĞİ (FORMASYON) BONUSU
+            let formasyonSayisi = data.formasyonlar.size;
+            let esneklikBonusu = 0;
+            // Alt koridor ikilisi için formasyon bonusu sayılmaz, 3'lü ve 5'lilerde geçerlidir.
+            if (window.aktifSinerjiBoyutu !== "alt_koridor") {
+                // Farklı rollerde oynamak risktir. Başarı korunuyorsa ödül devasadır.
+                esneklikBonusu = (formasyonSayisi - 1) * (p >= 0.50 ? 7 : 2);
+            }
+
+            // Hacim (Maç Sayısı) çarpanını hafif bir destek olarak bırakıyoruz
+            let hacimBonusu = Math.min(n * 0.5, 12); 
+
+            let sp = (wilsonSkoru * 100) + (kda * 2) + (ortGorus * 0.1) + csFarkiBonusu + esneklikBonusu + hacimBonusu;
 
             let isimlerDizisi = k[0].split(" + ");
             let formatliGorselIsim = isimlerDizisi.map(isim => typeof guncelRiotID !== "undefined" ? (guncelRiotID[isim] || isim) : isim).join(` <span style='color:#8b949e'>+</span> `);
@@ -2227,28 +2245,33 @@ const Sayfalar = {
         </div>`;
     },
     cizSurumGecmisi: function () {
-        return `
-    <div style="max-width: 1000px; margin: 0 auto; padding-bottom: 50px;">
-        <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">YAZLIKDC.GG SÜRÜM GEÇMİŞİ (PATCH NOTES)</h2>
-
-        <div class="yama-karti">
-            <div class="yama-baslik">v6.1.8 - v7.0.0 - "GRAND MASTER" E-Spor Analiz Hub Devrimi
-                <span class="yama-tarih">17 Haz 2026</span></div>
-            <ul class="yama-liste">
-                <li><strong>[v6.1.8 - v6.1.9] Detaylı Maç Kartı Mimarisi:</strong> "En Yeni Maçlar" ve "Sinerji" sekmeleri, e-spor paneli kalitesine taşındı. Eşyalar, rünler ve karakteristik rozetler (Kule Yıkıcı, Çelik Duvar vb.) tüm maç kartlarında standart ve okunabilir formatta entegre edildi.</li>
-                <li><strong>[v6.2.0 - v6.2.5] Yabancı Dedektörü ve Partner Zekası:</strong> Tüm kartlarda partner tespiti için evrensel dedektör motoru devreye alındı. Ana ekip listesinde bulunmayan oyuncular anında tespit edilerek <b>(Yabancı)</b> damgasıyla kimliklendirildi. İsimlerin kart içinde taşması <code>ellipsis</code> ve <code>Grid Zırhı</code> ile tamamen engellendi.</li>
-                <li><strong>[v6.3.0] Performans Devrimi (Hafıza Motoru):</strong> Bireysel profil sekmelerindeki "fena kasma" sorunu, her tıklamada veritabanını tarayan sistem yerine RAM tabanlı <code>window.profilHafizasi</code> motoruyla çözüldü. Geçişler artık 0ms gecikme ile ışık hızında.</li>
-                <li><strong>[v6.5.0] Şampiyon Uzmanlıkları (Kompakt Liste Modu):</strong> Rol sütunları yan yana dizilerek, mobil ve masaüstü uyumlu, tek satırda hizalı profesyonel liste görünümüne geçildi. İsim uzunlukları ne olursa olsun istatistik bloğu (KDA, WR, UP) sabit ve okunur kalacak şekilde sabitlendi.</li>
-                <li><strong>[v7.0.0] Global Optimizasyon ve GPU Hızlandırma:</strong> Tüm sistem, tarayıcıların donmasını engelleyen <code>will - change</code> ve <code>GPU hızlandırma</code> zırhıyla kaplandı. Veritabanından veriyi söküp alma (özellikle yabancıların Riot ID'leri için) süreci en derin katmanlara (Sistem.veriler) indirilerek mühürlendi. Eşya ve rün simülatöründeki görsel hatalar, mutlak pop-up motoruyla tarihe gömüldü.</li>
-            </ul>
-        </div>
-
-        <button id="btn-eski-yamalar" class="daha-fazla-btn" style="margin-bottom: 40px;">⬇️ Eski Arayüz Sürümlerini Aç</button>
-        
-        <div id="eski-yamalar-kapsayici" class="gizle">
+        // 🎯 OTONOM WEB YAMALARI MOTORU (Yeni yama gelince dizinin en başına ekle!)
+        const webYamalari = [
+            `
             <div class="yama-karti">
-                <div class="yama-baslik">v6.1.5 - v6.1.7 - E-Spor Koçluk Zekası, FIFA Kimya Motoru ve Porofessor Etiketleri
-                    <span class="yama-tarih">10 Haz 2026</span></div>
+                <div class="yama-baslik">v7.0.1 - v7.0.3 - "TAKTİKSEL DERİNLİK" Güncellemesi <span class="yama-tarih">18 Haz 2026</span></div>
+                <ul class="yama-liste">
+                    <li><strong>[v7.0.1] Dil ve Tipografi Zırhı:</strong> Türkçe tarayıcıların "text-transform: uppercase" kullanırken İngilizce şampiyon isimlerini (Malphite, Irelia) "MALPHİTE" şeklinde bozması sorunu kökünden çözüldü. Özel Regex motoruyla "i" harfleri zorla "I" yapılarak e-spor standartlarında tipografi sağlandı.</li>
+                    <li><strong>[v7.0.2] Mutlak Partner Dedektörü:</strong> "Yabancı" oyuncuların isimlerinin veritabanında kaybolması sorunu çözüldü. Sistem artık filtrelenmiş görünümlere aldanmayıp doğrudan ana veritabanı (Sistem.veriler) köküne iniyor ve eşleşen partnerin Riot ID'sini söküp alarak "(Yabancı)" damgasıyla birlikte hatasız hizalıyor.</li>
+                    <li><strong>[v7.0.3] Tam Donanımlı Rün ve Büyü Enjeksiyonu:</strong> Maç kartlarına gerçek bir koçluk vizyonu eklendi. Sadece anahtar rün değil, oyuncunun kullandığı tüm rünler (4 Ana, 2 Alt, 3 İstatistik Kristali) ve Sihirdar Büyüleri karta entegre edildi. Sistemde eski maçlara ait eksik rün verisi varsa, sistemin çökmesini engelleyen "Akıllı Fallback (Geri Uyumluluk)" kalkanı devreye sokuldu.</li>
+                </ul>
+            </div>
+            `,
+            `
+            <div class="yama-karti">
+                <div class="yama-baslik">v6.1.8 - v7.0.0 - "GRAND MASTER" E-Spor Analiz Hub Devrimi <span class="yama-tarih">17 Haz 2026</span></div>
+                <ul class="yama-liste">
+                    <li><strong>[v6.1.8 - v6.1.9] Detaylı Maç Kartı Mimarisi:</strong> "En Yeni Maçlar" ve "Sinerji" sekmeleri, e-spor paneli kalitesine taşındı. Eşyalar, rünler ve karakteristik rozetler (Kule Yıkıcı, Çelik Duvar vb.) tüm maç kartlarında standart ve okunabilir formatta entegre edildi.</li>
+                    <li><strong>[v6.2.0 - v6.2.5] Yabancı Dedektörü ve Partner Zekası:</strong> Tüm kartlarda partner tespiti için evrensel dedektör motoru devreye alındı. Ana ekip listesinde bulunmayan oyuncular anında tespit edilerek <b>(Yabancı)</b> damgasıyla kimliklendirildi. İsimlerin kart içinde taşması <code>ellipsis</code> ve <code>Grid Zırhı</code> ile tamamen engellendi.</li>
+                    <li><strong>[v6.3.0] Performans Devrimi (Hafıza Motoru):</strong> Bireysel profil sekmelerindeki "fena kasma" sorunu, her tıklamada veritabanını tarayan sistem yerine RAM tabanlı <code>window.profilHafizasi</code> motoruyla çözüldü. Geçişler artık 0ms gecikme ile ışık hızında.</li>
+                    <li><strong>[v6.5.0] Şampiyon Uzmanlıkları (Kompakt Liste Modu):</strong> Rol sütunları yan yana dizilerek, mobil ve masaüstü uyumlu, tek satırda hizalı profesyonel liste görünümüne geçildi. İsim uzunlukları ne olursa olsun istatistik bloğu (KDA, WR, UP) sabit ve okunur kalacak şekilde sabitlendi.</li>
+                    <li><strong>[v7.0.0] Global Optimizasyon ve GPU Hızlandırma:</strong> Tüm sistem, tarayıcıların donmasını engelleyen <code>will-change</code> ve <code>GPU hızlandırma</code> zırhıyla kaplandı. Veritabanından veriyi söküp alma (özellikle yabancıların Riot ID'leri için) süreci en derin katmanlara (Sistem.veriler) indirilerek mühürlendi. Eşya ve rün simülatöründeki görsel hatalar, mutlak pop-up motoruyla tarihe gömüldü.</li>
+                </ul>
+            </div>
+            `,
+            `
+            <div class="yama-karti">
+                <div class="yama-baslik">v6.1.5 - v6.1.7 - E-Spor Koçluk Zekası, FIFA Kimya Motoru ve Porofessor Etiketleri <span class="yama-tarih">10 Haz 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>[v6.1.5] Porofessor Etiket Modülü:</strong> Oyuncu detay (Pop-up) kartlarına makro analitik zekası eklendi. Sistem artık oyuncunun KDA, CS/min, Görüş ve Ölüm oranlarını tarayarak ona otonom şekilde "Agresif Koridor", "İyi Farm", "Farmı Bıraktı", "Çok Ölüyor" gibi reaktif davranış etiketleri basıyor.</li>
                     <li><strong>[v6.1.6] FIFA Tarzı Kimya ve Pozisyon Cezası:</strong> 5'li kadro motoru acımasızlaştırıldı. Bir oyuncu kartında yazan en iyi 2 rolü dışında bir slota (Out of Position) yerleştirilirse anında <b>-%70 Güç Cezası</b> yiyerek kırmızı "Yanlış Pozisyon" damgası alıyor ve tüm takımın ortalama sinerjisini dibe çekiyor.</li>
@@ -2257,8 +2280,8 @@ const Sayfalar = {
                     <li><strong>[Görsel] Reaktif Buton Optimizasyonu:</strong> İşlevsiz "Tüm Kadroyu Sıfırla" butonu canlandırılıp takım panelinin merkezine geniş, tok ve tıklama dostu bir tasarımla oturtuldu. Modal içindeki "İptal" (X) butonuna, üzerine gelindiğinde tetiklenen reaktif kırmızı uyarı (Hover) eklendi.</li>
                 </ul>
             </div>
-
-        
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v6.1.0 - v6.1.4 - Dinamik Ekip Motoru, Sinerji Zekası ve Mutlak Otonomi <span class="yama-tarih">10 Haz 2026</span></div>
                 <ul class="yama-liste">
@@ -2269,7 +2292,8 @@ const Sayfalar = {
                     <li><strong>[v6.1.4] Riot API Kalkanı ve UX Kalibrasyonu:</strong> Riot sunucularından kaynaklanan ve tüm JS'i çökerten <code>RegisterClientLocalizationsError</code> dil paketi hatası "Try-Catch Zırhı" ile izole edilip sistemin donması engellendi. Pop-up İptal butonlarına reaktif hover eklendi ve "Kadroyu Sıfırla" butonu merkezi hizalamayla e-spor estetiğine oturtuldu.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v6.0.3 - Mağaza Sınırlandırmaları ve Arayüz Piksel Restorasyonu <span class="yama-tarih">09 Haz 2026</span></div>
                 <ul class="yama-liste">
@@ -2282,7 +2306,8 @@ const Sayfalar = {
                     <li><strong>[Stat] Core Parser ve Tipografi:</strong> Tooltip üzerindeki çoklu etiket ayrıştırıcısı re-kalibre edilerek efsanevi eşyaların tüm statları geri kazanıldı. Yük biriktiren tüm eşyaların (Manaveren/Fimbul/Seraph) açıklamaları geniş paragraflara bölünerek okuma ferahlığı sağlandı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v6.0.2 - Videolar & Klipler Modülü ve Medya Zırhı <span class="yama-tarih">06 Haz 2026</span></div>
                 <ul class="yama-liste">
@@ -2293,7 +2318,8 @@ const Sayfalar = {
                     <li><strong>[Görsel] Tipografi:</strong> Medya kartlarına Hextech stiline uygun başlık alanları eklendi, butonlar merkezi pozisyona çekilerek profesyonel e-spor görünümü sağlandı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v6.0.1 - İstemci Hotfix & Optik Kalibrasyon <span class="yama-tarih">05 Haz 2026</span></div>
                 <ul class="yama-liste">
@@ -2303,7 +2329,8 @@ const Sayfalar = {
                     <li><strong>[UI] Okunabilirlik ve Kontrast Güçlendirmesi:</strong> Yama notu kartlarının zeminine derinlik katan karanlık bir gradient (linear-gradient) eklendi. Göz yoran soluk metinler parlak Hextech Kremine (<code>#f0e6d2</code>) güncellendi. Satır aralıkları (1.8) ve madde boşlukları (14px) açılarak, yoğun veri akışının zihni yormadan okunması garanti altına alındı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v6.0.0 - Hextech Çekirdek Revizyonu ve Mutlak İstemci Modernizasyonu <span class="yama-tarih">01 Haz 2026</span></div>
                 <ul class="yama-liste">
@@ -2316,7 +2343,8 @@ const Sayfalar = {
                     <li><strong>[Tipografi] Cinzel Enjeksiyonu:</strong> Rakamsal verilerin, KDA oranlarının ve oyuncu sıralarının görsel ağırlığını artırmak için bu değerlere özel 'Cinzel' font ataması yapıldı, rakamlar saf beyaz gölgelerle aydınlatıldı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.58.9 - UI/UX İmleç (Cursor) Optimizasyonu <span class="yama-tarih">30 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2325,7 +2353,8 @@ const Sayfalar = {
                     <li><strong>[JS Zırhı] Dinamik Kilit Kırıldı:</strong> JavaScript'in arka planda çalışan ve fare hareketlerine müdahale edip imleci zorla soru işaretine çeviren inatçı dinleme motorları (Event Listeners) tespit edilip ezildi. Sistem artık kullanıcı girdilerine mutlak itaat ediyor.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.58.8 - Davranışsal Kalibrasyon: "Kaos Analiz Motoru" <span class="yama-tarih">29 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2334,7 +2363,8 @@ const Sayfalar = {
                     <li><strong>[Veri Bilimi] Kümülatif Sabotaj Frekansı:</strong> Sadece genel ortalamaya değil, oyuncunun toplam maç havuzundaki sabotaj frekansına (%12 ve üzeri) bakılarak, kümülatif başarısızlıklar istatistiksel gürültüden (noise) arındırıldı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.58.5 - v5.58.7 - Kurumsal Kimlik ve Görsel Hiyerarşi Reformu <span class="yama-tarih">28 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2345,7 +2375,8 @@ const Sayfalar = {
                     <li><strong>[Optimizasyon] Görsel Yükü Azaltıldı:</strong> Rün çizim motorundaki redundant (gereksiz) stil blokları ayıklandı, sayfa render süreci daha temiz ve hafif hale getirildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.58.1 - v5.58.4 - Medeniyete Geçiş ve Yapay Zeka Hakemi <span class="yama-tarih">27 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2355,7 +2386,8 @@ const Sayfalar = {
                     <li><strong>[v5.58.4] Dinamik Tolerans ve Tempo Katilleri:</strong> Bir maçtaki kronik ölüm sınırı 15'e çekildi (Kalkanı olan fedakarlar için oyunun uzadığı varsayılarak sınır 17'ye esner). Takım ölümlerinin <b>%25'inden fazlasını</b> tek başına alan normal roller sabotajcı fişi yerken; takım için feda edilen Destek (Utility) rolündeki oyunculara özel bir izolasyon yapılarak bu oran <b>%33.3 (Üçte Bir)</b> sınırına çekildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.57.12 - v5.57.13 Rol İzolasyonu ve Podyum Revizyonu <span class="yama-tarih">26 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2364,7 +2396,8 @@ const Sayfalar = {
                     <li><strong>[v5.57.13] Podyum ve CSS İllüzyonu (Kafatası Madalyaları):</strong> Tüm sıralama tablolarındaki sıkıcı sayıların yerini ilk 3 sıraya özel büyütülmüş Altın (🥇), Gümüş (🥈) ve Bronz (🥉) madalyalar aldı. Sınırları zorlayıp <b>"Utanç Listesi"</b> için özel bir CSS katmanlandırması (Absolute Positioning) kullandık; madalyaların sayısını kapatmadan kurdele kısmına Kafatası (💀) zımbalandı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.57.11 - Adil Yargılama: Sabotaj (Troll) Motoru Revizyonu <span class="yama-tarih">25 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2373,7 +2406,8 @@ const Sayfalar = {
                     <li><strong>Sıfıra Bölünme Zırhı (Divide by Zero):</strong> Takımın hiçbir skor üretemeden ezildiği (örneğin 0-15 biten) felaket senaryolarında, sistemin sıfıra bölünme hatası verip çökmesini veya "Infinity" değeri üretmesini engelleyen matematiksel bir kalkan algoritmaya eklendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.57.2 - v5.57.10 Sistem Devrimi ve Kusursuz Liderlik Motoru <span class="yama-tarih">24 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2383,7 +2417,8 @@ const Sayfalar = {
                     <li><strong>[v5.57.8 - v5.57.10] Mutlak Oyun İçi İsim (Riot ID) Otomasyonu:</strong> Kaan <i>(DarkLegend97)</i>, Ercan <i>(MrOsleon)</i> ve Taner <i>(YazlıkDCFlex)</i> için çoklu hesap karmaşasını bitiren özel kimlik maskelemesi eklendi. Kalan tüm oyuncular için de gerçek isimler yerine doğrudan veritabanındaki oyun içi Riot ID'ler (örn: TuMu, ShenerShen) ekrana yansıtıldı. Arayüz metinleri "Ortalama" kelimelerinden arındırılıp daha net ve agresif hale getirildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.57.0 - v5.57.1 Makro Vizyon ve Bölge Kontrolü <span class="yama-tarih">22 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2392,7 +2427,8 @@ const Sayfalar = {
                     <li><strong>[v5.57.1] Çoklu Hesap (Smurf) Takip Sistemi:</strong> Rol grafiklerindeki lejantlara oyuncuların Riot ID (Oyun İçi İsim) verileri bağlandı. Bir oyuncu farklı yan hesaplarıyla aynı role girdiyse, sistem bu hesapları tek bir isim altında toplayarak yüzdelik dilimi manipüle etmeden ekrana basacak.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.56.7 - v5.56.8 Safkan Skor ve Kalkan Güncellemesi <span class="yama-tarih">21 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2401,14 +2437,16 @@ const Sayfalar = {
                     <li><strong>[v5.56.7] Görsel Rozet Hiyerarşisi:</strong> Maç kartlarında en üst düzey skor rozeti (Örn: Beşte Beş) kazanıldığında, alt düzey skor rozetlerinin (İkide İki vb.) de ekranda belirip vizyonsuz bir görüntü kirliliği yaratmasını engelleyen katı <code>else if</code> kalkanı devreye alındı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.56.6 - Vitrin Temizliği ve Gerçek Ustalık <span class="yama-tarih">20 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>En İyi Şampiyonlar Revizyonu:</strong> Bireysel profillerin üst panelinde bulunan "En İyi 3 Şampiyon" vitrini, sadece "En Çok Oynananlar" listesi olmaktan çıkarıldı. O vitrine de ağır matematik motoru (Wilson Skoru) ve 3 maç barajı entegre edilerek, düşük kazanma oranlı şampiyonlar vitrinden kovuldu.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.56.2 - v5.56.5 Mutlak Adalet ve Wilson Zırhı Güncellemesi <span class="yama-tarih">19 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2417,7 +2455,8 @@ const Sayfalar = {
                     <li><strong>[v5.56.5] Şeffaf Veri Adaleti:</strong> Az maç oynanan veya zayıf verileri sistemden silip kolaya kaçmak reddedildi. Eksik istatistikler listede tutuldu (gizlenmedi) ancak algoritmik olarak cezalandırılıp hak ettikleri en alt sıralara çivilendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.56.1 - Laplace Düzeltmesi (Şans Faktörü İptali) <span class="yama-tarih">18 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2426,7 +2465,8 @@ const Sayfalar = {
                     <li><strong>İstikrarın Ödüllendirilmesi:</strong> Ekranda ham %WR değerleri şeffafça görünmeye devam etse de, arka plandaki sıralama motoru artık 50 maçta %60 oran tutturan istikrarlı bir performansı, 1 maçta %100 yapan tesadüfi bir performanstan çok daha üstün tutuyor. Mutlak veri adaleti sağlandı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.56.0 - Bireysel Performans Hiyerarşisi ve Rol Analiz Motoru <span class="yama-tarih">17 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2436,7 +2476,8 @@ const Sayfalar = {
                     <li><strong>UI/UX Bütünlüğü (Vitrin Koruması):</strong> Profilin üst kısmındaki standart "Ana Rol / İkincil Rol" kimlik kartviziti korundu. Detaylı performans yüzleşmesi sadece isteyenin tıklayabileceği bir butona bağlanarak ekrandaki bilgi kirliliği (cognitive overload) sıfırlandı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.55.4 - v5.55.6: Kutsal İkon Savaşları ve Yankı Temizliği <span class="yama-tarih">15 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2448,7 +2489,8 @@ const Sayfalar = {
                     <li><strong>Override Map (Kategori Zorlama):</strong> Riot API'sinin serseri mayın gibi bıraktığı "Shurelya'nın Savaş Şarkısı", sistemin manuel zekasıyla ezip geçilerek doğrudan Destek eşyaları kategorisine çivilendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.55.3 - Kusursuz Görsel Hiyerarşi ve Tam Kimlik Restorasyonu <span class="yama-tarih">14 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2457,7 +2499,8 @@ const Sayfalar = {
                     <li><strong>Global Rehber Dedektörü:</strong> Eşya Dizilimleri sekmesindeki kör olan popup motoru, global event delegation (mousemove) algoritmasıyla yeniden hayata döndürüldü; sitedeki statik/dinamik tüm eşya açıklamaları mutlak olarak aktif edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.55.2 - Mutlak Dikey Hizalama ve Çakışma Zırhı <span class="yama-tarih">13 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2466,7 +2509,8 @@ const Sayfalar = {
                     <li><strong>Milyon (m) Formatı Matematik Motoru:</strong> 11651.0k gibi okuması zor kaba rakamlar 11.6m şeklinde jilet gibi net bir formata geçirilerek e-spor arayüzü standartları sağlandı. Profil rünleri büyütüldü.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.55.1 - Canlı Çekirdek Sıcak Tamiratı <span class="yama-tarih">12 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2476,7 +2520,8 @@ const Sayfalar = {
                     <li><strong>Metin Arındırma:</strong> <code>Cash Back</code> rününün Türkçe araç ipucu açıklamasındaki İngilizce ekler temizlenerek "Özel İndirim" olarak sadeleştirildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.55.0 - Küresel DOM Devrimi ve Akıllı Pop-Up Motoru <span class="yama-tarih">11 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2487,21 +2532,24 @@ const Sayfalar = {
                     <li><strong>Kapalı Kart Desteği:</strong> Maç kartları henüz açılmamışken mini rünlerin ve eşyaların üzerine gelindiğinde pop-up motorunun otonom tetiklenmesi sağlandı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.54.0 - Katman Zırhı Tahkimatı <span class="yama-tarih">10 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Z-Index Zırhı:</strong> Rün açıklamalarının diğer oyuncu kartlarının altında kalmasını önlemek için yerel popup pencerelerine <code>z-index: 99999</code> katman zırhı eklenmesi test edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.53.0 - Native Title CSS Bypass <span class="yama-tarih">10 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Kök Hücre Çözümü:</strong> Sinerji kartlarının içindeki kilitli flexbox yapılarında yerel CSS engellerini aşmak amacıyla, tarayıcının yerleşik <code>title</code> parametresi üzerinden rün açıklaması okutulması denendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.52.0 - Tam Rün Vitrini ve Genişletilmiş Maç Panelleri <span class="yama-tarih">10 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2509,14 +2557,16 @@ const Sayfalar = {
                     <li><strong>6'lı Rün Dizilimi:</strong> Sinerji detay paneline oyuncuların maçta seçtiği 6 rünün tamamını Türkçe açıklamalarıyla birlikte listeleyen etkileşimli rün seridi dahil edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.51.0 - Zırhlı Sinerji Çipleri ve Hata Ayıklama <span class="yama-tarih">10 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Event Bubbling Engeli:</strong> Takım Sinerjisi sekmesindeki isim filtrelerinde yaşanan yanlış hedefe tıklama sorunları çözüldü, süzme algoritmasına <code>.trim().toLowerCase()</code> zırhı yerleştirildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.50.0 - Mutlak Sinerji İzolasyonu ve Otonom Simülatör <span class="yama-tarih">10 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2524,7 +2574,8 @@ const Sayfalar = {
                     <li><strong>Mutlak Simülatör Motoru:</strong> İnteraktif eşya simülatöründeki beyaz liste sınırı kaldırıldı. Simülatör artık pasif yeteneklerdeki alakasız sayıları stat sanmıyor; "İstatistik Kutusu" içindeki <em>tüm</em> özellikleri otonom olarak okuyup hesaplıyor.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.49.0 - Sonsuz Döngü Kırıcı ve Şifa İkonu <span class="yama-tarih">06 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2532,7 +2583,8 @@ const Sayfalar = {
                     <li><strong>Şifa Zırhı:</strong> Destek eşyalarındaki "İyileştirme ve Kalkan Gücü" özelliği için özel parlak yeşil renk paleti ve 🌿 ikonu sisteme mühürlendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.48.0 - Scouting Raporu: Efektif Şampiyon Havuzu <span class="yama-tarih">05 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2541,7 +2593,8 @@ const Sayfalar = {
                     <li><strong>Otonom Yama Otomasyonu:</strong> Sürüm geçmişi arayüzü tam otomasyona geçirildi. Yeni yamalar renk efektlerini otonom alırken, eski yamalar tek bir tuşla açılan tarihi arşive sessizce taşınıyor.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.47.0 - Efsanelerin Dönüşü: Flame Horizon <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2550,7 +2603,8 @@ const Sayfalar = {
                     <li><strong>Performans Çekirdeği:</strong> Sinerji Puanı (SP) hesaplamasına "Nişancı Dominasyonu" (CS Farkı) ağırlığı eklenerek alt koridor analizleri %100 gerçekçi hale getirildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.46.0 - Derin Veri Entegrasyonu ve UX Optimizasyonu <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2559,7 +2613,8 @@ const Sayfalar = {
                     <li><strong>Görsel Stabilizasyon:</strong> "Temizle" ve "Kapat" butonları standart zarif boyutlara çekildi; <code>!important</code> kalkanı ile tarayıcılar arası boyut tutarsızlıkları kökten çözüldü.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.45.0 - Gelişmiş Maç Kartı Analitiği ve Dinamik Rozetler <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2568,7 +2623,8 @@ const Sayfalar = {
                     <li><strong>Algoritmik Rozet Sistemi:</strong> Belirli kalite eşiklerini aşan performansları (+20 CS Farkı, +450 GPM) maç kartlarına anında mühürleyen dinamik CSS rozet altyapısı kuruldu.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.44.0 - Ekonomi Motoru ve Erken Oyun İstatistikleri <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2576,42 +2632,48 @@ const Sayfalar = {
                     <li><strong>Yeni Metrikler:</strong> Dakika Başı Altın (GPM), 10. Dakika Minyon Sayısı, Maksimum Koridor Minyon Farkı, Alınan Barikat Sayısı ve Erken Oyun Üstünlüğü gibi safkan ekonomi verileri entegre edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.43.0 - Yasal Kalkan (Footer) Entegrasyonu <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Hukuki Koruma Protokolü:</strong> Sitenin en alt kısmına (Footer), Riot Games'in "Topluluk Projeleri Kullanım Politikası" ile %100 uyumlu standart yasal feragatname (Disclaimer) ve telif hakkı uyumluluk beyanı işlendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.42.1 - Sonsuz Döngü (Infinite Loop) Hotfix <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Network Tıkanıklığı Giderildi:</strong> Taktik tahtasında <code>onerror</code> mekanizmasının Riot CDragon sunucularındaki kırık bir linkle eşleşmesi sonucu oluşan sonsuz yükleme hatası durduruldu (<code>this.onerror=null;</code> parametresi enjekte edildi).</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.42.0 - İnteraktif Taktik Tahtası (Map Swapper) <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Harita Rotasyon Modülü:</strong> Statik görselleri temel alan dinamik bir "Taktik Tahtası" inşa edildi. Yumuşak geçiş algoritması sayesinde, oyun evreleri arasındaki harita değişimleri akıcı hale getirildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.41.1 - Mutlak Gizleme Zırhı (Soft Delete) <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Liderlik Filtre Temizliği:</strong> Liderlik tablolarının üstünde yer alan hantal filtre butonları silindi. Null çökme riskini önlemek için "Soft Delete" (<code>display: none;</code>) korumasına geçildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.41.0 - Kanban Çerçeve Kalibrasyonu <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Responsive Kanban Düzenlemesi:</strong> Şampiyon uzmanları sekmesinde ekran daraldığında ortaya çıkan kaymaları önlemek için isimlerin ve statların yan yana dizilim matrisleri esnek CSS flexbox sınırlarıyla tahkim edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.40.0 - Sezon 16 DataDragon Rün Entegrasyonu & Fiddlesticks Fix <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2620,21 +2682,24 @@ const Sayfalar = {
                     <li><strong>Riot Spagetti Kodu Filtresi (Fiddlesticks Fix):</strong> Sistemin kalbine entegre edilen <code>resimUrlGetir</code> fonksiyonu sayesinde Riot'un veritabanındaki saçma harf duyarlılıkları (FiddleSticks &rarr; Fiddlesticks) filtrelendi ve görsel yükleme körlüğü giderildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.39.0 - Eşya Mimarili Rün Motoru <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Tooltip Restorasyonu:</strong> CSS pseudo-element sınırlamaları nedeniyle çalışmayan rün açıklama kutuları iptal edildi. Rün ikonları dinamik olarak <code>esya-kapsayici</code> sınıflarına sarılarak, eşyalarla %100 aynı çalışan tooltip mekaniği inşa edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.38.0 - Rün Oto-Tamir Motoru (Auto-Heal) <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Dinamik URL Enjeksiyonu:</strong> Sunuculardaki büyük/küçük harf duyarlılığı nedeniyle bozulan rün görselleri için Oto-Tamir motoru yazıldı. Kırık HTML resim etiketleri anında onarılıyor.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.37.0 - Dinamik Tooltip & Eşya Hesaplama Motoru <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2642,35 +2707,40 @@ const Sayfalar = {
                     <li><strong>Statik Matematik Modülü:</strong> Global eşya veri tabanını okuyarak oyuncuların anlık toplam altın, saldırı gücü ve yetenek gücü değerlerini hesaplayan modül entegre edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.36.0 - DDragon ve CDragon Sinerjisi <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>404 Fallback Zırhı:</strong> Eski rün ikonlarındaki bulunamadı hataları giderildi. Sistem rünleri oyun içi dosya adı bazında analiz edip, Sezon 16'nın resmi Türkçe açıklamalarını ikonların içine kusursuzca enjekte ediyor.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.35.0 - HTML Kasa Temizliği <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Rün İskeleti Yenilemesi:</strong> Arayüzdeki eski, statik ve sahte rün HTML kodları kökten silindi. Rün kütüphanesi kırık linklerden tamamen arındırılarak güncel CommunityDragon sunucularına bağlandı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.34.0 - Mutlak Rün Restorasyonu ve Canlı Çeviri <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Görsel ve Metin Tamir Motoru:</strong> Eski rün isimleri yüzünden bozulan görselleri Sezon 16 dosyalarıyla onaran sistem yazıldı. İngilizce rün isimleri iptal edilerek Riot'un güncel yamasındaki Türkçe açıklamalar dinamik olarak gömüldü.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.33.0 - Satır İçi Renklendirme Algoritması <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Mejai Operasyonu:</strong> Riot'un etiketlerini cümle ortasında kullanmasından doğan "Metin Parçalanması" sorunu çözüldü. Açıklamalar kelime kelime satır içi taranarak fosforlu kalem stiliyle boyanıyor.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.32.0 - Dinamik Satır Okuyucu (Line-Parser) & Hurda Temizliği <span class="yama-tarih">04 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2678,42 +2748,48 @@ const Sayfalar = {
                     <li><strong>Hurda Ayıklayıcı:</strong> Eşya kütüphanesini kirleten "300 Altınlık Saf Çizmeler" API taramasından tamamen men edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.31.9 - Menü Arası Kalibrasyon <span class="yama-tarih">03 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Görsel Gizleme Zırhı:</strong> Farklı sekme ve menüler arası geçişlerde elemanların ekranda asılı kalmasını engellyen CSS katmanları optimize edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.31.8 - Çift Kontrol Mekanizması <span class="yama-tarih">03 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Double-Check Filtresi:</strong> Oyuncu sekmelerindeki filtre kırıntılarını ve gösterim limitlerini anında sıfırlayan çift yönlü kontrol mekanizması devreye sokuldu.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.31.7 - Profil İkon Hafızası <span class="yama-tarih">03 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Evrensel İkon Senkronizatörü:</strong> Profil ikonları veri tabanındaki en güncel maç tarihine göre taranarak mutlak senkronize edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.31.6 - Dinamik Temizlik Motoru <span class="yama-tarih">03 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>DOM Temizlik Tetikleyicisi:</strong> Ekran her güncellendiğinde tüm sekme filtrelerini sıfırlayan akıllı temizlik mekanizması entegre edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.31.5 - Regex Kelime Hizalaması <span class="yama-tarih">03 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Satır Kayması Engeli:</strong> Regex motoruna nowrap zırhı giydirilerek, eşya detaylarındaki üçlünün ekran daraldığında alt satıra kayması çözüldü.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.31.4 - Liderlik Podyumu ve Madalyalar <span class="yama-tarih">03 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2721,14 +2797,16 @@ const Sayfalar = {
                     <li><strong>Gelişmiş Matematik Motoru:</strong> Python bot verileriyle tam uyumlu çalışacak şekilde CS/Dakika matematiği eklendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.31.3 - Taner Kimlik Konsolidasyonu <span class="yama-tarih">03 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Kimlik Birleştirme:</strong> Sistemde çift kayıt oluşturan <em>"YazlıkDCFlex"</em> Riot ID'si, kalıcı olarak ana kimlik olan <em>"Taner"</em> ile tek bir ID altında birleştirildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.31.2 - Sinerji Keşif Motoru (Combinatorics & Delta) <span class="yama-tarih">03 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2737,14 +2815,16 @@ const Sayfalar = {
                     <li><strong>Rüya Takım Algoritması:</strong> En formda oyuncuları analiz edip birleştiren "Haftanın 5'lisi" ve "Rüya Takım" modülleri entegre edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.31.1 - Küresel Veri Erişimi <span class="yama-tarih">03 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Global Kilit Kırıcı:</strong> <code>tumVeriler</code> değişkeni kilitlerinden kurtarılarak globale taşındı, sistemin veri okuma hızı maksimize edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.31.0 - Zirve Analizi: Ortalamalar & Tekil Liderlik <span class="yama-tarih">03 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2752,7 +2832,8 @@ const Sayfalar = {
                     <li><strong>DOM Hack:</strong> Eski butonlardaki arızalı kod blokları JavaScript klonlama metoduyla ezilerek devreden çıkarıldı. Mükerrer kayıtlar tamamen engellendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.30.6 - Sezon 16 Regex Uyumu & Zeke Operasyonu <span class="yama-tarih">03 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2760,7 +2841,8 @@ const Sayfalar = {
                     <li><strong>Sınıflandırma Müdahalesi:</strong> Yanlış etiketlenen "Zeke'nin Ahengi" eşyası, Kategori Zorlama sistemine eklenerek kalıcı olarak Destek sekmesine transfer edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.30.5 - Tarihi Arşivin Restorasyonu <span class="yama-tarih">03 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2768,7 +2850,8 @@ const Sayfalar = {
                     <li>Eski sürümleri DOM içinde tutan ancak görsel olarak bir tıkla açılıp kapanmasını sağlayan "Arşivi Aç/Gizle" zekası eklendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.30.4 - Ayrıştırıcı Sözlük Genişlemesi & Hizalama <span class="yama-tarih">03 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2776,7 +2859,8 @@ const Sayfalar = {
                     <li>Riot API'sinin değer ile isim arasına attığı gizli satır atlama komutları Regex içine dahil edilerek ezildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.30.3 - Sinerji Barları & Metin Revizyonu <span class="yama-tarih">02 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2784,14 +2868,16 @@ const Sayfalar = {
                     <li><strong>Wrap Zırhı (Satır Kayması Engeli):</strong> Eşya açıklama panellerindeki özelliklerin kutu daraldığında alt satıra kırılarak çirkin bir görüntü oluşturması engellendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.30.2 - "Inception" Bug Hotfix <span class="yama-tarih">02 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Görsel Bug Düzeltmesi (Double Wrapping):</strong> Eşya makyajlama motorunun üst üste çalışmasıyla oluşan "Eşya özelliklerinin pop-up içinde ikili görünmesi" sorunu çözüldü.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.30.1 - Yapay Enjeksiyon & İkonik Düzeltmeler <span class="yama-tarih">02 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2799,7 +2885,8 @@ const Sayfalar = {
                     <li><strong>Görsel UI Güncellemeler:</strong> Tüm "Hareket Hızı" statlarına ve "Botlar" kategori başlığına model yerine yepyeni ve daha şık 👟 ikonu entegre edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.30.0 - Mutlak Kontrol & Kategori Zekası <span class="yama-tarih">02 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2807,7 +2894,8 @@ const Sayfalar = {
                     <li><strong>İsim Bazlı Çöp Öğütücü & VIP Liste:</strong> Kütüphaneden silinmek istenen 12 çöp eşya ID gerektirmeden sadece isimleriyle kara listeye alındı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.29.0 - Modern İstemci Arayüzü & Regex Motoru <span class="yama-tarih">02 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2815,35 +2903,40 @@ const Sayfalar = {
                     <li><strong>Premium Tooltip UI:</strong> Sitedeki tüm eşya açıklamalarının tasarımı Riot'un güncel Sezon 16 oyun içi pop-up panellerine benzetildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.28.3 - Durumsal Arayüz ve Tip Senkronizasyonu <span class="yama-tarih">02 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Tip (Type) Uyuşmazlığı Düzeltmesi:</strong> Sinerji Puanı kutusunun sekmelerde kaybolmasına neden olan JavaScript katı eşitlik veri tipi uyumsuzluğu çözüldü. Rakamlar tırnak içinden çıkarıldı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.28.2 - Algoritma Açıklama Restorasyonu <span class="yama-tarih">02 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Durumsal Arayüz (Conditional UI):</strong> Kod sadeleştirme çalışmaları sırasında kazara gizlenen "Tüm Zamanların Rüya Takımı" ve "Haftanın 5'lisi" bilgi kutucukları DOM yapısına yeniden enjekte edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.28.1 - Lejant Panosu Hizalaması <span class="yama-tarih">02 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Kusursuz Hizalama ve Zırh:</strong> Ana Lejant kutusundaki CSS çakışmaları ve sola kayma sorunları giderildi. Alt sıradaki metinler özel zırhlı rozet formatına dönüştürüldü.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.28.0 - Durumsal Panel Çekirdek Entegrasyonu <span class="yama-tarih">02 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Mimarî Altyapı Hazırlığı:</strong> Sinerji SP bilgi kutusunun ve rüya takım algoritma panellerinin farklı sekmelerde kaybolmasını engelleyecek JavaScript koşullu render mimarisinin çekirdek iskelet sistemi sıfırdan kodlandı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.27.0 - Sezon 16 Dinamik Entegrasyonu ve Hurdalık Temizliği <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2851,7 +2944,8 @@ const Sayfalar = {
                     <li><strong>Dinamik Yama Motoru:</strong> Arayüze gömülü olan eski sezon görsel bağlantılarını otomatik olarak tespit edip, canlı sunucudaki en taze yama versiyonuyla anında değiştiren sistem eklendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.26.0 - Kategorik Kütüphane & Arındırma <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2859,56 +2953,64 @@ const Sayfalar = {
                     <li><strong>Kategorik Sınıflandırma:</strong> Eşya Kütüphanesi 6 farklı zeki başlığa (Dövüşçü, Büyücü, Nişancı, Destek, Tank, Botlar) bölündü.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.25.0 - Dinamik Rehber Entegrasyonu <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Akıllı Meta Rehberi:</strong> Eşya Bilgisi sekmesinde statik olarak hazırlanan şampiyon rehberlerindeki eşyalar Riot API veritabanına bağlandı. Artık rehberdeki ikonların üzerine gelindiğinde orijinal oyun içi Pop-Up'ları açılıyor.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.24.0 - Sinerji Özgürlüğü & Mutlak Görünürlük <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Sinerji Pop-Up Düzeltmesi:</strong> Takım Sinerjisi sekmesindeki maç kartlarında eşya özelliklerinin kesilmesine yol açan tüm gizli <code>overflow: hidden</code> kilitleri tespit edilip parçalandı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.23.0 - Modüler Güncelleme Mimarisi <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Modüler Sistem Altyapısı:</strong> Güncelleme ve enjeksiyon süreçleri parçalı mimariye geçirilerek kodun bakım kolaylığı artırıldı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.22.0 - Oyun İçi Eşya Menü Tasarımı <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Arayüz Şeffaflığı:</strong> Eşya Bilgisi kütüphanesi ve tüm maç geçmişi kartları için oyun içindeki gibi yeşil/sarı stat renklerine sahip Profesyonel Pop-Up panelleri kodlandı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.21.0 - Sınırsız Ufuklar (Limitless Grid) <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Orantılı Grid Mimarisi:</strong> Özet panosunu eşit parçalara bölen katı yapı, içerik yoğunluğuna göre dinamik olarak genişleyen ızgara sistemiyle değiştirildi. Kutuların dar ekranlarda patlamasını engellemek için <code>flex-wrap</code> zırhları entegre edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.20.0 - Derin Veri Konumlandırması <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Metrik Optimizasyonu:</strong> Maç kartlarının ana yüzündeki Hasar Barları takım detay ekranına taşındı. Bireysel sekmenin tepesindeki özet panosuna Toplam Hasar, Tank, Şifa ve Görüş analizleri eklendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.19.0 - Grid Önbellek Kalibrasyonu <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>CSS Çakışma Önleyici:</strong> Özet panosundaki CSS Grid yapısının tarayıcı önbelleğindeki eski kural setleriyle çakışması ve render kaymaları engellendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.18.0 - Kusursuz Simetri ve Izgara Dönüşümü <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
@@ -2916,184 +3018,210 @@ const Sayfalar = {
                     <li><strong>Gelişmiş İpucu (Tooltip) Optimizasyonu:</strong> Ekranın dışına taşan uzun açıklamalar zırhla terbiye edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.17.0 - Smurf Zekası ve Derin Madencilik Gelişmeleri <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Smurf Zekası (v5.17.0):</strong> Oyuncuların farklı yan hesaplarla oynadığı maçları analiz edip tek bir ana kimlik altında birleştiren altyapı kuruldu. Tablolardaki bölünmeler engellendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.16.0 - Kütüphane & Kozmetik Evrimi <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Yeni Sekme - Eşya Bilgisi ve Rün Düzeni:</strong> Navigasyona spesifik şampiyonlar için durumsal eşya dizilimlerini anlatan kritik meta rehberi ve İnteraktif Rün Tahtası arayüzü kuruldu. Custom CSS Tooltip motoru yazılarak yerel beyaz açıklamalar iptal edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.15.0 - Analitik Şeffaflık & Takım Zekası <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Gelişmiş Sabotaj (V2):</strong> Bir oyuncunun sabotajcı sayılması için artık sadece "Takım Kills" değil, "Takım Toplam Skoru ve Asisti" baz alıyor. Kartların sağ üstüne Takım KDA Paneli entegre edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.14.0 - Porofessor Etiketleri & Derin Madencilik <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Performans Rozetleri:</strong> Maç kartlarının içine oyuncunun davranışını okuyan rozetler eklendi. Uzmanlık ve Sinerji puanı hesaplamalarına şampiyon hasarı, takım kalkanı/şifası, tanklanan hasar ve CC süreleri katıldı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.13.2 - Sezon Filtre Yapılandırması <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Hafıza Yönetimi:</strong> Sürüm geçmişi sekmesi açıldığında, filtre butonlarının DOM yükünü hafifleten geçici bellek boşaltması yapıldı ve render süreleri optimize edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.13.1 - UI Odaklanması <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li>Sürüm Geçmişi sekmesi açıldığında, gereksiz kalabalık yapan "Sezon Filtreleri" ve "Lejant" kutuları gizlenerek tam odaklı bir okuma deneyimi sağlandı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.13.0 - Anayasa Güncellemesi <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li>Sürüm geçmişi doğrudan arayüze entegre edilerek ayrı bir sekme olarak eklendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.12.0 - Kusursuz Simetri <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li>CSS Flexbox hataları nedeniyle özet panosunda yaşanan alt satıra kayma ve formasyon bozulmaları nowrap zırhıyla engellendi. Profil özetindeki 5 kutu askeri nizama sokuldu.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.11.0 - Geniş Açılı Tasarım & Güncel Kimlik <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li>Özet panosu genişliği 1400px'e çıkarıldı. Sistem tüm arşivi taranarak oyuncunun en son kullandığı Sihirdar İkonunu tespit eden ve bunu tüm tablolara yansıtan akıllı hafıza sistemine kavuştu.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.10.1 - Formasyon UI Yaması <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li>Takım Sinerjisi bölümünde kaybolan Kadro Formasyonları CSS etiketleri ve boşluk düzenlemeleri onarıldı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.10.0 - Zirve Analizi & Sabotaj Revizyonu <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
-                    <li><strong>Kusursuz Rüya Takımı:</strong> Tüm zamanların verisi taranarak her pozisyonun istatistiksel olarak en kusursuz oyuncusunu bulup bir araya getiren Laplace destekli zeka eklendi. Son 7 günün momentumunu ölçen "Haftanın 5'lisi" algoritması yazıldı.</li>
+                    <li><strong>Kusursuz Rüya Takımı:</strong> Tüm zamanların verisi taranarak her pozisyonun istatistiksel olarak en kusursuz oyuncusunu bulup bir araya getiren Laplace destekli zeka eklendi. Son 7 günın momentumunu ölçen "Haftanın 5'lisi" algoritması yazıldı.</li>
                     <li><strong>Gelişmiş Sabotaj Algoritması:</strong> Oyuncunun Sabotaj damgası yemesi için artık sadece 12 kere ölmesi yetmiyor. Eğer takım skorunun yarısından fazlasına katkı verdiyse sistem onu Sabotajcı ilan etmiyor.</li>
                     <li>Liderlik filtrelerine "Görüş Skorları" ve "Farm Kralları (CS/min)" sekmeleri eklendi. Destek rolü CS/min liderliğinden adil olmak adına men edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.9.1 - UI Kalibrasyonu <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li>Penta/Quadra/Triple yazılarındaki CSS kayma hatası düzeltildi. Kariyer & Vurgunlar başlığı standart kurumsal formatata çekildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.9.0 - Hizalı ve Dinamik Arayüz <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li>Quadra ve Penta verilerinin yanına Triple Kill istatistiği entegre edildi. Alt filtrelere Quadra, Triple ve İlk Kan filtre düğmeleri eklendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.8.0 - Kozmetik ve İkonik Navigasyon <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li>Riot API'sinden çekilen Sihirdar Profil İkonları arayüze entegre edildi. Tablolar oyuncuların kendi simgeleriyle kişiselleştirildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.7.0 - Dinamik Keskin Nişancı Filtresi <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li>Bireysel profillerde sağ taraftaki rol kartlarına tıklandığında sol taraftaki maç listesinin anında o role göre süzülmesi sağlandı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.6.0 - Dinamik Kimlik Çözümleme (Smurf Entegrasyonu) <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li>Yan hesapların ve eski isimlerin ana kimlikle birleştirildiği altyapı kuruldu. Maç kartlarında o günkü nostaljik isim mühürlü kalıyor.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.5.1 - Kapsamlı Profil Özeti <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li>Bireysel profil özet panosu 4 kutudan 5 kutuya çıkarılarak, "Rol & Donanım" istatistikleri ile yeni eklenen "Vurgunlar & Başarılar" verileri kusursuz bir yatay simetriyle birleştirildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.5.0 - Prestij ve Kozmetik Avcısı <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li>Pentakill, Quadrakill, Çalınan Objektif og İlk Kan verileri entegre edildi. Vurgunlar & Başarılar paneli ve maç kartlarına parlayan rozetler eklendi. Sabotaj tespit sistemi ve Utanç Listesi aktif edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.4.4 - Sinerji Bağlantı Yaması <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li>Alt Koridor listesindeki ikililere tıklandığında maçların listelenmesini engelleyen İsim Eşleştirme hatası giderildi, özel isim çözümleyici yazıldı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.4.3 - Kusursuz Rüya Takımı Revizyonu <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li>"Tüm Zamanların Rüya Takımı" ve "Haftanın 5'lisi" panolarına, algoritmadaki CS/min istatistikleri görsel olarak çivilendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.4.2 - Kompakt Kanban Dizilimi <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li>Şampiyon uzmanları sekmesinde ekran daraldığında ortaya çıkan tasarım hatası giderildi. İstatistiklerin ismin altına kaymasını engelleyen dizilim getirildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.4.1 - Grid Hücre Stabilizasyonu <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Responsive Hücre Hizalaması:</strong> Şampiyon kartlarındaki metin ve ikonların ekran daraldığında taşmasını önleyen esnek flexbox sınırları tahkim edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.4.0 - Şampiyon Rol Hiyerarşisi (Kaan'ın Vizyonu) <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Rol Hiyerarşisi (Görsel Dağılım):</strong> Şampiyon uzmanları sekmesindeki düz liste mimarisi yıkıldı. Şampiyon uzmanları rollere göre kategorize edilerek büyük başlıklar altında gruplandı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.3.0 - Kompakt Şablon Çekirdek Entegrasyonu <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Arka Plan Düzen İskeleti:</strong> Sinerji ve takım kompozisyonu verilerini işlemek üzere arka planda çalışacak ilk şablon katmanı iskelete dahil edildi, veri transfer hızı optimize edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.2.0 - Şampiyon Raporu Rol Ayrımı <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Şampiyon Raporu Rol Ayrımı (Role Isolation):</strong> Destek rolü ile koridor rollerinin minyon verilerinin aynı havuzda eriyerek cezalandırılması engellendi. Sağ taraftaki Şampiyon Raporu tekil yapıdan çıkarıldı; sistem her rol için ayrı bir rapor kartı basıyor.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.1.0 - Kadro Formasyonları & Rol Esnekliği <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
@@ -3101,7 +3229,8 @@ const Sayfalar = {
                     <li><strong>Rol Esnekliği Katsayısı:</strong> Laplace Sinerji Puanı algoritmasına yeni bir katsayı eklendi. Farklı rollerde de galibiyet alabilen ekiplerin esneklik gücü sistem tarafından ödüllendirilerek SP skorları yukarı çekildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v5.0.0 (Eski V55) - Hasat Zamanı & Ekonomi Devrimi <span class="yama-tarih">01 May 2026</span></div>
                 <ul class="yama-liste">
@@ -3109,210 +3238,235 @@ const Sayfalar = {
                     <li><strong>Büyük Veri Entegrasyonu:</strong> Sadece KDA değil; Orman/Koridor minyon ayrımı, Dakika Başına Düşen Minyon (CS/min), Toplam Görüş, Tanklanan Hasar, Şifa ve Kitle Kontrol süreleri arayüze işlendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v4.9.4 (Eski V54) - Sabotaj Harekâtı <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Bireysel profillerdeki "11+ Ölüm" ifadesi doğrudan kırmızı "SABOTAJ" etiketiyle değiştirilerek dürüst bir forma dönüştürüldü.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v4.9.3 (Eski V52-V53) - Kusursuz Simetri ve Akıllı Navigasyon <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Filtreleme ve arama kutularının sola yaslanma sorunu çözüldü, tüm kutular ekran merkezine hizalandı. Liderlik tablolarındaki ilk 3 sıraya Altın, Gümüş ve Bronz podyum parlamaları getirildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v4.9.2 (Eski V51) - Büyük Uyanış <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Destek profillerinin yüklenmesi sırasında arayüzü çökerten (k is not defined) ortalama skor/asist matematiği hatası tamamen çözüldü.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v4.9.1 (Eski V50) - Kimlik Operasyonu & Nihai Temizlik <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Metinlerin alt satıra düşmesini engelleyen CSS korumaları uygulandı. TR sunucusundan taşınan hesapların ve "lilliana" gibi eski isimlerin eşleştirilmesini sağlayan kimlik çözümleyici sisteme entegre edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v4.9.0 (Eski V49) - Null Koruması Ön Hazırlık Katmanı <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>Hata Yakalama Altyapısı:</strong> API'den gelen bozuk eski Riot verilerinin ve kayıp rün ID'lerinin arayüzü kilitlemesini engellemek amacıyla ilk Null durumları için yakalama blokları iskelete dahil edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v4.8.0 (Eski V48) - Saf Kan Ekip & Çelik Zırh <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Fiyatı veya veritabanı kaydı olmayan bozuk eski Riot eşyalarının arayüzü çökerterek "Fatal Error" verdirmesi engellendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v4.7.0 (Eski V47) - Özgür Profiller <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Lejant ve eşya barlarındaki CSS sıkışmaları ile solo maç filtresinin neden olduğu profillerin silinmesi hatası çözüldü.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v4.6.0 (Eski V44-V46) - Yalnız Kurt Silici & Zaman Senkronizasyonu <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Ekip içinden en az 2 kişi olmayan solo Esnek maçları sistemden çöpe atan "Saf Kan Ekip" filtresi eklendi. Maç bilgisindeki tarih ve süre eksikliğini kopyalayarak çözen "Zaman Senkronizasyonu" oluşturuldu.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v4.5.0 (Eski V43) - Okunabilirlik ve Sabit Kadro <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Görseldeki metin boyutları büyütüldü (1.8em). Sisteme 15 kişilik kadro kodla sabitlendi, böylece Esnek maç atmayan kişilerin de profillerinde yer alması sağlandı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v4.4.0 (Eski V41-V42) - UI Restorasyonu ve Zaman Damgaları <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>HTML profilleri restore edildi, zaman ve maç süresi etiketleri profillere yerleştirildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v4.3.0 (Eski V38-V40) - Rüya Takımı ve Haftanın Beşlisi <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Maç zamanlarının analize katılmasıyla "Haftanın 5'lisi" ve rol bazlı "Tüm Zamanların Rüya Takımı" sekmeleri eklendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v4.2.0 (Eski V36-V37) - Davranış Kalibrasyonu ve Uzmanlık Puanı <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Sinerji Skoru (SP) ile Şampiyon Uzmanlık Puanı (UP) terimleri görsel ve ismen ayrıldı. Mükerrer maç silici eklendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v4.1.0 (Eski V34-V35) - Şampiyon Makyajı ve Alfabetik Sıralama <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Riot API'den dönen hatalı kod isimlerinin arayüzde doğru gözükmesi için makyaj sözlüğü eklendi. Alfabetik sıralama Türkçe'ye uygun hale getirildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v4.0.1 (Eski V33) - KDA Eşitlik Bozucu <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Şampiyon uzmanları tablosunda galibiyet oranları eşit olduğunda "KDA" değerinin eşitlik bozucu olarak kullanılması sağlandı.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v4.0.0 (Eski V31-V32) - Markalaşma ve Çoklu Sinerji Seçimi <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Sitenin HTML başlığı ve logosu "YazlıkDC.GG" olarak markalaştırıldı. Takım Sinerjisi kısmına çoklu seçim yapılabilen Filtre Çipleri entegre edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v3.3.1 (Eski V30) - Zaman Çizgisi Yaması <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>ABW geçişi sonrası EUW maçlarının TR maçlarının altında kalmasına neden olan alfabetik hata çözüldü.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v3.3.0 (Eski V28-V29) - Role-Aware AI ve Pervasız Sendromu <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Oyuncuların fazla ölüp az skor çıkardığı maçları tespit eden "Yasuo Sendromu (Pervasız)" filtresi yazıldı. Davranış algoritması rollere özel hale getirildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v3.2.0 (Eski V27) - Ultimate Player Analytics <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Oyunculara birden fazla oyun tarzı rozeti verilebilmesini sağlayan çoklu-etiket sistemi getirildi. Sağ sütuna detaylı "Şampiyon Raporu" paneli eklendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v3.1.1 (Eski V26) - Kişisel Filtreler ve UI Şeffaflığı <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Bireysel profile "Perfect KDA", "11+ Ölüm" ve şampiyon filtreleme özellikleri eklendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v3.1.0 (Eski V25) - Yapay Zeka Sinerjisi ve Rol Esnekliği <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Sinerji puanına, takımların farklı dizilimlerle oynayabilme başarısını ölçen "Rol Esnekliği" katsayısı eklendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v3.0.0 (Eski V24) - OP.GG Ultimate <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Sürüm Geçmişi arayüzü bağımsız bir sekme olarak anayasaya dönüştürüldü. Açılır pencereler profil içi akordeon düzene geçirildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
-                <div class="yama-baslik">v2.2.0 (Eski V23) - Gerçek Eşya Filtresi ve Maç Otopsi Ekranı <span class="yama-tarih">30 Nis 2026/span></div>
+                <div class="yama-baslik">v2.2.0 (Eski V23) - Gerçek Eşya Filtresi ve Maç Otopsi Ekranı <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Eşya filtresine Riot API entegrasyonu sağlandı ve sadece bitmiş eşyalar gösterilmeye başlandı. Takım istatistiklerini OP.GG tarzında açan sistem geliştirildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v2.1.0 (Eski V22) - Ultimate Scouting <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Liderlik tabloları filtre butonlarına dönüştürüldü. Otomatik oyun tarzı rozetleri atayan sistem, favori eşyalar paneli ve şampiyon ikonları eklendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v2.0.0 (Eski V21) - Veri Bilimi Zekası <span class="yama-tarih">30 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Bireysel liderlik tabloları Tek Maç Rekorlarına göre sıralanmaya başladı. Takım Sinerjisi kazanma oranlarına Laplace Yumuşatması algoritması entegre edildi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v1.2.0 (Eski V20) - Final UX <span class="yama-tarih">29 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>En çok ölenler sekmesi "☠️ Utanç Listesi" olarak adlandırıldı. Ortalama ibareleri eklendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v1.1.0 (Eski V18-V19) - Genişletilmiş Lejant ve İkonlar <span class="yama-tarih">29 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Sitedeki ikonların ne anlama geldiğini açıklayan çok kapsayıcı bir "Rozet Bilgisi (Lejant)" çubuğu eklendi.</li>
                 </ul>
             </div>
-
+            `,
+            `
             <div class="yama-karti">
                 <div class="yama-baslik">v1.0.0 (Eski V1-V17) - Temel İnşa Dönemi <span class="yama-tarih">29 Nis 2026</span></div>
                 <ul class="yama-liste">
                     <li>Sistemin temelleri atıldı. Temel Firebase bağlantısı sağlandı ve saf maç verileri (Kazanma, Kaybetme, KDA) arayüze yansıtıldı.</li>
                 </ul>
             </div>
-        </div>
+            `
+        ];
 
-        <br><br><br>
-
-        <h3 style="color: #ffd700; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">🤖 PYTHON BOT SÜRÜM GEÇMİŞİ</h3>
-        
-        <div class="yama-karti" style="border-color: #ffd700;">
-            <ul class="yama-liste">
-                <li><strong>v3.2.1:</strong> "Büyük 'K' Operasyonu ve Re-Senkronizasyon". Riot API'nin CamelCase yapısındaki uyuşmazlık (pentakills yerine pentaKills) giderilip sistemin çoklu skorları "0" olarak okuması engellendi. Geçici bypass (pass) metoduyla veritabanı hafızası sıfırlandı, tüm eski maçlar taranarak kayıp Quadra ve Pentalar sisteme mühürlendi. <span class="yama-tarih" style="float: right;">15 May 2026</span></li>
-            </ul>
-        </div>
-
-        <button id="btn-eski-bot-yamalar" class="daha-fazla-btn" style="margin-bottom: 20px; border-color: #ffd700; color: #ffd700; background: rgba(255, 215, 0, 0.1);">⬇️ Bot Geçmişini Aç</button>
-
-        <div id="bot-eski-yamalar-kapsayici" class="gizle">
+        // 🤖 OTONOM BOT YAMALARI MOTORU
+        const botYamalari = [
+            `
+            <div class="yama-karti" style="border-color: #ffd700;">
+                <ul class="yama-liste">
+                    <li><strong>v3.2.1:</strong> "Büyük 'K' Operasyonu ve Re-Senkronizasyon". Riot API'nin CamelCase yapısındaki uyuşmazlık (pentakills yerine pentaKills) giderilip sistemin çoklu skorları "0" olarak okuması engellendi. Geçici bypass (pass) metoduyla veritabanı hafızası sıfırlandı, tüm eski maçlar taranarak kayıp Quadra ve Pentalar sisteme mühürlendi. <span class="yama-tarih" style="float: right;">15 May 2026</span></li>
+                </ul>
+            </div>
+            `,
+            `
             <div class="yama-karti" style="border-color: #ffd700;">
                 <ul class="yama-liste">
                     <li style="margin-top: 20px;"><strong>v3.2.0:</strong> "Derin Rün Madenciliği". Riot API üzerinden <code>perks</code> objesi parçalanarak oyuncuların seçtiği <em>Ana Rün</em>, <em>Alt Rün Ağacı</em> ve maçta kullanılan tüm <em>alt rünlerin ID'leri</em> (array olarak) otonom şekilde çekilip Firebase'e aktarılmaya başlandı. <span class="yama-tarih" style="float: right;">15 May 2026</span></li>
@@ -3331,11 +3485,39 @@ const Sayfalar = {
                     <li style="margin-top: 20px;"><strong>v1.0.0 (Eski V8):</strong> Tüm ekip üyelerinin tanımlanarak 5 kişilik maçların 2 kişilik görünmesini çözen çoklu tarama sistemi. <span class="yama-tarih" style="float: right;">29 Nis 2026</span></li>
                 </ul>
             </div>
-        </div>
-    </div>`;
+            `
+        ];
+
+        return `
+        <div style="max-width: 1000px; margin: 0 auto; padding-bottom: 50px;">
+            <h2 style="color: #ffffff; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">YAZLIKDC.GG SÜRÜM GEÇMİŞİ (PATCH NOTES)</h2>
+
+            <!-- EN SON WEB YAMASI OTONOM OLARAK BURAYA ÇEKİLİR -->
+            ${webYamalari[0]}
+
+            <button id="btn-eski-yamalar" class="daha-fazla-btn" style="margin-bottom: 40px;">⬇️ Eski Arayüz Sürümlerini Aç</button>
+            
+            <div id="eski-yamalar-kapsayici" class="gizle">
+                <!-- GERİYE KALAN TÜM WEB YAMALARI BURAYA BASILIR -->
+                ${webYamalari.slice(1).join("")}
+            </div>
+
+            <br><br><br>
+
+            <h3 style="color: #ffd700; text-align: center; margin-bottom: 30px; letter-spacing: 1px;">🤖 PYTHON BOT SÜRÜM GEÇMİŞİ</h3>
+            
+            <!-- EN SON BOT YAMASI OTONOM OLARAK BURAYA ÇEKİLİR -->
+            ${botYamalari[0]}
+
+            <button id="btn-eski-bot-yamalar" class="daha-fazla-btn" style="margin-bottom: 20px; border-color: #ffd700; color: #ffd700; background: rgba(255, 215, 0, 0.1);">⬇️ Bot Geçmişini Aç</button>
+
+            <div id="bot-eski-yamalar-kapsayici" class="gizle">
+                <!-- GERİYE KALAN TÜM BOT YAMALARI BURAYA BASILIR -->
+                ${botYamalari.slice(1).join("")}
+            </div>
+        </div>`;
     }
 };
-
 /* ==============================================================================
    🚀 SİSTEM BAŞLATICISI VE EŞYA PARSER ZIRHI (DOĞRUDAN 16.12.1 VERİTABANI)
 ============================================================================== */
@@ -3881,34 +4063,52 @@ window.cizTakimKarti = function (grup, vurguOyuncu = "") {
         let buyu1 = oyuncu.buyu1 || oyuncu.sihirdar1 || oyuncu.spell1Id;
         let buyu2 = oyuncu.buyu2 || oyuncu.sihirdar2 || oyuncu.spell2Id;
         let buyuHtml = `<div style="display:flex; flex-direction:column; gap:2px;">
-            ${Yardimci.cizBuyu(buyu1, "width:18px; height:18px; border-radius:2px; border:1px solid var(--border-color); flex-shrink:0;")}
-            ${Yardimci.cizBuyu(buyu2, "width:18px; height:18px; border-radius:2px; border:1px solid var(--border-color); flex-shrink:0;")}
+            ${Yardimci.cizBuyu(buyu1, "width:20px; height:20px; border-radius:2px; border:1px solid var(--border-color); flex-shrink:0;")}
+            ${Yardimci.cizBuyu(buyu2, "width:20px; height:20px; border-radius:2px; border:1px solid var(--border-color); flex-shrink:0;")}
         </div>`;
 
-        let runlerHtml = `<div style="display:flex; flex-direction:column; gap:2px;">
-            ${oyuncu.ana_run_id ? Yardimci.cizRun(oyuncu.ana_run_id, "width:18px; height:18px; border-radius:50%; border:1px solid #c8aa6e; background:#000; flex-shrink:0;") : ''}
-            ${oyuncu.alt_run_agaci_id ? Yardimci.cizRun(oyuncu.alt_run_agaci_id, "width:14px; height:14px; border-radius:50%; margin:0 auto; flex-shrink:0;") : ''}
-        </div>`;
+        // 🎯 V7.1.0 TAM RÜN GÖSTERİM MOTORU (Akıllı Fallback Destekli)
+        let runlerHtml = "";
+        let runDizisi = oyuncu.runler || oyuncu.perks; // Veritabanındaki isme göre burayı değiştirebilirsin
+
+        if (runDizisi && Array.isArray(runDizisi) && runDizisi.length > 0) {
+            // Eğer veritabanında tüm rünler varsa (Genelde 9 ID olur)
+            let anaKisim = runDizisi.slice(0, 4).map((r, i) => Yardimci.cizRun(r, i === 0 ? "width:22px; height:22px; border-radius:50%; border:1px solid #c8aa6e; background:#000;" : "width:18px; height:18px; border-radius:50%; background:rgba(0,0,0,0.5);")).join('');
+            let altKisim = runDizisi.slice(4, 6).map(r => Yardimci.cizRun(r, "width:18px; height:18px; border-radius:50%; background:rgba(0,0,0,0.5);")).join('');
+            let statKisim = runDizisi.slice(6, 9).map(r => Yardimci.cizRun(r, "width:14px; height:14px; border-radius:50%; opacity:0.8; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.1);")).join('');
+
+            runlerHtml = `
+            <div style="display:flex; flex-direction:column; gap:4px; margin-left:4px; border-left:1px dashed rgba(255,255,255,0.15); padding-left:8px;">
+                <div style="display:flex; gap:3px; align-items:center;">${anaKisim}</div>
+                <div style="display:flex; gap:3px; align-items:center;">${altKisim} <span style="color:#555; font-size:0.8em; margin:0 2px;">|</span> ${statKisim}</div>
+            </div>`;
+        } else {
+            // Sadece eski veriler varsa sistemi çökertmeden eski şablonu bas
+            runlerHtml = `
+            <div style="display:flex; flex-direction:column; gap:2px; margin-left:4px;">
+                ${oyuncu.ana_run_id ? Yardimci.cizRun(oyuncu.ana_run_id, "width:20px; height:20px; border-radius:50%; border:1px solid #c8aa6e; background:#000; flex-shrink:0;") : ''}
+                ${oyuncu.alt_run_agaci_id ? Yardimci.cizRun(oyuncu.alt_run_agaci_id, "width:16px; height:16px; border-radius:50%; margin:0 auto; flex-shrink:0;") : ''}
+            </div>`;
+        }
 
         let playerName = oyuncu.riot_id || Yardimci.anaRiotIdGetir(oyuncu.oyuncu);
         let tags = IstatistikMotoru.etiketUret(oyuncu);
-
-        // 🎯 EVRENSEL PARTNER ARAMASI
         let partnerHtml = Yardimci.partnerBul(grup, oyuncu.pozisyon);
 
         oyuncularHtml += `
         <div style="${satirBg} display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); gap: 10px; width: 100%; box-sizing: border-box;">
-            <div style="display: flex; align-items: center; gap: 8px; flex: 1.5; min-width: 200px; overflow: hidden;">
-                <div style="position:relative; width:44px; height:44px; flex-shrink:0;">
+            
+            <div style="display: flex; align-items: center; gap: 8px; flex: 1.8; min-width: 280px; overflow: hidden;">
+                <div style="position:relative; width:48px; height:48px; flex-shrink:0;">
                     <img src="${Yardimci.resimUrlGetir(oyuncu.sampiyon, RiotCDN.surum)}" style="width:100%; height:100%; border-radius:50%; border:2px solid ${isTarget ? 'var(--accent-color)' : 'var(--border-color)'};">
-                    <img src="${Yardimci.ikonUrlGetir(oyuncu.profil_ikonu, RiotCDN.surum)}" style="position:absolute; bottom:-4px; right:-4px; width:16px; height:16px; border-radius:50%; border:1px solid #000;">
+                    <img src="${Yardimci.ikonUrlGetir(oyuncu.profil_ikonu, RiotCDN.surum)}" style="position:absolute; bottom:-4px; right:-4px; width:18px; height:18px; border-radius:50%; border:1px solid #000;">
                 </div>
                 ${buyuHtml}
                 ${runlerHtml}
-                <div style="display: flex; flex-direction: column; overflow: hidden; line-height:1.2;">
-                    <span style="font-weight:bold; color:#fff; font-size:1em; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${playerName}</span>
+                <div style="display: flex; flex-direction: column; overflow: hidden; line-height:1.2; min-width: 0; margin-left: 6px;">
+                    <span style="font-weight:bold; color:#fff; font-size:1.05em; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${playerName}</span>
                     <span style="color:#8b949e; font-size:0.75em; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${oyuncu.oyuncu}</span>
-                    ${partnerHtml}
+                    <div style="min-width: 0;">${partnerHtml}</div>
                 </div>
             </div>
 
@@ -4110,29 +4310,22 @@ window.profilFiltrele = function (kriter, btnElement) {
     }
 };
 /* ==============================================================================
-   🏆 ŞAMPİYON UZMANLARI VE UP (UZMANLIK PUANI) MOTORU
+   🏆 ŞAMPİYON UZMANLARI (GÖRSELDEKİ BİREBİR KOPYASI - SAF VERİTABANI MOTORU)
 ============================================================================== */
 window.uzmanlikKartlariniCiz = function (sampiyonAdi) {
     let container = document.getElementById("sampiyon-veriler");
-    let displayIsim = (sampiyonAdi === "MonkeyKing") ? "Wukong" : Yardimci.formatSampiyon(sampiyonAdi);
-
-    if (!sampiyonAdi) {
-        container.innerHTML = `<div style="text-align:center; color:#8b949e; margin-top:50px; font-size:1.1em;">Analizi başlatmak için yukarıdan bir şampiyon seçin.</div>`;
-        return;
-    }
+    if (!sampiyonAdi) return;
 
     let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler);
 
     let guncelIkonlar = {};
-    let siraliTumMaclar = [...islenecekVeri].sort((a, b) => (b.tarih_ms || 0) - (a.tarih_ms || 0));
-    siraliTumMaclar.forEach(m => {
+    [...islenecekVeri].sort((a, b) => (b.tarih_ms || 0) - (a.tarih_ms || 0)).forEach(m => {
         if (m.oyuncu && m.profil_ikonu && !guncelIkonlar[m.oyuncu]) {
             guncelIkonlar[m.oyuncu] = m.profil_ikonu;
         }
     });
 
     let maclar = islenecekVeri.filter(m => m.sampiyon === sampiyonAdi);
-
     if (maclar.length === 0) {
         container.innerHTML = `<div style="text-align:center; color:#f85149; margin-top:50px;">Bu şampiyonla hiç operasyon kaydı bulunamadı.</div>`;
         return;
@@ -4146,19 +4339,24 @@ window.uzmanlikKartlariniCiz = function (sampiyonAdi) {
         rolGruplari[rol].push(m);
     });
 
+    // 🎯 HİZALAMA DÜZELTMESİ: TOP, JNG, MID, BOT, SUP SIRALAMASI
+    const rolHiyerarsisi = { "TOP": 1, "JUNGLE": 2, "MIDDLE": 3, "BOTTOM": 4, "UTILITY": 5, "BELIRSIZ": 99 };
+    let siraliRoller = Object.keys(rolGruplari).sort((a, b) => (rolHiyerarsisi[a] || 99) - (rolHiyerarsisi[b] || 99));
+
+    const yerelRolCeviri = { "TOP": "TOP", "JUNGLE": "JNG", "MIDDLE": "MID", "BOTTOM": "BOT", "UTILITY": "SUP", "BELIRSIZ": "BELİRSİZ" };
+
     let html = `
-        <div style="text-align:center; margin-bottom:30px;">
-            <img src="${Yardimci.resimUrlGetir(sampiyonAdi, typeof RiotCDN !== 'undefined' ? RiotCDN.surum : '16.12.1')}" style="width:70px; height:70px; border-radius:4px !important; border:2px solid var(--hextech-gold) !important; box-shadow: 0 0 15px rgba(200, 170, 110, 0.5) !important; padding: 1px !important; object-fit: cover !important; background-color: #000 !important;">
-            <h2 style="color:#ffffff; margin:15px 0 0 0; font-size:1.8em; text-transform:uppercase;">
-                ${Yardimci.formatSampiyon(sampiyonAdi)} 
-                <span style="color:#8b949e; font-size:0.5em; letter-spacing:2px; vertical-align:middle;">UZMANLARI</span>
+        <div style="text-align:center; margin-bottom:40px;">
+            <div style="display:inline-block; padding:2px; background: linear-gradient(180deg, #c8aa6e, #7a5c29); border-radius:4px; box-shadow: 0 0 20px rgba(200, 170, 110, 0.3);">
+                <img src="${Yardimci.resimUrlGetir(sampiyonAdi, typeof RiotCDN !== 'undefined' ? RiotCDN.surum : '16.12.1')}" style="width:80px; height:80px; display:block; border-radius:2px; object-fit:cover; background-color:#000;">
+            </div>
+            <h2 style="color:#ffffff; margin:20px 0 0 0; font-size:2em; font-weight:900; letter-spacing:1px;">
+                ${Yardimci.formatSampiyon(sampiyonAdi).replace(/i/g, 'I').replace(/ı/g, 'I').toUpperCase()} 
+                <span style="color:#8b949e; font-size:0.5em; font-weight:normal; letter-spacing:2px; vertical-align:middle;">UZMANLARI</span>
             </h2>
         </div>
-        <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start; width: 100%; margin-top: 20px;">
+        <div style="display: flex; flex-direction: column; gap: 30px; align-items: center; width: 100%;">
     `;
-
-    let siraliRoller = Object.keys(rolGruplari).sort((a, b) => rolGruplari[b].length - rolGruplari[a].length);
-    const tumEkipListesi = typeof TUM_EKIP_ISIMLERI !== "undefined" ? TUM_EKIP_ISIMLERI : ["Anıl Abi", "Can", "Ercan", "Evren Abi", "Furkan", "Hüseyin", "Kaan", "Nurettin", "Samet Abi", "Samet Yaldız Abi", "Selim Abi", "Sezer", "Talha Abi", "Taner", "Umut Abi", "İlhan Abi", "Şafak"];
 
     siraliRoller.forEach(rol => {
         let rolMaclari = rolGruplari[rol];
@@ -4166,9 +4364,9 @@ window.uzmanlikKartlariniCiz = function (sampiyonAdi) {
 
         rolMaclari.forEach(m => {
             let o = m.oyuncu;
-            if (!oyuncular[o]) oyuncular[o] = { mac: [], k: 0, d: 0, a: 0, cs: 0, sure: 0, win: 0, cs10: 0, csFark: 0, koridorMac: 0 };
+            if (!oyuncular[o]) oyuncular[o] = { mac: 0, k: 0, d: 0, a: 0, cs: 0, sure: 0, win: 0, cs10: 0, csFark: 0, koridorMac: 0, partnerler: {} };
 
-            oyuncular[o].mac.push(m.mac_id);
+            oyuncular[o].mac++;
             oyuncular[o].k += m.oldurme || 0;
             oyuncular[o].d += m.olum || 0;
             oyuncular[o].a += m.asist || 0;
@@ -4181,26 +4379,27 @@ window.uzmanlikKartlariniCiz = function (sampiyonAdi) {
                 oyuncular[o].csFark += m.koridor_minyon_farki || 0;
                 oyuncular[o].koridorMac++;
             }
+
+            // 🎯 ESKİ KODDAKİ PARTNER KÖPRÜSÜ (SORUNUN ÇÖZÜMÜ BURADA)
+            let partner = m.koridor_partneri;
+            if (partner && partner !== "Yok") {
+                oyuncular[o].partnerler[partner] = (oyuncular[o].partnerler[partner] || 0) + 1;
+            }
         });
 
         let hesaplanmisOyuncular = Object.keys(oyuncular).map(o => {
-            let data = oyuncular[o];
-            let mSayisi = data.mac.length;
-            let wr = data.win / mSayisi;
-            let kda = data.d === 0 ? (data.k + data.a) : (data.k + data.a) / data.d;
-            let csMin = data.sure > 0 ? (data.cs / (data.sure / 60)) : 0;
+            let d = oyuncular[o];
+            let mSayisi = d.mac;
+            let wr = d.win / mSayisi;
+            let kda = d.d === 0 ? (d.k + d.a) : (d.k + d.a) / d.d;
+            let csMin = d.sure > 0 ? (d.cs / (d.sure / 60)) : 0;
+            let ortCs10 = d.koridorMac > 0 ? (d.cs10 / d.koridorMac).toFixed(1) : 0;
+            let ortCsFark = d.koridorMac > 0 ? Math.round(d.csFark / d.koridorMac) : 0;
 
-            let ortCs10 = data.koridorMac > 0 ? (data.cs10 / data.koridorMac).toFixed(1) : 0;
-            let ortCsFark = data.koridorMac > 0 ? Math.round(data.csFark / data.koridorMac) : 0;
-            let farkText = ortCsFark > 0 ? `+${ortCsFark}` : ortCsFark;
-            let farkRenk = ortCsFark > 0 ? "#0ac8b9" : (ortCsFark < 0 ? "#f85149" : "#8b949e");
-
-            let isKnownPlayer = tumEkipListesi.includes(o);
             let oyunIciIsim = typeof guncelRiotID !== "undefined" && guncelRiotID[o] ? guncelRiotID[o] : o;
-
-            if (!isKnownPlayer) {
-                let oMac = islenecekVeri.find(m => m.oyuncu === o);
-                if (oMac && oMac.riot_id) oyunIciIsim = oMac.riot_id.split(',')[0].trim();
+            if (oyunIciIsim === o) {
+                let oMac = islenecekVeri.find(x => x.oyuncu === o);
+                if (oMac && oMac.riot_id) oyunIciIsim = oMac.riot_id.split(',')[0].split('#')[0].trim();
             }
 
             let z = 1.96;
@@ -4208,128 +4407,78 @@ window.uzmanlikKartlariniCiz = function (sampiyonAdi) {
             let totalUP = wilson + Math.min(kda * 2.5, 25) + (rol !== "UTILITY" ? Math.min(csMin * 2, 15) : 0);
             if (mSayisi < 3) totalUP = totalUP * 0.4;
 
-            let partnerGosterHtml = "";
-
-            // 🎯 YABANCI PARTNER DEDEKTÖRÜ (Kusursuz İsim Çekimi ve Alt Satır Zırhı)
-            if (rol === "BOTTOM" || rol === "UTILITY") {
-                let partnerler = {};
-                let oyuncuMaclariFull = islenecekVeri.filter(m => data.mac.includes(m.mac_id));
-                let mg = {};
-                oyuncuMaclariFull.forEach(v => { if (!mg[v.mac_id]) mg[v.mac_id] = []; mg[v.mac_id].push(v); });
-
-                Object.values(mg).forEach(grup => {
-                    let p = grup.find(x => x.oyuncu === o);
-                    if (p && (p.pozisyon === "BOTTOM" || p.pozisyon === "UTILITY")) {
-                        let arananRol = p.pozisyon === "BOTTOM" ? "UTILITY" : "BOTTOM";
-                        let partnerObj = grup.find(x => x.pozisyon === arananRol);
-                        if (partnerObj) {
-                            partnerler[partnerObj.oyuncu] = (partnerler[partnerObj.oyuncu] || 0) + 1;
-                        }
-                    }
-                });
-
-                let partnerIsmi = Object.keys(partnerler).sort((a, b) => partnerler[b] - partnerler[a])[0];
-                if (partnerIsmi) {
-                    let isPKnown = tumEkipListesi.includes(partnerIsmi);
-                    let displayP = partnerIsmi;
-
-                    if (isPKnown) {
-                        displayP = typeof guncelRiotID !== "undefined" && guncelRiotID[partnerIsmi] ? guncelRiotID[partnerIsmi] : partnerIsmi;
-                    } else {
-                        // 🎯 YABANCIYSA: Doğrudan ana veritabanına in ve Riot ID'sini zorla sök al (Sadece ilk ismi al "#" kısmını at)
-                        let fMac = islenecekVeri.find(m => m.oyuncu === partnerIsmi);
-                        if (fMac && fMac.riot_id) {
-                            displayP = fMac.riot_id.split(',')[0].split('#')[0].trim();
-                        }
-                    }
-
-                    let gorselIsim = isPKnown ? displayP : `${displayP} <span style="font-size:0.85em; color:#8b949e; font-weight:normal;">(Yabancı)</span>`;
-
-                    // 🎯 ZIRH: white-space: normal ve word-break: break-word sayesinde asla taşmaz, alt satıra geçer.
-                    partnerGosterHtml = `<div style="font-size: 0.75em; color:#d2a8ff; margin-top:4px; line-height:1.3; white-space: normal; word-break: break-word;">💛 Partner: <b style="color:#fff;">${gorselIsim}</b></div>`;
-                }
+            // 🎯 ESKİ KODDAKİ PARTNER SEÇİMİ
+            let favPartner = "-";
+            if (Object.keys(d.partnerler).length > 0) {
+                let partnerList = Object.entries(d.partnerler).sort((a, b) => b[1] - a[1]);
+                favPartner = partnerList[0][0];
             }
 
-            return {
-                isim: o,
-                isKnown: isKnownPlayer,
-                oyunIciIsim: oyunIciIsim,
-                ikon: guncelIkonlar[o] || 29,
-                mac: mSayisi,
-                wr: Math.round(wr * 100),
-                kda: kda.toFixed(2),
-                k: (data.k / mSayisi).toFixed(1),
-                d: (data.d / mSayisi).toFixed(1),
-                a: (data.a / mSayisi).toFixed(1),
-                csMin: csMin.toFixed(1),
-                cs10: ortCs10,
-                farkText: farkText,
-                farkRenk: farkRenk,
-                up: Math.round(totalUP),
-                partnerHtml: partnerGosterHtml
-            };
-        }).sort((a, b) => b.up - a.up);
+            return { o, oyunIciIsim, ikon: guncelIkonlar[o] || 29, mac: mSayisi, wr: Math.round(wr * 100), k: (d.k / mSayisi).toFixed(1), da: (d.d / mSayisi).toFixed(1), a: (d.a / mSayisi).toFixed(1), kda: kda.toFixed(2), csMin: csMin.toFixed(1), cs10: ortCs10, fark: ortCsFark, up: Math.round(totalUP), favPartner };
+        });
 
-        let rolMetni = rolCeviri[rol] || rol;
+        // 🎯 1-2 MAÇLIK BALONLARI EZEN BARAJ SİSTEMİ
+        hesaplanmisOyuncular.sort((a, b) => {
+            let aGecti = a.mac >= 3 ? 1 : 0;
+            let bGecti = b.mac >= 3 ? 1 : 0;
+            if (bGecti !== aGecti) return bGecti - aGecti;
+            if (Math.abs(b.up - a.up) > 0.01) return b.up - a.up;
+            return b.kda - a.kda;
+        });
 
-        html += `<div style="flex: 1 1 330px; min-width: 330px; max-width: 500px; background: rgba(9, 12, 16, 0.9); border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
-                    <div style="border-bottom: 2px solid #0ac8b9; margin-bottom: 12px; padding-bottom: 8px;">
-                        <h3 style="color: #ffffff; margin: 0; font-size: 1.05em; text-transform: uppercase; display:flex; align-items:center; justify-content: space-between;">
-                            <span>${rolMetni}</span>
-                            <span style="font-size:0.75em; color:#010a13; background:#0ac8b9; padding:3px 10px; border-radius:12px; font-weight:bold;">${hesaplanmisOyuncular.length} OYUNCU</span>
-                        </h3>
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 8px;">`;
+        let rolMetni = yerelRolCeviri[rol] || rol;
+
+        html += `
+        <div style="width: 100%; max-width: 600px; background: rgba(9, 12, 16, 0.95); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0ac8b9; padding-bottom: 12px; margin-bottom: 20px;">
+                <h3 style="color: #ffffff; margin: 0; font-size: 1.1em; text-transform: uppercase; letter-spacing: 1px;">${rolMetni}</h3>
+                <span style="background: #0ac8b9; color: #010a13; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 900;">${hesaplanmisOyuncular.length} OYUNCU</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 15px;">`;
 
         hesaplanmisOyuncular.forEach((oyuncu, idx) => {
-            let siraEtiketi = idx === 0 ? "👑 #1" : `#${idx + 1}`;
+            let siraEtiketi = idx === 0 ? "👑<br>#1" : `#${idx + 1}`;
             let wrRenk = oyuncu.wr >= 50 ? "#3fb950" : "#f85149";
+            let farkText = oyuncu.fark > 0 ? `+${oyuncu.fark}` : oyuncu.fark;
+            let farkRenk = oyuncu.fark > 0 ? "#0ac8b9" : (oyuncu.fark < 0 ? "#f85149" : "#8b949e");
 
-            let statsHtml = `
-                <div style="display: flex; align-items: center; justify-content: flex-end; gap: 6px; margin-bottom: 3px;">
-                    <div style="font-size: 0.9em; font-weight: bold; color: ${wrRenk};">%${oyuncu.wr} WR</div>
-                    <span style="padding: 1px 5px; border-radius: 4px; font-size: 0.75em; background:rgba(200,0,255,0.15); color:#e066ff; border:1px solid #e066ff; font-weight:900;">UP: ${oyuncu.up}</span>
-                </div>
-                <div style="font-size:0.7em; color:#8b949e; margin-bottom: 3px; white-space: nowrap; letter-spacing: -0.2px;">
-                    ${oyuncu.mac} Maç | KDA: <b style="color:#0ac8b9;">${oyuncu.k} <span style="color:#8b949e;">/</span> ${oyuncu.d} <span style="color:#8b949e;">/</span> ${oyuncu.a}</b>
-                </div>
-            `;
-
-            if (rol !== "UTILITY") {
-                statsHtml += `
-                <div style="font-size:0.7em; color:#8b949e; white-space: nowrap; letter-spacing: -0.2px;">
-                    CS/m: <b style="color:#fff;">${oyuncu.csMin}</b> &nbsp; 10.Dk: <b style="color:#fff;">${oyuncu.cs10}</b> &nbsp; ⚔️ <b style="color:${oyuncu.farkRenk};">${oyuncu.farkText} Fark</b>
-                </div>`;
-            } else {
-                statsHtml += `
-                <div style="font-size:0.7em; color:#8b949e; white-space: nowrap;">
-                    CS/m: <b style="color:#fff;">${oyuncu.csMin}</b>
-                </div>`;
-            }
-
-            let altIsim = oyuncu.isKnown ? `<span style="font-size:0.85em; color:#8b949e; font-style:italic; font-weight:normal;">- ${oyuncu.isim}</span>` : ``;
+            let partnerGorseli = (rol === "BOTTOM" || rol === "UTILITY") && oyuncu.favPartner !== "-"
+                ? `<div style="font-size: 0.85em; color: #ffd700; margin-top: 4px; line-height: 1.4;">
+                        💛 Sık Oynadığı Partner:<br>
+                        <span style="color: #9ea1f9; font-weight: bold;">${oyuncu.favPartner}</span>
+                   </div>`
+                : '';
 
             html += `
-            <div class="oyuncu-karti kart-sirali uzman-karti" style="margin: 0; padding: 10px 8px; width: 100%; box-sizing: border-box; border-radius: 8px; background: rgba(13, 17, 23, 0.8); border: 1px solid var(--border-color);">
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(13, 17, 23, 0.8); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 15px; position: relative; overflow: hidden; transition: 0.2s;" onmouseover="this.style.background='rgba(88,166,255,0.1)'" onmouseout="this.style.background='rgba(13, 17, 23, 0.8)'">
                 
-                <div style="display: grid; grid-template-columns: 1fr 125px; gap: 8px; align-items: center; width: 100%;">
-                    
-                    <div style="display: flex; align-items: flex-start; gap: 8px; min-width: 0; overflow: hidden; margin-top:2px;">
-                        <div style="width: 24px; font-size: 0.95em; font-weight: bold; color: ${idx === 0 ? '#ffd700' : '#8b949e'}; text-align: center; flex-shrink: 0; margin-top: 4px;">${siraEtiketi}</div>
-                        <img src="${Yardimci.ikonUrlGetir(oyuncu.ikon, typeof RiotCDN !== 'undefined' ? RiotCDN.surum : '16.12.1')}" style="width:34px; height:34px; border-radius:50%; border:2px solid ${idx === 0 ? '#ffd700' : 'var(--border-color)'}; flex-shrink: 0; margin-top: 2px;">
-                        
-                        <div style="display: flex; flex-direction: column; line-height: 1.2; min-width: 0;">
-                            <div style="font-size: 0.85em; font-weight:bold; color:#ffffff; white-space: normal; word-break: break-word;">
-                                ${oyuncu.oyunIciIsim} ${altIsim}
-                            </div>
-                            ${oyuncu.partnerHtml}
+                <div style="display: flex; align-items: flex-start; gap: 15px; flex: 1; min-width: 0;">
+                    <div style="font-weight: 900; font-size: 1.1em; color: ${idx === 0 ? '#ffd700' : '#8b949e'}; width: 35px; text-align: center; margin-top: 5px; line-height:1.2;">${siraEtiketi}</div>
+                    <img src="${Yardimci.ikonUrlGetir(oyuncu.ikon, typeof RiotCDN !== 'undefined' ? RiotCDN.surum : '16.12.1')}" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid ${idx === 0 ? '#ffd700' : 'rgba(255,255,255,0.1)'}; flex-shrink: 0;">
+                    <div style="display: flex; flex-direction: column; min-width: 0; padding-right: 10px;">
+                        <div style="font-size: 1.2em; font-weight: bold; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom:2px;">
+                            ${oyuncu.oyunIciIsim}
                         </div>
+                        <div style="font-size: 0.85em; color: #8b949e; font-style: italic;">${oyuncu.o}</div>
+                        ${partnerGorseli}
                     </div>
-                    
-                    <div style="display: flex; flex-direction: column; align-items: flex-end; text-align: right; width: 125px; flex-shrink: 0; overflow: visible;">
-                        ${statsHtml}
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: flex-end; text-align: right; flex-shrink: 0; min-width: 220px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <span style="color: ${wrRenk}; font-weight: 900; font-size: 1.2em;">%${oyuncu.wr} WR</span>
+                        <span style="background: rgba(200,0,255,0.15); border: 1px solid #e066ff; color: #e066ff; padding: 3px 10px; border-radius: 4px; font-size: 0.9em; font-weight: 900;">UP: ${oyuncu.up}</span>
                     </div>
-                    
+                    <div style="font-size: 0.85em; color: #8b949e; margin-bottom: 5px;">
+                        ${oyuncu.mac} Maç | KDA: <b style="color: #0ac8b9;">${oyuncu.k} / ${oyuncu.da} / ${oyuncu.a}</b>
+                    </div>
+                    ${rol !== "UTILITY" ? `
+                    <div style="font-size: 0.85em; color: #8b949e; display: flex; align-items: center; justify-content: flex-end; gap: 6px;">
+                        CS/min: <b style="color: #fff;">${oyuncu.csMin}</b> 10.Dk: <b style="color: #fff;">${oyuncu.cs10}</b> ⚔️ <b style="color: ${farkRenk};">${farkText} Fark</b>
+                    </div>` : `
+                    <div style="font-size: 0.85em; color: #8b949e;">
+                        CS/min: <b style="color: #fff;">${oyuncu.csMin}</b>
+                    </div>`}
                 </div>
             </div>`;
         });
@@ -4565,7 +4714,7 @@ window.seciliKadroyuCiz = function () {
         { id: 'top', ad: 'TOP (Üst)', renk: '#a1d586', dbRol: 'TOP' },
         { id: 'jng', ad: 'JNG (Orman)', renk: '#e88245', dbRol: 'JUNGLE' },
         { id: 'mid', ad: 'MID (Orta)', renk: '#9ea1f9', dbRol: 'MIDDLE' },
-        { id: 'adc', ad: 'ADC (Nişancı)', renk: '#ffb84d', dbRol: 'BOTTOM' },
+        { id: 'adc', ad: 'BOT (Nişancı)', renk: '#ffb84d', dbRol: 'BOTTOM' },
         { id: 'sup', ad: 'SUP (Destek)', renk: '#aee2ff', dbRol: 'UTILITY' }
     ];
 
