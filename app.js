@@ -400,6 +400,7 @@ const Menuler = [
     { id: "sinerji", ad: "💪 Takım Sinerjisi" }, { id: "uzman", ad: "🏆 Şampiyon Uzmanları" },
     { id: "esya", ad: "⚔️ Eşya Bilgisi" }, { id: "run", ad: "🔮 Rün Dizilimi" },
     { id: "komp", ad: "🛡️ Şampiyonlar & Kompozisyonlar" }, { id: "harita", ad: "🗺️ Harita Rotasyonları" },
+    { id: "clash", ad: "🏅 Clash Arenası" },
     { id: "yarat", ad: "🖖 Kendi 5'lini Yarat" }, { id: "video", ad: "🎬 Videolar & Klipler" },
     { id: "surum", ad: "📜 Sürüm Geçmişi" }
 ];
@@ -425,6 +426,7 @@ const Router = {
         else if (sayfaId === "run") icerikAlani.innerHTML = Sayfalar.cizRunDizilimi();
         else if (sayfaId === "komp") icerikAlani.innerHTML = Sayfalar.cizKompozisyon();
         else if (sayfaId === "harita") icerikAlani.innerHTML = Sayfalar.cizHarita();
+        else if (sayfaId === "clash") icerikAlani.innerHTML = Sayfalar.cizClashArenasi();
         else if (sayfaId === "yarat") icerikAlani.innerHTML = Sayfalar.cizYarat();
         else if (sayfaId === "video") icerikAlani.innerHTML = Sayfalar.cizVideolar();
         else if (sayfaId === "surum") icerikAlani.innerHTML = Sayfalar.cizSurumGecmisi();
@@ -2280,6 +2282,95 @@ const Sayfalar = {
             </div>
         </div>`;
     },
+    cizClashArenasi: function (clashVerileri) {
+        if (!clashVerileri || clashVerileri.length === 0) {
+            return `
+            <div style="text-align: center; padding: 100px 20px;">
+                <h1 style="color: var(--hextech-gold); font-size: 2.5em; text-transform: uppercase;">🏆 Clash Arenası</h1>
+                <p style="color: #8b949e; font-size: 1.2em;">Henüz turnuva verisi tespit edilemedi veya veritabanı taranıyor.</p>
+            </div>`;
+        }
+
+        // Maçları ID'ye göre grupla
+        let maclar = {};
+        clashVerileri.forEach(m => {
+            if (!maclar[m.mac_id]) maclar[m.mac_id] = [];
+            maclar[m.mac_id].push(m);
+        });
+
+        let vadiHtml = "";
+        let aramHtml = "";
+
+        // Maçları tarihe göre tersten sırala (En yeni en üstte)
+        let siraliMacIds = Object.keys(maclar).sort((a, b) => {
+            return (maclar[b][0].tarih_ms || 0) - (maclar[a][0].tarih_ms || 0);
+        });
+
+        siraliMacIds.forEach(id => {
+            let takim = maclar[id];
+            let macTipi = takim[0].mac_tipi; // "Clash" veya "ARAM_Clash"
+            let sonuc = takim[0].sonuc === "Zafer" || takim[0].sonuc === "Galibiyet" ? "ZAFER" : "BOZGUN";
+            let sonucRenk = sonuc === "ZAFER" ? "#3fb950" : "#f85149";
+            let bgRengi = sonuc === "ZAFER" ? "rgba(63, 185, 80, 0.05)" : "rgba(248, 81, 73, 0.05)";
+
+            let tK = 0, tD = 0, tA = 0;
+            takim.forEach(p => { tK += p.oldurme || 0; tD += p.olum || 0; tA += p.asist || 0; });
+
+            let sureStr = Yardimci.sureFormatla(takim[0].sure_saniye);
+            let tarihStr = Yardimci.tarihFormatla(takim[0].tarih_ms);
+            let panelId = `clash_detay_${id}`;
+            let takimRozeti = macTipi === "Clash" ? "SİHİRDAR VADİSİ" : "SONSUZ UÇURUM (ARAM)";
+            let altinRenk = "var(--hextech-gold)";
+
+            let kartHtml = `
+            <div style="background: rgba(9, 20, 40, 0.9); border: 1px solid var(--border-color); border-top: 4px solid ${altinRenk}; border-bottom: 2px solid ${sonucRenk}; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); margin-bottom:20px; overflow: hidden; cursor: pointer; transition: transform 0.2s;" onclick="window.kutuAcDinamik('${panelId}', '${id}', '', event)" onmouseover="this.style.transform='scale(1.01)'" onmouseout="this.style.transform='scale(1)'">
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 20px; background: rgba(0,0,0,0.6);">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span style="color: ${altinRenk}; font-weight: 900; font-size: 1.2em; letter-spacing: 1px; text-shadow: 0 0 10px rgba(200, 170, 110, 0.4);">🏆 ${takimRozeti}</span>
+                        <span style="color: ${sonucRenk}; font-weight: bold; padding: 2px 8px; border: 1px solid ${sonucRenk}; border-radius: 4px;">${sonuc}</span>
+                        <span style="color: #8b949e; font-size: 0.9em; display: flex; align-items: center; gap: 5px;">
+                            ⚔️ Takım Skoru: <b style="color: #fff;">${tK} / ${tD} / ${tA}</b>
+                        </span>
+                        <span style="color: #8b949e; font-size: 0.9em;">⏱️ <b style="color: #fff;">${sureStr}</b></span>
+                        <span style="color: #8b949e; font-size: 0.9em;">📅 <b style="color: #fff;">${tarihStr}</b></span>
+                    </div>
+                </div>
+
+                <div id="${panelId}" style="display: none; padding: 15px; cursor: default; width: 100%;" onclick="event.stopPropagation()">
+                    </div>
+            </div>`;
+
+            if (macTipi === "ARAM_Clash") {
+                aramHtml += kartHtml;
+            } else {
+                vadiHtml += kartHtml;
+            }
+        });
+
+        return `
+        <div style="max-width: 1200px; margin: 0 auto; color: var(--text-light); padding-bottom: 40px; animation: fadein 0.3s ease;">
+            
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h1 style="color: var(--hextech-gold); font-size: 2.5em; text-transform: uppercase; margin-bottom: 10px; text-shadow: 0 0 20px rgba(200, 170, 110, 0.3);">🏆 Turnuva Kayıtları</h1>
+                <p style="color: #8b949e; font-size: 1.1em;">Resmi Riot Games turnuvalarındaki (Clash) mutlak takım performansı.</p>
+            </div>
+
+            <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 30px;">
+                <button class="btn-hex aktif" onclick="document.getElementById('clash-vadi').style.display='block'; document.getElementById('clash-aram').style.display='none'; this.classList.add('aktif'); this.nextElementSibling.classList.remove('aktif');" style="padding: 12px 30px; font-size: 1.1em; font-weight: bold; border-color: var(--hextech-gold); color: var(--hextech-gold);">⚔️ Sihirdar Vadisi Turnuvaları</button>
+                <button class="btn-hex" onclick="document.getElementById('clash-aram').style.display='block'; document.getElementById('clash-vadi').style.display='none'; this.classList.add('aktif'); this.previousElementSibling.classList.remove('aktif');" style="padding: 12px 30px; font-size: 1.1em; font-weight: bold;">❄️ Sonsuz Uçurum (ARAM) Turnuvaları</button>
+            </div>
+
+            <div id="clash-vadi" style="display: block;">
+                ${vadiHtml || '<div style="text-align:center; padding: 40px; color: #8b949e; border: 1px dashed rgba(255,255,255,0.1); border-radius: 8px;">Kayıtlı Vadi Clash maçı bulunamadı.</div>'}
+            </div>
+
+            <div id="clash-aram" style="display: none;">
+                ${aramHtml || '<div style="text-align:center; padding: 40px; color: #8b949e; border: 1px dashed rgba(255,255,255,0.1); border-radius: 8px;">Kayıtlı ARAM Clash maçı bulunamadı.</div>'}
+            </div>
+
+        </div>`;
+    },
     cizYarat: function () {
         window.ekipVeritabani = {};
         const rolCeviriKisa = { "TOP": "TOP", "JUNGLE": "JNG", "MIDDLE": "MID", "BOTTOM": "BOT", "UTILITY": "SUP" };
@@ -2431,6 +2522,18 @@ const Sayfalar = {
     cizSurumGecmisi: function () {
         // 🎯 OTONOM WEB YAMALARI MOTORU (Yeni yama gelince dizinin en başına ekle!)
         const webYamalari = [
+            `
+            <div class="yama-karti">
+                <div class="yama-baslik">v7.1.0 - v7.1.4 - "TURNUVA MERKEZİ VE SİHİRDAR ZEKASI" Güncellemesi <span class="yama-tarih">21 Haz 2026</span></div>
+                <ul class="yama-liste">
+                    <li><strong>[v7.1.0] Yeni Komuta Merkezi - Clash Arenası:</strong> Sadece resmi turnuva maçlarının sergilendiği altın sarısı şampiyona temasına sahip yepyeni bir sekme eklendi. ARAM'ın kaotik yapısının Vadi'nin makro istatistiklerini bozmaması için arena iki bağımsız alt sekmeye (Vadi ve Sonsuz Uçurum) bölündü.</li>
+                    <li><strong>[v7.1.1] DOM Optimizasyonu (Tembel Yükleme):</strong> 300+ maç kartının sayfa açılışında tarayıcıyı kilitlemesi sorunu kökünden çözüldü. Detaylı takım panelleri artık sayfa yüklenirken değil, sadece tıklama anında (Lazy Load) milisaniyeler içinde oluşturularak devasa bir performans artışı sağlandı.</li>
+                    <li><strong>[v7.1.2] Sihirdar Büyüleri Akıllı Bilgi Motoru:</strong> Maç kartlarındaki büyü ikonlarının üzerine gelindiğinde açılan bilgi panellerinin (tooltip) HTML kutusuna çarpıp kesilmesi sorunu, <code>position: fixed</code> ve JavaScript hesaplamaları içeren bir zırhla kalıcı olarak çözüldü. Paneller her zaman net ve kesintisiz görünecek.</li>
+                    <li><strong>[v7.1.3] Sayısal Şeffaflık ve E-Spor Standartları:</strong> Büyülerin içine 14. Sezon standartlarına uygun milimetrik bekleme süreleri (Örn: Sıçra 300 sn), hasar değerleri ve kalkan istatistikleri entegre edildi. İkonların sınırları e-spor arayüzlerine uygun olarak 6px kare köşeli yapıya kilitlendi.</li>
+                    <li><strong>[v7.1.4] Kümülatif Spam Algoritması ve Hizalama Onarımı:</strong> Oyuncuların bireysel profillerindeki "En Çok Spamlanan Tuş" verisinin tek bir rekor maça endekslenmesi hatası düzeltildi; sistem artık oyuncunun kariyeri boyunca attığı toplam yetenek sayılarını topluyor (Örn: Nunu & Willump E - 2.986x). Ayrıca, verilerin alt satıra kaymasına neden olan UI hatası <code>white-space: nowrap</code> zırhıyla giderilerek tek bir optik çizgiye sabitlendi.</li>
+                </ul>
+            </div>
+            `,
             `
             <div class="yama-karti">
                 <div class="yama-baslik">v7.0.1 - v7.0.3 - "TAKTİKSEL DERİNLİK" Güncellemesi <span class="yama-tarih">18 Haz 2026</span></div>
@@ -3646,13 +3749,14 @@ const Sayfalar = {
             `
             <div class="yama-karti" style="border-color: #ffd700;">
                 <ul class="yama-liste">
-                    <li><strong>v3.2.1:</strong> "Büyük 'K' Operasyonu ve Re-Senkronizasyon". Riot API'nin CamelCase yapısındaki uyuşmazlık (pentakills yerine pentaKills) giderilip sistemin çoklu skorları "0" olarak okuması engellendi. Geçici bypass (pass) metoduyla veritabanı hafızası sıfırlandı, tüm eski maçlar taranarak kayıp Quadra ve Pentalar sisteme mühürlendi. <span class="yama-tarih" style="float: right;">15 May 2026</span></li>
+                    <li><strong>v4.0.0:</strong> Çoklu Kuyruk Motoru ve Mutlak İzolasyon:</strong> Python botunun API kancası genişletildi. Sadece Sıralı Esnek değil, Sihirdar Vadisi Clash ve ARAM Clash turnuvaları da otonom olarak avlanıyor. Turnuva verilerinin, Esnek maçlarıyla karışıp istatistikleri zehirlemesi engellendi ve veriler doğrudan izole bir depoya yönlendirildi. <span class="yama-tarih" style="float: right;">21 Haz 2026</span></li>
                 </ul>
             </div>
             `,
             `
             <div class="yama-karti" style="border-color: #ffd700;">
                 <ul class="yama-liste">
+                    <li style="margin-top: 20px;"><strong>v3.2.1:</strong> "Büyük 'K' Operasyonu ve Re-Senkronizasyon". Riot API'nin CamelCase yapısındaki uyuşmazlık (pentakills yerine pentaKills) giderilip sistemin çoklu skorları "0" olarak okuması engellendi. Geçici bypass (pass) metoduyla veritabanı hafızası sıfırlandı, tüm eski maçlar taranarak kayıp Quadra ve Pentalar sisteme mühürlendi. <span class="yama-tarih" style="float: right;">15 May 2026</span></li>
                     <li style="margin-top: 20px;"><strong>v3.2.0:</strong> "Derin Rün Madenciliği". Riot API üzerinden <code>perks</code> objesi parçalanarak oyuncuların seçtiği <em>Ana Rün</em>, <em>Alt Rün Ağacı</em> ve maçta kullanılan tüm <em>alt rünlerin ID'leri</em> (array olarak) otonom şekilde çekilip Firebase'e aktarılmaya başlandı. <span class="yama-tarih" style="float: right;">15 May 2026</span></li>
                     <li style="margin-top: 20px;"><strong>v3.1.0 (Eski v23):</strong> "Volkanik Veri Takibi". Maç bazlı CS farkı verileri üzerinden 'Flame Horizon' (100+ fark) durumlarını anlık tespit eden ve veritabanında bayraklayan (flagging) mantıksal katman eklendi. <span class="yama-tarih" style="float: right;">15 May 2026</span></li>
                     <li style="margin-top: 20px;"><strong>v3.0.0 (Eski v22):</strong> "Kahin (Oracle) Motoru". Riot'un gizli 'Challenges' (Görevler) API'sine bağlantı kuruldu. Salt skor tablosu aşılarak; Dakika Başı Altın (GPM), 10. Dakika Minyonu, Koridor Minyon Farkı ve Erken Oyun Üstünlüğü gibi kompleks ekonomi metrikleri veri tabanına mühürlenmeye başlandı. <span class="yama-tarih" style="float: right;">06 May 2026</span></li>
