@@ -426,7 +426,7 @@ const Router = {
         else if (sayfaId === "run") icerikAlani.innerHTML = Sayfalar.cizRunDizilimi();
         else if (sayfaId === "komp") icerikAlani.innerHTML = Sayfalar.cizKompozisyon();
         else if (sayfaId === "harita") icerikAlani.innerHTML = Sayfalar.cizHarita();
-        else if (sayfaId === "clash") icerikAlani.innerHTML = Sayfalar.cizClashArenasi();
+        else if (sayfaId === "clash") icerikAlani.innerHTML = Sayfalar.cizClashArenasi(Sistem.verilerClash);
         else if (sayfaId === "yarat") icerikAlani.innerHTML = Sayfalar.cizYarat();
         else if (sayfaId === "video") icerikAlani.innerHTML = Sayfalar.cizVideolar();
         else if (sayfaId === "surum") icerikAlani.innerHTML = Sayfalar.cizSurumGecmisi();
@@ -1727,7 +1727,7 @@ const Sayfalar = {
         }
 
         return `
-        <div style="max-width: 1100px; margin: 0 auto; color: var(--text-light); padding-bottom: 30px;">
+        <div style="max-width: 1350px; margin: 0 auto; color: var(--text-light); padding-bottom: 30px;">
             ${anaBaslikHtml}
             ${sekmelerHtml}
             ${ciplerHtml}
@@ -1799,7 +1799,7 @@ const Sayfalar = {
     cizEsyaBilgisi: function () {
         let yama = typeof RiotCDN !== 'undefined' ? RiotCDN.surum : "16.12.1";
         return `
-        <div style="max-width: 1200px; margin: 0 auto; color: var(--text-light); padding-bottom: 40px;">
+        <div style="max-width: 1350px; margin: 0 auto; color: var(--text-light); padding-bottom: 40px;">
             <h1 style="color: var(--text-light); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 0;">⚔️ Eşya Bilgisi & Simülatör</h1>
             <div style="display: flex; gap: 10px; margin-bottom: 30px; justify-content: center;">
                 <button class="btn-hex taktik aktif" id="btn-esya-sim" onclick="window.esyaSekmeDegistir('simulator')" style="padding: 10px 25px; font-size: 1.1em;">🛠️ İnteraktif Simülatör</button>
@@ -2323,7 +2323,7 @@ const Sayfalar = {
             let altinRenk = "var(--hextech-gold)";
 
             let kartHtml = `
-            <div style="background: rgba(9, 20, 40, 0.9); border: 1px solid var(--border-color); border-top: 4px solid ${altinRenk}; border-bottom: 2px solid ${sonucRenk}; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); margin-bottom:20px; overflow: hidden; cursor: pointer; transition: transform 0.2s;" onclick="window.kutuAcDinamik('${panelId}', '${id}', '', event)" onmouseover="this.style.transform='scale(1.01)'" onmouseout="this.style.transform='scale(1)'">
+            <div style="background: rgba(9, 20, 40, 0.9); border: 1px solid var(--border-color); border-top: 4px solid ${altinRenk}; border-bottom: 2px solid ${sonucRenk}; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); margin-bottom:20px; overflow: hidden; cursor: pointer; transition: transform 0.2s;" onclick="window.clashKutuAcDinamik('${panelId}', '${id}', event)" onmouseover="this.style.transform='scale(1.01)'" onmouseout="this.style.transform='scale(1)'">
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 20px; background: rgba(0,0,0,0.6);">
                     <div style="display: flex; align-items: center; gap: 15px;">
@@ -2349,7 +2349,7 @@ const Sayfalar = {
         });
 
         return `
-        <div style="max-width: 1200px; margin: 0 auto; color: var(--text-light); padding-bottom: 40px; animation: fadein 0.3s ease;">
+        <div style="max-width: 1400px; margin: 0 auto; color: var(--text-light); padding-bottom: 40px; animation: fadein 0.3s ease;">
             
             <div style="text-align: center; margin-bottom: 30px;">
                 <h1 style="color: var(--hextech-gold); font-size: 2.5em; text-transform: uppercase; margin-bottom: 10px; text-shadow: 0 0 20px rgba(200, 170, 110, 0.3);">🏆 Turnuva Kayıtları</h1>
@@ -3819,9 +3819,20 @@ const statDisplay = {
 
 async function sistemiBaslat() {
     try {
-        const snap = await getDocs(collection(db, "gercek_maclar"));
+        // Değişkenleri sıfırla
         Sistem.veriler = [];
+        Sistem.verilerClash = [];
+
+        // 1. Ana Depoyu (Esnek) Çek
+        const snap = await getDocs(collection(db, "gercek_maclar"));
         snap.forEach(d => Sistem.veriler.push(d.data()));
+
+        // 2. 🏆 Yeni Depoyu (Clash Arenası) Çek
+        const snapClash = await getDocs(collection(db, "gercek_maclar_clash"));
+        snapClash.forEach(d => Sistem.verilerClash.push(d.data()));
+
+        console.log(`[BAŞARILI] ${Sistem.veriler.length} Esnek, ${Sistem.verilerClash.length} Clash maçı cebe indirildi!`);
+
         // 🛡️ GLOBAL İKON VE KİMLİK MOTORU (Veriler çekildikten hemen sonra çalışmalı)
         let guncelIkonlarGlobal = {};
 
@@ -4044,6 +4055,15 @@ async function sistemiBaslat() {
 
 window.sezonDegistir = function (yeniSezon) {
     window.GuncelDurum.sezon = yeniSezon;
+
+    // 🎯 HAFIZA TEMİZLİĞİ: Sezon değiştiğinde eski profil önbelleklerini acımasızca yok et!
+    window.profilHafizasi = {};
+
+    // Grafikleri de sıfırla ki eski sezondan renk/çizim kalmasın
+    for (let key in GrafikHafizasi) {
+        if (GrafikHafizasi[key]) GrafikHafizasi[key].destroy();
+    }
+
     if (typeof Router !== "undefined" && typeof Router.git === "function") Router.git(Sistem.aktifSayfa, Sistem.aktifSayfaAdi);
 };
 
@@ -4340,42 +4360,39 @@ window.cizTakimKarti = function (grup, vurguOyuncu = "") {
         let esyalarHtml = '<div style="display:flex; gap:3px; align-items:center;">';
         if (oyuncu.esyalar) {
             oyuncu.esyalar.slice(0, 6).forEach((itemId) => {
-                esyalarHtml += Yardimci.cizEsya(itemId, "width:30px; height:30px; border-radius:4px; border:1px solid var(--border-color); flex-shrink:0; cursor:help;");
+                esyalarHtml += Yardimci.cizEsya(itemId, "width:32px; height:32px; border-radius:4px; border:1px solid var(--border-color); flex-shrink:0; cursor:help;");
             });
             let trinket = oyuncu.esyalar[6] || 0;
             esyalarHtml += `<div style="width:6px;"></div>`;
-            esyalarHtml += Yardimci.cizEsya(trinket, "width:30px; height:30px; border-radius:50%; border:1px solid var(--border-color); flex-shrink:0; cursor:help;");
+            esyalarHtml += Yardimci.cizEsya(trinket, "width:32px; height:32px; border-radius:50%; border:1px solid var(--border-color); flex-shrink:0; cursor:help;");
         }
         esyalarHtml += '</div>';
 
         let buyu1 = oyuncu.buyu1 || oyuncu.sihirdar1 || oyuncu.spell1Id;
         let buyu2 = oyuncu.buyu2 || oyuncu.sihirdar2 || oyuncu.spell2Id;
-        let buyuHtml = `<div style="display:flex; flex-direction:column; gap:2px;">
-            ${Yardimci.cizBuyu(buyu1, "width:20px; height:20px; border-radius:2px; border:1px solid var(--border-color); flex-shrink:0;")}
-            ${Yardimci.cizBuyu(buyu2, "width:20px; height:20px; border-radius:2px; border:1px solid var(--border-color); flex-shrink:0;")}
+        let buyuHtml = `<div style="display:flex; flex-direction:column; gap:4px;">
+            ${Yardimci.cizBuyu(buyu1, "width:22px; height:22px; border-radius:4px; border:1px solid var(--border-color); flex-shrink:0;")}
+            ${Yardimci.cizBuyu(buyu2, "width:22px; height:22px; border-radius:4px; border:1px solid var(--border-color); flex-shrink:0;")}
         </div>`;
 
-        // 🎯 V7.1.0 TAM RÜN GÖSTERİM MOTORU (Akıllı Fallback Destekli)
         let runlerHtml = "";
-        let runDizisi = oyuncu.runler || oyuncu.perks; // Veritabanındaki isme göre burayı değiştirebilirsin
+        let runDizisi = oyuncu.runler || oyuncu.perks;
 
         if (runDizisi && Array.isArray(runDizisi) && runDizisi.length > 0) {
-            // Eğer veritabanında tüm rünler varsa (Genelde 9 ID olur)
-            let anaKisim = runDizisi.slice(0, 4).map((r, i) => Yardimci.cizRun(r, i === 0 ? "width:22px; height:22px; border-radius:50%; border:1px solid #c8aa6e; background:#000;" : "width:18px; height:18px; border-radius:50%; background:rgba(0,0,0,0.5);")).join('');
-            let altKisim = runDizisi.slice(4, 6).map(r => Yardimci.cizRun(r, "width:18px; height:18px; border-radius:50%; background:rgba(0,0,0,0.5);")).join('');
-            let statKisim = runDizisi.slice(6, 9).map(r => Yardimci.cizRun(r, "width:14px; height:14px; border-radius:50%; opacity:0.8; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.1);")).join('');
+            let anaKisim = runDizisi.slice(0, 4).map((r, i) => Yardimci.cizRun(r, i === 0 ? "width:24px; height:24px; border-radius:50%; border:1px solid #c8aa6e; background:#000;" : "width:20px; height:20px; border-radius:50%; background:rgba(0,0,0,0.5);")).join('');
+            let altKisim = runDizisi.slice(4, 6).map(r => Yardimci.cizRun(r, "width:20px; height:20px; border-radius:50%; background:rgba(0,0,0,0.5);")).join('');
+            let statKisim = runDizisi.slice(6, 9).map(r => Yardimci.cizRun(r, "width:16px; height:16px; border-radius:50%; opacity:0.8; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.1);")).join('');
 
             runlerHtml = `
-            <div style="display:flex; flex-direction:column; gap:4px; margin-left:4px; border-left:1px dashed rgba(255,255,255,0.15); padding-left:8px;">
-                <div style="display:flex; gap:3px; align-items:center;">${anaKisim}</div>
-                <div style="display:flex; gap:3px; align-items:center;">${altKisim} <span style="color:#555; font-size:0.8em; margin:0 2px;">|</span> ${statKisim}</div>
+            <div style="display:flex; flex-direction:column; gap:4px; margin-left:6px; border-left:1px dashed rgba(255,255,255,0.15); padding-left:8px;">
+                <div style="display:flex; gap:4px; align-items:center;">${anaKisim}</div>
+                <div style="display:flex; gap:4px; align-items:center;">${altKisim} <span style="color:#555; font-size:0.9em; margin:0 4px;">|</span> ${statKisim}</div>
             </div>`;
         } else {
-            // Sadece eski veriler varsa sistemi çökertmeden eski şablonu bas
             runlerHtml = `
-            <div style="display:flex; flex-direction:column; gap:2px; margin-left:4px;">
-                ${oyuncu.ana_run_id ? Yardimci.cizRun(oyuncu.ana_run_id, "width:20px; height:20px; border-radius:50%; border:1px solid #c8aa6e; background:#000; flex-shrink:0;") : ''}
-                ${oyuncu.alt_run_agaci_id ? Yardimci.cizRun(oyuncu.alt_run_agaci_id, "width:16px; height:16px; border-radius:50%; margin:0 auto; flex-shrink:0;") : ''}
+            <div style="display:flex; flex-direction:column; gap:4px; margin-left:6px;">
+                ${oyuncu.ana_run_id ? Yardimci.cizRun(oyuncu.ana_run_id, "width:22px; height:22px; border-radius:50%; border:1px solid #c8aa6e; background:#000; flex-shrink:0;") : ''}
+                ${oyuncu.alt_run_agaci_id ? Yardimci.cizRun(oyuncu.alt_run_agaci_id, "width:18px; height:18px; border-radius:50%; margin:0 auto; flex-shrink:0;") : ''}
             </div>`;
         }
 
@@ -4384,42 +4401,42 @@ window.cizTakimKarti = function (grup, vurguOyuncu = "") {
         let partnerHtml = Yardimci.partnerBul(grup, oyuncu.pozisyon);
 
         oyuncularHtml += `
-        <div style="${satirBg} display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); gap: 10px; width: 100%; box-sizing: border-box;">
+        <div style="${satirBg} display: flex; align-items: center; justify-content: space-between; padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); gap: 10px; width: 100%; box-sizing: border-box; overflow-x: auto;">
             
-            <div style="display: flex; align-items: center; gap: 8px; flex: 1.8; min-width: 280px; overflow: hidden;">
-                <div style="position:relative; width:48px; height:48px; flex-shrink:0;">
+            <div style="display: flex; align-items: center; gap: 10px; flex: 2.5; min-width: 300px;">
+                <div style="position:relative; width:50px; height:50px; flex-shrink:0;">
                     <img src="${Yardimci.resimUrlGetir(oyuncu.sampiyon, RiotCDN.surum)}" style="width:100%; height:100%; border-radius:50%; border:2px solid ${isTarget ? 'var(--accent-color)' : 'var(--border-color)'};">
-                    <img src="${Yardimci.ikonUrlGetir(oyuncu.profil_ikonu, RiotCDN.surum)}" style="position:absolute; bottom:-4px; right:-4px; width:18px; height:18px; border-radius:50%; border:1px solid #000;">
+                    <img src="${Yardimci.ikonUrlGetir(oyuncu.profil_ikonu, RiotCDN.surum)}" style="position:absolute; bottom:-5px; right:-5px; width:20px; height:20px; border-radius:50%; border:1px solid #000;">
                 </div>
                 ${buyuHtml}
                 ${runlerHtml}
-                <div style="display: flex; flex-direction: column; overflow: hidden; line-height:1.2; min-width: 0; margin-left: 6px;">
-                    <span style="font-weight:bold; color:#fff; font-size:1.05em; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${playerName}</span>
-                    <span style="color:#8b949e; font-size:0.75em; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${oyuncu.oyuncu}</span>
-                    <div style="min-width: 0;">${partnerHtml}</div>
+                <div style="display: flex; flex-direction: column; line-height:1.3; margin-left: 8px;">
+                    <span style="font-weight:bold; color:#fff; font-size:1.15em; white-space:nowrap;">${playerName}</span>
+                    <span style="color:#8b949e; font-size:0.85em; white-space:nowrap;">${oyuncu.oyuncu}</span>
+                    <div style="margin-top:3px;">${partnerHtml}</div>
                 </div>
             </div>
 
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; min-width: 120px; text-align:center;">
-                <div style="font-weight:bold; color:#fff; font-size:1.15em; white-space:nowrap;">${oyuncu.oldurme} <span style="color:#8b949e;">/</span> <span style="color:#f85149;">${oyuncu.olum}</span> <span style="color:#8b949e;">/</span> ${oyuncu.asist}</div>
-                <div style="font-size:0.85em; color:#8b949e; margin-top:2px;">${kda} KDA</div>
+                <div style="font-weight:bold; color:#fff; font-size:1.1em; white-space:nowrap;">${oyuncu.oldurme} <span style="color:#8b949e; margin:0 2px;">/</span> <span style="color:#f85149;">${oyuncu.olum}</span> <span style="color:#8b949e; margin:0 2px;">/</span> ${oyuncu.asist}</div>
+                <div style="font-size:0.85em; color:#8b949e; margin-top:4px;">${kda} KDA</div>
             </div>
 
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; min-width: 100px; text-align:center; font-size:0.85em; color:#8b949e; white-space:nowrap;">
-                <div>🗡️ ${oyuncu.cs} <span style="font-size:0.8em;">(${yaMin})</span></div>
-                <div style="margin-top:2px;">👁️ ${oyuncu.gorus_skoru} <span style="color:#f85149; margin-left:4px;">🛑 ${oyuncu.kontrol_totemi}</span></div>
+                <div>🗡️ ${oyuncu.cs} <span style="font-size:0.85em;">(${yaMin})</span></div>
+                <div style="margin-top:4px;">👁️ ${oyuncu.gorus_skoru} <span style="color:#f85149; margin-left:4px;">🛑 ${oyuncu.kontrol_totemi}</span></div>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 4px; flex: 1.5; min-width: 180px; justify-content: center;">
+            <div style="display: flex; flex-direction: column; gap: 6px; flex: 1.5; min-width: 180px; justify-content: center;">
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <div style="width: 40px; text-align:right; font-size:0.85em; color:#f85149; font-weight:bold;">${Yardimci.formatK(oyuncu.hasar_sampiyon)}</div>
-                    <div style="flex:1; height:6px; background:rgba(0,0,0,0.6); border-radius:3px; overflow:hidden;"><div style="width: ${hasarYuzde}%; height:100%; background:#f85149;"></div></div>
+                    <div style="width: 45px; text-align:right; font-size:0.85em; color:#f85149; font-weight:bold;">${Yardimci.formatK(oyuncu.hasar_sampiyon)}</div>
+                    <div style="flex:1; height:8px; background:rgba(0,0,0,0.6); border-radius:4px; overflow:hidden;"><div style="width: ${hasarYuzde}%; height:100%; background:#f85149;"></div></div>
                 </div>
             </div>
 
-            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex: 1; min-width: 140px;">
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex: 1.5; min-width: 220px;">
                 ${esyalarHtml}
-                <div style="display:flex; gap:2px; flex-wrap:wrap; justify-content:flex-end;">
+                <div style="display:flex; gap:4px; flex-wrap:wrap; justify-content:flex-end;">
                     ${tags}
                 </div>
             </div>
@@ -5397,6 +5414,32 @@ window.kutuAcDinamik = function (panelId, macId, oyuncuAdi, event) {
         panel.style.display = 'block';
     } else {
         // Zaten açıksa kapat
+        panel.style.display = 'none';
+    }
+};
+/* ==============================================================================
+   🏆 CLASH ARENASI KUTU AÇMA (LAZY LOAD) MOTORU
+============================================================================== */
+window.clashKutuAcDinamik = function (panelId, macId, event) {
+    let panel = document.getElementById(panelId);
+    if (!panel) return;
+
+    // Eğer tıklama event'i varsa diğer elementleri etkilemesini engelle
+    if (event) event.stopPropagation();
+
+    // Kutu kapalıysa aç ve içini doldur
+    if (panel.style.display === 'none' || panel.style.display === '') {
+        // İçerik boşsa, veriyi Sistem.verilerClash'ten çek ve cizTakimKarti ile çiz
+        if (panel.innerHTML.trim() === '') {
+            let takimVerisi = Sistem.verilerClash.filter(m => m.mac_id === macId);
+
+            panel.innerHTML = typeof window.cizTakimKarti === 'function'
+                ? window.cizTakimKarti(takimVerisi, "")
+                : '<div style="color:#f85149; text-align:center; padding:10px;">Takım verisi yüklenemedi.</div>';
+        }
+        panel.style.display = 'block';
+    } else {
+        // Kutu zaten açıksa kapat
         panel.style.display = 'none';
     }
 };
