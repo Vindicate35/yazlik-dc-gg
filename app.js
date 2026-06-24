@@ -2152,12 +2152,12 @@ const Sayfalar = {
                     <div class="run-satir" style="display: flex; justify-content: space-around; margin-bottom: 15px;">
                         <div class="esya-kapsayici"><img src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsadaptiveforceicon.png" class="run-ikon tetikleyici-run u-2" onclick="window.toggleRun(event, 'u-2')"></div>
                         <div class="esya-kapsayici"><img src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodsmovementspeedicon.png" class="run-ikon tetikleyici-run u-2" onclick="window.toggleRun(event, 'u-2')"></div>
-                        <div class="esya-kapsayici"><img src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodshealthplusicon.png" class="run-ikon tetikleyici-run u-2" data-run-id="5011"></div>
+                        <div class="esya-kapsayici"><img src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodshealthplusicon.png" class="run-ikon tetikleyici-run u-2" data-run-id="5011" onclick="window.toggleRun(event, 'u-2')"></div>
                     </div>
                     <div class="run-satir" style="display: flex; justify-content: space-around;">
-                    <div class="esya-kapsayici"><img src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodshealthscalingicon.png" class="run-ikon tetikleyici-run u-3" data-run-id="5001"></div>
-                    <div class="esya-kapsayici"><img src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodstenacityicon.png" class="run-ikon tetikleyici-run u-3" data-run-id="5013"></div>
-                    <div class="esya-kapsayici"><img src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodshealthplusicon.png" class="run-ikon tetikleyici-run u-3" data-run-id="5011"></div>
+                    <div class="esya-kapsayici"><img src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodshealthscalingicon.png" class="run-ikon tetikleyici-run u-3" data-run-id="5001" onclick="window.toggleRun(event, 'u-3')"></div>
+                    <div class="esya-kapsayici"><img src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodstenacityicon.png" class="run-ikon tetikleyici-run u-3" data-run-id="5013" onclick="window.toggleRun(event, 'u-3')"></div>
+                    <div class="esya-kapsayici"><img src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/statmods/statmodshealthplusicon.png" class="run-ikon tetikleyici-run u-3" data-run-id="5011" onclick="window.toggleRun(event, 'u-3')"></div>
                 </div>
                 </div>
             </div>
