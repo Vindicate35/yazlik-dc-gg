@@ -401,6 +401,7 @@ const Menuler = [
     { id: "esya", ad: "⚔️ Eşya Bilgisi" }, { id: "run", ad: "🔮 Rün Dizilimi" },
     { id: "komp", ad: "🛡️ Şampiyonlar & Kompozisyonlar" }, { id: "harita", ad: "🗺️ Harita Rotasyonları" },
     { id: "clash", ad: "🏅 Clash Arenası" },
+    { id: "ranked5s", ad: "🔥 Ranked 5s Arenası" },
     { id: "yarat", ad: "🖖 Kendi 5'lini Yarat" }, { id: "video", ad: "🎬 Videolar & Klipler" },
     { id: "surum", ad: "📜 Sürüm Geçmişi" }
 ];
@@ -427,7 +428,7 @@ const Router = {
         else if (sayfaId === "komp") icerikAlani.innerHTML = Sayfalar.cizKompozisyon();
         else if (sayfaId === "harita") icerikAlani.innerHTML = Sayfalar.cizHarita();
         else if (sayfaId === "clash") icerikAlani.innerHTML = Sayfalar.cizClashArenasi(Sistem.verilerClash);
-        else if (sayfaId === "yarat") icerikAlani.innerHTML = Sayfalar.cizYarat();
+        else if (sayfaId === "ranked5s") icerikAlani.innerHTML = Sayfalar.cizRanked5sArenasi(Sistem.verilerRanked5s);
         else if (sayfaId === "video") icerikAlani.innerHTML = Sayfalar.cizVideolar();
         else if (sayfaId === "surum") icerikAlani.innerHTML = Sayfalar.cizSurumGecmisi();
         else icerikAlani.innerHTML = `<h1>${sayfaAdi}</h1><p>İnşaat devam ediyor...</p>`;
@@ -2371,6 +2372,65 @@ const Sayfalar = {
 
         </div>`;
     },
+    cizRanked5sArenasi: function (rankedVerileri) {
+        if (!rankedVerileri || rankedVerileri.length === 0) {
+            return `
+            <div style="text-align: center; padding: 100px 20px;">
+                <h1 style="color: #ff9800; font-size: 2.5em; text-transform: uppercase;">🔥 Ranked 5s Arenası</h1>
+                <p style="color: #8b949e; font-size: 1.2em;">Henüz turnuva verisi tespit edilemedi veya veritabanı taranıyor.</p>
+            </div>`;
+        }
+
+        let maclar = {};
+        rankedVerileri.forEach(m => {
+            if (!maclar[m.mac_id]) maclar[m.mac_id] = [];
+            maclar[m.mac_id].push(m);
+        });
+
+        let siraliMacIds = Object.keys(maclar).sort((a, b) => (maclar[b][0].tarih_ms || 0) - (maclar[a][0].tarih_ms || 0));
+        let htmlContent = "";
+
+        siraliMacIds.forEach(id => {
+            let takim = maclar[id];
+            let sonuc = takim[0].sonuc === "Zafer" || takim[0].sonuc === "Galibiyet" ? "ZAFER" : "BOZGUN";
+            let sonucRenk = sonuc === "ZAFER" ? "#3fb950" : "#f85149";
+
+            let tK = 0, tD = 0, tA = 0;
+            takim.forEach(p => { tK += p.oldurme || 0; tD += p.olum || 0; tA += p.asist || 0; });
+
+            let sureStr = Yardimci.sureFormatla(takim[0].sure_saniye);
+            let tarihStr = Yardimci.tarihFormatla(takim[0].tarih_ms);
+            let panelId = `r5_detay_${id}`;
+
+            htmlContent += `
+            <div style="background: rgba(9, 20, 40, 0.9); border: 1px solid var(--border-color); border-top: 4px solid #ff9800; border-bottom: 2px solid ${sonucRenk}; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); margin-bottom:20px; overflow: hidden; cursor: pointer; transition: transform 0.2s;" onclick="window.ranked5sKutuAcDinamik('${panelId}', '${id}', event)" onmouseover="this.style.transform='scale(1.01)'" onmouseout="this.style.transform='scale(1)'">
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 20px; background: rgba(0,0,0,0.6);">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span style="color: #ff9800; font-weight: 900; font-size: 1.2em; letter-spacing: 1px; text-shadow: 0 0 10px rgba(255, 152, 0, 0.4);">🔥 RANKED 5S</span>
+                        <span style="color: ${sonucRenk}; font-weight: bold; padding: 2px 8px; border: 1px solid ${sonucRenk}; border-radius: 4px;">${sonuc}</span>
+                        <span style="color: #8b949e; font-size: 0.9em; display: flex; align-items: center; gap: 5px;">
+                            ⚔️ Takım Skoru: <b style="color: #fff;">${tK} / ${tD} / ${tA}</b>
+                        </span>
+                        <span style="color: #8b949e; font-size: 0.9em;">⏱️ <b style="color: #fff;">${sureStr}</b></span>
+                        <span style="color: #8b949e; font-size: 0.9em;">📅 <b style="color: #fff;">${tarihStr}</b></span>
+                    </div>
+                </div>
+
+                <div id="${panelId}" style="display: none; padding: 15px; cursor: default; width: 100%;" onclick="event.stopPropagation()">
+                </div>
+            </div>`;
+        });
+
+        return `
+        <div style="max-width: 1400px; margin: 0 auto; color: var(--text-light); padding-bottom: 40px; animation: fadein 0.3s ease;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h1 style="color: #ff9800; font-size: 2.5em; text-transform: uppercase; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255, 152, 0, 0.3);">🔥 Ranked 5s Arenası</h1>
+                <p style="color: #8b949e; font-size: 1.1em;">Dereceli 5'e 5 Modu Performans Kayıtları.</p>
+            </div>
+            ${htmlContent}
+        </div>`;
+    },
     cizYarat: function () {
         window.ekipVeritabani = {};
         const rolCeviriKisa = { "TOP": "TOP", "JUNGLE": "JNG", "MIDDLE": "MID", "BOTTOM": "BOT", "UTILITY": "SUP" };
@@ -2522,6 +2582,17 @@ const Sayfalar = {
     cizSurumGecmisi: function () {
         // 🎯 OTONOM WEB YAMALARI MOTORU (Yeni yama gelince dizinin en başına ekle!)
         const webYamalari = [
+            `
+            <div class="yama-karti">
+                <div class="yama-baslik">v7.2.0 - v7.2.3 - "ARENA GENİŞLEMESİ VE RANKED 5S" Güncellemesi <span class="yama-tarih">06 Tem 2026</span></div>
+                <ul class="yama-liste">
+                    <li><strong>[v7.2.0] Yeni Cephe - Ranked 5s Arenası:</strong> Riot'un geri getirdiği "Dereceli 5'e 5" modu için yepyeni, alev temalı bir arena sekmesi inşa edildi. Bu mod, Esnek kuyruğunun verilerini zehirlemesin diye tamamen ayrı bir veritabanı (gercek_maclar_ranked5s) üzerinden çalışacak şekilde izole edildi.</li>
+                    <li><strong>[v7.2.1] Klostrofobi Onarımı (Genişletilmiş İskelet):</strong> E-spor kalibresindeki maç kartlarına eklenen hasar barları, rünler ve etiketlerin yarattığı sıkışıklık giderildi. Sinerji, Clash ve Ranked 5s arenası dış iskeletleri 1100px/1200px'ten 1400px sınırına çekilerek maç kartlarının nefes alması sağlandı.</li>
+                    <li><strong>[v7.2.2] Sansürsüz Tipografi (İsim Kesilmelerinin Kaldırılması):</strong> Maç kartlarındaki esneklik (Flexbox) oranları dengelendi. Oyuncu isimlerinin sığmayıp <code>text-overflow: ellipsis</code> komutuyla üç nokta (...) şeklinde kesilmesi sorunu tamamen ortadan kaldırıldı; artık tüm isimler ve Riot ID'leri açıkça okunabiliyor.</li>
+                    <li><strong>[v7.2.3] Önbellek Kundakçısı (Sezon Hafızası Temizliği):</strong> Bireysel Profil sayfasında sağ üstten sezon (Örn: Sezon 14) değiştirildiğinde, sistemin eski "Tüm Zamanlar" hafızasını inatla ekrana basması sorunu düzeltildi. Sezon değişim tetiğine acımasız bir "Hafıza Yakma" (<code>window.profilHafizasi = {}</code>) protokolü eklenerek verilerin her zaman güncel filtrelenmesi sağlandı.</li>
+                </ul>
+            </div>
+            `,
             `
             <div class="yama-karti">
                 <div class="yama-baslik">v7.1.0 - v7.1.4 - "TURNUVA MERKEZİ VE SİHİRDAR ZEKASI" Güncellemesi <span class="yama-tarih">21 Haz 2026</span></div>
@@ -3749,13 +3820,14 @@ const Sayfalar = {
             `
             <div class="yama-karti" style="border-color: #ffd700;">
                 <ul class="yama-liste">
-                    <li><strong>v4.0.0:</strong> Çoklu Kuyruk Motoru ve Mutlak İzolasyon:</strong> Python botunun API kancası genişletildi. Sadece Sıralı Esnek değil, Sihirdar Vadisi Clash ve ARAM Clash turnuvaları da otonom olarak avlanıyor. Turnuva verilerinin, Esnek maçlarıyla karışıp istatistikleri zehirlemesi engellendi ve veriler doğrudan izole bir depoya yönlendirildi. <span class="yama-tarih" style="float: right;">21 Haz 2026</span></li>
+                   <li style="margin-top: 20px;"><strong>v4.1.0:</strong> Yeni İstihbarat Ağı ve Ranked 5s Avcısı:</strong> Riot'un yeni "Dereceli 5'e 5" modu (Queue ID: 710) botun radarına eklendi. Bot, Esnek (440) havuzunu kirletmemek adına bu yeni maçları tespit edip "gercek_maclar_ranked5s" isimli yepyeni bir koleksiyona mühürlüyor. Aynı zamanda, API sayfa atlatma mekanizmasındaki (start_index) milimetrik girinti (indentation) kayması düzeltilerek sonsuz döngü (infinite loop) tehlikesi kökünden engellendi. <span class="yama-tarih" style="float: right;">06 Tem 2026</span></li>
                 </ul>
             </div>
             `,
             `
             <div class="yama-karti" style="border-color: #ffd700;">
                 <ul class="yama-liste">
+                    <li><strong>v4.0.0:</strong> Çoklu Kuyruk Motoru ve Mutlak İzolasyon:</strong> Python botunun API kancası genişletildi. Sadece Sıralı Esnek değil, Sihirdar Vadisi Clash ve ARAM Clash turnuvaları da otonom olarak avlanıyor. Turnuva verilerinin, Esnek maçlarıyla karışıp istatistikleri zehirlemesi engellendi ve veriler doğrudan izole bir depoya yönlendirildi. <span class="yama-tarih" style="float: right;">21 Haz 2026</span></li>
                     <li style="margin-top: 20px;"><strong>v3.2.1:</strong> "Büyük 'K' Operasyonu ve Re-Senkronizasyon". Riot API'nin CamelCase yapısındaki uyuşmazlık (pentakills yerine pentaKills) giderilip sistemin çoklu skorları "0" olarak okuması engellendi. Geçici bypass (pass) metoduyla veritabanı hafızası sıfırlandı, tüm eski maçlar taranarak kayıp Quadra ve Pentalar sisteme mühürlendi. <span class="yama-tarih" style="float: right;">15 May 2026</span></li>
                     <li style="margin-top: 20px;"><strong>v3.2.0:</strong> "Derin Rün Madenciliği". Riot API üzerinden <code>perks</code> objesi parçalanarak oyuncuların seçtiği <em>Ana Rün</em>, <em>Alt Rün Ağacı</em> ve maçta kullanılan tüm <em>alt rünlerin ID'leri</em> (array olarak) otonom şekilde çekilip Firebase'e aktarılmaya başlandı. <span class="yama-tarih" style="float: right;">15 May 2026</span></li>
                     <li style="margin-top: 20px;"><strong>v3.1.0 (Eski v23):</strong> "Volkanik Veri Takibi". Maç bazlı CS farkı verileri üzerinden 'Flame Horizon' (100+ fark) durumlarını anlık tespit eden ve veritabanında bayraklayan (flagging) mantıksal katman eklendi. <span class="yama-tarih" style="float: right;">15 May 2026</span></li>
@@ -3822,6 +3894,7 @@ async function sistemiBaslat() {
         // Değişkenleri sıfırla
         Sistem.veriler = [];
         Sistem.verilerClash = [];
+	Sistem.verilerRanked5s = [];
 
         // 1. Ana Depoyu (Esnek) Çek
         const snap = await getDocs(collection(db, "gercek_maclar"));
@@ -3831,7 +3904,11 @@ async function sistemiBaslat() {
         const snapClash = await getDocs(collection(db, "gercek_maclar_clash"));
         snapClash.forEach(d => Sistem.verilerClash.push(d.data()));
 
-        console.log(`[BAŞARILI] ${Sistem.veriler.length} Esnek, ${Sistem.verilerClash.length} Clash maçı cebe indirildi!`);
+	// 3. 🔥 Ranked 5s Deposunu Çek
+        const snapR5 = await getDocs(collection(db, "gercek_maclar_ranked5s"));
+        snapR5.forEach(d => Sistem.verilerRanked5s.push(d.data()));
+
+        console.log(`[BAŞARILI] ${Sistem.veriler.length} Esnek, ${Sistem.verilerClash.length} Clash, ${Sistem.verilerRanked5s.length} Ranked 5s cebe indirildi!`);
 
         // 🛡️ GLOBAL İKON VE KİMLİK MOTORU (Veriler çekildikten hemen sonra çalışmalı)
         let guncelIkonlarGlobal = {};
@@ -5443,7 +5520,23 @@ window.clashKutuAcDinamik = function (panelId, macId, event) {
         panel.style.display = 'none';
     }
 };
+window.ranked5sKutuAcDinamik = function (panelId, macId, event) {
+    let panel = document.getElementById(panelId);
+    if (!panel) return;
+    if (event) event.stopPropagation();
 
+    if (panel.style.display === 'none' || panel.style.display === '') {
+        if (panel.innerHTML.trim() === '') {
+            let takimVerisi = Sistem.verilerRanked5s.filter(m => m.mac_id === macId);
+            panel.innerHTML = typeof window.cizTakimKarti === 'function'
+                ? window.cizTakimKarti(takimVerisi, "")
+                : '<div style="color:#f85149; text-align:center; padding:10px;">Takım verisi yüklenemedi.</div>';
+        }
+        panel.style.display = 'block';
+    } else {
+        panel.style.display = 'none';
+    }
+};
 document.addEventListener("DOMContentLoaded", () => {
     const rf = document.getElementById("btn-refresh");
     if (rf) rf.addEventListener("click", sistemiBaslat);
