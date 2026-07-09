@@ -429,6 +429,7 @@ const Router = {
         else if (sayfaId === "harita") icerikAlani.innerHTML = Sayfalar.cizHarita();
         else if (sayfaId === "clash") icerikAlani.innerHTML = Sayfalar.cizClashArenasi(Sistem.verilerClash);
         else if (sayfaId === "ranked5s") icerikAlani.innerHTML = Sayfalar.cizRanked5sArenasi(Sistem.verilerRanked5s);
+        else if (sayfaId === "yarat") icerikAlani.innerHTML = Sayfalar.cizYarat();
         else if (sayfaId === "video") icerikAlani.innerHTML = Sayfalar.cizVideolar();
         else if (sayfaId === "surum") icerikAlani.innerHTML = Sayfalar.cizSurumGecmisi();
         else icerikAlani.innerHTML = `<h1>${sayfaAdi}</h1><p>İnşaat devam ediyor...</p>`;
