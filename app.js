@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const app = initializeApp({
     apiKey: "AIzaSyAZ7M7fVpsgDxAIkAL9XdkPAv8E5KVSVT0",
@@ -220,6 +220,20 @@ const Yardimci = {
         if (!ms) return "Tarih Yok";
         let d = new Date(ms);
         return d.toLocaleDateString("tr-TR", { year: 'numeric', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+    },
+    rolIkonGetir: (rol) => {
+        const ikonlar = {
+            "TOP": "assets/img/roles/Position_Gold-Top.png",
+            "JUNGLE": "assets/img/roles/Position_Gold-Jungle.png",
+            "MIDDLE": "assets/img/roles/Position_Gold-Mid.png",
+            "BOTTOM": "assets/img/roles/Position_Gold-Bot.png",
+            "UTILITY": "assets/img/roles/Position_Gold-Support.png",
+            "JNG": "assets/img/roles/Position_Gold-Jungle.png",
+            "MID": "assets/img/roles/Position_Gold-Mid.png",
+            "BOT": "assets/img/roles/Position_Gold-Bot.png",
+            "SUP": "assets/img/roles/Position_Gold-Support.png"
+        };
+        return ikonlar[rol] ? `<img src="${ikonlar[rol]}" style="width:24px; vertical-align:middle; margin-right:5px; filter: drop-shadow(0 0 5px rgba(200, 170, 110, 0.5));">` : "";
     },
     // 🎯 CLASS BAZLI HEXTECH GÖRSELLEŞTİRİCİLER (Orijinal Format Tutar)
     cizEsya: (itemId, stil) => {
@@ -482,11 +496,11 @@ const Sayfalar = {
         };
 
         const roller = {
-            "TOP": { ad: "🛡️ TOP", veri: {}, toplam: 0 },
-            "JUNGLE": { ad: "🌳 JNG", veri: {}, toplam: 0 },
-            "MIDDLE": { ad: "🔮 MID", veri: {}, toplam: 0 },
-            "BOTTOM": { ad: "🏹 BOT", veri: {}, toplam: 0 },
-            "UTILITY": { ad: "🌿 SUP", veri: {}, toplam: 0 }
+            "TOP": { ad: `${Yardimci.rolIkonGetir("TOP")} TOP`, veri: {}, toplam: 0 },
+            "JUNGLE": { ad: `${Yardimci.rolIkonGetir("JUNGLE")} JNG`, veri: {}, toplam: 0 },
+            "MIDDLE": { ad: `${Yardimci.rolIkonGetir("MIDDLE")} MID`, veri: {}, toplam: 0 },
+            "BOTTOM": { ad: `${Yardimci.rolIkonGetir("BOTTOM")} BOT`, veri: {}, toplam: 0 },
+            "UTILITY": { ad: `${Yardimci.rolIkonGetir("UTILITY")} SUP`, veri: {}, toplam: 0 }
         };
 
         let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler);
@@ -748,6 +762,15 @@ const Sayfalar = {
     },
     cizProfilDetay: function (oyuncuAdi) {
         if (window.profilHafizasi && window.profilHafizasi[oyuncuAdi]) {
+            // 🎯 HAFIZADAN GELSE BİLE CANLI LİG VE USTALIKLARI TEKRAR ÇEKER
+            let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler);
+            let oyuncuMaclari = islenecekVeri.filter(m => m.oyuncu === oyuncuAdi);
+            if (oyuncuMaclari.length > 0) {
+                let riotIdListesi = [...new Set(oyuncuMaclari.map(m => m.riot_id).filter(Boolean))].reverse();
+                let isimSaf = oyuncuAdi.replace(/\s/g, "");
+                let gercekDokumanAdi = `${oyuncuAdi}_${riotIdListesi[0].split('#')[0].trim()}`;
+                setTimeout(() => { if (window.uiGuncelle) window.uiGuncelle(gercekDokumanAdi, isimSaf, oyuncuAdi); }, 100);
+            }
             return window.profilHafizasi[oyuncuAdi];
         }
 
@@ -770,10 +793,8 @@ const Sayfalar = {
 
         let t_k = 0, t_d = 0, t_a = 0, t_cs = 0, t_sure = 0, t_gpm = 0, t_cs_farki = 0, t_ilk10 = 0, gecerli_koridor = 0;
         let t_hasar = 0, t_tank = 0, t_sifa = 0, t_gorus = 0, t_kontrol = 0, t_flame = 0;
-
         let t_dpm = 0, t_barikat = 0, t_q = 0, t_w = 0, t_e = 0, t_r = 0;
 
-        // 🎯 KÜMÜLATİF SPAM HAVUZU
         let sampiyonYetenekHavuzu = {};
         let rolSayaci = {}, sampiyonSayaclari = {}, esyaSayaclari = {};
 
@@ -792,24 +813,14 @@ const Sayfalar = {
             t_sifa += ((m.iyilesme_takim || 0) + (m.kalkan_takim || 0));
             t_gorus += (m.gorus_skoru || 0); t_kontrol += (m.kontrol_totemi || 0);
             t_gpm += (m.dakika_basi_altin || 0);
-
             t_dpm += (m.dakika_basi_hasar || 0);
             t_barikat += (m.alinan_barikat || 0);
 
-            let q_b = m.q_kullanimi || 0;
-            let w_b = m.w_kullanimi || 0;
-            let e_b = m.e_kullanimi || 0;
-            let r_b = m.r_kullanimi || 0;
-
+            let q_b = m.q_kullanimi || 0; let w_b = m.w_kullanimi || 0; let e_b = m.e_kullanimi || 0; let r_b = m.r_kullanimi || 0;
             t_q += q_b; t_w += w_b; t_e += e_b; t_r += r_b;
 
-            // 🎯 ŞAMPİYON BAZLI KÜMÜLATİF (KARİYER TOPLAMI) SPAM YAZIMI
-            if (!sampiyonYetenekHavuzu[m.sampiyon]) {
-                sampiyonYetenekHavuzu[m.sampiyon] = { Q: 0, W: 0, E: 0 };
-            }
-            sampiyonYetenekHavuzu[m.sampiyon].Q += q_b;
-            sampiyonYetenekHavuzu[m.sampiyon].W += w_b;
-            sampiyonYetenekHavuzu[m.sampiyon].E += e_b;
+            if (!sampiyonYetenekHavuzu[m.sampiyon]) { sampiyonYetenekHavuzu[m.sampiyon] = { Q: 0, W: 0, E: 0 }; }
+            sampiyonYetenekHavuzu[m.sampiyon].Q += q_b; sampiyonYetenekHavuzu[m.sampiyon].W += w_b; sampiyonYetenekHavuzu[m.sampiyon].E += e_b;
 
             let rol = m.pozisyon || "BELIRSIZ";
             if (rol !== "INVALID" && rol !== "BELIRSIZ" && p_rolVerileri[rol]) {
@@ -850,14 +861,10 @@ const Sayfalar = {
                 });
             }
 
-            if (m.penta) lejant.penta += m.penta;
-            if (m.quadra) lejant.quadra += m.quadra;
-            if (m.triple) lejant.triple += m.triple;
-            if (m.ikide_iki) lejant.double += m.ikide_iki;
-            if (m.olum === 0) lejant.kusursuz++;
-            if (IstatistikMotoru.checkSabotaj(m)) lejant.sabotaj++;
-            if (m.calinan_objektif) lejant.calinti += m.calinan_objektif;
-            if (m.ilk_kan) lejant.ilkkan++;
+            if (m.penta) lejant.penta += m.penta; if (m.quadra) lejant.quadra += m.quadra;
+            if (m.triple) lejant.triple += m.triple; if (m.ikide_iki) lejant.double += m.ikide_iki;
+            if (m.olum === 0) lejant.kusursuz++; if (IstatistikMotoru.checkSabotaj(m)) lejant.sabotaj++;
+            if (m.calinan_objektif) lejant.calinti += m.calinan_objektif; if (m.ilk_kan) lejant.ilkkan++;
         });
 
         let siraliRolObjeleri = Object.values(p_rolVerileri).filter(r => r.mac > 0).sort((a, b) => b.mac - a.mac);
@@ -892,7 +899,9 @@ const Sayfalar = {
             rolSiralamasiHTML += `
             <div style="background: rgba(13, 17, 23, 0.9); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; flex: 1; min-width: 180px; text-align: center; border-top: 3px solid ${topRenk}; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
                 <div style="font-size: 0.75em; color: ${topRenk}; font-weight: 900; margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase;">${siraRozeti}</div>
-                <div style="font-size: 1.2em; color: var(--text-light); font-weight: bold;">${r.ad}</div>
+                <div style="font-size: 1.2em; color: var(--text-light); font-weight: bold; display:flex; justify-content:center; align-items:center;">
+                    ${Yardimci.rolIkonGetir(r.orijinalAd)} ${r.ad}
+                </div>
                 <div style="font-size: 1.8em; color: ${rwRenk}; font-weight: 900; margin: 12px 0;">%${r.wr}</div>
                 <div style="display: flex; justify-content: space-between; font-size: 0.85em; color: #fff; background: #000; padding: 6px 12px; border-radius: 4px; font-weight:bold;">
                     <span>${r.mac} Maç</span>
@@ -913,7 +922,6 @@ const Sayfalar = {
         let ortE = Math.round(t_e / oyuncuMaclari.length);
         let ortR = Math.round(t_r / oyuncuMaclari.length);
 
-        // 🎯 KÜMÜLATİF SPAM SONUÇ HESAPLAMASI
         let zirveSpam = { sampiyon: "", tus: "", adet: 0 };
         Object.keys(sampiyonYetenekHavuzu).forEach(samp => {
             let stats = sampiyonYetenekHavuzu[samp];
@@ -930,6 +938,9 @@ const Sayfalar = {
         let oynananFarkliSampiyonSayisi = Object.keys(sampiyonSayaclari).length;
         let efektifSampiyonListesi = [];
         let efektifKutuHTML = "";
+
+        // 🎯 isimSaf BURAYA TAŞINDI
+        let isimSaf = oyuncuAdi.replace(/\s/g, "");
 
         let siraliSampiyonlar = Object.entries(sampiyonSayaclari).map(s => {
             let kdaSaf = s[1].d === 0 ? (s[1].k + s[1].a) : ((s[1].k + s[1].a) / s[1].d);
@@ -959,12 +970,23 @@ const Sayfalar = {
             return b.kda - a.kda;
         }).slice(0, 3);
 
+        // 🎯 HİBRİT ŞAMPİYON KUTUSU (Rozetler bu id'lere yerleşecek)
         let sampiyonHtml = siraliSampiyonlar.map(s => {
             let cWR = ((s.veri.win / s.veri.mac) * 100).toFixed(0);
             let renk = cWR >= 50 ? "#3fb950" : "#f85149";
+            let sIsimSifre = s.isim.replace(/[^a-zA-Z0-9]/g, "");
+
             return `<div style="display:flex; align-items:center; gap:12px; margin-bottom:12px; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
-                        <img src="${Yardimci.resimUrlGetir(s.isim, RiotCDN.surum)}" style="width:48px; height:48px; border-radius:6px; border: 1px solid var(--border-color); box-shadow: 0 2px 5px rgba(0,0,0,0.5);">
-                        <span style="font-weight:bold; color:var(--text-light); font-size:1.1em;">${Yardimci.formatSampiyon(s.isim)} <br><span style="font-size:0.8em; color:#8b949e; font-weight:normal;">(${s.veri.mac} Maç, <span style="color:${renk}; font-weight:bold;">%${cWR}</span>)</span></span>
+                        <div style="position:relative; width:48px; height:48px; flex-shrink:0;">
+                            <img src="${Yardimci.resimUrlGetir(s.isim, RiotCDN.surum)}" style="width:100%; height:100%; border-radius:6px; border: 1px solid var(--border-color); box-shadow: 0 2px 5px rgba(0,0,0,0.5);">
+                            <div id="badge-${isimSaf}-${sIsimSifre}" style="display:none; position:absolute; bottom:-6px; right:-6px; background:#111; color:#c8aa6e; border:2px solid #c8aa6e; border-radius:50%; width:18px; height:18px; font-size:11px; font-weight:bold; align-items:center; justify-content:center; box-shadow:0 0 4px rgba(0,0,0,0.8); z-index:2;"></div>
+                        </div>
+                        <span style="font-weight:bold; color:var(--text-light); font-size:1.1em; line-height:1.2;">
+                            ${Yardimci.formatSampiyon(s.isim)} <br>
+                            <span style="font-size:0.8em; color:#8b949e; font-weight:normal;">
+                                <span id="puan-${isimSaf}-${sIsimSifre}"></span>${s.veri.mac} Maç, <span style="color:${renk}; font-weight:bold;">%${cWR}</span>
+                            </span>
+                        </span>
                     </div>`;
         }).join("");
 
@@ -1081,6 +1103,23 @@ const Sayfalar = {
                 <div style="flex: 1; margin-left: 10px;">
                     <div style="font-size: 2.4em; font-weight: 900; color: #fff; margin-bottom: 2px; letter-spacing: 1px;">${oyuncuAdi}</div>
                     <div style="color: #8b949e; font-size: 0.95em; margin-bottom: 12px; font-style: italic;">${riotIdMetni} <span style="color:var(--hextech-gold);">[${window.GuncelDurum.sezon}]</span></div>
+                    
+                    <!-- 🛡️ BÜYÜTÜLMÜŞ LİG VİTRİNİ VE RANKED 5V5 -->
+                    <div class="header-lig-vitrini" style="display:flex; gap:20px; margin-top:15px; flex-wrap:wrap;">
+                        <div class="lig-kutu tooltip" data-tip="Ranked Flex" style="display:flex; align-items:center; background:rgba(0,0,0,0.4); border:1px solid #1e282d; border-radius:8px; padding:8px 15px;">
+                            <img id="ui-esnek-ikon-${isimSaf}" src="assets/img/ranks/emblem-unranked.png" style="width:55px; height:55px; margin-right:12px;">
+                            <div><span style="font-size:11px; color:#a09b8c; font-weight:bold; letter-spacing:1px;">RANKED FLEX</span><br><b id="ui-esnek-isim-${isimSaf}" style="font-size:16px; color:#f0e6d2; text-transform:capitalize;">Yükleniyor</b><br><span id="ui-esnek-lp-${isimSaf}" style="color:#0ac8b9; font-size:13px; font-weight:bold;">0 LP</span></div>
+                        </div>
+                        <div class="lig-kutu tooltip" data-tip="Ranked Soloq" style="display:flex; align-items:center; background:rgba(0,0,0,0.4); border:1px solid #1e282d; border-radius:8px; padding:8px 15px;">
+                            <img id="ui-tekli-ikon-${isimSaf}" src="assets/img/ranks/emblem-unranked.png" style="width:55px; height:55px; margin-right:12px;">
+                            <div><span style="font-size:11px; color:#a09b8c; font-weight:bold; letter-spacing:1px;">RANKED SOLOQ</span><br><b id="ui-tekli-isim-${isimSaf}" style="font-size:16px; color:#f0e6d2; text-transform:capitalize;">Yükleniyor</b><br><span id="ui-tekli-lp-${isimSaf}" style="color:#0ac8b9; font-size:13px; font-weight:bold;">0 LP</span></div>
+                        </div>
+                        <div class="lig-kutu tooltip" data-tip="Ranked 5v5s" style="display:flex; align-items:center; background:rgba(0,0,0,0.4); border:1px solid #1e282d; border-radius:8px; padding:8px 15px;">
+                            <img id="ui-5v5-ikon-${isimSaf}" src="assets/img/ranks/emblem-unranked.png" style="width:55px; height:55px; margin-right:12px;">
+                            <div><span style="font-size:11px; color:#a09b8c; font-weight:bold; letter-spacing:1px;">RANKED 5V5S</span><br><b id="ui-5v5-isim-${isimSaf}" style="font-size:16px; color:#f0e6d2; text-transform:capitalize;">Yükleniyor</b><br><span id="ui-5v5-lp-${isimSaf}" style="color:#0ac8b9; font-size:13px; font-weight:bold;">0 LP</span></div>
+                        </div>
+                    </div>
+
                 </div>
                 
                 <div style="display: flex; gap: 30px;">
@@ -1102,11 +1141,13 @@ const Sayfalar = {
                         </div>
                         
                         <div style="margin-top: 15px; display: flex; flex-direction: column; align-items: center; gap: 6px;">
-                            <div style="border: 1px solid var(--hextech-gold); border-radius: 6px; padding: 6px 15px; font-size: 0.85em; font-weight: bold; color: #fff; background: rgba(200,170,110,0.1); width: max-content;">
+                            <div style="border: 1px solid var(--hextech-gold); border-radius: 6px; padding: 6px 15px; font-size: 0.85em; font-weight: bold; color: #fff; background: rgba(200,170,110,0.1); width: max-content; display:flex; align-items:center;">
+                                ${Yardimci.rolIkonGetir(top2Rol[0].orijinalAd)}
                                 <span style="color: var(--hextech-gold); text-transform: uppercase;">ANA ROL: ${anaRolMetni}</span> &nbsp;|&nbsp; Oyun Tarzı: ${anaDavranis}
                             </div>
                             ${ikincilRolMetni !== "Yok" ? `
-                            <div style="border: 1px solid #a0a0a0; border-radius: 6px; padding: 6px 15px; font-size: 0.85em; font-weight: bold; color: #fff; background: rgba(160,160,160,0.1); width: max-content;">
+                            <div style="border: 1px solid #a0a0a0; border-radius: 6px; padding: 6px 15px; font-size: 0.85em; font-weight: bold; color: #fff; background: rgba(160,160,160,0.1); width: max-content; display:flex; align-items:center; margin-top: 6px;">
+                                ${Yardimci.rolIkonGetir(top2Rol[1].orijinalAd)}
                                 <span style="color: #d0d0d0; text-transform: uppercase;">İKİNCİL ROL: ${ikincilRolMetni}</span> &nbsp;|&nbsp; Oyun Tarzı: ${ikincilDavranis}
                             </div>` : ''}
                         </div>
@@ -1147,8 +1188,12 @@ const Sayfalar = {
                 </div>
 
                 <div style="border-right: 1px dashed rgba(255,255,255,0.1); padding-right: 20px; padding-left: 10px;">
-                    <div style="color: #fff; font-size: 0.9em; font-weight: bold; margin-bottom: 20px; text-transform: uppercase;">En İyi 3 Şampiyon</div>
-                    <div>${sampiyonHtml || '<span style="color:#fff; font-size:1em;">Yeterli Veri Yok</span>'}</div>
+                    <div style="color: #fff; font-size: 0.9em; font-weight: bold; margin-bottom: 20px; text-transform: uppercase;">Mekanik Ustalık & İmza Şampiyonlar</div>
+                    <!-- 🛡️ HİBRİT USTALIK VİTRİNİ BURADA -->
+                    <div id="sampiyon-vitrini-${isimSaf}">
+                        ${sampiyonHtml || '<span style="color:#fff; font-size:1em;">Yeterli Veri Yok</span>'}
+                    </div>
+                    
                     <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);">
                         <div style="color: #fff; font-size: 0.85em; margin-bottom: 10px; font-weight: bold;">FAVORİ EŞYALAR</div>
                         <div style="display:flex; gap:6px; flex-wrap:wrap;">${favoriEsyaHtml || '-'}</div>
@@ -1206,6 +1251,10 @@ const Sayfalar = {
                 <div id="bireysel-sag-kolon" style="width: 320px; flex-shrink: 0; display: none; flex-direction: column; gap: 15px; position: sticky; top: 20px;"></div>
             </div>
         </div>`;
+
+        let gercekDokumanAdi = `${oyuncuAdi}_${riotIdListesi[0].split('#')[0].trim()}`;
+        setTimeout(() => { if (window.uiGuncelle) window.uiGuncelle(gercekDokumanAdi, isimSaf, oyuncuAdi); }, 100);
+
         window.profilHafizasi = window.profilHafizasi || {};
         window.profilHafizasi[oyuncuAdi] = finalHtml;
 
@@ -1479,7 +1528,7 @@ const Sayfalar = {
 
                     htmlKutu += `
                     <div style="background:rgba(0,0,0,0.4); border:1px solid var(--border-color); border-top:4px solid ${r.renk}; border-radius:8px; padding:15px; flex:1; min-width:140px; text-align:center;">
-                        <div style="color: ${r.renk}; font-weight:bold; font-size:0.95em; margin-bottom:10px;">${r.ad}</div>
+                        <div style="color: ${r.renk}; font-weight:bold; font-size:0.95em; margin-bottom:10px; display:flex; align-items:center; justify-content:center;">${Yardimci.rolIkonGetir(r.rol)} ${r.ad}</div>
                         <img src="${typeof Yardimci !== 'undefined' ? Yardimci.resimUrlGetir(elit.enIyiSampiyon, typeof RiotCDN !== 'undefined' ? RiotCDN.surum : "14.23.1") : ''}" style="width:50px; height:50px; border-radius:50%; border:2px solid ${r.renk}; margin-bottom:10px;">
                         <div style="font-weight:bold; color:#fff; font-size:1.05em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${gercekOyunIciId}</div>
                         <div style="font-size:0.75em; color:#8b949e; margin-bottom:10px;">${elit.isim}</div>
@@ -1630,9 +1679,17 @@ const Sayfalar = {
             if (hedef === 2) {
                 let b = typeof guncelRiotID !== "undefined" ? (guncelRiotID[isimlerDizisi[0]] || isimlerDizisi[0]) : isimlerDizisi[0];
                 let s = typeof guncelRiotID !== "undefined" ? (guncelRiotID[isimlerDizisi[1]] || isimlerDizisi[1]) : isimlerDizisi[1];
-                gorselIsim = `<span style="color:#ffb84d; font-weight:bold;">${b} <span style="font-size:0.8em; color:#fff;">(BOT)</span></span> <span style="color:#8b949e">+</span> <span style="color:#aee2ff; font-weight:bold;">${s} <span style="font-size:0.8em; color:#fff;">(SUP)</span></span>`;
+                gorselIsim = `<div style="display:inline-flex; align-items:center; flex-wrap:wrap; gap:6px;">
+                                <span style="color:#ffb84d; font-weight:bold; display:flex; align-items:center;">
+                                    ${b} <span style="font-size:0.8em; color:#fff; margin-left:4px;">${Yardimci.rolIkonGetir('BOT')}(BOT)</span>
+                                </span> 
+                                <span style="color:#8b949e; font-weight:bold;">+</span> 
+                                <span style="color:#aee2ff; font-weight:bold; display:flex; align-items:center;">
+                                    ${s} <span style="font-size:0.8em; color:#fff; margin-left:4px;">${Yardimci.rolIkonGetir('SUP')}(SUP)</span>
+                                </span>
+                              </div>`;
             } else {
-                gorselIsim = isimlerDizisi.map(i => typeof guncelRiotID !== "undefined" ? (guncelRiotID[i] || i) : i).join(` <span style='color:#8b949e'>+</span> `);
+                gorselIsim = isimlerDizisi.map(i => typeof guncelRiotID !== "undefined" ? (guncelRiotID[i] || i) : i).join(` <span style='color:#8b949e; font-weight:bold; margin:0 4px;'>+</span> `);
             }
 
             let formasyonHtml = "";
@@ -1670,8 +1727,9 @@ const Sayfalar = {
                     let kadroArr = JSON.parse(f[0]);
 
                     let kutularHtml = kadroArr.map(k => `
-                        <div style="background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 4px; font-size: 0.85em; white-space: nowrap;">
-                            <span style="color: var(--hextech-blue); font-weight: bold;">${k.oyunIci}</span><span style="color: #8b949e;">: ${k.rol}</span>
+                        <div style="background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 4px; font-size: 0.85em; white-space: nowrap; display:flex; align-items:center;">
+                            <span style="color: var(--hextech-blue); font-weight: bold; margin-right:4px;">${k.oyunIci}</span>
+                            <span style="color: #8b949e;">: ${Yardimci.rolIkonGetir(k.rol)} ${k.rol}</span>
                         </div>
                     `).join("");
 
@@ -2455,9 +2513,13 @@ const Sayfalar = {
         for (let isim in window.ekipVeritabani) {
             let o = window.ekipVeritabani[isim];
             o.herolarStr = Object.entries(o.herolar).sort((a, b) => b[1] - a[1]).slice(0, 3).map(h => Yardimci.formatSampiyon(h[0])).join(", ");
-            o.rollerStr = Object.entries(o.rolSayaclari).sort((a, b) => b[1] - a[1]).slice(0, 2).map(r => rolCeviriKisa[r[0]] || r[0]).join(" / ");
 
-            // 🎯 Riot ID (Oyun İçi İsim) Çözümlemesi
+            // 🎯 HAVUZ KARTLARINA İKON DESTEĞİ EKLENDİ
+            o.rollerStr = Object.entries(o.rolSayaclari).sort((a, b) => b[1] - a[1]).slice(0, 2).map(r => {
+                let kisaRol = rolCeviriKisa[r[0]] || r[0];
+                return `<span style="display:inline-flex; align-items:center;">${Yardimci.rolIkonGetir(kisaRol)}${kisaRol}</span>`;
+            }).join(' <span style="color:#555; margin:0 4px;">|</span> ');
+
             let oyunIciIsim = typeof guncelRiotID !== "undefined" ? (guncelRiotID[isim] || isim) : isim;
 
             havuzHtml += `
@@ -2466,12 +2528,11 @@ const Sayfalar = {
                 <div style="display:flex; flex-direction:column; text-align:left; line-height: 1.2;">
                     <b class="havuz-isim" style="color:var(--text-light); font-size:1.1em; transition: 0.2s;">${oyunIciIsim}</b>
                     <span style="font-size:0.75em; color:#8b949e;">${isim}</span>
-                    <span style="font-size:0.85em; color:var(--accent-color); font-weight:bold; margin-top: 2px;">${o.rollerStr}</span>
+                    <span style="font-size:0.85em; color:var(--accent-color); font-weight:bold; margin-top: 4px; display:flex; align-items:center;">${o.rollerStr}</span>
                 </div>
             </div>`;
         }
 
-        // Dinamik CSS (Glow ve Seçili Karartma efektleri için)
         if (!document.getElementById('besli-kisisel-css')) {
             let style = document.createElement('style');
             style.id = 'besli-kisisel-css';
@@ -2502,11 +2563,11 @@ const Sayfalar = {
                     <h3 style="color:#ffd700; margin-top:0; text-align:center; border-bottom:1px dashed var(--border-color); padding-bottom:10px;">🏆 Senin 5'lin</h3>
                     
                     <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
-                        <div class="esya-kart" id="slot-top" style="padding:15px; justify-content:space-between;" onclick="window.kadroSlotTemizle('top')"><span style="color:#a1d586; font-weight:bold;">TOP (Üst):</span> <span style="color:#8b949e;">Seçilmedi</span></div>
-                        <div class="esya-kart" id="slot-jng" style="padding:15px; justify-content:space-between;" onclick="window.kadroSlotTemizle('jng')"><span style="color:#e88245; font-weight:bold;">JNG (Orman):</span> <span style="color:#8b949e;">Seçilmedi</span></div>
-                        <div class="esya-kart" id="slot-mid" style="padding:15px; justify-content:space-between;" onclick="window.kadroSlotTemizle('mid')"><span style="color:#9ea1f9; font-weight:bold;">MID (Orta):</span> <span style="color:#8b949e;">Seçilmedi</span></div>
-                        <div class="esya-kart" id="slot-adc" style="padding:15px; justify-content:space-between;" onclick="window.kadroSlotTemizle('adc')"><span style="color:#ffb84d; font-weight:bold;">ADC (Nişancı):</span> <span style="color:#8b949e;">Seçilmedi</span></div>
-                        <div class="esya-kart" id="slot-sup" style="padding:15px; justify-content:space-between;" onclick="window.kadroSlotTemizle('sup')"><span style="color:#aee2ff; font-weight:bold;">SUP (Destek):</span> <span style="color:#8b949e;">Seçilmedi</span></div>
+                        <div class="esya-kart" id="slot-top" style="padding:15px; justify-content:space-between; display:flex; align-items:center;" onclick="window.kadroSlotTemizle('top')"><div style="display:flex; align-items:center;">${Yardimci.rolIkonGetir('TOP')} <span style="color:#a1d586; font-weight:bold;">TOP (Üst):</span></div> <span style="color:#8b949e;">Seçilmedi</span></div>
+                        <div class="esya-kart" id="slot-jng" style="padding:15px; justify-content:space-between; display:flex; align-items:center;" onclick="window.kadroSlotTemizle('jng')"><div style="display:flex; align-items:center;">${Yardimci.rolIkonGetir('JNG')} <span style="color:#e88245; font-weight:bold;">JNG (Orman):</span></div> <span style="color:#8b949e;">Seçilmedi</span></div>
+                        <div class="esya-kart" id="slot-mid" style="padding:15px; justify-content:space-between; display:flex; align-items:center;" onclick="window.kadroSlotTemizle('mid')"><div style="display:flex; align-items:center;">${Yardimci.rolIkonGetir('MID')} <span style="color:#9ea1f9; font-weight:bold;">MID (Orta):</span></div> <span style="color:#8b949e;">Seçilmedi</span></div>
+                        <div class="esya-kart" id="slot-adc" style="padding:15px; justify-content:space-between; display:flex; align-items:center;" onclick="window.kadroSlotTemizle('adc')"><div style="display:flex; align-items:center;">${Yardimci.rolIkonGetir('BOT')} <span style="color:#ffb84d; font-weight:bold;">ADC (Nişancı):</span></div> <span style="color:#8b949e;">Seçilmedi</span></div>
+                        <div class="esya-kart" id="slot-sup" style="padding:15px; justify-content:space-between; display:flex; align-items:center;" onclick="window.kadroSlotTemizle('sup')"><div style="display:flex; align-items:center;">${Yardimci.rolIkonGetir('SUP')} <span style="color:#aee2ff; font-weight:bold;">SUP (Destek):</span></div> <span style="color:#8b949e;">Seçilmedi</span></div>
                     </div>
                     
                     <div id="takim-uyum-bar" style="margin-top:25px; background:rgba(0,0,0,0.4); padding:15px; border-radius:8px; border:1px solid rgba(255,255,255,0.05);">
@@ -2529,18 +2590,19 @@ const Sayfalar = {
         </div>
 
         <div id="modal-oyuncu" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(1,10,19,0.85); z-index:9999; justify-content:center; align-items:center; backdrop-filter: blur(5px);">
-            <div style="background:var(--card-bg); border:1px solid var(--accent-color); border-radius:12px; padding:25px; width:90%; max-width:450px; text-align:center; box-shadow: 0 10px 40px rgba(0,0,0,0.8);">
+            <div style="background:var(--card-bg); border:1px solid var(--accent-color); border-radius:12px; padding:25px; width:90%; max-width:550px; text-align:center; box-shadow: 0 10px 40px rgba(0,0,0,0.8);">
                 <h2 id="modal-o-isim" style="color:var(--hextech-gold); margin-top:0; font-family:'Cinzel', serif; letter-spacing:1px; border-bottom:1px solid rgba(200,170,110,0.2); padding-bottom:10px;">Oyuncu Adı</h2>
                 <div id="modal-o-detay" style="color:#c9d1d9; margin-bottom:20px; line-height:1.6; text-align:left; background:rgba(0,0,0,0.4); padding:15px; border-radius:8px; border:1px dashed var(--border-color);">
                 </div>
 
                 <h4 style="color:#8b949e; margin-bottom:15px; text-transform:uppercase; letter-spacing:1px;">Role Yerleştir</h4>
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:20px;">
-                    <button class="btn-hex" style="padding:12px; color:#a1d586; border-color:rgba(161,213,134,0.3);" onclick="window.roleAta('top')">TOP (Üst)</button>
-                    <button class="btn-hex" style="padding:12px; color:#e88245; border-color:rgba(232,130,69,0.3);" onclick="window.roleAta('jng')">JNG (Orman)</button>
-                    <button class="btn-hex" style="padding:12px; color:#9ea1f9; border-color:rgba(158,161,249,0.3);" onclick="window.roleAta('mid')">MID (Orta)</button>
-                    <button class="btn-hex" style="padding:12px; color:#ffb84d; border-color:rgba(255,184,77,0.3);" onclick="window.roleAta('adc')">BOT (Nişancı)</button>
-                    <button class="btn-hex" style="grid-column: 1 / -1; padding:12px; color:#aee2ff; border-color:rgba(174,226,255,0.3);" onclick="window.roleAta('sup')">SUP (Destek)</button>
+                    <!-- 🎯 MODAL BUTONLARINDAKİ HATALAR DÜZELTİLDİ VE HİZALANDI -->
+                    <button class="btn-hex" style="padding:12px; color:#a1d586; border-color:rgba(161,213,134,0.3);" onclick="window.roleAta('top')"><div style="display:flex; align-items:center; justify-content:center; gap:6px;">${Yardimci.rolIkonGetir('TOP')} TOP (Üst)</div></button>
+                    <button class="btn-hex" style="padding:12px; color:#e88245; border-color:rgba(232,130,69,0.3);" onclick="window.roleAta('jng')"><div style="display:flex; align-items:center; justify-content:center; gap:6px;">${Yardimci.rolIkonGetir('JNG')} JNG (Orman)</div></button>
+                    <button class="btn-hex" style="padding:12px; color:#9ea1f9; border-color:rgba(158,161,249,0.3);" onclick="window.roleAta('mid')"><div style="display:flex; align-items:center; justify-content:center; gap:6px;">${Yardimci.rolIkonGetir('MID')} MID (Orta)</div></button>
+                    <button class="btn-hex" style="padding:12px; color:#ffb84d; border-color:rgba(255,184,77,0.3);" onclick="window.roleAta('adc')"><div style="display:flex; align-items:center; justify-content:center; gap:6px;">${Yardimci.rolIkonGetir('BOT')} BOT (Nişancı)</div></button>
+                    <button class="btn-hex" style="grid-column: 1 / -1; padding:12px; color:#aee2ff; border-color:rgba(174,226,255,0.3);" onclick="window.roleAta('sup')"><div style="display:flex; align-items:center; justify-content:center; gap:6px;">${Yardimci.rolIkonGetir('SUP')} SUP (Destek)</div></button>
                 </div>
                 <button class="btn-hex" style="background:rgba(248,81,73,0.1); color:#f85149; border-color:#f85149; width:100%; padding:10px;" onclick="document.getElementById('modal-oyuncu').style.display='none'">İptal</button>
             </div>
@@ -2583,6 +2645,15 @@ const Sayfalar = {
     cizSurumGecmisi: function () {
         // 🎯 OTONOM WEB YAMALARI MOTORU (Yeni yama gelince dizinin en başına ekle!)
         const webYamalari = [
+            `
+            <div class="yama-karti">
+                <div class="yama-baslik">v7.2.4 -  Arayüz Güncellemesi <span class="yama-tarih">12 Tem 2026</span></div>
+                <ul class="yama-liste">
+                    <li><strong>[v7.2.4] İkon Motoru Optimizasyonu:</strong> <code>Yardimci.rolIkonGetir()</code> motoru, tüm modüllere (Rüya Takımı, Bireysel Profil ve Kendi 5'lini Yarat) tam entegre edildi. Artık tüm rol tanımları görsel birer "Hextech Gold" ikonu ile destekleniyor.</li>
+                    <li><strong>[v7.2.4] UI Performans Artışı:</strong> Arayüzdeki yazı boyutları, özellikle lig bilgileri ve istatistik kartlarında daha iyi bir okuma deneyimi için %15 oranında büyütüldü. İkonlar, yeni yazı boyutlarıyla orantılı olacak şekilde <code>filter: drop - shadow</code> efektleri ile keskinleştirildi.</li>
+                </ul>
+            </div>
+            `,
             `
             <div class="yama-karti">
                 <div class="yama-baslik">v7.2.0 - v7.2.3 - "ARENA GENİŞLEMESİ VE RANKED 5S" Güncellemesi <span class="yama-tarih">06 Tem 2026</span></div>
@@ -4814,7 +4885,7 @@ window.uzmanlikKartlariniCiz = function (sampiyonAdi) {
         html += `
         <div style="width: 100%; max-width: 600px; background: rgba(9, 12, 16, 0.95); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0ac8b9; padding-bottom: 12px; margin-bottom: 20px;">
-                <h3 style="color: #ffffff; margin: 0; font-size: 1.1em; text-transform: uppercase; letter-spacing: 1px;">${rolMetni}</h3>
+                <h3 style="color: #ffffff; margin: 0; font-size: 1.1em; text-transform: uppercase; letter-spacing: 1px; display:flex; align-items:center;">${Yardimci.rolIkonGetir(rol)} ${rolMetni}</h3>
                 <span style="background: #0ac8b9; color: #010a13; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 900;">${hesaplanmisOyuncular.length} OYUNCU</span>
             </div>
             <div style="display: flex; flex-direction: column; gap: 15px;">`;
@@ -5193,12 +5264,13 @@ window.kadroyuTemizle = function () {
 window.seciliKadroyuCiz = function () {
     let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler);
 
+    // 🎯 BURAYA İKON KODLARINI DA TANIMLADIK Kİ YENİDEN ÇİZERKEN KAYBOLMASIN
     const roller = [
-        { id: 'top', ad: 'TOP (Üst)', renk: '#a1d586', dbRol: 'TOP' },
-        { id: 'jng', ad: 'JNG (Orman)', renk: '#e88245', dbRol: 'JUNGLE' },
-        { id: 'mid', ad: 'MID (Orta)', renk: '#9ea1f9', dbRol: 'MIDDLE' },
-        { id: 'adc', ad: 'BOT (Nişancı)', renk: '#ffb84d', dbRol: 'BOTTOM' },
-        { id: 'sup', ad: 'SUP (Destek)', renk: '#aee2ff', dbRol: 'UTILITY' }
+        { id: 'top', ad: 'TOP (Üst)', renk: '#a1d586', dbRol: 'TOP', ikon: 'TOP' },
+        { id: 'jng', ad: 'JNG (Orman)', renk: '#e88245', dbRol: 'JUNGLE', ikon: 'JNG' },
+        { id: 'mid', ad: 'MID (Orta)', renk: '#9ea1f9', dbRol: 'MIDDLE', ikon: 'MID' },
+        { id: 'adc', ad: 'BOT (Nişancı)', renk: '#ffb84d', dbRol: 'BOTTOM', ikon: 'BOT' },
+        { id: 'sup', ad: 'SUP (Destek)', renk: '#aee2ff', dbRol: 'UTILITY', ikon: 'SUP' }
     ];
 
     let adcIsim = window.seciliKadro['adc'];
@@ -5206,7 +5278,6 @@ window.seciliKadroyuCiz = function () {
     let botKimyaBonusu = 0;
     let kimyaMetniBot = "";
 
-    // ALT KORİDOR SİNERJİSİ (DUO) KONTROLÜ
     if (adcIsim && supIsim) {
         let duoMaclar = islenecekVeri.filter(m => (m.oyuncu === adcIsim && m.pozisyon === "BOTTOM") || (m.oyuncu === supIsim && m.pozisyon === "UTILITY"));
         let duoWin = 0; let duoCount = 0; let macGruplari = {};
@@ -5242,7 +5313,6 @@ window.seciliKadroyuCiz = function () {
 
             let anaRoller = Object.entries(o.rolSayaclari).sort((a, b) => b[1] - a[1]).slice(0, 2).map(x => x[0]);
 
-            // KİMYA CEZASI: Ana 2 rolü dışında oynarsa -%70 Güç
             if (!anaRoller.includes(r.dbRol)) {
                 finalSkor = finalSkor * 0.30;
                 kimyaMetni = "❌ Yanlış Pozisyon (-%70)";
@@ -5263,7 +5333,9 @@ window.seciliKadroyuCiz = function () {
             slotDiv.innerHTML = `
                 <div style="display:flex; flex-direction:column; width:100%; cursor:default;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                        <span style="color:${r.renk}; font-size:0.85em; font-weight:bold; text-transform:uppercase;">${r.ad}</span>
+                        <span style="color:${r.renk}; font-size:0.85em; font-weight:bold; text-transform:uppercase; display:flex; align-items:center; gap:5px;">
+                            ${Yardimci.rolIkonGetir(r.ikon)} ${r.ad}
+                        </span>
                         <button onclick="event.stopPropagation(); window.kadroSlotTemizle('${r.id}')" class="mini-kapat">❌ Çıkar</button>
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
@@ -5283,27 +5355,27 @@ window.seciliKadroyuCiz = function () {
             slotDiv.style.background = `rgba(0,0,0,0.4)`;
             slotDiv.onclick = null;
         } else {
-            slotDiv.innerHTML = `<span style="color:${r.renk}; font-weight:bold;">${r.ad}:</span> <span style="color:#8b949e;">Seçilmedi</span>`;
+            // 🎯 BOŞ SLOTTA BİLE İKONLARIN KALMASINI SAĞLAYAN MANTIK BURADA
+            slotDiv.innerHTML = `<div style="display:flex; align-items:center;">${Yardimci.rolIkonGetir(r.ikon)} <span style="color:${r.renk}; font-weight:bold;">${r.ad}:</span></div> <span style="color:#8b949e;">Seçilmedi</span>`;
             slotDiv.style.borderColor = "var(--border-color)";
             slotDiv.style.background = "rgba(13, 17, 23, 0.6)";
             slotDiv.onclick = function () { window.kadroSlotTemizle(r.id); };
         }
     });
 
-    // TAKIM KİMYASI (SP) GÜNCELLEME
     let seciliSayisi = Object.values(window.seciliKadro).filter(x => x !== null).length;
     let uyum = 0;
 
     if (seciliSayisi > 0) {
-        let ortalamaGuc = toplamGuc / 5; // Toplam gücü her zaman 5'e bölerek ilerlemeyi gösteriyoruz
+        let ortalamaGuc = toplamGuc / 5;
         let ekstraBonus = 0;
         if (adcIsim && supIsim) {
             if (botKimyaBonusu > 0) ekstraBonus += 15;
             else if (botKimyaBonusu < 0) ekstraBonus -= 10;
         }
-        if (dogruRolSayisi === 5) ekstraBonus += 10; // Herkes doğru roldeyse
+        if (dogruRolSayisi === 5) ekstraBonus += 10;
 
-        let finalPuan = ortalamaGuc + (ekstraBonus * (seciliSayisi / 5)); // Bonus kadro doldukça etki eder
+        let finalPuan = ortalamaGuc + (ekstraBonus * (seciliSayisi / 5));
         uyum = Math.max(0, Math.min(Math.round(finalPuan), 100));
     }
 
@@ -5316,7 +5388,6 @@ window.seciliKadroyuCiz = function () {
         if (uyumYuzde) uyumYuzde.style.color = uyumDoluluk.style.background;
     }
 
-    // 🛡️ SOL HAVUZDAKİ SEÇİLİ OYUNCULARI KARART (Glow Efektine Karşı Zırh)
     let aktifOyuncularDizisi = Object.values(window.seciliKadro).filter(Boolean);
     document.querySelectorAll('.havuz-oyuncu-karti').forEach(kart => {
         let kartIsim = kart.id.replace('havuz-kart-', '');
@@ -5327,14 +5398,9 @@ window.seciliKadroyuCiz = function () {
         }
     });
 
-    // 🛡️ TAKIM ANALİZİ VE ŞAMPİYON HAVUZU MOTORU BURADA BAŞLIYOR
     let analizDiv = document.getElementById("takim-analiz-kutusu");
     if (!analizDiv) return;
-
-    if (seciliSayisi === 0) {
-        analizDiv.innerHTML = "";
-        return;
-    }
+    if (seciliSayisi === 0) { analizDiv.innerHTML = ""; return; }
 
     let roleChampMap = { "TOP": {}, "JUNGLE": {}, "MIDDLE": {}, "BOTTOM": {}, "UTILITY": {} };
     let t_kda = 0, t_gorus = 0, t_cs = 0, t_olum = 0, t_erken = 0, t_tank = 0;
@@ -5346,14 +5412,11 @@ window.seciliKadroyuCiz = function () {
         let pk = 0, pd = 0, pa = 0, pcs = 0, psu = 0, pgo = 0, ptank = 0;
 
         pMaclar.forEach(m => {
-            // Şampiyon Eşleştirme Haritası
             let r = m.pozisyon;
             if (roleChampMap[r]) {
                 if (!roleChampMap[r][m.sampiyon]) roleChampMap[r][m.sampiyon] = new Set();
                 roleChampMap[r][m.sampiyon].add(isim);
             }
-
-            // Sensör İstatistikleri
             pk += m.oldurme || 0; pd += m.olum || 0; pa += m.asist || 0;
             pcs += m.cs || 0; psu += m.sure_saniye || 0; pgo += m.gorus_skoru || 0;
             ptank += m.hasar_sogurulan || 0;
@@ -5382,12 +5445,9 @@ window.seciliKadroyuCiz = function () {
 
         Object.entries(rChamps).forEach(([champ, oyuncuSet]) => {
             let oyuncular = Array.from(oyuncuSet);
-            // Sadece kadrodaki oyuncuların oynadığı şampiyonları hesaba kat
             let gecerliOyuncular = oyuncular.filter(o => aktifOyuncularDizisi.includes(o));
-
-            if (gecerliOyuncular.length > 1) {
-                gruplanmis["Ortak"].push(champ);
-            } else if (gecerliOyuncular.length === 1) {
+            if (gecerliOyuncular.length > 1) { gruplanmis["Ortak"].push(champ); }
+            else if (gecerliOyuncular.length === 1) {
                 let pIsim = gecerliOyuncular[0];
                 if (gruplanmis[pIsim]) gruplanmis[pIsim].push(champ);
             }
@@ -5397,39 +5457,30 @@ window.seciliKadroyuCiz = function () {
 
         if (gruplanmis["Ortak"].length > 0) {
             let icons = gruplanmis["Ortak"].map(h => `<img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/champion/${h}.png" style="width:30px; height:30px; border-radius:4px; border:1px solid #ffd700;" title="${Yardimci.formatSampiyon(h)} (Ortak Havuz)" onerror="this.style.display='none'">`).join("");
-            satirHtml += `
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-                <span style="color:#ffd700; font-size:0.85em; font-weight:bold; min-width:80px;">🤝 Ortak:</span>
-                <div style="display:flex; flex-wrap:wrap; gap:4px; flex:1;">${icons}</div>
-            </div>`;
+            satirHtml += `<div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;"><span style="color:#ffd700; font-size:0.85em; font-weight:bold; min-width:80px;">🤝 Ortak:</span><div style="display:flex; flex-wrap:wrap; gap:4px; flex:1;">${icons}</div></div>`;
         }
 
         aktifOyuncularDizisi.forEach(isim => {
             if (gruplanmis[isim] && gruplanmis[isim].length > 0) {
                 let icons = gruplanmis[isim].map(h => `<img src="https://ddragon.leagueoflegends.com/cdn/${yama}/img/champion/${h}.png" style="width:30px; height:30px; border-radius:4px; border:1px solid rgba(255,255,255,0.2);" title="${Yardimci.formatSampiyon(h)} (${isim})" onerror="this.style.display='none'">`).join("");
-                satirHtml += `
-                <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-                    <span style="color:#ffffff; font-size:0.85em; font-weight:normal; min-width:80px;">👤 ${isim}:</span>
-                    <div style="display:flex; flex-wrap:wrap; gap:4px; flex:1;">${icons}</div>
-                </div>`;
+                satirHtml += `<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;"><span style="color:#ffffff; font-size:0.85em; font-weight:normal; min-width:80px;">👤 ${isim}:</span><div style="display:flex; flex-wrap:wrap; gap:4px; flex:1;">${icons}</div></div>`;
             }
         });
 
         if (satirHtml !== "") {
+            // 🎯 HAVUZ ANALİZİ BAŞLIKLARINA BİLE İKON EKLENDİ
             champPoolHtml += `
             <div style="background:rgba(0,0,0,0.4); padding:12px; border-radius:8px; border-left:3px solid ${rolRenkleriHavuz[rolKey]}; border-top:1px solid rgba(255,255,255,0.05); border-right:1px solid rgba(255,255,255,0.05); border-bottom:1px solid rgba(255,255,255,0.05);">
-                <div style="color:${rolRenkleriHavuz[rolKey]}; font-size:0.8em; font-weight:bold; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px;">${rolCeviriHavuz[rolKey]}</div>
+                <div style="color:${rolRenkleriHavuz[rolKey]}; font-size:0.8em; font-weight:bold; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center;">
+                    ${Yardimci.rolIkonGetir(rolKey)} ${rolCeviriHavuz[rolKey]}
+                </div>
                 <div style="display:flex; flex-direction:column; gap:4px;">${satirHtml}</div>
             </div>`;
         }
     });
     champPoolHtml += `</div>`;
 
-    // Takım Davranış Etiketleri
-    let avgKda = t_kda / seciliSayisi;
-    let avgCs = t_cs / seciliSayisi;
-    let avgGorus = t_gorus / seciliSayisi;
-    let avgTank = t_tank / seciliSayisi;
+    let avgKda = t_kda / seciliSayisi; let avgCs = t_cs / seciliSayisi; let avgGorus = t_gorus / seciliSayisi; let avgTank = t_tank / seciliSayisi;
 
     let takimEtiketleri = [];
     if (avgKda >= 3.2) takimEtiketleri.push(`<span style="background:rgba(63,185,80,0.15); color:#3fb950; border:1px solid #3fb950; padding: 4px 10px; font-size:0.85em; border-radius:4px; font-weight:bold;">Yüksek KDA Takımı</span>`);
@@ -5537,6 +5588,73 @@ window.ranked5sKutuAcDinamik = function (panelId, macId, event) {
     } else {
         panel.style.display = 'none';
     }
+};
+// ==========================================
+// 🏆 LİG VE ŞAMPİYON USTALIĞI ÇEVİRİ MOTORU
+// ==========================================
+window.uiGuncelle = async function (dokumanId, isimSaf, oyuncuAdi) {
+    try {
+        const ddragon_version = typeof RiotCDN !== 'undefined' ? RiotCDN.surum : "16.12.1";
+        const champRes = await fetch(`https://ddragon.leagueoflegends.com/cdn/${ddragon_version}/data/tr_TR/champion.json`);
+        const champData = await champRes.json();
+        const champMap = {};
+        for (const key in champData.data) { champMap[champData.data[key].key] = champData.data[key].id; }
+
+        const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+
+        // 1. LİGLERİ ÇEK VE BAS (Daha Büyük İkonlar ve 5v5 Desteği)
+        const ligRef = doc(db, "guncel_ligler", dokumanId);
+        const ligSnap = await getDoc(ligRef);
+        if (ligSnap.exists()) {
+            const ligler = ligSnap.data().ligler;
+            if (ligler.esnek) {
+                const esnekTier = ligler.esnek.tier.toLowerCase();
+                const el = document.getElementById(`ui-esnek-ikon-${isimSaf}`);
+                if (el) { el.src = `assets/img/ranks/emblem-${esnekTier}.png`; document.getElementById(`ui-esnek-isim-${isimSaf}`).innerText = `${ligler.esnek.tier} ${ligler.esnek.rank}`; document.getElementById(`ui-esnek-lp-${isimSaf}`).innerText = `${ligler.esnek.lp} LP`; }
+            }
+            if (ligler.tekli) {
+                const tekliTier = ligler.tekli.tier.toLowerCase();
+                const el = document.getElementById(`ui-tekli-ikon-${isimSaf}`);
+                if (el) { el.src = `assets/img/ranks/emblem-${tekliTier}.png`; document.getElementById(`ui-tekli-isim-${isimSaf}`).innerText = `${ligler.tekli.tier} ${ligler.tekli.rank}`; document.getElementById(`ui-tekli-lp-${isimSaf}`).innerText = `${ligler.tekli.lp} LP`; }
+            }
+            if (ligler.ranked5s) {
+                const r5Tier = ligler.ranked5s.tier.toLowerCase();
+                const el = document.getElementById(`ui-5v5-ikon-${isimSaf}`);
+                if (el) { el.src = `assets/img/ranks/emblem-${r5Tier}.png`; document.getElementById(`ui-5v5-isim-${isimSaf}`).innerText = `${ligler.ranked5s.tier} ${ligler.ranked5s.rank}`; document.getElementById(`ui-5v5-lp-${isimSaf}`).innerText = `${ligler.ranked5s.lp} LP`; }
+            }
+        }
+
+        // 2. USTALIKLARI ÇEK VE MEVCUT KARTLARA ENJEKTE ET (HİBRİT MOTOR)
+        const ustalikRef = doc(db, "guncel_ustaliklar", dokumanId);
+        const ustalikSnap = await getDoc(ustalikRef);
+        if (ustalikSnap.exists()) {
+            const ustaliklar = ustalikSnap.data().ustalik_listesi;
+            const ustalikDict = {};
+
+            ustaliklar.forEach(u => {
+                const cName = champMap[String(u.sampiyon_id)];
+                if (cName) {
+                    const sIsimSifre = cName.replace(/[^a-zA-Z0-9]/g, ""); // Boşluk ve apostrofları sil
+                    ustalikDict[sIsimSifre] = u;
+                }
+            });
+
+            document.querySelectorAll(`[id^="badge-${isimSaf}-"]`).forEach(badgeEl => {
+                const champSifre = badgeEl.id.split("-").pop();
+                if (ustalikDict[champSifre]) {
+                    badgeEl.innerText = ustalikDict[champSifre].ustalik_seviyesi;
+                    badgeEl.style.display = "flex";
+                }
+            });
+
+            document.querySelectorAll(`[id^="puan-${isimSaf}-"]`).forEach(puanEl => {
+                const champSifre = puanEl.id.split("-").pop();
+                if (ustalikDict[champSifre]) {
+                    puanEl.innerHTML = `<b style="color:#c8aa6e;">${Yardimci.formatK(ustalikDict[champSifre].ustalik_puani)}</b> Puan | `;
+                }
+            });
+        }
+    } catch (e) { console.error("UI Güncelleme Hatası:", e); }
 };
 document.addEventListener("DOMContentLoaded", () => {
     const rf = document.getElementById("btn-refresh");
