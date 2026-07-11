@@ -671,6 +671,54 @@
         img[src*="/champion/"] {
             border-radius: 6px !important;
         }
+        .header-lig-vitrini {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .lig-kutu {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #1e282d;
+            border-radius: 6px;
+            padding: 5px 10px;
+        }
+        .lig-kutu img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        .lig-detay {
+            display: flex;
+            flex-direction: column;
+        }
+        .lig-baslik { font-size: 10px; color: #a09b8c; font-weight: bold; }
+        .lig-isim { font-size: 13px; color: #f0e6d2; font-weight: bold; text-transform: capitalize; }
+        .lig-lp { font-size: 11px; color: #00ccaa; }
+        .sampiyon-ikon-tasiyici {
+            position: relative;
+            display: inline-block;
+        }
+
+        .ustalik-rozeti {
+            position: absolute;
+            bottom: -6px;
+            right: -6px;
+            background: #111;
+            color: #c8aa6e; /* Hextech Altını */
+            border: 2px solid #c8aa6e;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 11px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 4px rgba(0,0,0,0.8);
+            z-index: 2;
+        }
     </style>
 </head>
 
@@ -681,7 +729,7 @@
             <h1 style="color: var(--hextech-gold); margin: 0; font-size: 1.5em; letter-spacing: 1px;">
                 YAZLIKDC.GG
                 <span
-                    style="font-size: 0.4em; color: var(--text-main); vertical-align: middle; opacity: 0.7;">v7.2.3</span>
+                    style="font-size: 0.4em; color: var(--text-main); vertical-align: middle; opacity: 0.7;">v7.2.4</span>
             </h1>
         </div>
 
@@ -713,6 +761,7 @@
         <div id="menu-listeler"></div>
     </nav>
     <script type="module" src="app.js?v=1000"></script>
+
 
     <div id="container-wrapper" style="display: flex; flex-direction: column; min-height: 100vh; flex: 1;">
 
