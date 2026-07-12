@@ -768,7 +768,7 @@ const Sayfalar = {
             if (oyuncuMaclari.length > 0) {
                 let riotIdListesi = [...new Set(oyuncuMaclari.map(m => m.riot_id).filter(Boolean))].reverse();
                 let isimSaf = oyuncuAdi.replace(/\s/g, "");
-                let gercekDokumanAdi = `${oyuncuAdi}_${riotIdListesi[0].split('#')[0].trim()}`;
+                let gercekDokumanAdi = oyuncuAdi === "Kaan" ? "Kaan_DarkLegend97" : `${oyuncuAdi}_${riotIdListesi[0].split('#')[0].trim()}`;
                 setTimeout(() => { if (window.uiGuncelle) window.uiGuncelle(gercekDokumanAdi, isimSaf, oyuncuAdi); }, 100);
             }
             return window.profilHafizasi[oyuncuAdi];
@@ -888,7 +888,14 @@ const Sayfalar = {
             r.wr = Math.round((r.zafer / r.mac) * 100);
             r.kda = r.d === 0 ? (r.k + r.a) : ((r.k + r.a) / r.d);
         });
-        siraliRolObjeleri.sort((a, b) => b.kda - a.kda);
+
+        // 🎯 YENİ SIRALAMA MANTIĞI: Önce Kazanma Oranı, eşitlik varsa KDA
+        siraliRolObjeleri.sort((a, b) => {
+            if (b.wr !== a.wr) {
+                return b.wr - a.wr;
+            }
+            return b.kda - a.kda;
+        });
 
         let rolSiralamasiHTML = "";
         siraliRolObjeleri.forEach((r, index) => {
@@ -974,19 +981,19 @@ const Sayfalar = {
         let sampiyonHtml = siraliSampiyonlar.map(s => {
             let cWR = ((s.veri.win / s.veri.mac) * 100).toFixed(0);
             let renk = cWR >= 50 ? "#3fb950" : "#f85149";
-            let sIsimSifre = s.isim.replace(/[^a-zA-Z0-9]/g, "");
+            let sIsimSifre = s.isim.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
 
             return `<div style="display:flex; align-items:center; gap:12px; margin-bottom:12px; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
                         <div style="position:relative; width:48px; height:48px; flex-shrink:0;">
-                            <img src="${Yardimci.resimUrlGetir(s.isim, RiotCDN.surum)}" style="width:100%; height:100%; border-radius:6px; border: 1px solid var(--border-color); box-shadow: 0 2px 5px rgba(0,0,0,0.5);">
+                            <img src="${Yardimci.resimUrlGetir(s.isim, typeof RiotCDN !== 'undefined' ? RiotCDN.surum : '16.12.1')}" style="width:100%; height:100%; border-radius:6px; border: 1px solid var(--border-color); box-shadow: 0 2px 5px rgba(0,0,0,0.5);">
                             <div id="badge-${isimSaf}-${sIsimSifre}" style="display:none; position:absolute; bottom:-6px; right:-6px; background:#111; color:#c8aa6e; border:2px solid #c8aa6e; border-radius:50%; width:18px; height:18px; font-size:11px; font-weight:bold; align-items:center; justify-content:center; box-shadow:0 0 4px rgba(0,0,0,0.8); z-index:2;"></div>
                         </div>
-                        <span style="font-weight:bold; color:var(--text-light); font-size:1.1em; line-height:1.2;">
-                            ${Yardimci.formatSampiyon(s.isim)} <br>
-                            <span style="font-size:0.8em; color:#8b949e; font-weight:normal;">
-                                <span id="puan-${isimSaf}-${sIsimSifre}"></span>${s.veri.mac} Maç, <span style="color:${renk}; font-weight:bold;">%${cWR}</span>
+                        <div style="display:flex; flex-direction:column; justify-content:center; white-space:nowrap; overflow:hidden;">
+                            <span style="font-weight:bold; color:var(--text-light); font-size:1.1em; line-height:1.2;">${Yardimci.formatSampiyon(s.isim)}</span>
+                            <span style="font-size:0.8em; color:#8b949e; font-weight:normal; margin-top:2px;">
+                                <span id="puan-${isimSaf}-${sIsimSifre}"></span>${s.veri.mac} Maç, <span style="color:${renk}; font-weight:bold;">%${cWR} WR</span>
                             </span>
-                        </span>
+                        </div>
                     </div>`;
         }).join("");
 
@@ -1039,7 +1046,7 @@ const Sayfalar = {
                     
                     <div style="display: flex; gap: 15px; min-width: 450px; flex-shrink: 0;">
                         <div style="display: flex; gap: 6px; align-items: center;">
-                            <img src="${Yardimci.resimUrlGetir(veri.sampiyon, RiotCDN.surum)}" style="width: 75px; height: 75px; border-radius: 6px; border: 2px solid ${sinirRengi}; box-shadow: 0 0 10px ${sinirRengi}40; flex-shrink:0;">
+                            <img src="${Yardimci.resimUrlGetir(veri.sampiyon, typeof RiotCDN !== 'undefined' ? RiotCDN.surum : '16.12.1')}" style="width: 75px; height: 75px; border-radius: 6px; border: 2px solid ${sinirRengi}; box-shadow: 0 0 10px ${sinirRengi}40; flex-shrink:0;">
                             ${buyuHtml}
                             ${disRunHtml}
                         </div>
@@ -1095,61 +1102,90 @@ const Sayfalar = {
         let sampiyonFiltreSecenekleri = [...new Set(oyuncuMaclari.map(m => m.sampiyon))].sort().map(s => `<option value="${s}">${Yardimci.formatSampiyon(s)}</option>`).join("");
 
         let finalHtml = `
+        <style>
+            .profil-grid-layout { display: grid; grid-template-columns: 1.2fr 1.2fr 1fr; gap: 20px; }
+            .ust-profil-genel { display: flex; justify-content: space-between; align-items: stretch; flex-wrap: wrap; gap: 20px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 20px; }
+            
+            @media (max-width: 1200px) {
+                .profil-grid-layout { grid-template-columns: 1fr; }
+                .profil-kolon { border-right: none !important; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-right: 0 !important; padding-left: 0 !important; padding-bottom: 25px; margin-bottom: 20px; }
+                .profil-kolon:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+                .ust-profil-genel { flex-direction: column; align-items: center; text-align: center; }
+                .istatistik-ayirici { display: none !important; }
+                .istatistik-sag-blok { flex-direction: column; gap: 15px !important; align-items: center; }
+            }
+        </style>
+
         <div id="bireysel-profil-arayuzu" data-oyuncu="${oyuncuAdi}" style="animation: fadein 0.2s ease;">
             
-            <div style="background: rgba(9, 20, 40, 0.8); border: 1px solid var(--border-color); border-radius: 12px; padding: 25px; display: flex; align-items: center; gap: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); margin-bottom: 20px;">
-                <img src="${Yardimci.ikonUrlGetir(IkonID, RiotCDN.surum)}" style="width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--hextech-gold); box-shadow: 0 0 15px rgba(200, 170, 110, 0.5);">
-                
-                <div style="flex: 1; margin-left: 10px;">
-                    <div style="font-size: 2.4em; font-weight: 900; color: #fff; margin-bottom: 2px; letter-spacing: 1px;">${oyuncuAdi}</div>
-                    <div style="color: #8b949e; font-size: 0.95em; margin-bottom: 12px; font-style: italic;">${riotIdMetni} <span style="color:var(--hextech-gold);">[${window.GuncelDurum.sezon}]</span></div>
-                    
-                    <!-- 🛡️ BÜYÜTÜLMÜŞ LİG VİTRİNİ VE RANKED 5V5 -->
-                    <div class="header-lig-vitrini" style="display:flex; gap:20px; margin-top:15px; flex-wrap:wrap;">
-                        <div class="lig-kutu tooltip" data-tip="Ranked Flex" style="display:flex; align-items:center; background:rgba(0,0,0,0.4); border:1px solid #1e282d; border-radius:8px; padding:8px 15px;">
-                            <img id="ui-esnek-ikon-${isimSaf}" src="assets/img/ranks/emblem-unranked.png" style="width:55px; height:55px; margin-right:12px;">
-                            <div><span style="font-size:11px; color:#a09b8c; font-weight:bold; letter-spacing:1px;">RANKED FLEX</span><br><b id="ui-esnek-isim-${isimSaf}" style="font-size:16px; color:#f0e6d2; text-transform:capitalize;">Yükleniyor</b><br><span id="ui-esnek-lp-${isimSaf}" style="color:#0ac8b9; font-size:13px; font-weight:bold;">0 LP</span></div>
-                        </div>
-                        <div class="lig-kutu tooltip" data-tip="Ranked Soloq" style="display:flex; align-items:center; background:rgba(0,0,0,0.4); border:1px solid #1e282d; border-radius:8px; padding:8px 15px;">
-                            <img id="ui-tekli-ikon-${isimSaf}" src="assets/img/ranks/emblem-unranked.png" style="width:55px; height:55px; margin-right:12px;">
-                            <div><span style="font-size:11px; color:#a09b8c; font-weight:bold; letter-spacing:1px;">RANKED SOLOQ</span><br><b id="ui-tekli-isim-${isimSaf}" style="font-size:16px; color:#f0e6d2; text-transform:capitalize;">Yükleniyor</b><br><span id="ui-tekli-lp-${isimSaf}" style="color:#0ac8b9; font-size:13px; font-weight:bold;">0 LP</span></div>
-                        </div>
-                        <div class="lig-kutu tooltip" data-tip="Ranked 5v5s" style="display:flex; align-items:center; background:rgba(0,0,0,0.4); border:1px solid #1e282d; border-radius:8px; padding:8px 15px;">
-                            <img id="ui-5v5-ikon-${isimSaf}" src="assets/img/ranks/emblem-unranked.png" style="width:55px; height:55px; margin-right:12px;">
-                            <div><span style="font-size:11px; color:#a09b8c; font-weight:bold; letter-spacing:1px;">RANKED 5V5S</span><br><b id="ui-5v5-isim-${isimSaf}" style="font-size:16px; color:#f0e6d2; text-transform:capitalize;">Yükleniyor</b><br><span id="ui-5v5-lp-${isimSaf}" style="color:#0ac8b9; font-size:13px; font-weight:bold;">0 LP</span></div>
+            <div style="background: rgba(9, 20, 40, 0.8); border: 1px solid var(--border-color); border-radius: 12px; padding: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); margin-bottom: 20px;">
+                <!-- 🎯 ÜST KISIM: KİMLİK VE İSTATİSTİKLER YAN YANA -->
+                <div class="ust-profil-genel">
+                    <div style="display: flex; gap: 20px; align-items: center;">
+                        <img src="${Yardimci.ikonUrlGetir(IkonID, typeof RiotCDN !== 'undefined' ? RiotCDN.surum : '16.12.1')}" style="width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--hextech-gold); box-shadow: 0 0 15px rgba(200, 170, 110, 0.5); flex-shrink:0;">
+                        <div style="text-align: left;">
+                            <div style="font-size: 2.4em; font-weight: 900; color: #fff; margin-bottom: 2px; letter-spacing: 1px;">${oyuncuAdi}</div>
+                            <div style="color: #8b949e; font-size: 0.95em; font-style: italic;">${riotIdMetni} <span style="color:var(--hextech-gold);">[${window.GuncelDurum.sezon}]</span></div>
                         </div>
                     </div>
-
-                </div>
-                
-                <div style="display: flex; gap: 30px;">
-                    <div style="text-align: center; display: flex; flex-direction: column; justify-content: center;">
-                        <div style="color: #fff; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: bold;">KAZANMA ORANI</div>
-                        <div style="font-size: 2.5em; font-weight: bold; color: ${wrRenk}; line-height: 1;">%${wr}</div>
-                        <div style="color: #fff; font-size: 0.9em; margin-top: 8px;">${oyuncuMaclari.length} Maç, ${zafer} Zafer, ${bozgun} Bozgun</div>
-                    </div>
                     
-                    <div style="width: 1px; background: rgba(255,255,255,0.1); margin: 0 10px;"></div>
-
-                    <div style="text-align: center; display: flex; flex-direction: column; justify-content: center;">
-                        <div style="color: #fff; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: bold;">ORTALAMA KDA</div>
-                        <div style="font-size: 2.2em; font-weight: bold; color: var(--hextech-blue); line-height: 1; text-shadow: 0 0 10px rgba(88,166,255,0.3);">
-                            ${ortK} / <span style="color:#f85149">${ortD}</span> / ${ortA}
-                        </div>
-                        <div style="color: #8b949e; font-size: 0.9em; margin-top: 8px;">
-                            Ort. CS/min: <b style="color:#fff;">${ortCS}</b> | GPM: <b style="color:#ffd60a;">${ortGpm}</b>
+                    <div class="istatistik-sag-blok" style="display: flex; gap: 25px; align-items: center; justify-content: center;">
+                        <div style="text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                            <div style="color: #fff; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: bold;">KAZANMA ORANI</div>
+                            <div style="font-size: 2.5em; font-weight: bold; color: ${wrRenk}; line-height: 1;">%${wr}</div>
+                            <div style="color: #8b949e; font-size: 0.85em; margin-top: 8px;">${oyuncuMaclari.length} Maç, <span style="color:#3fb950;">${zafer} Zafer</span> / <span style="color:#f85149;">${bozgun} Bozgun</span></div>
                         </div>
                         
-                        <div style="margin-top: 15px; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                        <div class="istatistik-ayirici" style="width: 1px; background: rgba(255,255,255,0.1); align-self: stretch; margin: 0;"></div>
+
+                        <div style="text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                            <div style="color: #fff; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: bold;">ORTALAMA KDA</div>
+                            <div style="font-size: 2.2em; font-weight: bold; color: var(--hextech-blue); line-height: 1; text-shadow: 0 0 10px rgba(88,166,255,0.3);">
+                                ${ortK} / <span style="color:#f85149">${ortD}</span> / ${ortA}
+                            </div>
+                            <div style="color: #8b949e; font-size: 0.85em; margin-top: 8px;">
+                                CS/min: <b style="color:#fff;">${ortCS}</b> | GPM: <b style="color:#ffd60a;">${ortGpm}</b>
+                            </div>
+                        </div>
+
+                        <div class="istatistik-ayirici" style="width: 1px; background: rgba(255,255,255,0.1); align-self: stretch; margin: 0;"></div>
+                        
+                        <div style="display: flex; flex-direction: column; justify-content: center; gap: 8px;">
                             <div style="border: 1px solid var(--hextech-gold); border-radius: 6px; padding: 6px 15px; font-size: 0.85em; font-weight: bold; color: #fff; background: rgba(200,170,110,0.1); width: max-content; display:flex; align-items:center;">
-                                ${Yardimci.rolIkonGetir(top2Rol[0].orijinalAd)}
-                                <span style="color: var(--hextech-gold); text-transform: uppercase;">ANA ROL: ${anaRolMetni}</span> &nbsp;|&nbsp; Oyun Tarzı: ${anaDavranis}
+                                <span style="color: var(--hextech-gold); text-transform: uppercase; display:flex; align-items:center;">ANA ROL:&nbsp;${Yardimci.rolIkonGetir(top2Rol[0].orijinalAd)}${anaRolMetni}</span> &nbsp;|&nbsp; Tarz: ${anaDavranis}
                             </div>
                             ${ikincilRolMetni !== "Yok" ? `
-                            <div style="border: 1px solid #a0a0a0; border-radius: 6px; padding: 6px 15px; font-size: 0.85em; font-weight: bold; color: #fff; background: rgba(160,160,160,0.1); width: max-content; display:flex; align-items:center; margin-top: 6px;">
-                                ${Yardimci.rolIkonGetir(top2Rol[1].orijinalAd)}
-                                <span style="color: #d0d0d0; text-transform: uppercase;">İKİNCİL ROL: ${ikincilRolMetni}</span> &nbsp;|&nbsp; Oyun Tarzı: ${ikincilDavranis}
+                            <div style="border: 1px solid #a0a0a0; border-radius: 6px; padding: 6px 15px; font-size: 0.85em; font-weight: bold; color: #fff; background: rgba(160,160,160,0.1); width: max-content; display:flex; align-items:center;">
+                                <span style="color: #d0d0d0; text-transform: uppercase; display:flex; align-items:center;">İK. ROL:&nbsp;${Yardimci.rolIkonGetir(top2Rol[1].orijinalAd)}${ikincilRolMetni}</span> &nbsp;|&nbsp; Tarz: ${ikincilDavranis}
                             </div>` : ''}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 🎯 ALT KISIM: DEV LİG VİTRİNİ (TAM GENİŞLİKTE YAYILIR) -->
+                <div style="display: flex; gap: 20px; margin-top: 20px; width: 100%;">
+                    <div style="flex: 1; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); border: 1px solid #1e282d; border-radius: 10px; padding: 15px;">
+                        <img id="ui-esnek-ikon-${isimSaf}" src="assets/img/ranks/emblem-unranked.png" style="width:70px; height:70px; margin-right:15px; flex-shrink:0;">
+                        <div style="white-space:nowrap; text-align:left;">
+                            <span style="font-size:12px; color:#a09b8c; font-weight:bold; letter-spacing:1px;">RANKED FLEX</span><br>
+                            <b id="ui-esnek-isim-${isimSaf}" style="font-size:19px; color:#f0e6d2; text-transform:capitalize;">Yükleniyor</b><br>
+                            <span id="ui-esnek-lp-${isimSaf}" style="color:#0ac8b9; font-size:15px; font-weight:bold;">0 LP</span>
+                        </div>
+                    </div>
+                    <div style="flex: 1; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); border: 1px solid #1e282d; border-radius: 10px; padding: 15px;">
+                        <img id="ui-tekli-ikon-${isimSaf}" src="assets/img/ranks/emblem-unranked.png" style="width:70px; height:70px; margin-right:15px; flex-shrink:0;">
+                        <div style="white-space:nowrap; text-align:left;">
+                            <span style="font-size:12px; color:#a09b8c; font-weight:bold; letter-spacing:1px;">RANKED SOLOQ</span><br>
+                            <b id="ui-tekli-isim-${isimSaf}" style="font-size:19px; color:#f0e6d2; text-transform:capitalize;">Yükleniyor</b><br>
+                            <span id="ui-tekli-lp-${isimSaf}" style="color:#0ac8b9; font-size:15px; font-weight:bold;">0 LP</span>
+                        </div>
+                    </div>
+                    <div style="flex: 1; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); border: 1px solid #1e282d; border-radius: 10px; padding: 15px;">
+                        <img id="ui-5v5-ikon-${isimSaf}" src="assets/img/ranks/emblem-unranked.png" style="width:70px; height:70px; margin-right:15px; flex-shrink:0;">
+                        <div style="white-space:nowrap; text-align:left;">
+                            <span style="font-size:12px; color:#a09b8c; font-weight:bold; letter-spacing:1px;">RANKED 5V5S</span><br>
+                            <b id="ui-5v5-isim-${isimSaf}" style="font-size:19px; color:#f0e6d2; text-transform:capitalize;">Yükleniyor</b><br>
+                            <span id="ui-5v5-lp-${isimSaf}" style="color:#0ac8b9; font-size:15px; font-weight:bold;">0 LP</span>
                         </div>
                     </div>
                 </div>
@@ -1165,8 +1201,10 @@ const Sayfalar = {
                 </div>
             </div>` : ''}
 
-            <div style="display: grid; grid-template-columns: 1.2fr 1.2fr 1fr; gap: 20px; background: rgba(9, 20, 40, 0.6); border: 1px solid var(--border-color); border-radius: 12px; padding: 30px; margin-bottom: 20px;">
-                <div style="border-right: 1px dashed rgba(255,255,255,0.1); padding-right: 20px;">
+            <!-- 🎯 IZGARA SİSTEMİ (GRID) RESPONSIVE CSS'E BAĞLANDI -->
+            <div class="profil-grid-layout" style="background: rgba(9, 20, 40, 0.6); border: 1px solid var(--border-color); border-radius: 12px; padding: 30px; margin-bottom: 20px;">
+                
+                <div class="profil-kolon" style="border-right: 1px dashed rgba(255,255,255,0.1); padding-right: 20px;">
                     <div style="color: #fff; font-size: 0.9em; font-weight: bold; margin-bottom: 15px; text-transform: uppercase;">Detaylı Ortalamalar</div>
                     <div style="display: flex; flex-direction: column; gap: 10px; font-size: 1.05em; color: var(--text-light);">
                         <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:3px;"><span>Altın (GPM):</span> <b style="color:#ffd60a;">${ortGpm}</b></div>
@@ -1187,9 +1225,8 @@ const Sayfalar = {
                     </div>
                 </div>
 
-                <div style="border-right: 1px dashed rgba(255,255,255,0.1); padding-right: 20px; padding-left: 10px;">
+                <div class="profil-kolon" style="border-right: 1px dashed rgba(255,255,255,0.1); padding-right: 20px; padding-left: 10px;">
                     <div style="color: #fff; font-size: 0.9em; font-weight: bold; margin-bottom: 20px; text-transform: uppercase;">Mekanik Ustalık & İmza Şampiyonlar</div>
-                    <!-- 🛡️ HİBRİT USTALIK VİTRİNİ BURADA -->
                     <div id="sampiyon-vitrini-${isimSaf}">
                         ${sampiyonHtml || '<span style="color:#fff; font-size:1em;">Yeterli Veri Yok</span>'}
                     </div>
@@ -1200,7 +1237,7 @@ const Sayfalar = {
                     </div>
                 </div>
 
-                <div style="padding-left: 10px;">
+                <div class="profil-kolon" style="padding-left: 10px;">
                     <div style="color: #fff; font-size: 0.9em; font-weight: bold; margin-bottom: 20px; text-transform: uppercase;">Kariyer & Vurgunlar</div>
                     <div style="display: flex; flex-direction: column; gap: 12px; font-size: 0.95em; color: var(--text-light);">
                         <div style="display:flex; justify-content:space-between;"><span>Penta / Quadra / Triple:</span> <b style="color:#fff;">${lejant.penta} / ${lejant.quadra} / ${lejant.triple}</b></div>
@@ -1252,7 +1289,7 @@ const Sayfalar = {
             </div>
         </div>`;
 
-        let gercekDokumanAdi = `${oyuncuAdi}_${riotIdListesi[0].split('#')[0].trim()}`;
+        let gercekDokumanAdi = oyuncuAdi === "Kaan" ? "Kaan_DarkLegend97" : `${oyuncuAdi}_${riotIdListesi[0].split('#')[0].trim()}`;
         setTimeout(() => { if (window.uiGuncelle) window.uiGuncelle(gercekDokumanAdi, isimSaf, oyuncuAdi); }, 100);
 
         window.profilHafizasi = window.profilHafizasi || {};
@@ -5602,7 +5639,7 @@ window.uiGuncelle = async function (dokumanId, isimSaf, oyuncuAdi) {
 
         const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
 
-        // 1. LİGLERİ ÇEK VE BAS (Daha Büyük İkonlar ve 5v5 Desteği)
+        // 1. LİGLERİ ÇEK VE BAS
         const ligRef = doc(db, "guncel_ligler", dokumanId);
         const ligSnap = await getDoc(ligRef);
         if (ligSnap.exists()) {
@@ -5624,7 +5661,7 @@ window.uiGuncelle = async function (dokumanId, isimSaf, oyuncuAdi) {
             }
         }
 
-        // 2. USTALIKLARI ÇEK VE MEVCUT KARTLARA ENJEKTE ET (HİBRİT MOTOR)
+        // 2. USTALIKLARI ÇEK VE MEVCUT KARTLARA ENJEKTE ET (🎯 İŞTE BURASI DÜZELTİLDİ)
         const ustalikRef = doc(db, "guncel_ustaliklar", dokumanId);
         const ustalikSnap = await getDoc(ustalikRef);
         if (ustalikSnap.exists()) {
@@ -5634,7 +5671,8 @@ window.uiGuncelle = async function (dokumanId, isimSaf, oyuncuAdi) {
             ustaliklar.forEach(u => {
                 const cName = champMap[String(u.sampiyon_id)];
                 if (cName) {
-                    const sIsimSifre = cName.replace(/[^a-zA-Z0-9]/g, ""); // Boşluk ve apostrofları sil
+                    // 🎯 Şifreyi zorunlu küçük harfe çevirdik ki Senna ve Kog'Maw kaybolmasın
+                    const sIsimSifre = cName.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
                     ustalikDict[sIsimSifre] = u;
                 }
             });
