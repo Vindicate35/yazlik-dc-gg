@@ -146,7 +146,7 @@ window.gizleHarikaPopup = function () {
 const Yardimci = {
     formatSampiyon: (isim) => sampiyonIsimCeviri[isim] || isim,
 
-    // 1. ANA KİMLİK MOTORU (Herkesi Kaan, Ercan gibi saf ismine çevirir)
+    // 1. ANA KİMLİK MOTORU (Bot hatalarını ezen mutlak zırh)
     analizIsimGetir: (oyuncu, riot_id) => {
         const kimlikHaritasi = {
             "Kaan": ["DarkLegend97", "Literation"],
@@ -155,11 +155,31 @@ const Yardimci = {
             "Şafak": ["s2s", "vurucu"],
             "Sezer": ["the Kosm", "obliviscaris"]
         };
+
+        // 🛡️ 1. ZIRH: Eğer Riot ID varsa, veritabanındaki "oyuncu" damgasını YOKSAY ve Riot ID'ye göre gerçek sahibini bul!
+        if (riot_id) {
+            let rId = riot_id.split('#')[0].split(',')[0].trim().toLowerCase();
+
+            // Çoklu hesabı olanlar (Kaan, Taner vb.) için kontrol
+            for (let isim in kimlikHaritasi) {
+                if (kimlikHaritasi[isim].map(x => x.toLowerCase()).includes(rId)) return isim;
+            }
+
+            // Tek hesabı olanlar (guncelRiotID listesinden kontrol)
+            if (typeof guncelRiotID !== "undefined") {
+                for (let isim in guncelRiotID) {
+                    if (guncelRiotID[isim].toLowerCase() === rId) return isim;
+                }
+            }
+        }
+
+        // 2. Riot ID bulunamazsa veya eşleşmezse eski mantıkla devam et
         for (let anaIsim in kimlikHaritasi) {
-            if (anaIsim === oyuncu || kimlikHaritasi[anaIsim].includes(oyuncu) || (riot_id && kimlikHaritasi[anaIsim].includes(riot_id))) {
+            if (anaIsim === oyuncu || kimlikHaritasi[anaIsim].includes(oyuncu)) {
                 return anaIsim;
             }
         }
+
         return oyuncu;
     },
 
@@ -762,13 +782,15 @@ const Sayfalar = {
     },
     cizProfilDetay: function (oyuncuAdi) {
         if (window.profilHafizasi && window.profilHafizasi[oyuncuAdi]) {
-            // 🎯 HAFIZADAN GELSE BİLE CANLI LİG VE USTALIKLARI TEKRAR ÇEKER
             let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler);
             let oyuncuMaclari = islenecekVeri.filter(m => m.oyuncu === oyuncuAdi);
             if (oyuncuMaclari.length > 0) {
-                let riotIdListesi = [...new Set(oyuncuMaclari.map(m => m.riot_id).filter(Boolean))].reverse();
                 let isimSaf = oyuncuAdi.replace(/\s/g, "");
-                let gercekDokumanAdi = oyuncuAdi === "Kaan" ? "Kaan_DarkLegend97" : `${oyuncuAdi}_${riotIdListesi[0].split('#')[0].trim()}`;
+
+                // 🎯 FİREBASE DOKÜMAN BAĞLANTISINI KİRLİ VERİDEN KURTARDIK
+                let guncelId = typeof guncelRiotID !== "undefined" && guncelRiotID[oyuncuAdi] ? guncelRiotID[oyuncuAdi] : oyuncuAdi;
+                let gercekDokumanAdi = oyuncuAdi === "Kaan" ? "Kaan_DarkLegend97" : `${oyuncuAdi}_${guncelId}`;
+
                 setTimeout(() => { if (window.uiGuncelle) window.uiGuncelle(gercekDokumanAdi, isimSaf, oyuncuAdi); }, 100);
             }
             return window.profilHafizasi[oyuncuAdi];
@@ -782,9 +804,15 @@ const Sayfalar = {
         let sonMacIkonlu = [...oyuncuMaclari].sort((a, b) => b.tarih_ms - a.tarih_ms).find(m => m.profil_ikonu);
         let IkonID = sonMacIkonlu ? sonMacIkonlu.profil_ikonu : 29;
 
-        let riotIdListesi = [...new Set(oyuncuMaclari.map(m => m.riot_id).filter(Boolean))].reverse();
-        let riotIdMetni = riotIdListesi.length > 0 ? riotIdListesi.join(", ") : oyuncuAdi;
-        if (oyuncuAdi === "Sezer") riotIdMetni = "the Kosm, obliviscaris";
+        // 🎯 PROFİLİN ALTINDAKİ İSİM KALABALIĞINI (SÜLALEYİ) TEMİZLEYEN ZIRH
+        const kimlikHaritasii = {
+            "Kaan": ["DarkLegend97", "Literation"],
+            "Taner": ["YazlıkDCFlex", "Schwarzsx"],
+            "Ercan": ["MrOsleon", "Lilliana"],
+            "Şafak": ["s2s", "vurucu"],
+            "Sezer": ["the Kosm", "obliviscaris"]
+        };
+        let riotIdMetni = kimlikHaritasii[oyuncuAdi] ? kimlikHaritasii[oyuncuAdi].join(", ") : (typeof guncelRiotID !== "undefined" && guncelRiotID[oyuncuAdi] ? guncelRiotID[oyuncuAdi] : oyuncuAdi);
 
         let zafer = oyuncuMaclari.filter(m => m.sonuc === "Zafer" || m.sonuc === "Galibiyet").length;
         let bozgun = oyuncuMaclari.length - zafer;
@@ -889,7 +917,6 @@ const Sayfalar = {
             r.kda = r.d === 0 ? (r.k + r.a) : ((r.k + r.a) / r.d);
         });
 
-        // 🎯 YENİ SIRALAMA MANTIĞI: Önce Kazanma Oranı, eşitlik varsa KDA
         siraliRolObjeleri.sort((a, b) => {
             if (b.wr !== a.wr) {
                 return b.wr - a.wr;
@@ -946,7 +973,6 @@ const Sayfalar = {
         let efektifSampiyonListesi = [];
         let efektifKutuHTML = "";
 
-        // 🎯 isimSaf BURAYA TAŞINDI
         let isimSaf = oyuncuAdi.replace(/\s/g, "");
 
         let siraliSampiyonlar = Object.entries(sampiyonSayaclari).map(s => {
@@ -977,7 +1003,6 @@ const Sayfalar = {
             return b.kda - a.kda;
         }).slice(0, 3);
 
-        // 🎯 HİBRİT ŞAMPİYON KUTUSU (Rozetler bu id'lere yerleşecek)
         let sampiyonHtml = siraliSampiyonlar.map(s => {
             let cWR = ((s.veri.win / s.veri.mac) * 100).toFixed(0);
             let renk = cWR >= 50 ? "#3fb950" : "#f85149";
@@ -1152,19 +1177,19 @@ const Sayfalar = {
                         
                         <div style="display: flex; flex-direction: column; justify-content: center; gap: 8px;">
                             <div style="border: 1px solid var(--hextech-gold); border-radius: 6px; padding: 6px 15px; font-size: 0.85em; font-weight: bold; color: #fff; background: rgba(200,170,110,0.1); width: max-content; display:flex; align-items:center;">
-                                <span style="color: var(--hextech-gold); text-transform: uppercase; display:flex; align-items:center;">ANA ROL:&nbsp;${Yardimci.rolIkonGetir(top2Rol[0].orijinalAd)}${anaRolMetni}</span> &nbsp;|&nbsp; Tarz: ${anaDavranis}
+                                <span style="color: var(--hextech-gold); text-transform: uppercase; display:flex; align-items:center;">ANA ROL:&nbsp;${top2Rol[0] ? Yardimci.rolIkonGetir(top2Rol[0].orijinalAd) : ''}${anaRolMetni}</span> &nbsp;|&nbsp; Tarz: ${anaDavranis}
                             </div>
                             ${ikincilRolMetni !== "Yok" ? `
                             <div style="border: 1px solid #a0a0a0; border-radius: 6px; padding: 6px 15px; font-size: 0.85em; font-weight: bold; color: #fff; background: rgba(160,160,160,0.1); width: max-content; display:flex; align-items:center;">
-                                <span style="color: #d0d0d0; text-transform: uppercase; display:flex; align-items:center;">İK. ROL:&nbsp;${Yardimci.rolIkonGetir(top2Rol[1].orijinalAd)}${ikincilRolMetni}</span> &nbsp;|&nbsp; Tarz: ${ikincilDavranis}
+                                <span style="color: #d0d0d0; text-transform: uppercase; display:flex; align-items:center;">İK. ROL:&nbsp;${top2Rol[1] ? Yardimci.rolIkonGetir(top2Rol[1].orijinalAd) : ''}${ikincilRolMetni}</span> &nbsp;|&nbsp; Tarz: ${ikincilDavranis}
                             </div>` : ''}
                         </div>
                     </div>
                 </div>
 
                 <!-- 🎯 ALT KISIM: DEV LİG VİTRİNİ (TAM GENİŞLİKTE YAYILIR) -->
-                <div style="display: flex; gap: 20px; margin-top: 20px; width: 100%;">
-                    <div style="flex: 1; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); border: 1px solid #1e282d; border-radius: 10px; padding: 15px;">
+                <div style="display: flex; gap: 20px; margin-top: 20px; width: 100%; overflow-x: auto; padding-bottom:10px;" class="custom-scrollbar">
+                    <div style="flex: 1; min-width: 250px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); border: 1px solid #1e282d; border-radius: 10px; padding: 15px; flex-shrink: 0;">
                         <img id="ui-esnek-ikon-${isimSaf}" src="assets/img/ranks/emblem-unranked.png" style="width:70px; height:70px; margin-right:15px; flex-shrink:0;">
                         <div style="white-space:nowrap; text-align:left;">
                             <span style="font-size:12px; color:#a09b8c; font-weight:bold; letter-spacing:1px;">RANKED FLEX</span><br>
@@ -1172,7 +1197,7 @@ const Sayfalar = {
                             <span id="ui-esnek-lp-${isimSaf}" style="color:#0ac8b9; font-size:15px; font-weight:bold;">0 LP</span>
                         </div>
                     </div>
-                    <div style="flex: 1; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); border: 1px solid #1e282d; border-radius: 10px; padding: 15px;">
+                    <div style="flex: 1; min-width: 250px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); border: 1px solid #1e282d; border-radius: 10px; padding: 15px; flex-shrink: 0;">
                         <img id="ui-tekli-ikon-${isimSaf}" src="assets/img/ranks/emblem-unranked.png" style="width:70px; height:70px; margin-right:15px; flex-shrink:0;">
                         <div style="white-space:nowrap; text-align:left;">
                             <span style="font-size:12px; color:#a09b8c; font-weight:bold; letter-spacing:1px;">RANKED SOLOQ</span><br>
@@ -1180,7 +1205,7 @@ const Sayfalar = {
                             <span id="ui-tekli-lp-${isimSaf}" style="color:#0ac8b9; font-size:15px; font-weight:bold;">0 LP</span>
                         </div>
                     </div>
-                    <div style="flex: 1; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); border: 1px solid #1e282d; border-radius: 10px; padding: 15px;">
+                    <div style="flex: 1; min-width: 250px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); border: 1px solid #1e282d; border-radius: 10px; padding: 15px; flex-shrink: 0;">
                         <img id="ui-5v5-ikon-${isimSaf}" src="assets/img/ranks/emblem-unranked.png" style="width:70px; height:70px; margin-right:15px; flex-shrink:0;">
                         <div style="white-space:nowrap; text-align:left;">
                             <span style="font-size:12px; color:#a09b8c; font-weight:bold; letter-spacing:1px;">RANKED 5V5S</span><br>
@@ -1289,7 +1314,8 @@ const Sayfalar = {
             </div>
         </div>`;
 
-        let gercekDokumanAdi = oyuncuAdi === "Kaan" ? "Kaan_DarkLegend97" : `${oyuncuAdi}_${riotIdListesi[0].split('#')[0].trim()}`;
+        let guncelId = typeof guncelRiotID !== "undefined" && guncelRiotID[oyuncuAdi] ? guncelRiotID[oyuncuAdi] : oyuncuAdi;
+        let gercekDokumanAdi = oyuncuAdi === "Kaan" ? "Kaan_DarkLegend97" : `${oyuncuAdi}_${guncelId}`;
         setTimeout(() => { if (window.uiGuncelle) window.uiGuncelle(gercekDokumanAdi, isimSaf, oyuncuAdi); }, 100);
 
         window.profilHafizasi = window.profilHafizasi || {};
@@ -4006,7 +4032,7 @@ async function sistemiBaslat() {
 	Sistem.verilerRanked5s = [];
 
         // 1. Ana Depoyu (Esnek) Çek
-        const snap = await getDocs(collection(db, "gercek_maclar"));
+        const snap = await getDocs(collection(db, "gercek_maclar_flex"));
         snap.forEach(d => Sistem.veriler.push(d.data()));
 
         // 2. 🏆 Yeni Depoyu (Clash Arenası) Çek
