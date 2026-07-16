@@ -73,12 +73,12 @@ document.documentElement.className = kayitliImlec;
 /* ==============================================================================
    🛠️ V7.0.0 SABİTLER VE ÇEVİRİ MOTORU
 ============================================================================== */
-const TUM_EKIP_ISIMLERI = ["Anıl Abi", "Can", "Ercan", "Evren Abi", "Furkan", "Hüseyin", "Kaan", "Nurettin", "Samet Abi", "Samet Yaldız Abi", "Selim Abi", "Sezer", "Talha Abi", "Taner", "Umut Abi", "İlhan Abi", "Şafak"];
+const TUM_EKIP_ISIMLERI = ["Anıl Abi", "Giray", "Ercan", "Evren Abi", "Furkan", "Hüseyin", "Kaan", "Nurettin", "Samet Abi", "Samet Yaldız Abi", "Selim Abi", "Sezer", "Talha Abi", "Taner", "Umut Abi", "İlhan Abi", "Şafak"];
 
 const guncelRiotID = {
     "Kaan": "DarkLegend97", "Umut Abi": "TuMu", "Taner": "YazlıkDCFlex", "Selim Abi": "ShenerShen",
     "İlhan Abi": "Croupier", "Anıl Abi": "ALEMDAROGLU", "Şafak": "s2s", "Ercan": "MrOsleon",
-    "Sezer": "the Kosm", "Can": "YEAHRUMONBASHI", "Samet Abi": "MidFather", "Talha Abi": "Tai sins",
+    "Sezer": "the Kosm", "Giray": "GIRAMISÚ", "Samet Abi": "MidFather", "Talha Abi": "Tai sins",
     "Hüseyin": "Niyesuh v2", "Evren Abi": "FREAKAZOlD", "Samet Yaldız Abi": "oOoSMToOo",
     "Furkan": "LuJji", "Nurettin": "Urichanikaik"
 };
@@ -153,7 +153,8 @@ const Yardimci = {
             "Taner": ["YazlıkDCFlex", "Schwarzsx"],
             "Ercan": ["MrOsleon", "Lilliana"],
             "Şafak": ["s2s", "vurucu"],
-            "Sezer": ["the Kosm", "obliviscaris"]
+            "Sezer": ["the Kosm", "obliviscaris"],
+            "Giray": ["GIRAMISÚ", "YEAHRUMONBASHI"],
         };
 
         // 🛡️ 1. ZIRH: Eğer Riot ID varsa, veritabanındaki "oyuncu" damgasını YOKSAY ve Riot ID'ye göre gerçek sahibini bul!
@@ -430,7 +431,7 @@ function replaceWithLeftIcon(text, key, icon, color, lookahead = "") {
 const Menuler = [
     { id: "sunucu", ad: "📊 Sunucu Özeti" }, { id: "enyeni", ad: "⏱️ En Yeni Maçlar" },
     { id: "liderlik_grup", ad: "⭐ Liderlik Tabloları", alt: [{ id: "lid_kill", ad: "⚔️ Kill Liderleri" }, { id: "lid_utanc", ad: "☠️ Utanç Listesi" }, { id: "lid_asist", ad: "🤝 Asist Kralları" }, { id: "lid_gorus", ad: "👁️ Görüş Liderleri" }, { id: "lid_kda", ad: "👑 KDA Şampiyonları" }] },
-    { id: "bireysel_grup", ad: "👤 Bireysel Profil", alt: ["Anıl Abi", "Can", "Ercan", "Evren Abi", "Furkan", "Hüseyin", "Kaan", "Nurettin", "Samet Abi", "Samet Yaldız Abi", "Selim Abi", "Sezer", "Talha Abi", "Taner", "Umut Abi", "İlhan Abi", "Şafak"].map(isim => ({ id: "prof_" + isim.replace(/\s/g, ""), ad: isim })) },
+    { id: "bireysel_grup", ad: "👤 Bireysel Profil", alt: ["Anıl Abi", "Giray", "Ercan", "Evren Abi", "Furkan", "Hüseyin", "Kaan", "Nurettin", "Samet Abi", "Samet Yaldız Abi", "Selim Abi", "Sezer", "Talha Abi", "Taner", "Umut Abi", "İlhan Abi", "Şafak"].map(isim => ({ id: "prof_" + isim.replace(/\s/g, ""), ad: isim })) },
     { id: "sinerji", ad: "💪 Takım Sinerjisi" }, { id: "uzman", ad: "🏆 Şampiyon Uzmanları" },
     { id: "esya", ad: "⚔️ Eşya Bilgisi" }, { id: "run", ad: "🔮 Rün Dizilimi" },
     { id: "komp", ad: "🛡️ Şampiyonlar & Kompozisyonlar" }, { id: "harita", ad: "🗺️ Harita Rotasyonları" },
@@ -502,7 +503,7 @@ const Sayfalar = {
         const OYUNCU_RENKLERI = {
             "Evren Abi": "#ff4b4b", "İlhan Abi": "#00b8d9", "Taner": "#ffab00",
             "Furkan": "#36b37e", "Selim Abi": "#6554c0", "Umut Abi": "#ff5630",
-            "Can": "#0052cc", "Kaan": "#00875a", "Şafak": "#ff991f",
+            "Giray": "#0052cc", "Kaan": "#00875a", "Şafak": "#ff991f",
             "Ercan": "#403294", "Anıl Abi": "#0065ff", "Samet Abi": "#36ab53",
             "Sezer": "#b3bac5", "Hüseyin": "#ff7452", "Samet Yaldız Abi": "#2684ff",
             "Nurettin": "#ffd500", "Talha Abi": "#79f2c0"
@@ -810,7 +811,8 @@ const Sayfalar = {
             "Taner": ["YazlıkDCFlex", "Schwarzsx"],
             "Ercan": ["MrOsleon", "Lilliana"],
             "Şafak": ["s2s", "vurucu"],
-            "Sezer": ["the Kosm", "obliviscaris"]
+            "Sezer": ["the Kosm", "obliviscaris"],
+            "Giray": ["GIRAMISÚ", "YEAHRUMONBASHI"],
         };
         let riotIdMetni = kimlikHaritasii[oyuncuAdi] ? kimlikHaritasii[oyuncuAdi].join(", ") : (typeof guncelRiotID !== "undefined" && guncelRiotID[oyuncuAdi] ? guncelRiotID[oyuncuAdi] : oyuncuAdi);
 
@@ -1468,7 +1470,7 @@ const Sayfalar = {
 
         let ciplerHtml = "";
         if (window.aktifSinerjiBoyutu !== "ruya_takim" && window.aktifSinerjiBoyutu !== "haftanin_ruya_takimi") {
-            let tumEkipler = typeof TUM_EKIP_ISIMLERI !== "undefined" ? TUM_EKIP_ISIMLERI : ["Anıl Abi", "Can", "Ercan", "Evren Abi", "Furkan", "Hüseyin", "Kaan", "Nurettin", "Samet Abi", "Samet Yaldız Abi", "Selim Abi", "Sezer", "Talha Abi", "Taner", "Umut Abi", "İlhan Abi", "Şafak"];
+            let tumEkipler = typeof TUM_EKIP_ISIMLERI !== "undefined" ? TUM_EKIP_ISIMLERI : ["Anıl Abi", "Giray", "Ercan", "Evren Abi", "Furkan", "Hüseyin", "Kaan", "Nurettin", "Samet Abi", "Samet Yaldız Abi", "Selim Abi", "Sezer", "Talha Abi", "Taner", "Umut Abi", "İlhan Abi", "Şafak"];
 
             let chipButonlar = tumEkipler.map(isim => {
                 let oyunIci = typeof guncelRiotID !== "undefined" ? (guncelRiotID[isim] || isim) : isim;
