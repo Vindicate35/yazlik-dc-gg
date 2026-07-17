@@ -263,7 +263,10 @@ const Yardimci = {
     },
     cizRun: (runId, stil) => {
         if (!runId) return `<div style="${stil}; background:transparent;"></div>`;
-        let rune = window.runeIdMap && window.runeIdMap[runId];
+
+        // 🎯 İŞTE ZIRHLI SATIR BURASI: Veri tipi ne olursa olsun (String veya Number) kaçarı yok, bulacak!
+        let rune = window.runeIdMap && (window.runeIdMap[runId] || window.runeIdMap[String(runId)] || window.runeIdMap[Number(runId)]);
+
         let img = rune ? `https://ddragon.leagueoflegends.com/cdn/img/${rune.icon}` : 'https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/RunesIcon.png';
         return `<img src="${img}" style="${stil}" class="tetikleyici-run" data-run-id="${runId}">`;
     },
