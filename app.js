@@ -73,10 +73,10 @@ document.documentElement.className = kayitliImlec;
 /* ==============================================================================
    🛠️ V7.0.0 SABİTLER VE ÇEVİRİ MOTORU
 ============================================================================== */
-const TUM_EKIP_ISIMLERI = ["Anıl Abi", "Giray", "Ercan", "Evren Abi", "Furkan", "Hüseyin", "Kaan", "Nurettin", "Samet Abi", "Samet Yaldız Abi", "Selim Abi", "Sezer", "Talha Abi", "Taner", "Umut Abi", "İlhan Abi", "Şafak"];
+const TUM_EKIP_ISIMLERI = ["Anıl Abi", "Batuhan Abi", "Giray", "Ercan", "Evren Abi", "Furkan", "Hüseyin", "Kaan", "Nurettin", "Samet Abi", "Samet Yaldız Abi", "Selim Abi", "Sezer", "Talha Abi", "Taner", "Umut Abi", "İlhan Abi", "Şafak"];
 
 const guncelRiotID = {
-    "Kaan": "DarkLegend97", "Umut Abi": "TuMu", "Taner": "YazlıkDCFlex", "Selim Abi": "ShenerShen",
+    "Kaan": "DarkLegend97", "Batuhan Abi": "RunLap", "Umut Abi": "TuMu", "Taner": "YazlıkDCFlex", "Selim Abi": "ShenerShen",
     "İlhan Abi": "Croupier", "Anıl Abi": "ALEMDAROGLU", "Şafak": "s2s", "Ercan": "MrOsleon",
     "Sezer": "the Kosm", "Giray": "GIRAMISÚ", "Samet Abi": "MidFather", "Talha Abi": "Tai sins",
     "Hüseyin": "Niyesuh v2", "Evren Abi": "FREAKAZOlD", "Samet Yaldız Abi": "oOoSMToOo",
@@ -149,7 +149,7 @@ const Yardimci = {
     // 1. ANA KİMLİK MOTORU (Bot hatalarını ezen mutlak zırh)
     analizIsimGetir: (oyuncu, riot_id) => {
         const kimlikHaritasi = {
-            "Kaan": ["DarkLegend97", "Literation"],
+            "Kaan": ["DarkLegend97", "Literation", "Alex J Mercer"],
             "Taner": ["YazlıkDCFlex", "Schwarzsx"],
             "Ercan": ["MrOsleon", "Lilliana"],
             "Şafak": ["s2s", "vurucu"],
@@ -434,7 +434,7 @@ function replaceWithLeftIcon(text, key, icon, color, lookahead = "") {
 const Menuler = [
     { id: "sunucu", ad: "📊 Sunucu Özeti" }, { id: "enyeni", ad: "⏱️ En Yeni Maçlar" },
     { id: "liderlik_grup", ad: "⭐ Liderlik Tabloları", alt: [{ id: "lid_kill", ad: "⚔️ Kill Liderleri" }, { id: "lid_utanc", ad: "☠️ Utanç Listesi" }, { id: "lid_asist", ad: "🤝 Asist Kralları" }, { id: "lid_gorus", ad: "👁️ Görüş Liderleri" }, { id: "lid_kda", ad: "👑 KDA Şampiyonları" }] },
-    { id: "bireysel_grup", ad: "👤 Bireysel Profil", alt: ["Anıl Abi", "Giray", "Ercan", "Evren Abi", "Furkan", "Hüseyin", "Kaan", "Nurettin", "Samet Abi", "Samet Yaldız Abi", "Selim Abi", "Sezer", "Talha Abi", "Taner", "Umut Abi", "İlhan Abi", "Şafak"].map(isim => ({ id: "prof_" + isim.replace(/\s/g, ""), ad: isim })) },
+    { id: "bireysel_grup", ad: "👤 Bireysel Profil", alt: ["Anıl Abi", "Batuhan Abi", "Giray", "Ercan", "Evren Abi", "Furkan", "Hüseyin", "Kaan", "Nurettin", "Samet Abi", "Samet Yaldız Abi", "Selim Abi", "Sezer", "Talha Abi", "Taner", "Umut Abi", "İlhan Abi", "Şafak"].map(isim => ({ id: "prof_" + isim.replace(/\s/g, ""), ad: isim })) },
     { id: "sinerji", ad: "💪 Takım Sinerjisi" }, { id: "uzman", ad: "🏆 Şampiyon Uzmanları" },
     { id: "esya", ad: "⚔️ Eşya Bilgisi" }, { id: "run", ad: "🔮 Rün Dizilimi" },
     { id: "komp", ad: "🛡️ Şampiyonlar & Kompozisyonlar" }, { id: "harita", ad: "🗺️ Harita Rotasyonları" },
@@ -509,7 +509,7 @@ const Sayfalar = {
             "Giray": "#0052cc", "Kaan": "#00875a", "Şafak": "#ff991f",
             "Ercan": "#403294", "Anıl Abi": "#0065ff", "Samet Abi": "#36ab53",
             "Sezer": "#b3bac5", "Hüseyin": "#ff7452", "Samet Yaldız Abi": "#2684ff",
-            "Nurettin": "#ffd500", "Talha Abi": "#79f2c0"
+            "Nurettin": "#ffd500", "Talha Abi": "#79f2c0", "Batuhan Abi": "#d2a8ff" 
         };
 
         const renkBul = (isim) => {
