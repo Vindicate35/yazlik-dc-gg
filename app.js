@@ -810,7 +810,7 @@ const Sayfalar = {
 
         // 🎯 PROFİLİN ALTINDAKİ İSİM KALABALIĞINI (SÜLALEYİ) TEMİZLEYEN ZIRH
         const kimlikHaritasii = {
-            "Kaan": ["DarkLegend97", "Literation"],
+            "Kaan": ["DarkLegend97", "Literation", "Alex J Mercer"],
             "Taner": ["YazlıkDCFlex", "Schwarzsx"],
             "Ercan": ["MrOsleon", "Lilliana"],
             "Şafak": ["s2s", "vurucu"],
