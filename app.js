@@ -16,7 +16,7 @@ const Sistem = { veriler: [], aktifSayfa: "sunucu", aktifSayfaAdi: "📊 Sunucu 
 
 window.GuncelDurum = {
     sezon: "Tüm Zamanlar",
-    veriyiFiltrele: function (tumVeri) {
+    veriyiFiltrele: function (tumVeri, bireyselMi = false) {
         // 🛑 REMAKE ZIRHI: 10 Dakikadan (600 saniye) kısa süren maçları anında buharlaştır!
         let filtrelenmis = tumVeri.filter(m => !m.sure_saniye || m.sure_saniye >= 600);
 
@@ -38,12 +38,15 @@ window.GuncelDurum = {
         });
 
         // 3, 4 veya 5 kişi olan maç ID'lerini tut
-        let gecerliMacIds = Object.keys(macGruplari).filter(id => {
-            let oyuncuSayisi = macGruplari[id].length;
-            return oyuncuSayisi >= 3; // 3, 4 veya 5 kişi dahil, 1 ve 2 elendi
-        });
+        let gecerliMacIds = Object.keys(macGruplari).filter(id => macGruplari[id].length >= 3);
 
-        return filtrelenmis.filter(m => gecerliMacIds.includes(m.mac_id));
+        let sonuc = filtrelenmis.filter(m => gecerliMacIds.includes(m.mac_id));
+
+        // 🎯 KAAN'IN MUTLAK KLON ZIRHI: Bireysel istatistikler için kopyaları (Aydın'ı) ezer!
+        if (bireyselMi && typeof Yardimci !== 'undefined' && Yardimci.klonlariTemizle) {
+            return Yardimci.klonlariTemizle(sonuc);
+        }
+        return sonuc;
     }
 };
 
@@ -145,6 +148,46 @@ window.gizleHarikaPopup = function () {
 ============================================================================== */
 const Yardimci = {
     formatSampiyon: (isim) => sampiyonIsimCeviri[isim] || isim,
+
+    // 🎯 ÇOKLU HESAP (AYDIN) ZIRHI: Aynı maçtaki klonları önceliğe göre ezer
+    klonlariTemizle: (hamVeri) => {
+        let sonuclar = [];
+        let macGruplari = {};
+        hamVeri.forEach(m => {
+            if (!macGruplari[m.mac_id]) macGruplari[m.mac_id] = [];
+            macGruplari[m.mac_id].push(m);
+        });
+
+        const oncelik = { "darklegend97": 3, "literation": 2, "alex j mercer": 1 };
+
+        Object.values(macGruplari).forEach(grup => {
+            let kaanlar = grup.filter(p => p.oyuncu === "Kaan");
+            let secilenKaanObjesi = null;
+
+            // Eğer maçta 1'den fazla Kaan varsa hiyerarşiyi (DarkLegend97 > Literation > Alex) işlet
+            if (kaanlar.length > 0) {
+                let enYuksekPuan = -1;
+                kaanlar.forEach(k => {
+                    let rId = k.riot_id ? k.riot_id.split('#')[0].split(',')[0].trim().toLowerCase() : "";
+                    let puan = oncelik[rId] || 0;
+                    if (puan > enYuksekPuan) {
+                        enYuksekPuan = puan;
+                        secilenKaanObjesi = k;
+                    }
+                });
+            }
+
+            grup.forEach(p => {
+                if (p.oyuncu === "Kaan") {
+                    // Sadece hiyerarşide kazanan Kaan'ı sonuçlara ekle, Aydın'ı çöpe at
+                    if (p === secilenKaanObjesi) sonuclar.push(p);
+                } else {
+                    sonuclar.push(p);
+                }
+            });
+        });
+        return sonuclar;
+    },
 
     // 1. ANA KİMLİK MOTORU (Bot hatalarını ezen mutlak zırh)
     analizIsimGetir: (oyuncu, riot_id) => {
@@ -527,7 +570,7 @@ const Sayfalar = {
             "UTILITY": { ad: `${Yardimci.rolIkonGetir("UTILITY")} SUP`, veri: {}, toplam: 0 }
         };
 
-        let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler);
+        let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler, true);
 
         islenecekVeri.forEach(m => {
             let rol = m.pozisyon;
@@ -672,7 +715,7 @@ const Sayfalar = {
     },
     cizLiderlik: function (tabloTuru, sayfaAdi) {
         let oyuncuIstatistikleri = {};
-        let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler);
+        let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler, true);
 
         islenecekVeri.forEach(m => {
             // 🎯 OYUNCU ADINI (KAAN, TANER VS.) ANAHTAR OLARAK KULLANIYORUZ
@@ -763,7 +806,7 @@ const Sayfalar = {
     },
     cizProfil: function () {
         // Veritabanındaki eşsiz oyuncu isimlerini alıp menü oluşturuyoruz
-        let oyuncuIsimleri = [...new Set(window.GuncelDurum.veriyiFiltrele(Sistem.veriler).map(m => m.oyuncu))].sort();
+        let oyuncuIsimleri = [...new Set(window.GuncelDurum.veriyiFiltrele(Sistem.veriler, true).map(m => m.oyuncu))].sort();
 
         let butonlarHtml = oyuncuIsimleri.map(isim => `
             <button class="menu-btn bireysel-oyuncu-btn" onclick="window.BireyselProfilYukle('${isim}', this)">
@@ -786,7 +829,7 @@ const Sayfalar = {
     },
     cizProfilDetay: function (oyuncuAdi) {
         if (window.profilHafizasi && window.profilHafizasi[oyuncuAdi]) {
-            let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler);
+            let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler, true);
             let oyuncuMaclari = islenecekVeri.filter(m => m.oyuncu === oyuncuAdi);
             if (oyuncuMaclari.length > 0) {
                 let isimSaf = oyuncuAdi.replace(/\s/g, "");
@@ -800,7 +843,7 @@ const Sayfalar = {
             return window.profilHafizasi[oyuncuAdi];
         }
 
-        let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler);
+        let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler, true);
         let oyuncuMaclari = islenecekVeri.filter(m => m.oyuncu === oyuncuAdi);
 
         if (oyuncuMaclari.length === 0) return `<div style="text-align:center; padding: 50px; font-size:1.2em; color:#f85149;">Bu oyuncuya ait maç bulunamadı.</div>`;
@@ -1888,7 +1931,7 @@ const Sayfalar = {
     },
     cizUzmanlik: function () {
         // Veritabanında oynanmış tüm benzersiz şampiyonları bul ve alfabetik sırala
-        let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler);
+        let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler, true);
         let oynananSampiyonlar = [...new Set(islenecekVeri.map(m => m.sampiyon).filter(Boolean))].sort((a, b) => {
             let isimA = Yardimci.formatSampiyon(a).toLowerCase();
             let isimB = Yardimci.formatSampiyon(b).toLowerCase();
@@ -2561,7 +2604,7 @@ const Sayfalar = {
     cizYarat: function () {
         window.ekipVeritabani = {};
         const rolCeviriKisa = { "TOP": "TOP", "JUNGLE": "JNG", "MIDDLE": "MID", "BOTTOM": "BOT", "UTILITY": "SUP" };
-        let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler);
+        let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler, true);
 
         islenecekVeri.forEach(mac => {
             let isim = mac.oyuncu;
@@ -4838,7 +4881,7 @@ window.uzmanlikKartlariniCiz = function (sampiyonAdi) {
     let container = document.getElementById("sampiyon-veriler");
     if (!sampiyonAdi) return;
 
-    let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler);
+    let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler, true);
 
     let guncelIkonlar = {};
     [...islenecekVeri].sort((a, b) => (b.tarih_ms || 0) - (a.tarih_ms || 0)).forEach(m => {
@@ -5096,7 +5139,7 @@ window.keskinNisanciFiltresi = function (arananRol, tiklananKart) {
 };
 // 🎯 SEÇİLEN ŞAMPİYONUN ROLLERE GÖRE ANALİZ KARTLARINI ÇİZEN MOTOR
 window.sagKolonCiz = function (oyuncuAdi, sampiyonAdi) {
-    let maclar = window.GuncelDurum.veriyiFiltrele(Sistem.veriler).filter(m => m.oyuncu === oyuncuAdi && m.sampiyon === sampiyonAdi);
+    let maclar = window.GuncelDurum.veriyiFiltrele(Sistem.veriler, true).filter(m => m.oyuncu === oyuncuAdi && m.sampiyon === sampiyonAdi);
     let rolGruplari = {};
 
     maclar.forEach(m => {
@@ -5216,7 +5259,7 @@ window.seciliKadro = { top: null, jng: null, mid: null, adc: null, sup: null };
 window.aktifIncelenenOyuncu = null;
 
 window.oyuncuEtiketTuret = function (isim) {
-    let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler);
+    let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler, true);
     let maclar = islenecekVeri.filter(x => x.oyuncu === isim);
     if (maclar.length === 0) return "";
 
@@ -5249,7 +5292,7 @@ window.oyuncuEtiketTuret = function (isim) {
 };
 
 window.hesaplaRolGucu = function (oyuncuIsmi, rol) {
-    let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler);
+    let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler, true);
     let maclar = islenecekVeri.filter(m => m.oyuncu === oyuncuIsmi && m.pozisyon === rol);
     if (maclar.length < 3) return { skor: 20, renk: "#f85149", metin: "Yetersiz Veri" };
 
@@ -5330,7 +5373,7 @@ window.kadroyuTemizle = function () {
 };
 
 window.seciliKadroyuCiz = function () {
-    let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler);
+    let islenecekVeri = window.GuncelDurum.veriyiFiltrele(Sistem.veriler, true);
 
     // 🎯 BURAYA İKON KODLARINI DA TANIMLADIK Kİ YENİDEN ÇİZERKEN KAYBOLMASIN
     const roller = [
