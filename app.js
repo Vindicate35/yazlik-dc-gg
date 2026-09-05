@@ -198,6 +198,7 @@ const Yardimci = {
             "Şafak": ["s2s", "vurucu"],
             "Sezer": ["the Kosm", "obliviscaris"],
             "Giray": ["GIRAMISÚ", "YEAHRUMONBASHI"],
+            "Hüseyin": ["Niyesuh v2", "Supeigia"]
         };
 
         // 🛡️ 1. ZIRH: Eğer Riot ID varsa, veritabanındaki "oyuncu" damgasını YOKSAY ve Riot ID'ye göre gerçek sahibini bul!
@@ -859,6 +860,7 @@ const Sayfalar = {
             "Şafak": ["s2s", "vurucu"],
             "Sezer": ["the Kosm", "obliviscaris"],
             "Giray": ["GIRAMISÚ", "YEAHRUMONBASHI"],
+            "Hüseyin": ["Niyesuh v2", "Supeigia"] 
         };
         let riotIdMetni = kimlikHaritasii[oyuncuAdi] ? kimlikHaritasii[oyuncuAdi].join(", ") : (typeof guncelRiotID !== "undefined" && guncelRiotID[oyuncuAdi] ? guncelRiotID[oyuncuAdi] : oyuncuAdi);
 
