@@ -2337,8 +2337,240 @@ const Sayfalar = {
         </div>`;
     },
     cizKompozisyon: function () {
+        // 1. Oynanan şampiyonları havuz için topla ve EKRAN İSMİNE GÖRE sırala
+        let oynananSampiyonlar = [...new Set(window.GuncelDurum.veriyiFiltrele(Sistem.veriler).map(m => m.sampiyon).filter(Boolean))].sort((a, b) => {
+            let isimA = Yardimci.formatSampiyon(a).toLowerCase();
+            let isimB = Yardimci.formatSampiyon(b).toLowerCase();
+            return isimA.localeCompare(isimB, 'tr');
+        });
+
+        let sampiyonSecenekleri = oynananSampiyonlar.map(s => `<option value="${s}">${Yardimci.formatSampiyon(s)}</option>`).join("");
+        let oyuncuSecenekleri = (typeof TUM_EKIP_ISIMLERI !== "undefined" ? TUM_EKIP_ISIMLERI : ["Kaan", "Batuhan Abi", "Taner", "Ercan", "Şafak"]).map(o => `<option value="${o}">${typeof guncelRiotID !== "undefined" ? (guncelRiotID[o] || o) : o}</option>`).join("");
+
+        // 🎯 HAFIZA KİLİDİ KALDIRILDI! Fonksiyonlar her seferinde güncel kodla yeniden yazılacak.
+        window.kompAnalizEt = function () {
+            // Oyuncuları ve Şampiyonları Çek
+            let s_top = document.getElementById('komp-hero-top').value;
+            let s_jng = document.getElementById('komp-hero-jng').value;
+            let s_mid = document.getElementById('komp-hero-mid').value;
+            let s_adc = document.getElementById('komp-hero-adc').value;
+            let s_sup = document.getElementById('komp-hero-sup').value;
+
+            let kadro = [
+                { rol: "TOP", oyuncu: document.getElementById('komp-oyuncu-top').value, champ: s_top },
+                { rol: "JUNGLE", oyuncu: document.getElementById('komp-oyuncu-jng').value, champ: s_jng },
+                { rol: "MIDDLE", oyuncu: document.getElementById('komp-oyuncu-mid').value, champ: s_mid },
+                { rol: "BOTTOM", oyuncu: document.getElementById('komp-oyuncu-adc').value, champ: s_adc },
+                { rol: "UTILITY", oyuncu: document.getElementById('komp-oyuncu-sup').value, champ: s_sup }
+            ];
+
+            let analizKutusu = document.getElementById('komp-analiz-sonucu');
+
+            // Hepsi seçili mi kontrolü
+            let eksikVarMi = kadro.some(k => !k.oyuncu || !k.champ);
+            if (eksikVarMi) {
+                analizKutusu.innerHTML = `<div style="color:#f85149; font-weight:bold; text-align:center; padding: 20px; background: rgba(248, 81, 73, 0.1); border-radius: 8px; border: 1px dashed #f85149;">Tam bir analiz için 5 role de oyuncu ve şampiyon seçmelisiniz!</div>`;
+                return;
+            }
+
+            let secilenHerolar = kadro.map(k => k.champ);
+            let tumMaclar = window.GuncelDurum.veriyiFiltrele(Sistem.veriler, true);
+
+            // 🎯 1. BÖLÜM: OYUNCU USTALIĞI VE PERFORMANS KONTROLÜ
+            let oyuncuRaporuHTML = `<div style="display:flex; flex-direction:column; gap:8px; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">`;
+            let riskliOyuncuSayisi = 0;
+
+            kadro.forEach(k => {
+                let oMaclar = tumMaclar.filter(m => m.oyuncu === k.oyuncu && m.sampiyon === k.champ);
+                let mSayisi = oMaclar.length;
+                let mWin = oMaclar.filter(m => m.sonuc === "Zafer" || m.sonuc === "Galibiyet").length;
+                let mWR = mSayisi > 0 ? Math.round((mWin / mSayisi) * 100) : 0;
+
+                let oyunIciIsim = typeof guncelRiotID !== "undefined" ? (guncelRiotID[k.oyuncu] || k.oyuncu) : k.oyuncu;
+
+                if (mSayisi >= 3 && mWR >= 50) {
+                    oyuncuRaporuHTML += `<div style="display:flex; justify-content:space-between; align-items:center; background: rgba(63, 185, 80, 0.1); border-left: 3px solid #3fb950; padding: 6px 10px; border-radius: 4px;">
+                        <span style="color:#fff; font-size:0.9em;">✅ <b>${oyunIciIsim}</b>, ${Yardimci.formatSampiyon(k.champ)} ile usta.</span>
+                        <span style="color:#3fb950; font-weight:bold; font-size:0.85em;">%${mWR} WR (${mSayisi} Maç)</span>
+                    </div>`;
+                } else if (mSayisi > 0 && mWR < 50) {
+                    oyuncuRaporuHTML += `<div style="display:flex; justify-content:space-between; align-items:center; background: rgba(248, 81, 73, 0.1); border-left: 3px solid #f85149; padding: 6px 10px; border-radius: 4px;">
+                        <span style="color:#fff; font-size:0.9em;">⚠️ <b>${oyunIciIsim}</b>, ${Yardimci.formatSampiyon(k.champ)} ile zorlanıyor.</span>
+                        <span style="color:#f85149; font-weight:bold; font-size:0.85em;">%${mWR} WR (${mSayisi} Maç)</span>
+                    </div>`;
+                    riskliOyuncuSayisi++;
+                } else {
+                    oyuncuRaporuHTML += `<div style="display:flex; justify-content:space-between; align-items:center; background: rgba(255, 184, 77, 0.1); border-left: 3px solid #ffb84d; padding: 6px 10px; border-radius: 4px;">
+                        <span style="color:#fff; font-size:0.9em;">❓ <b>${oyunIciIsim}</b> için ${Yardimci.formatSampiyon(k.champ)} kapalı kutu.</span>
+                        <span style="color:#ffb84d; font-weight:bold; font-size:0.85em;">Yetersiz Veri</span>
+                    </div>`;
+                    riskliOyuncuSayisi++;
+                }
+            });
+            oyuncuRaporuHTML += `</div>`;
+
+            // 🎯 2. BÖLÜM: KOMPOZİSYON KİMYASI VE MİKRO SİNERJİLER
+            const aoe_ult = ["Malphite", "Amumu", "MissFortune", "Viktor", "Leona", "Kennen", "Diana", "Orianna", "Rell", "Fiddlesticks", "Galio", "JarvanIV", "Seraphine"];
+            const poke = ["Zoe", "Jayce", "Ezreal", "Xerath", "Velkoz", "Varus", "Nidalee", "Ziggs", "Lux", "Kaisa", "KogMaw"];
+            const hard_engage = ["Leona", "Malphite", "Nautilus", "Amumu", "Rakan", "Hecarim", "Sejuani", "Zac", "Maokai", "Vi", "Nocturne", "JarvanIV"];
+            const hyper_carry = ["Vayne", "KogMaw", "Jinx", "Twitch", "Aphelios", "Zeri", "Smolder"];
+            const peel = ["Janna", "Lulu", "Karma", "Milio", "Soraka", "Renata", "Braum", "TahmKench", "Taric"];
+            const marksmen = ["Ashe", "Tristana", "Graves", "Lucian", "Vayne", "Jinx", "KogMaw", "Twitch", "Aphelios", "Zeri", "Smolder", "Varus", "Xayah", "Sivir", "Kaisa", "Caitlyn", "Jhin", "Akshan", "Quinn", "Kindred", "Senna", "Ezreal", "Corki"];
+            const pure_supports = ["Blitzcrank", "Braum", "Thresh", "Nautilus", "Leona", "Janna", "Lulu", "Karma", "Soraka", "Nami", "Sona", "Yuumi", "Rell", "Pyke", "Alistar", "Bard", "Rakan", "Taric", "Milio", "Renata"];
+
+            let aoeCount = 0; let pokeCount = 0; let engageCount = 0; let carryCount = 0; let peelCount = 0; let marksmanCount = 0;
+            let knockupCount = 0;
+
+            // Şampiyon Kontrolleri
+            let hasXayah = secilenHerolar.includes("Xayah");
+            let hasRakan = secilenHerolar.includes("Rakan");
+            let hasLucian = secilenHerolar.includes("Lucian");
+            let hasNami = secilenHerolar.includes("Nami");
+            let hasCaitlyn = secilenHerolar.includes("Caitlyn");
+            let hasMorgana = secilenHerolar.includes("Morgana");
+            let hasKogMaw = secilenHerolar.includes("KogMaw");
+            let hasLulu = secilenHerolar.includes("Lulu");
+            let hasShen = secilenHerolar.includes("Shen");
+            let hasBraum = secilenHerolar.includes("Braum");
+            let hasYasuo = secilenHerolar.includes("Yasuo");
+            let stealthOrGlobal = ["Twitch", "Evelynn", "Rengar", "Nocturne", "Shaco"].some(c => secilenHerolar.includes(c));
+
+            secilenHerolar.forEach(s => {
+                if (aoe_ult.includes(s)) aoeCount++;
+                if (poke.includes(s)) pokeCount++;
+                if (hard_engage.includes(s)) engageCount++;
+                if (hyper_carry.includes(s)) carryCount++;
+                if (peel.includes(s)) peelCount++;
+                if (marksmen.includes(s)) marksmanCount++;
+
+                if (["Malphite", "Alistar", "Rakan", "Diana", "Zac", "Vi", "Nautilus", "Ornn", "Gragas", "Wukong", "XinZhao", "JarvanIV", "LeeSin", "Yone"].includes(s)) knockupCount++;
+            });
+
+            let baslik = "⚖️ Dengeli Standart Kompozisyon";
+            let detay = "Bu kompozisyon her durum için dengeli bir yapı sunuyor. Savaşları dikkatli başlatın ve ayrık ittirme (split push) fırsatlarını kollayın.";
+            let renk = "#a09b8c";
+
+            // 🎯 ÖZEL MİKRO SİNERJİLER VE KRİTİK HATALAR (Öncelikli Algılanır)
+            if (pure_supports.includes(s_adc) && pure_supports.includes(s_sup)) {
+                baslik = "🚫 Hasar Krizi (Çift Destekli Alt Koridor)";
+                detay = "Alt koridora iki saf destek şampiyonu seçtiniz! Oyuncular bu şampiyonlarda usta olsa bile takımın kule yıkacak veya uzun takım savaşlarında hasar çıkaracak (DPS) bir taşıyıcısı yok. Oyun uzadıkça kazanmanız imkansıza yaklaşacaktır.";
+                renk = "#dc3545";
+            } else if (hasXayah && hasRakan) {
+                baslik = "💕 Aşıklar Sinerjisi (Xayah & Rakan)";
+                detay = "Alt koridorda oyun kodlarına gömülü benzersiz bir sinerji. Rakan'ın Xayah'a özel menzil ve kalkan avantajları sayesinde koridoru domine edebilir, takım savaşlarında rakipleri birbirine katabilirsiniz.";
+                renk = "#d2a8ff";
+            } else if (hasLucian && hasNami) {
+                baslik = "🌊 Okyanus Ateşi (Lucian & Nami)";
+                detay = "Erken oyunda tartışmasız en agresif ve ölümcül alt koridor ikilisi. Nami'nin E yeteneği Lucian'ın pasifiyle anında üç kez tetiklenir ve rakip nişancıyı saniyeler içinde buharlaştırır.";
+                renk = "#00b8d9";
+            } else if (hasCaitlyn && hasMorgana) {
+                baslik = "⛓️ Karanlık Kapan (Caitlyn & Morgana)";
+                detay = "Kusursuz bir koridor kuşatması. Morgana'nın Karanlık Esaret'i (Q) tuttuğu an rakibin altına anında Caitlyn kapanı yerleştirilir; rakip adım bile atamadan zincirleme kitle kontrolle ekrana bakakalır.";
+                renk = "#8e44ad";
+            } else if (hasKogMaw && hasLulu) {
+                baslik = "🛡️ Makineli Tüfek (Kog'Maw & Lulu)";
+                detay = "Klasik 'Juggermaw' kompozisyonu. Lulu'nun verdiği devasa kalkan, hareket hızı ve saldırı hızı güçlendirmeleriyle Kog'Maw adeta ölümsüz bir hasar makinesine dönüşür. Tek yapmanız gereken Lulu'yu hayatta tutmak.";
+                renk = "#3fb950";
+            } else if (hasShen && stealthOrGlobal) {
+                baslik = "🥷 Görünmez Tehdit (Shen Operasyonu)";
+                detay = "Haritada rakibe kabus yaşatacak bir sinerji. Görünmez bir şampiyonun (Twitch, Evelynn vb.) veya global uçan birinin (Nocturne) üzerine atılan Shen ultisi, rakip ne olduğunu anlamadan bir anda 2-3 kişinin üstlerine çökmesini sağlar.";
+                renk = "#ff5722";
+            } else if (hasBraum && marksmanCount >= 2) {
+                baslik = "❄️ Buzun Öfkesi (Braum x Ağır Ateş Sinerjisi)";
+                detay = "Kadroda Braum ile birlikte birden fazla nişancı/seri vuruş yapan şampiyon var. Braum'un pasifi saniyeler içinde tetikleneceği için aradan adam çıkarma potansiyeliniz devasa.";
+                renk = "#aee2ff";
+            } else if (hasYasuo && knockupCount >= 2) {
+                baslik = "🌪️ Hava Yolları (Yasuo Sinerjisi)";
+                detay = "Takımda Yasuo için havaya savurma (Knock-up) yeteneği olan birden fazla şampiyon var. Savaş başlatıcılar rakibi zıplattığı an Yasuo ultisiyle maçı tek hamlede bitirebilirsiniz.";
+                renk = "#0ac8b9";
+            }
+            // GENEL MAKRO KOMPOZİSYONLAR
+            else if (marksmanCount === 0 && !["Yasuo", "Yone", "Cassiopeia", "Karthus", "Azir"].some(c => secilenHerolar.includes(c))) {
+                baslik = "⚠️ Sıfır Menzilli Hasar (DPS Eksikliği)";
+                detay = "Takımda nişancı veya sürekli hasar verebilen bir büyücü/dövüşcü yok. Tankları eritmekte ve kule/objektif almakta çok zorlanacaksınız.";
+                renk = "#ffb84d";
+            } else if (marksmanCount >= 3) {
+                baslik = "🔫 Cam Top (Aşırı Nişancı Kadrosu)";
+                detay = "Takımda 3 veya daha fazla nişancı var! Hasar potansiyeliniz inanılmaz yüksek fakat takımınız çok kırılgan. Düşman suikastçılarına veya sert giriş (hard engage) kompozisyonlarına karşı anında silinebilirsiniz. Rakibi menzilinize yaklaştırmadan eritmelisiniz.";
+                renk = "#f85149";
+            } else if (aoeCount >= 3) {
+                baslik = "🔥 Wombo Combo (Alan Etkisi)";
+                detay = "Takımınız devasa alan etkili hasara sahip. Kesinlikle 5'e 5 savaş kovalamalı, dar koridorlarda (ejder/baron çukuru) savaşmalı ve komboyu bozmadan ultiler etrafında oynamalısınız. Biriniz girerse, hepiniz girin!";
+                renk = "#ff4500";
+            } else if (pokeCount >= 2 && engageCount < 2) {
+                baslik = "🏹 Dürtme ve Kuşatma (Poke Comp)";
+                detay = "Düşmanla doğrudan yüzleşmek intihar olur. Objektiflere önceden gidip rakibi uzaktan yeteneklerle (poke) yıpratmalısınız. Düşman canı %50'ye düşmeden savaşa girmeyin.";
+                renk = "#00b8d9";
+            } else if (carryCount >= 1 && peelCount >= 1) {
+                baslik = "🛡️ Başkanı Koru (Protect the ADC)";
+                detay = "Tüm yatırım nişancınızın üzerine yapılmış durumda. Bütün destek yeteneklerini ve kalkanları onu hayatta tutmak için saklayın; o yaşıyorsa savaşı kazanırsınız.";
+                renk = "#3fb950";
+            } else if (engageCount >= 3) {
+                baslik = "🚀 Yakala ve Kes (Hard Engage / Pick)";
+                detay = "Haritada rakibi tek yakalamak ve acımasızca savaşı başlatmak için kusursuz bir kadro. Görüş avantajı sağlayıp çalılardan aniden çıkarak rakibi hazırlıksız avlayın.";
+                renk = "#ffb84d";
+            }
+
+            // 🎯 3. BÖLÜM: NİHAİ KARAR (SİNERJİ + USTALIK ÇATIŞMASI)
+            let uyariBanner = "";
+            if (riskliOyuncuSayisi >= 3 && renk !== "#dc3545") {
+                renk = "#f85149";
+                baslik = "🤡 Kağıt Üstünde İyi, Vadi'de Felaket (Troll Kadro)";
+                uyariBanner = `<div style="background: rgba(248, 81, 73, 0.2); padding: 10px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #f85149; color: #fff; font-weight: bold; font-size: 0.9em; text-align:center;">
+                    ⚠️ Kompozisyon türü <b>${baslik.split('(')[0]}</b> olsa da takımın çoğunluğu seçtiği şampiyonu oynamayı bilmiyor. Kesinlikle tavsiye edilmez!
+                </div>`;
+            }
+
+            analizKutusu.innerHTML = `
+                <div style="background: rgba(0,0,0,0.4); border-left: 4px solid ${renk}; padding: 15px; border-radius: 8px;">
+                    ${uyariBanner}
+                    <div style="color: ${renk}; font-weight: bold; font-size: 1.2em; margin-bottom: 8px;">${baslik}</div>
+                    <div style="color: #c9d1d9; line-height: 1.5; font-size: 0.95em;">${detay}</div>
+                    ${oyuncuRaporuHTML}
+                </div>
+            `;
+        };
+
+        window.kompResimGuncelle = function () {
+            ["top", "jng", "mid", "adc", "sup"].forEach(rol => {
+                let secilenSampiyon = document.getElementById(`komp-hero-${rol}`).value;
+                let imgEl = document.getElementById(`komp-img-${rol}`);
+                if (secilenSampiyon) {
+                    imgEl.src = Yardimci.resimUrlGetir(secilenSampiyon, typeof RiotCDN !== 'undefined' ? RiotCDN.surum : '16.12.1');
+                    imgEl.style.opacity = 1;
+                    imgEl.style.border = "2px solid var(--accent-color)";
+                } else {
+                    imgEl.src = "";
+                    imgEl.style.opacity = 0;
+                    imgEl.style.border = "none";
+                }
+            });
+            window.kompAnalizEt();
+        };
+
+        let slotCiz = (id, rolAd, ikonStr) => `
+            <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                <div style="width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;">
+                    <img id="komp-img-${id}" src="" style="width: 100%; height: 100%; border-radius: 50%; opacity: 0; transition: 0.3s; object-fit: cover;">
+                </div>
+                <div style="flex: 1;">
+                    <div style="font-weight: bold; color: #8b949e; margin-bottom: 6px; font-size: 0.85em; text-transform: uppercase;">${ikonStr} ${rolAd}</div>
+                    <div style="display: flex; gap: 10px;">
+                        <select id="komp-oyuncu-${id}" class="hex-select" style="flex: 1; padding: 6px; font-size: 0.9em;" onchange="window.kompResimGuncelle()">
+                            <option value="">Kimin Seçimi?</option>
+                            ${oyuncuSecenekleri}
+                        </select>
+                        <select id="komp-hero-${id}" class="hex-select" style="flex: 1.5; padding: 6px; font-size: 0.9em; border-color: var(--hextech-gold);" onchange="window.kompResimGuncelle()">
+                            <option value="">Şampiyon Seç</option>
+                            ${sampiyonSecenekleri}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        `;
+
         return `
-        <div style="max-width: 1100px; margin: 0 auto; color: var(--text-light);">
+        <div style="max-width: 1100px; margin: 0 auto; color: var(--text-light); padding-bottom: 30px;">
             <h1 style="color: var(--text-light); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 0;">🛡️ Şampiyonlar & Kompozisyonlar</h1>
             
             <div style="background: rgba(9, 20, 40, 0.7); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); margin-top: 20px;">
@@ -2347,7 +2579,6 @@ const Sayfalar = {
                 </h2>
 
                 <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
-                    <!-- Temel Taş Kağıt Makas Mantığı -->
                     <div style="flex: 1; min-width: 300px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-left: 4px solid #ffd700; border-radius: 8px; padding: 15px;">
                         <h3 style="color:#ffd700; margin-top:0; letter-spacing: 0.5px;">Döngüsel Sayaç Kuramı</h3>
                         <p style="color:var(--text-main); line-height: 1.5; font-size: 0.95em;">League of Legends'ta kompozisyonlar dev bir taş-kağıt-makas oyunudur. İstisnalar olsa da altın kural şudur:</p>
@@ -2359,7 +2590,6 @@ const Sayfalar = {
                         </ul>
                     </div>
 
-                    <!-- Rol Dağılımı ve Görevler -->
                     <div style="flex: 1; min-width: 300px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-left: 4px solid #a1d586; border-radius: 8px; padding: 15px;">
                         <h3 style="color:#a1d586; margin-top:0; letter-spacing: 0.5px;">Modern Rol Sinerjileri</h3>
                         <ul style="color:var(--text-light); line-height: 1.8; margin-bottom: 0;">
@@ -2367,6 +2597,29 @@ const Sayfalar = {
                             <li><b>Güçlü Taraf (Strongside):</b> Tüm orman ve orta koridor baskınlarının odaklandığı, maçı taşıması beklenen koridordur. Bu koridor düşerse maç genellikle biter.</li>
                             <li><b>Wombo Combo:</b> Alan etkili (AoE) kitle kontrol yeteneklerinin art arda kullanılmasıdır <span style="color:var(--text-main); font-size:0.9em;">(Örn: Malphite Ultisi + Yasuo Ultisi + Orianna Ultisi)</span>. Rakibe tepki süresi tanımaz.</li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- İNTERAKTİF KOMPOZİSYON TAHTASI -->
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
+                <div style="flex: 1.5; min-width: 350px; background: rgba(9, 20, 40, 0.7); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+                    <h3 style="color:#0ac8b9; text-align:center; border-bottom:1px dashed var(--border-color); padding-bottom:10px; margin-top:0;">🎮 Kadro Mühendisi</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                        ${slotCiz('top', 'Üst Koridor', Yardimci.rolIkonGetir('TOP'))}
+                        ${slotCiz('jng', 'Orman', Yardimci.rolIkonGetir('JNG'))}
+                        ${slotCiz('mid', 'Orta Koridor', Yardimci.rolIkonGetir('MID'))}
+                        ${slotCiz('adc', 'Nişancı', Yardimci.rolIkonGetir('BOT'))}
+                        ${slotCiz('sup', 'Destek', Yardimci.rolIkonGetir('SUP'))}
+                    </div>
+                </div>
+
+                <div style="flex: 1; min-width: 300px; background: rgba(9, 20, 40, 0.7); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+                    <h3 style="color:#ffd700; text-align:center; border-bottom:1px dashed var(--border-color); padding-bottom:10px; margin-top:0;">🧠 Stratejik Analiz</h3>
+                    <div id="komp-analiz-sonucu" style="margin-top: 20px;">
+                        <div style="text-align:center; color:#8b949e; font-style:italic; padding: 20px;">
+                            Kompozisyonun kimyasını ve oyuncu ustalıklarını görmek için sol taraftan 5 oyuncuyu ve şampiyonlarını seçin.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2760,10 +3013,22 @@ const Sayfalar = {
         const webYamalari = [
             `
             <div class="yama-karti">
+                <div class="yama-baslik">v7.2.5 - Akıllı Fren, Klon Zırhı ve Kompozisyon Zekası <span class="yama-tarih">26 Eyl 2026</span></div>
+                <ul class="yama-liste">
+                    <li><strong>[v7.2.5] Kadro Mühendisi ve Mikro Sinerji Motoru:</strong> "Şampiyonlar & Kompozisyonlar" sekmesi interaktif bir e-spor koçluk tahtasına dönüştürüldü. Sistem artık 5'li kadronun genel meta kimliğini (Wombo Combo, Poke Comp, Hard Engage) belirlemenin yanı sıra; Xayah & Rakan, Lucian & Nami, Braum & Ağır Ateş gibi <em>"Gizli OP"</em> mikro sinerjileri ve çift destekli troll kadroları da tespit edip uyarı veriyor.</li>
+                    <li><strong>[v7.2.5] Bireysel Ustalık Radarı:</strong> Kadro mühendisinde bir oyuncuya şampiyon atandığında, sistem doğrudan o oyuncunun %WR ve Maç sayısına (min. 3 maç barajı) bakarak performans analizi (✅ Usta, ⚠️ Zorlanıyor, ❓ Kapalı Kutu) yapıyor. Riskli kadrolarda kırmızı alarm devreye giriyor.</li>
+                    <li><strong>[v7.2.5] Mutlak Klon Zırhı (Hiyerarşi Motoru):</strong> Hesap paylaşımlarından veya smurf hesaplardan kaynaklanan "Aynı maçta iki Kaan" krizleri çözüldü. Bireysel profil ve sunucu istatistikleri hesaplanırken devreye giren <code>Yardimci.klonlariTemizle</code> motoru; DarkLegend97 > Literation > Alex J Mercer öncelik sırasını baz alarak kopyaları eziyor ve istatistiklerin ikiye katlanmasını engelliyor.</li>
+                    <li><strong>[v7.2.5] Bot Mimarisi ve API Optimizasyonları (Backend):</strong> Python tarayıcı botuna, geçmişi gereksiz taramasını önleyen <em>"Akıllı Fren (Erken Çıkış)"</em> sistemi eklendi. Riot API kotalarını korumak için Normal ARAM taramaları durduruldu. Ekibe yeni katılan hesapların (RunLap, Vindicate, Supeigia) geriye dönük verilerini sisteme zorla yazdırmak için <em>"Hafıza Delici"</em> yama aktif edildi ve terminal çıktıları saniyelik <code>flush</code> akışına geçirildi.</li>
+                    <li><strong>[v7.2.5] Wukong Alfabe Senkronizasyonu:</strong> Riot API'de <code>MonkeyKing</code> olarak kayıtlı olan Wukong'un, Türkçe şampiyon seçim ekranlarında ve listelemelerde "M" harfi yerine doğru yeri olan "W" harfinde (Miss Fortune'dan sonrasına) sıralanması için <code>localeCompare</code> destekli bir sıralama yaması uygulandı.</li>
+                </ul>
+            </div>
+            `,
+            `
+            <div class="yama-karti">
                 <div class="yama-baslik">v7.2.4 -  Arayüz Güncellemesi <span class="yama-tarih">12 Tem 2026</span></div>
                 <ul class="yama-liste">
                     <li><strong>[v7.2.4] İkon Motoru Optimizasyonu:</strong> <code>Yardimci.rolIkonGetir()</code> motoru, tüm modüllere (Rüya Takımı, Bireysel Profil ve Kendi 5'lini Yarat) tam entegre edildi. Artık tüm rol tanımları görsel birer "Hextech Gold" ikonu ile destekleniyor.</li>
-                    <li><strong>[v7.2.4] UI Performans Artışı:</strong> Arayüzdeki yazı boyutları, özellikle lig bilgileri ve istatistik kartlarında daha iyi bir okuma deneyimi için %15 oranında büyütüldü. İkonlar, yeni yazı boyutlarıyla orantılı olacak şekilde <code>filter: drop - shadow</code> efektleri ile keskinleştirildi.</li>
+                    <li><strong>[v7.2.4] UI Performans Artışı:</strong> Arayüzdeki yazı boyutları, özellikle lig bilgileri ve istatistik kartlarında daha iyi bir okuma deneyimi için %15 oranında büyütüldü. İkonlar, yeni yazı boyutlarıyla orantılı olacak şekilde <code>filter: drop-shadow</code> efektleri ile keskinleştirildi.</li>
                 </ul>
             </div>
             `,
