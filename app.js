@@ -79,7 +79,7 @@ document.documentElement.className = kayitliImlec;
 const TUM_EKIP_ISIMLERI = ["Anıl Abi", "Batuhan Abi", "Giray", "Ercan", "Evren Abi", "Furkan", "Hüseyin", "Kaan", "Nurettin", "Samet Abi", "Samet Yaldız Abi", "Selim Abi", "Sezer", "Talha Abi", "Taner", "Umut Abi", "İlhan Abi", "Şafak"];
 
 const guncelRiotID = {
-    "Kaan": "DarkLegend97", "Batuhan Abi": "RunLap", "Umut Abi": "TuMu", "Taner": "YazlıkDCFlex", "Selim Abi": "ShenerShen",
+    "Kaan": "DarkLegend97", "Batuhan Abi": "RunLap", "Umut Abi": "TuMu", "Taner": "Renat", "Selim Abi": "ShenerShen",
     "İlhan Abi": "Croupier", "Anıl Abi": "ALEMDAROGLU", "Şafak": "s2s", "Ercan": "MrOsleon",
     "Sezer": "the Kosm", "Giray": "GIRAMISÚ", "Samet Abi": "MidFather", "Talha Abi": "Tai sins",
     "Hüseyin": "Niyesuh v2", "Evren Abi": "FREAKAZOlD", "Samet Yaldız Abi": "oOoSMToOo",
@@ -193,7 +193,7 @@ const Yardimci = {
     analizIsimGetir: (oyuncu, riot_id) => {
         const kimlikHaritasi = {
             "Kaan": ["DarkLegend97", "Literation", "Alex J Mercer"],
-            "Taner": ["YazlıkDCFlex", "Schwarzsx"],
+            "Taner": ["Renat", "YazlıkDCFlex", "Schwarzsx"],
             "Ercan": ["MrOsleon", "Lilliana"],
             "Şafak": ["s2s", "vurucu"],
             "Sezer": ["the Kosm", "obliviscaris"],
@@ -855,7 +855,7 @@ const Sayfalar = {
         // 🎯 PROFİLİN ALTINDAKİ İSİM KALABALIĞINI (SÜLALEYİ) TEMİZLEYEN ZIRH
         const kimlikHaritasii = {
             "Kaan": ["DarkLegend97", "Literation", "Alex J Mercer"],
-            "Taner": ["YazlıkDCFlex", "Schwarzsx"],
+            "Taner": ["Renat", "YazlıkDCFlex", "Schwarzsx"],
             "Ercan": ["MrOsleon", "Lilliana"],
             "Şafak": ["s2s", "vurucu"],
             "Sezer": ["the Kosm", "obliviscaris"],
